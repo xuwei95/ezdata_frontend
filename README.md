@@ -1,2 +1,2 @@
-# vue3-jeecg-admin
-vue3-jeecg-admin
+# vue3-admin-jeecg
+vue3-admin-jeecg
