@@ -1,0 +1,5 @@
+###---zhangyafei---2021-08-31 租户、用户、角色
+update sys_permission set url='/system/tenant' ,component='/system/tenant/index' where id='1280350452934307841';
+update sys_permission set url='/system/user' ,component='/system/user/index' where id='3f915b2769fc80648e92d04e84ca059d';
+update sys_permission set url='/system/role' ,component='/system/role/index' where id='190c2b43bec6a5f7a4194a85db67d96a';
+###---zhangyafei---2021-08-31
