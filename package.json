@@ -1,10 +1,10 @@
 {
-  "name": "vue3-jeecg-admin",
-  "version": "0.0.1",
+  "name": "jeecg-boot-vue3",
+  "version": "1.0",
   "author": {
     "name": "jeecg",
     "email": "jeecgos@163.com",
-    "url": "https://gitee.com/jeecg/vue3-jeecg-admin"
+    "url": "https://gitee.com/jeecg/jeecg-boot-vue3"
   },
   "scripts": {
     "bootstrap": "yarn install",
@@ -165,13 +165,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jeecg/vue3-jeect-admin.git"
+    "url": "git+https://github.com/jeecgboot/jeecg-boot-vue3"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jeecg/vue3-jeecg-admin/issues"
+    "url": "https://github.com/jeecgboot/jeecg-boot-vue3/issues"
   },
-  "homepage": "https://github.com/jeecg/vue3-jeecg-admin",
+  "homepage": "https://github.com/jeecgboot/jeecg-boot-vue3",
   "engines": {
     "node": "^12 || >=14"
   }
