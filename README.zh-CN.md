@@ -1,15 +1,20 @@
 ## Install and use
 
-- Get the project code 8.4
+- 技术文档
+
+  [http://vue3.jeecg.com](http://vue3.jeecg.com)
+  
+  
+- Get the project code
 
 ```bash
-git clone https://github.com/jeecg/vue3-jeecg-admin.git
+git clone https://github.com/jeecgboot/jeecg-boot-vue3.git
 ```
 
 - Installation dependencies
 
 ```bash
-cd vue3-jeecg-admin
+cd jeecg-boot-vue3
 
 yarn install
 
