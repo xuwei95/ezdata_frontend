@@ -8,7 +8,7 @@
 - Get the project code
 
 ```bash
-git clone https://github.com/jeecg/vue3-jeecg-admin.git
+git clone https://github.com/jeecgboot/jeecg-boot-vue3.git
 ```
 
 - Installation dependencies
