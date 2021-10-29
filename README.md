@@ -4,6 +4,10 @@
 
   [http://vue3.jeecg.com](http://vue3.jeecg.com)
   
+- 在线演示（beta版本）
+
+  [http://boot3.jeecg.com](http://boot3.jeecg.com)
+  
   
 - Get the project code
 
