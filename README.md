@@ -21,8 +21,8 @@ Jeecg-Boot-Vue3采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术�
 
 |     |   后端源码   | vue3前端源码  |
 |---  |--- | --- |
-|  github   | https://github.com/jeecgboot/jeecg-boot/tree/master/jeecg-boot   | https://github.com/jeecgboot/jeecg-boot-vue3  |
-|  码云   |  https://gitee.com/jeecg/jeecg-boot/tree/master/jeecg-boot   |  https://github.com/jeecgboot/jeecg-boot-vue3  |
+|  github   | https://github.com/jeecgboot/jeecg-boot   | https://github.com/jeecgboot/jeecg-boot-vue3  |
+|  码云   |  https://gitee.com/jeecg/jeecg-boot   |  https://github.com/jeecgboot/jeecg-boot-vue3  |
 
 
 ##### 相关文档：
