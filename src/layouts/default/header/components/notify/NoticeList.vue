@@ -1,14 +1,12 @@
 <template>
-  <a-list :class="prefixCls" bordered :pagination="getPagination">
+  <a-list :class="prefixCls" :pagination="getPagination">
     <template v-for="item in getData" :key="item.id">
-      <a-list-item class="list-item">
+      <a-list-item class="list-item" @click="handleTitleClick(item)" :style="{ cursor: isTitleClickable ? 'pointer' : '' }">
         <a-list-item-meta>
           <template #title>
             <div class="title">
               <a-typography-paragraph
-                      @click="handleTitleClick(item)"
                       style="width: 100%; margin-bottom: 0 !important"
-                      :style="{ cursor: isTitleClickable ? 'pointer' : '' }"
                       :delete="!!item.titleDelete"
                       :ellipsis="
                   $props.titleRows && $props.titleRows > 0
@@ -27,6 +25,23 @@
 
           <template #avatar>
             <a-avatar v-if="item.avatar" class="avatar" :src="item.avatar" />
+            <template v-else-if="item.priority">
+              <a-avatar v-if="item.priority === PriorityTypes.L" class="avatar priority-L" title="一般消息">
+                <template #icon>
+                  <Icon icon="entypo:info"/>
+                </template>
+              </a-avatar>
+              <a-avatar v-if="item.priority === PriorityTypes.M" class="avatar priority-M" title="重要消息">
+                <template #icon>
+                  <Icon icon="bi:exclamation-lg"/>
+                </template>
+              </a-avatar>
+              <a-avatar v-if="item.priority === PriorityTypes.H" class="avatar priority-H" title="紧急消息">
+                <template #icon>
+                  <Icon icon="ant-design:warning-filled"/>
+                </template>
+              </a-avatar>
+            </template>
             <span v-else> {{ item.avatar }}</span>
           </template>
 
@@ -44,7 +59,7 @@
                 />
               </div>
               <div class="datetime">
-                {{ item.datetime }}
+                <Time :value="item.datetime" :title="item.datetime"/>
               </div>
             </div>
           </template>
@@ -55,9 +70,10 @@
 </template>
 <script lang="ts">
   import { computed, defineComponent, PropType, ref, watch, unref } from 'vue';
-  import { ListItem } from './data';
+  import { PriorityTypes, ListItem } from './data';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { List, Avatar, Tag, Typography } from 'ant-design-vue';
+  import { Time } from '/@/components/Time';
   import { isNumber } from '/@/utils/is';
   export default defineComponent({
     components: {
@@ -67,6 +83,7 @@
       AListItemMeta: List.Item.Meta,
       ATypographyParagraph: Typography.Paragraph,
       [Tag.name]: Tag,
+      Time,
     },
     props: {
       list: {
@@ -87,7 +104,7 @@
       },
       descRows: {
         type: Number,
-        default: 2,
+        default: 1,
       },
       onTitleClick: {
         type: Function as PropType<(Recordable) => void>,
@@ -132,7 +149,7 @@
         props.onTitleClick && props.onTitleClick(item);
       }
 
-      return { prefixCls, getPagination, getData, handleTitleClick, isTitleClickable };
+      return { prefixCls, getPagination, getData, handleTitleClick, isTitleClickable, PriorityTypes };
     },
   });
 </script>
@@ -140,6 +157,8 @@
   @prefix-cls: ~'@{namespace}-header-notify-list';
 
   .@{prefix-cls} {
+    width: 340px;
+
     &::-webkit-scrollbar {
       display: none;
     }
@@ -183,6 +202,30 @@
           font-size: 12px;
           line-height: 18px;
         }
+      }
+    }
+
+    .list-item {
+
+      .priority-L, .priority-M, .priority-H {
+        font-size: 12px;
+      }
+
+      .priority-L {
+        background-color: #7cd1ff;
+      }
+
+      .priority-M {
+        background-color: #ffa743;
+      }
+
+      .priority-H {
+        background-color: #f8766c;
+      }
+
+      .description {
+        font-size: 12px;
+        line-height: 18px;
       }
     }
   }

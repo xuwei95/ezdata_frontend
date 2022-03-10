@@ -1,7 +1,7 @@
 <template>
   <div>
     <BasicTable @register="registerTable">
-      <template #toolbar>
+      <template #tableTitle>
         <a-button type="primary" @click="handleCreate"> 新增 </a-button>
       </template>
       <template #action="{ record }">
@@ -38,7 +38,7 @@
   import { columns, searchFormSchema } from './test.data';
 
   export default defineComponent({
-    name: 'TestManagement',
+    name: 'system-test',
     components: { BasicTable, TestDrawer, TableAction },
     setup() {
       const [registerDrawer, { openDrawer }] = useDrawer();

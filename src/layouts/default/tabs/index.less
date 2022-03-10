@@ -11,7 +11,7 @@ html[data-theme='dark'] {
 html[data-theme='light'] {
   .@{prefix-cls} {
     .ant-tabs-tab:not(.ant-tabs-tab-active) {
-      border: 1px solid #d9d9d9 !important;
+      border: 1px solid #e6e6e6;
     }
   }
 }
@@ -22,14 +22,15 @@ html[data-theme='light'] {
   line-height: @multiple-height + 2;
   background-color: @component-background;
   border-bottom: 1px solid @border-color-base;
+  box-shadow: 0 4px 4px rgb(0 21 41 / 8%);
 
   .ant-tabs-small {
-    height: @multiple-height;
+    height:calc(@multiple-height + 4px);
   }
 
   .ant-tabs.ant-tabs-card {
     .ant-tabs-card-bar {
-      height: @multiple-height;
+      height: calc(@multiple-height + 4px);
       margin: 0;
       background-color: @component-background;
       border: 0;
@@ -37,13 +38,13 @@ html[data-theme='light'] {
 
       .ant-tabs-nav-container {
         height: @multiple-height;
-        padding-top: 2px;
+        margin-top: 4px;
       }
 
       .ant-tabs-tab {
-        height: calc(@multiple-height - 2px);
+        height: calc(@multiple-height - 4px);
         padding-right: 12px;
-        line-height: calc(@multiple-height - 2px);
+        line-height: calc(@multiple-height - 6px);
         color: @text-color-base;
         background-color: @component-background;
         transition: none;
@@ -61,6 +62,8 @@ html[data-theme='light'] {
           color: inherit;
           opacity: 0;
           transition: none;
+          position: relative;
+          top: -1px;
 
           &:hover {
             svg {
@@ -82,7 +85,9 @@ html[data-theme='light'] {
 
       .ant-tabs-tab:not(.ant-tabs-tab-active) {
         &:hover {
+          background-color: #ecf5ff;
           color: @primary-color;
+          border-color: #b3d8ff;
         }
       }
 
@@ -91,7 +96,7 @@ html[data-theme='light'] {
         padding-left: 18px;
         color: @white !important;
         background: @primary-color;
-        border: 0;
+        border: 1px solid transparent;
         transition: none;
 
         .ant-tabs-close-x {
@@ -105,11 +110,15 @@ html[data-theme='light'] {
       }
     }
 
+    .ant-tabs-nav-scroll {
+      padding-left: 10px;
+    }
+
     .ant-tabs-nav > div:nth-child(1) {
       padding: 0 6px;
 
       .ant-tabs-tab {
-        margin-right: 3px !important;
+        margin-right: 6px !important;
       }
     }
   }

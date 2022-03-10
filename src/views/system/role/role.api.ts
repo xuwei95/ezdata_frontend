@@ -1,7 +1,6 @@
 import {defHttp} from '/@/utils/http/axios';
 import {Modal} from 'ant-design-vue';
-import { useMessage } from '/@/hooks/web/useMessage';
-const { createMessage } = useMessage();
+
 enum Api {
   list = '/sys/role/list',
   save = '/sys/role/add',
@@ -9,14 +8,30 @@ enum Api {
   deleteRole = '/sys/role/delete',
   deleteBatch = '/sys/role/deleteBatch',
   exportXls = '/sys/role/exportXls',
+  importExcel = '/sys/role/importExcel',
   isRoleExist = '/sys/role/checkRoleCode',
   queryTreeListForRole = '/sys/role/queryTreeList',
   queryRolePermission = '/sys/permission/queryRolePermission',
   saveRolePermission = '/sys/permission/saveRolePermission',
+  queryDataRule = '/sys/role/datarule',
+  getParentDesignList = '/act/process/extActDesignFlowData/getDesFormFlows',
+  getRoleDegisnList = '/joa/designform/designFormCommuse/getRoleDegisnList',
+  saveRoleDesign = '/joa/designform/designFormCommuse/sysRoleDesignAdd',
+  userList = '/sys/user/userRoleList',
+  deleteUserRole = '/sys/user/deleteUserRole',
+  batchDeleteUserRole = '/sys/user/deleteUserRoleBatch',
+  addUserRole = '/sys/user/addSysUserRole',
 }
-
 /**
- * 列表接口
+ * 导出api
+ */
+export const getExportUrl = Api.exportXls;
+/**
+ * 导入api
+ */
+export const getImportUrl = Api.importExcel;
+/**
+ * 列表
  * @param params
  */
 export const list = (params) =>
@@ -62,31 +77,6 @@ export const saveOrUpdateRole = (params, isUpdate) => {
 export const isRoleExist = (params) =>
   defHttp.get({url: Api.isRoleExist, params}, {isTransformResponse: false});
 /**
- * 导出
- * @param fileName
- */
-export const exportXls = (fileName) => {
-  defHttp.get({url: Api.exportXls, responseType: 'blob'}, {isTransformResponse: false}).then((data) => {
-    if (!data) {
-      createMessage.warning("文件下载失败")
-      return
-    }
-    if (typeof window.navigator.msSaveBlob !== 'undefined') {
-      window.navigator.msSaveBlob(new Blob([data], {type: 'application/vnd.ms-excel'}), fileName + '.xls')
-    } else {
-      let url = window.URL.createObjectURL(new Blob([data], {type: 'application/vnd.ms-excel'}))
-      let link = document.createElement('a')
-      link.style.display = 'none'
-      link.href = url
-      link.setAttribute('download', fileName + '.xls')
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link); //下载完成移除元素
-      window.URL.revokeObjectURL(url); //释放掉blob对象
-    }
-  });
-}
-/**
  * 根据角色查询树信息
  */
 export const queryTreeListForRole = () =>
@@ -101,3 +91,69 @@ export const queryRolePermission = (params) =>
  */
 export const saveRolePermission = (params) =>
   defHttp.post({url: Api.saveRolePermission, params});
+/**
+ * 查询角色数据规则
+ */
+export const queryDataRule = (params) =>
+  defHttp.get({url: `${Api.queryDataRule}/${params.functionId}/${params.roleId}`}, {isTransformResponse: false});
+/**
+ * 保存角色数据规则
+ */
+export const saveDataRule = (params) =>
+  defHttp.post({url: Api.queryDataRule,params});
+/**
+ * 获取表单数据
+ * @return List<Map>
+ */
+export const getParentDesignList = () =>
+  defHttp.get({url: Api.getParentDesignList});
+/**
+ * 获取角色表单数据
+ * @return List<Map>
+ */
+export const getRoleDegisnList = (params) =>
+  defHttp.get({url: Api.getRoleDegisnList,params});
+/**
+ * 提交角色工单信息
+ */
+export const saveRoleDesign = (params) =>
+  defHttp.post({url: Api.saveRoleDesign,params});
+/**
+ * 角色列表接口
+ * @param params
+ */
+export const userList = (params) =>
+  defHttp.get({url: Api.userList, params});
+/**
+ * 删除角色用户
+ */
+export const deleteUserRole = (params, handleSuccess) => {
+  return defHttp.delete({url: Api.deleteUserRole, params}, {joinParamsToUrl: true}).then(() => {
+    handleSuccess();
+  });
+}
+/**
+ * 批量删除角色用户
+ * @param params
+ */
+export const batchDeleteUserRole = (params, handleSuccess) => {
+  Modal.confirm({
+    title: '确认删除',
+    content: '是否删除选中数据',
+    okText: '确认',
+    cancelText: '取消',
+    onOk: () => {
+      return defHttp.delete({url: Api.batchDeleteUserRole, params}, {joinParamsToUrl: true}).then(() => {
+        handleSuccess();
+      });
+    }
+  });
+}
+/**
+ * 添加已有用户
+ */
+export const addUserRole = (params, handleSuccess) => {
+  return defHttp.post({url: Api.addUserRole, params}).then(() => {
+    handleSuccess();
+  });
+}

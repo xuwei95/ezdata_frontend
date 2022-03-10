@@ -1,180 +1,138 @@
 <template>
     <div class="p-4">
-        <BasicTable @register="registerTable">
-            <template #toolbar>
-                <span style="padding-right: 5px;">新增方式:</span>
-                <a-radio-group v-model:value="addType">
-                    <a-radio :value="1">一对一</a-radio>
-                    <a-radio :value="2">一对多</a-radio>
-                    <a-radio :value="3">一对多(VexTable)</a-radio>
-                </a-radio-group>
-                <a-button type="primary" @click="handleCreate"> 新增</a-button>
+        <BasicTable @register="registerTable" :rowSelection="rowSelection">
+            <template #tableTitle>
+                <a-dropdown>
+                    <template #overlay>
+                        <a-menu @click="handleCreate">
+                            <a-menu-item :key="1">一对一示例</a-menu-item>
+                            <a-menu-item :key="2">一对多示例</a-menu-item>
+                            <a-menu-item :key="3">一对多(JVexTable)</a-menu-item>
+                        </a-menu>
+                    </template>
+                    <a-button type="primary">新增 <DownOutlined /></a-button>
+                </a-dropdown>
             </template>
-            <template #ctype="{ record }">
-                <Tag color="green" v-if="record.ctype==1">
-                    国内订单
-                </Tag>
-                <Tag color="red" v-if="record.ctype==2">
-                    国际订单
-                </Tag>
+            <template #ctype="{ text }">
+                {{text===1?'国内订单':text===2?'国际订单':''}}
             </template>
             <template #action="{ record }">
                 <TableAction :actions="getAction(record)" :dropDownActions="getDropDownActions(record)"/>
             </template>
         </BasicTable>
         <!--        <TableDrawer @register="registerDrawer" @success="handleSuccess" />-->
-        <TableModal @register="registerModal"/>
-        <VexTableModal @register="registerVexTableModal"></VexTableModal>
-        <OneToOneModal @register="registerOneToOneModal"></OneToOneModal>
+        <TableModal @register="registerModal" @success="handleSuccess"/>
+        <JVxeTableModal @register="registerVexTableModal" @success="handleSuccess"></JVxeTableModal>
+        <OneToOneModal @register="registerOneToOneModal" @success="handleSuccess"></OneToOneModal>
     </div>
 </template>
-<script lang="ts">
-    import {defineComponent, ref} from 'vue';
-    import {BasicTable, useTable, BasicColumn, TableAction} from '/@/components/Table';
-    import {useDrawer} from '/@/components/Drawer';
-
-    import {getDemoTableListByPage} from '/@/api/demo/system';
+<script lang="ts" setup>
+    import {ref} from 'vue';
+    import {BasicTable, useTable, TableAction} from '/@/components/Table';
     import TableDrawer from './drawer.vue';
     import TableModal from './modal.vue';
     import VexTableModal from './VexTableModal.vue';
+    import JVxeTableModal from './jvxetable/JVxeTableModal.vue';
     import OneToOneModal from './OneToOneModal.vue';
+    import { DownOutlined } from '@ant-design/icons-vue';
+    import { useListPage } from '/@/hooks/system/useListPage'
+    
     import {useModal} from "/@/components/Modal";
-
-    const columns: BasicColumn[] = [
-        {
-            title: 'ID',
-            dataIndex: 'id',
-            fixed: 'left',
-            width: 100,
-        },
-        {
-            title: '订单号',
-            dataIndex: 'orderCode',
-            width: 260,
-        },
-        {
-            title: '订单类型',
-            dataIndex: 'ctype',
-            slots: { customRender: 'ctype' }
-        },
-        {
-            title: '订单日期',
-            dataIndex: 'orderDate',
-            width: 300,
-        },
-        {
-            title: '订单金额',
-            width: 200,
-            dataIndex: 'orderMoney',
-        },
-        {
-            title: '订单备注',
-            width: 200,
-            dataIndex: 'content',
-        }
-    ];
-    export default defineComponent({
-        components: {BasicTable, TableAction, TableDrawer, TableModal, VexTableModal, OneToOneModal},
-        setup() {
-            const addType = ref<number>(1);
-            const [registerDrawer, {openDrawer}] = useDrawer();
-            const [registerModal, {openModal}] = useModal();
-            const [registerVexTableModal, {openModal: openVexTableModal}] = useModal();
-            const [registerOneToOneModal, {openModal: openOneToOneModal}] = useModal();
-            //定义表格行操作
-            const getAction = (record) => {
-                return [{
-                    label: '编辑',
-                    onClick: handleEidt.bind(null, record),
-                }]
-            }
-            const getDropDownActions = (record) => {
-                return [
-                    {
-                        label: '删除',
-                        auth: 'super',
-                        popConfirm: {
-                            title: '是否删除？',
-                            confirm: handleOpen.bind(null, record),
-                        },
-                    },
-                ]
-            }
-            //定义表格属性
-            const [registerTable] = useTable({
-                title: '表格功能示例',
-                api: getDemoTableListByPage,
-                columns: columns,
-                rowSelection: {type: 'radio'},
-                bordered: true,
-                actionColumn: {
-                    width: 160,
-                    title: '操作',
-                    dataIndex: 'action',
-                    slots: {customRender: 'action'},
+    import {columns} from "./data";
+    import {list,deleteOne} from "./api";
+    
+    const [registerModal, {openModal}] = useModal();
+    const [registerOneToOneModal, {openModal: openOneToOneModal}] = useModal();
+    const [registerVexTableModal, {openModal: openVexTableModal}] = useModal();
+    
+    //定义表格行操作
+    const getAction = (record) => {
+        return [{
+            label: '编辑',
+            onClick: handleEdit.bind(null, record),
+        }]
+    };
+    
+    const getDropDownActions = (record) => {
+        return [
+            {
+                label: '删除',
+                popConfirm: {
+                    title: '是否删除？',
+                    confirm: handleDelete.bind(null, record),
                 },
-            });
-
-            //添加事件
-            function handleCreate() {
-                let type = addType.value;
-                if (type == 1) {
-                    openOneToOneModal(true, {
-                        isUpdate: false,
-                    });
-                }
-                if (type == 2) {
-                    openModal(true, {
-                        isUpdate: false,
-                    });
-                }
-                if (type == 3) {
-                    openVexTableModal(true, {
-                        isUpdate: false,
-                    });
-                }
-            }
-
-            //编辑事件
-            function handleEidt(record: Recordable) {
-                let type = addType.value;
-                if (type == 1) {
-                    openOneToOneModal(true, {
-                        record,
-                        isUpdate: true,
-                    });
-                }
-                if (type == 2) {
-                    openModal(true, {
-                        record,
-                        isUpdate: true,
-                    });
-                }
-                if (type == 3) {
-                    openVexTableModal(true, {
-                        record,
-                        isUpdate: true,
-                    });
-                }
-            }
-
-            function handleOpen(record: Recordable) {
-                console.log('点击了启用', record);
-            }
-
-            return {
-                addType,
-                getAction,
-                getDropDownActions,
-                registerTable,
-                registerDrawer,
-                registerModal,
-                registerVexTableModal,
-                handleEidt,
-                registerOneToOneModal,
-                handleCreate,
-                handleOpen,
-            };
-        },
+            },
+        ]
+    };
+    
+    // 列表页面公共参数、方法
+    const { tableContext } = useListPage({
+        tableProps: {
+            api: list,
+            columns: columns,
+            useSearchForm:false,
+            actionColumn: {
+                width: 160,
+                title: '操作',
+                dataIndex: 'action',
+                slots: {customRender: 'action'},
+            },
+        }
     });
+    
+    //注册table数据
+    const [registerTable, {reload},{ rowSelection }] = tableContext;
+    //新增类型
+    const addType = ref(1);
+    //添加事件
+    function handleCreate(e) {
+        addType.value = e.key
+        let type = addType.value;
+        if (type == 1) {
+            openOneToOneModal(true, {
+                isUpdate: false,
+            });
+        }
+        if (type == 2) {
+            openModal(true, {
+                isUpdate: false,
+            });
+        }
+        if (type == 3) {
+            openVexTableModal(true, {
+                isUpdate: false,
+            });
+        }
+    }
+
+    //编辑事件
+    function handleEdit(record: Recordable) {
+        let type = addType.value;
+        if (type == 1) {
+            openOneToOneModal(true, {
+                record,
+                isUpdate: true,
+            });
+        }
+        if (type == 2) {
+            openModal(true, {
+                record,
+                isUpdate: true,
+            });
+        }
+        if (type == 3) {
+            openVexTableModal(true, {
+                record,
+                isUpdate: true,
+            });
+        }
+    }
+
+    async function handleDelete(record: Recordable) {
+        await deleteOne({id: record.id}, reload);
+    }
+    
+    function handleSuccess() {
+        reload()
+    }
 </script>

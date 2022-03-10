@@ -4,6 +4,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 import legacy from '@vitejs/plugin-legacy';
 import purgeIcons from 'vite-plugin-purge-icons';
 import windiCSS from 'vite-plugin-windicss';
+import vueSetupExtend from 'vite-plugin-vue-setup-extend';
 import { configHtmlPlugin } from './html';
 import { configPwaConfig } from './pwa';
 import { configMockPlugin } from './mock';
@@ -29,7 +30,10 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
         vue(),
         // have to
         vueJsx(),
+        // support name
+        vueSetupExtend(),
     ];
+
     // vite-plugin-windicss
     vitePlugins.push(windiCSS());
 
@@ -67,7 +71,7 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
 
         // rollup-plugin-gzip
         vitePlugins.push(
-            configCompressPlugin(VITE_BUILD_COMPRESS, VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE)
+            configCompressPlugin(VITE_BUILD_COMPRESS, VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE),
         );
 
         // vite-plugin-pwa

@@ -44,7 +44,7 @@
     emits: ['next'],
     setup(_, { emit }) {
       const [register, { validate }] = useForm({
-        labelWidth: 100,
+        labelWidth: 200,
         schemas: step1Schemas,
         actionColOptions: {
           span: 14,
@@ -70,7 +70,7 @@
 <style lang="less" scoped>
   .step1 {
     &-form {
-      width: 450px;
+      width: 550px;
       margin: 0 auto;
     }
 

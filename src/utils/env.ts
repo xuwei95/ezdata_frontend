@@ -28,13 +28,17 @@ export function getAppEnvConfig() {
     VITE_USE_MOCK,
     VITE_GLOB_APP_SHORT_NAME,
     VITE_GLOB_API_URL_PREFIX,
-    VITE_GLOB_UPLOAD_URL,
+    VITE_GLOB_APP_OPEN_SSO,
+    VITE_GLOB_APP_OPEN_QIANKUN,
+    VITE_GLOBE_APP_CAS_BASE_URL,
+    VITE_GLOB_DOMAIN_URL,
+    VITE_GLOB_ONLINE_VIEW_URL,
   } = ENV;
 
   if (!/^[a-zA-Z\_]*$/.test(VITE_GLOB_APP_SHORT_NAME)) {
-    warn(
-      `VITE_GLOB_APP_SHORT_NAME Variables can only be characters/underscores, please modify in the environment variables and re-running.`
-    );
+    // warn(
+    //   `VITE_GLOB_APP_SHORT_NAME Variables can only be characters/underscores, please modify in the environment variables and re-running.`
+    // );
   }
 
   return {
@@ -43,7 +47,11 @@ export function getAppEnvConfig() {
     VITE_USE_MOCK,
     VITE_GLOB_APP_SHORT_NAME,
     VITE_GLOB_API_URL_PREFIX,
-    VITE_GLOB_UPLOAD_URL,
+    VITE_GLOB_APP_OPEN_SSO,
+    VITE_GLOB_APP_OPEN_QIANKUN,
+    VITE_GLOBE_APP_CAS_BASE_URL,
+    VITE_GLOB_DOMAIN_URL,
+    VITE_GLOB_ONLINE_VIEW_URL,
   };
 }
 

@@ -1,7 +1,7 @@
 <template>
     <PageWrapper title="表单基础示例" contentFullHeight>
         <CollapseContainer title="基础示例">
-            <BasicForm autoFocusFirstItem :labelWidth="200" :schemas="schemas" :actionColOptions="{ span: 24 }" @submit="handleSubmit" @reset="handleReset">
+            <BasicForm autoFocusFirstItem :labelWidth="200" :schemas="schemas" :actionColOptions="{ span: 24 }" :labelCol="{span:8}" @submit="handleSubmit" @reset="handleReset">
                 <template #jAreaLinkage="{model, field }">
                     <JAreaLinkage v-model:value="model[field]" :showArea="true" :showAll="false" />
                 </template>
@@ -399,6 +399,50 @@
                 span: 8,
             },
         },
+      {
+        field: 'field34',
+        component: 'ApiRadioGroup',
+        label: '远程Radio',
+        helpMessage: ['ApiRadioGroup组件', '使用接口提供的数据生成选项'],
+        required: true,
+        componentProps: {
+          api: optionsListApi,
+          params: {
+            count: 2,
+          },
+          resultField: 'list',
+          // use name as label
+          labelField: 'name',
+          // use id as value
+          valueField: 'id',
+        },
+        defaultValue: '1',
+        colProps: {
+          span: 8,
+        },
+      },
+      {
+        field: 'field35',
+        component: 'ApiRadioGroup',
+        label: '远程Radio',
+        helpMessage: ['ApiRadioGroup组件', '使用接口提供的数据生成选项'],
+        required: true,
+        componentProps: {
+          api: optionsListApi,
+          params: {
+            count: 2,
+          },
+          resultField: 'list',
+          // use name as label
+          labelField: 'name',
+          // use id as value
+          valueField: 'id',
+          isBtn: true,
+        },
+        colProps: {
+          span: 8,
+        },
+      },
         {
             field: 'divider-linked',
             component: 'Divider',

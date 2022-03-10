@@ -1,4 +1,4 @@
-import { resultSuccess, resultError, getRequestToken, requestParams } from '../_util';
+import { resultSuccess, resultError, getRequestToken, requestParams,baseUrl} from '../_util';
 import { MockMethod } from 'vite-plugin-mock';
 import { createFakeUserList } from './user';
 
@@ -17,7 +17,7 @@ const dashboardRoute = {
     {
       path: 'analysis',
       name: 'Analysis',
-      component: '/dashboard/analysis/index',
+      component: '/dashboard/Analysis/index',
       meta: {
         hideMenu: true,
         hideBreadcrumb: true,
@@ -237,7 +237,7 @@ const linkRoute = {
 
 export default [
   {
-    url: '/jeecg-boot/sys/permission/getUserPermissionByToken',
+    url: `${baseUrl}/sys/permission/getUserPermissionByToken`,
     timeout: 1000,
     method: 'get',
     response: (request: requestParams) => {

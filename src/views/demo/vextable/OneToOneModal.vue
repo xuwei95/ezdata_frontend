@@ -38,12 +38,12 @@
                     <a-row class="form-row" :gutter="16">
                         <a-col :lg="8">
                             <a-form-item label="客户姓名">
-                                <a-input v-model:value="orderMainModel.name" placeholder="请输入订单金额"/>
+                                <a-input v-model:value="orderMainModel.jeecgOrderCustomerList.name" placeholder="请输入客户姓名"/>
                             </a-form-item>
                         </a-col>
                         <a-col :lg="8">
                             <a-form-item label="手机号">
-                                <a-input v-model:value="orderMainModel.telephone" placeholder="请输入订单备注"/>
+                                <a-input v-model:value="orderMainModel.jeecgOrderCustomerList.telphone" placeholder="请输入手机号"/>
                             </a-form-item>
                         </a-col>
                     </a-row>
@@ -53,12 +53,12 @@
                     <a-row class="form-row" :gutter="16">
                         <a-col :lg="8">
                             <a-form-item label="航班号">
-                                <a-input v-model:value="orderMainModel.ticketCode" placeholder="请输入航班号"/>
+                                <a-input v-model:value="orderMainModel.jeecgOrderTicketList.ticketCode" placeholder="请输入航班号"/>
                             </a-form-item>
                         </a-col>
                         <a-col :lg="8">
                             <a-form-item label="起飞时间">
-                                <a-input v-model:value="orderMainModel.tickectDate" placeholder="请输入起飞时间"/>
+                                <a-date-picker showTime valueFormat="YYYY-MM-DD HH:mm:ss" v-model:value="orderMainModel.jeecgOrderTicketList.tickectDate"/>
                             </a-form-item>
                         </a-col>
                     </a-row>
@@ -71,6 +71,8 @@
     import {defineComponent, ref, reactive, computed, unref} from 'vue';
     import {BasicModal, useModalInner} from '/@/components/Modal';
     import {ValidateErrorEntity} from 'ant-design-vue/es/form/interface';
+    import { saveOrUpdate } from './jvxetable/jvxetable.api'
+    import { orderCustomerList,orderTicketList } from './api'
 
     export default defineComponent({
         name: 'OneToOneModal',
@@ -99,49 +101,51 @@
                 orderMoney: "",
                 ctype: "",
                 content: "",
-                jeecgOrderCustomerList: [],
-                jeecgOrderTicketList: []
+                jeecgOrderCustomerList: {
+                    name:"",
+                    telphone:"",
+                },
+                jeecgOrderTicketList: {
+                    ticketCode:"",
+                    tickectDate:"",
+                }
             });
             const [registerModal, {setModalProps, closeModal}] = useModalInner(async (data) => {
-                orderMainModel.orderCode = '';
                 setModalProps({confirmLoading: false});
+                reset()
                 isUpdate.value = !!data?.isUpdate;
-
                 if (unref(isUpdate)) {
                     rowId.value = data.record.id;
-                    orderMainModel.orderCode = data.record.orderCode;
+                    Object.assign(orderMainModel, data.record);
+                    let params = { id: orderMainModel.id };
+                    const customerList = await orderCustomerList(params);
+                    orderMainModel.jeecgOrderCustomerList = customerList[0];
+                    const ticketList = await orderTicketList(params);
+                    orderMainModel.jeecgOrderTicketList = ticketList[0]
                 }
             });
             const getTitle = computed(() => (!unref(isUpdate) ? '新增' : '编辑'));
-
-            //动态添加行
-            function addRowCustom() {
-                orderMainModel.jeecgOrderCustomerList.push({});
+            
+            function reset(){
+                orderMainModel.id = null;
+                orderMainModel.orderCode = "";
+                orderMainModel.orderMoney = "";
+                orderMainModel.orderDate = null;
+                orderMainModel.ctype = "";
+                orderMainModel.content = "";
+                orderMainModel.jeecgOrderCustomerList = {};
+                orderMainModel.jeecgOrderTicketList = {}
             }
-
-            //删除行
-            function delRowCustom(index) {
-                orderMainModel['jeecgOrderCustomerList'].splice(index, 1);
-                orderMainModel.jeecgOrderCustomerList.splice(index, 1);
-            }
-
-            function addRowTicket() {
-                orderMainModel.jeecgOrderTicketList.push({});
-            }
-
-            //删除机票
-            function delRowTicket(index) {
-                orderMainModel['jeecgOrderTicketList'].splice(index, 1);
-                orderMainModel.jeecgOrderTicketList.splice(index, 1);
-            }
-
             async function handleSubmit() {
-                formRef.value.validate().then(() => {
+                formRef.value.validate().then(async() => {
                     try {
                         console.log('formData', JSON.stringify(orderMainModel));
                         setModalProps({confirmLoading: true});
+                        orderMainModel.jeecgOrderCustomerList = Object.keys(orderMainModel.jeecgOrderCustomerList).length>0?[orderMainModel.jeecgOrderCustomerList]:[]
+                        orderMainModel.jeecgOrderTicketList = Object.keys(orderMainModel.jeecgOrderTicketList).length>0?[orderMainModel.jeecgOrderTicketList]:[]
+                        await saveOrUpdate(orderMainModel,unref(isUpdate));
                         closeModal();
-                        emit('success', {isUpdate: unref(isUpdate), values: {id: rowId.value}});
+                        emit('success');
                     } finally {
                         setModalProps({confirmLoading: false});
                     }
@@ -152,7 +156,7 @@
 
             }
 
-            return {formRef, validatorRules, orderMainModel, registerModal, getTitle, labelCol, wrapperCol, addRowCustom, delRowCustom, addRowTicket, delRowTicket, handleSubmit};
+            return {formRef, validatorRules, orderMainModel, registerModal, getTitle, labelCol, wrapperCol, handleSubmit};
         },
     });
 </script>

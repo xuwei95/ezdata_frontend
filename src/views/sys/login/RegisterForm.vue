@@ -86,20 +86,23 @@
           })
         );
         if (resultInfo && resultInfo.data.success) {
-          createSuccessModal({
-            content: resultInfo.data.message || t('sys.api.registerMsg'),
+          notification.success({
+            description: resultInfo.data.message || t('sys.api.registerMsg'),
+            duration: 3,
           });
           handleBackLogin();
         }else{
-          createErrorModal({
-            title: t('sys.api.errorTip'),
-            content: resultInfo.data.message || t('sys.api.networkExceptionMsg'),
+          notification.warning({
+            message: t('sys.api.errorTip'),
+            description: resultInfo.data.message || t('sys.api.networkExceptionMsg'),
+            duration: 3,
           });
         }
       } catch (error) {
-        createErrorModal({
-          title: t('sys.api.errorTip'),
-          content: error.message || t('sys.api.networkExceptionMsg'),
+        notification.error({
+          message: t('sys.api.errorTip'),
+          description: error.message || t('sys.api.networkExceptionMsg'),
+          duration: 3,
         });
       } finally {
         loading.value = false;
@@ -107,6 +110,6 @@
     }
     //发送验证码的函数
     function sendCodeApi() {
-      return getCaptcha({mobile:formData.mobile,smsmode:SmsEnum.FORGET_PASSWORD});
+      return getCaptcha({mobile:formData.mobile,smsmode:SmsEnum.REGISTER});
     }
 </script>

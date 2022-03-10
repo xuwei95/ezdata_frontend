@@ -52,6 +52,7 @@
   import { cloneDeep } from 'lodash-es';
 
   export default defineComponent({
+    name:"system-testtree",
     components: { BasicTree, PageWrapper, Card, Row, Col, Spin },
     setup() {
       const asyncTreeRef = ref<Nullable<TreeActionType>>(null);

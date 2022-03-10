@@ -1,9 +1,13 @@
 export default {
-  footer: { onlinePreview: '在线预览', onlineDocument: '在线文档' },
+  footer: { onlinePreview: 'JEECG首页', onlineDocument: '在线文档' },
   header: {
     // user dropdown
-    dropdownItemDoc: '文档',
+    dropdownItemDoc: '官网',
     dropdownItemLoginOut: '退出系统',
+    dropdownItemSwitchPassword: '密码修改',
+    dropdownItemSwitchDepart: '切换部门',
+    dropdownItemRefreshCache: '刷新缓存',
+    dropdownItemSwitchAccount: '账户设置',
 
     // tooltip
     tooltipErrorLog: '错误日志',
@@ -22,11 +26,11 @@ export default {
   },
   multipleTab: {
     reload: '重新加载',
-    close: '关闭标签页',
-    closeLeft: '关闭左侧标签页',
-    closeRight: '关闭右侧标签页',
-    closeOther: '关闭其它标签页',
-    closeAll: '关闭全部标签页',
+    close: '关闭当前',
+    closeLeft: '关闭左侧',
+    closeRight: '关闭右侧',
+    closeOther: '关闭其它',
+    closeAll: '关闭全部',
   },
   setting: {
     // content mode
@@ -61,7 +65,7 @@ export default {
 
     darkMode: '主题',
     navMode: '导航栏模式',
-    interfaceFunction: '界面功能',
+    interfaceFunction: '界面设置',
     interfaceDisplay: '界面显示',
     animation: '动画',
     splitMenu: '分割菜单',
@@ -84,9 +88,14 @@ export default {
     breadcrumb: '面包屑',
     breadcrumbIcon: '面包屑图标',
     tabs: '标签页',
+    tabDetail: '标签详情页',
     tabsQuickBtn: '标签页快捷按钮',
     tabsRedoBtn: '标签页刷新按钮',
     tabsFoldBtn: '标签页折叠按钮',
+    tabsTheme: '标签页样式',
+    tabsThemeSmooth: '圆滑',
+    tabsThemeCard: '卡片',
+    tabsThemeSimple: '极简',
     sidebar: '左侧菜单',
     header: '顶栏',
     footer: '页脚',

@@ -1,5 +1,5 @@
 import { MockMethod } from 'vite-plugin-mock';
-import { resultSuccess } from '../_util';
+import { resultSuccess, baseUrl } from '../_util';
 
 const demoTreeList = (keyword) => {
   const result = {
@@ -26,7 +26,7 @@ const demoTreeList = (keyword) => {
 
 export default [
   {
-    url: '/jeecg-boot/tree/getDemoOptions',
+    url: `${baseUrl}/tree/getDemoOptions`,
     timeout: 1000,
     method: 'get',
     response: ({ query }) => {

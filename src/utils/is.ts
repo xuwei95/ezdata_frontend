@@ -52,12 +52,21 @@ export function isNumber(val: unknown): val is number {
   return is(val, 'Number');
 }
 
-export function isPromise<T = any>(val: unknown): val is Promise<T> {
-  return is(val, 'Promise') && isObject(val) && isFunction(val.then) && isFunction(val.catch);
+export function isPromise<T = any>(val: any): val is Promise<T> {
+  // update-begin--author:sunjianlei---date:20211022---for: 不能既是 Promise 又是 Object --------
+  return is(val, 'Promise') && isFunction(val.then) && isFunction(val.catch);
+  // update-end--author:sunjianlei---date:20211022---for: 不能既是 Promise 又是 Object --------
 }
 
 export function isString(val: unknown): val is string {
   return is(val, 'String');
+}
+
+export function isJsonObjectString(val: string ): val is string {
+    if(!val){
+        return false  
+    }
+    return val.startsWith('{') && val.endsWith('}');
 }
 
 export function isFunction(val: unknown): val is Function {

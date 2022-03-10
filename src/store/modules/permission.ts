@@ -6,7 +6,7 @@ import { useI18n } from '/@/hooks/web/useI18n';
 import { useUserStore } from './user';
 import { useAppStoreWithOut } from './app';
 import { toRaw } from 'vue';
-import { transformObjToRoute, flatMultiLevelRoutes } from '/@/router/helper/routeHelper';
+import {transformObjToRoute, flatMultiLevelRoutes, addSlashToRouteComponent} from '/@/router/helper/routeHelper';
 import { transformRouteToMenu } from '/@/router/helper/menuHelper';
 
 import projectSetting from '/@/settings/projectSetting';
@@ -24,6 +24,19 @@ import { getPermCode } from '/@/api/sys/user';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
 
+// 系统权限
+interface AuthItem {
+  // 菜单权限编码，例如：“sys:schedule:list,sys:schedule:info”,多个逗号隔开
+  action: string,
+  // 权限策略1显示2禁用
+  type: string | number,
+  // 权限状态(0无效1有效)
+  status: string | number,
+  // 权限名称
+  describe?: string,
+  isAuth?: boolean,
+}
+
 interface PermissionState {
   // Permission code list
   permCodeList: string[] | number[];
@@ -34,6 +47,12 @@ interface PermissionState {
   // Backstage menu list
   backMenuList: Menu[];
   frontMenuList: Menu[];
+  // 用户所拥有的权限
+  authList: AuthItem[],
+  // 全部权限配置
+  allAuthList: AuthItem[],
+  // 系统安全模式
+  sysSafeMode: boolean,
 }
 export const usePermissionStore = defineStore({
   id: 'app-permission',
@@ -47,6 +66,9 @@ export const usePermissionStore = defineStore({
     backMenuList: [],
     // menu List
     frontMenuList: [],
+    authList: [],
+    allAuthList: [],
+    sysSafeMode: false,
   }),
   getters: {
     getPermCodeList(): string[] | number[] {
@@ -93,8 +115,10 @@ export const usePermissionStore = defineStore({
       this.lastBuildMenuTime = 0;
     },
     async changePermissionCode() {
-      const codeList = await getPermCode();
+      const systemPermission = await getPermCode();
+      const codeList = systemPermission.codeList
       this.setPermCodeList(codeList);
+      this.setAuthData(systemPermission)
     },
     async buildRoutesAction(): Promise<AppRouteRecordRaw[]> {
       const { t } = useI18n();
@@ -174,11 +198,11 @@ export const usePermissionStore = defineStore({
         // 后台菜单构建
         case PermissionModeEnum.BACK:
           const { createMessage } = useMessage();
-
-          createMessage.loading({
-            content: t('sys.app.menuLoading'),
-            duration: 1,
-          });
+          // 菜单加载提示
+          // createMessage.loading({
+          //   content: t('sys.app.menuLoading'),
+          //   duration: 1,
+          // });
 
           // 从后台获取权限码，
           // 这个函数可能只需要执行一次，并且实际的项目可以在正确的时间被放置
@@ -189,7 +213,8 @@ export const usePermissionStore = defineStore({
           } catch (error) {
             console.error(error);
           }
-
+          // 组件地址前加斜杠处理  author: lsq date:2021-09-08
+          routeList = addSlashToRouteComponent(routeList);
           // 动态引入组件
           routeList = transformObjToRoute(routeList);
 
@@ -209,6 +234,17 @@ export const usePermissionStore = defineStore({
       routes.push(ERROR_LOG_ROUTE);
       patchHomeAffix(routes);
       return routes;
+    },
+    setAuthData(systemPermission) {
+      this.authList = systemPermission.auth
+      this.allAuthList = systemPermission.allAuth
+      this.sysSafeMode = systemPermission.sysSafeMode
+    },
+    setAuthList(authList: AuthItem[]) {
+      this.authList = authList
+    },
+    setAllAuthList(authList: AuthItem[]) {
+      this.allAuthList = authList
     },
   },
 });

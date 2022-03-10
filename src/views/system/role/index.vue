@@ -1,105 +1,87 @@
 <template>
-  <PageWrapper dense contentFullHeight fixedHeight contentClass="flex">
-    <BasicTable @register="registerTable" :rowSelection="rowSelection" class="w-4/4 xl:w-5/5">
-      <template #headerTop>
-        <a-alert type="success" show-icon class="alert">
-          <template #message>
-            <template v-if="checkedKeys.length > 0">
-              <span>已选中{{ checkedKeys.length }}条记录(可跨页)</span>
-              <a-button type="link" @click="checkedKeys = []" size="small">清空</a-button>
+    <BasicTable @register="registerTable">
+        <template #tableTitle>
+            <a-button  type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
+            <a-button  type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
+            <j-upload-button  type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+            <a-dropdown v-if="selectedRowKeys.length > 0">
+            <template #overlay>
+              <a-menu>
+                <a-menu-item key="1" @click="batchHandleDelete">
+                  <Icon icon="ant-design:delete-outlined"></Icon>
+                  删除
+                </a-menu-item>
+              </a-menu>
             </template>
-            <template v-else>
-              <span>未选中任何项目</span>
-            </template>
-          </template>
-        </a-alert>
-      </template>
-      <template #tableTitle>
-        <a-dropdown v-if="checkedKeys.length > 0">
-          <template #overlay>
-            <a-menu>
-              <a-menu-item key="1" @click="batchHandleDelete">
-                <Icon icon="ant-design:delete-outlined"></Icon>
-                删除
-              </a-menu-item>
-            </a-menu>
-          </template>
-          <a-button>批量操作
-            <Icon icon="ant-design:down-outlined"></Icon>
-          </a-button>
-        </a-dropdown>
-      </template>
-      <template #toolbar>
-        <a-button type="primary" @click="handleCreate"> 新增角色</a-button>
-        <a-button type="primary" @click="handleExportXls"> 导出</a-button>
-      </template>
-      <template #action="{ record }">
-        <TableAction
-          :actions="getTableAction(record)"
-          :dropDownActions="getDropDownAction(record)"
-        />
-      </template>
-    </BasicTable>
-    <RoleDrawer @register="registerDrawer" @success="reload"/>
-    <user-role-drawer @register="registerDrawer1"></user-role-drawer>
-  </PageWrapper>
+            <a-button>批量操作
+              <Icon icon="mdi:chevron-down"></Icon>
+            </a-button>
+          </a-dropdown>
+        </template>
+        <template #action="{ record }">
+          <TableAction :actions="getTableAction(record)" :dropDownActions="getDropDownAction(record)"/>
+        </template>
+      </BasicTable>
+    <!--角色用户表格-->
+    <RoleUserTable @register="roleUserDrawer" />
+    <!--角色编辑抽屉-->
+    <RoleDrawer @register="registerDrawer" @success="reload" :showFooter="showFooter"/>
+    <RoleDesc @register="registerDesc"></RoleDesc>
+    <!--角色菜单授权抽屉-->
+    <RolePermissionDrawer @register="rolePermissionDrawer"/>
+    <!--角色工单授权-->
+    <RoleDesignModal @register="registerModal"/>
 </template>
-<script lang="ts" setup>
+<script lang="ts" name="system-role" setup>
   import {ref} from 'vue'
-  import {BasicTable, useTable, TableAction} from '/@/components/Table';
-  import {list, deleteRole, batchDeleteRole, exportXls} from './role.api';
+  import {BasicTable, TableAction} from '/@/components/Table';
   import {useDrawer} from '/@/components/Drawer';
-  import {PageWrapper} from '/@/components/Page';
-  import RoleDrawer from './RoleDrawer.vue';
-  import UserRoleDrawer from './UserRoleDrawer.vue';
+  import {useModal} from '/@/components/Modal';
+  import RoleDrawer from './components/RoleDrawer.vue';
+  import RoleDesc from './components/RoleDesc.vue';
+  import RolePermissionDrawer from './components/RolePermissionDrawer.vue';
+  import RoleDesignModal from './components/RoleDesignModal.vue';
+  import RoleUserTable from './components/RoleUserTable.vue';
   import {columns, searchFormSchema} from './role.data';
-  const checkedKeys = ref<Array<string | number>>([]);
+  import {list, deleteRole, batchDeleteRole, getExportUrl,getImportUrl} from './role.api';
+  import { useListPage } from '/@/hooks/system/useListPage'
+  const showFooter = ref(true);
+  const [roleUserDrawer, {openDrawer:openRoleUserDrawer}] = useDrawer();
   const [registerDrawer, {openDrawer}] = useDrawer();
-  const [registerDrawer1, {openDrawer: openUserRoleDrawer}] = useDrawer();
-  const [registerTable, {reload}] = useTable({
-    title: '角色列表',
-    api: list,
-    columns,
-    formConfig: {
-      labelWidth: 120,
-      schemas: searchFormSchema,
+  const [registerModal, {openModal}] = useModal();
+  const [rolePermissionDrawer, {openDrawer: openRolePermissionDrawer}] = useDrawer();
+  const [registerDesc, {openDrawer: openRoleDesc}] = useDrawer();
+
+  // 列表页面公共参数、方法
+  const { prefixCls, tableContext,onImportXls,onExportXls } = useListPage({
+    designScope: 'role-template',
+    tableProps: {
+      title: '角色列表',
+      api: list,
+      columns: columns,
+      formConfig: {
+        schemas: searchFormSchema
+      },
+      actionColumn: {
+        width: 120,
+      },
+      rowSelection:null
     },
-    striped: true,
-    useSearchForm: true,
-    showTableSetting: true,
-    clickToRowSelect: false,
-    bordered: true,
-    showIndexColumn: false,
-    tableSetting: {fullScreen: true},
-    canResize: false,
-    rowKey: 'id',
-    actionColumn: {
-      width: 30,
-      title: '操作',
-      dataIndex: 'action',
-      slots: {customRender: 'action'},
-      fixed: undefined,
+    exportConfig: {
+      name:"角色列表",
+      url: getExportUrl
     },
-  });
-  /**
-   * 选择列配置
-   */
-  const rowSelection = {
-    type: 'checkbox',
-    columnWidth: 20,
-    selectedRowKeys: checkedKeys,
-    onChange: onSelectChange
-  }
-  /**
-   * 选择事件
-   */
-  function onSelectChange(selectedRowKeys: (string | number)[]) {
-    checkedKeys.value = selectedRowKeys;
-  }
+    importConfig: {
+      url: getImportUrl
+    }
+  })
+  const [registerTable, {reload},{ rowSelection, selectedRowKeys }] =tableContext;
+
   /**
    * 新增
    */
   function handleCreate() {
+    showFooter.value = true;
     openDrawer(true, {
       isUpdate: false,
     });
@@ -108,6 +90,7 @@
    * 编辑
    */
   function handleEdit(record: Recordable) {
+    showFooter.value = true;
     openDrawer(true, {
       record,
       isUpdate: true,
@@ -116,11 +99,11 @@
   /**
    * 详情
    */
-  async function handleDetail(record) {
-    openDrawer(true, {
+   function handleDetail(record) {
+    showFooter.value = false;
+    openRoleDesc(true, {
       record,
       isUpdate: true,
-      hideFooter: true,
     });
   }
   /**
@@ -133,20 +116,26 @@
    * 批量删除事件
    */
   async function batchHandleDelete() {
-    await batchDeleteRole({ids: checkedKeys.value}, reload);
+    await batchDeleteRole({ids: selectedRowKeys.value}, reload);
   }
   /**
-   * 导出
-   */
-  async function handleExportXls() {
-    let fileName = '角色列表';
-    await exportXls(fileName);
-  }
-  /**
-   * 授权弹窗
+   * 角色授权弹窗
    */
   function handlePerssion(record) {
-    openUserRoleDrawer(true, {roleId: record.id});
+    openRolePermissionDrawer(true, {roleId: record.id});
+  }
+  /**
+   * 工单授权弹窗
+   */
+  function handleDesign(id) {
+    openModal(true, {roleId: id});
+  }
+  /**
+   * 角色用户
+   */
+  function handleUser(record) {
+    //onSelectChange(selectedRowKeys)
+    openRoleUserDrawer(true,record)
   }
   /**
    * 操作栏
@@ -154,8 +143,12 @@
   function getTableAction(record) {
     return [
       {
-        icon: 'clarity:note-edit-line',
-        onClick: handleEdit.bind(null, record),
+        label: '用户',
+        onClick: handleUser.bind(null, record),
+      },
+      {
+        label: '授权',
+        onClick: handlePerssion.bind(null, record),
       }
     ]
   }
@@ -166,19 +159,21 @@
   function getDropDownAction(record) {
     return [
       {
-        label: '授权',
-        onClick: handlePerssion.bind(null, record),
+        label: '编辑',
+        onClick: handleEdit.bind(null, record),
       },
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
       }, {
         label: '删除',
-        color: 'error',
         popConfirm: {
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
         },
+      }, {
+        label: '工单?',
+        onClick: handleDesign.bind(null, record.id),
       }
     ]
   }

@@ -16,14 +16,6 @@ const feat: AppRouteModule = {
 
   children: [
     {
-      path: 'icon',
-      name: 'IconDemo',
-      component: () => import('/@/views/demo/feat/icon/index.vue'),
-      meta: {
-        title: t('routes.demo.feat.icon'),
-      },
-    },
-    {
       path: 'ws',
       name: 'WebSocket',
       component: () => import('/@/views/demo/feat/ws/index.vue'),
@@ -39,22 +31,7 @@ const feat: AppRouteModule = {
         title: t('routes.demo.feat.sessionTimeout'),
       },
     },
-    {
-      path: 'print',
-      name: 'Print',
-      component: () => import('/@/views/demo/feat/print/index.vue'),
-      meta: {
-        title: t('routes.demo.feat.print'),
-      },
-    },
-    {
-      path: 'tabs',
-      name: 'TabsDemo',
-      component: () => import('/@/views/demo/feat/tabs/index.vue'),
-      meta: {
-        title: t('routes.demo.feat.tabs'),
-      },
-    },
+
     {
       path: 'breadcrumb',
       name: 'BreadcrumbDemo',
@@ -116,30 +93,8 @@ const feat: AppRouteModule = {
         title: t('routes.demo.feat.contextMenu'),
       },
     },
-    {
-      path: 'download',
-      name: 'DownLoadDemo',
-      component: () => import('/@/views/demo/feat/download/index.vue'),
-      meta: {
-        title: t('routes.demo.feat.download'),
-      },
-    },
-    {
-      path: 'click-out-side',
-      name: 'ClickOutSideDemo',
-      component: () => import('/@/views/demo/feat/click-out-side/index.vue'),
-      meta: {
-        title: t('routes.demo.feat.clickOutSide'),
-      },
-    },
-    {
-      path: 'img-preview',
-      name: 'ImgPreview',
-      component: () => import('/@/views/demo/feat/img-preview/index.vue'),
-      meta: {
-        title: t('routes.demo.feat.imgPreview'),
-      },
-    },
+
+
     {
       path: 'copy',
       name: 'CopyDemo',
@@ -148,14 +103,7 @@ const feat: AppRouteModule = {
         title: t('routes.demo.feat.copy'),
       },
     },
-    {
-      path: 'msg',
-      name: 'MsgDemo',
-      component: () => import('/@/views/demo/feat/msg/index.vue'),
-      meta: {
-        title: t('routes.demo.feat.msg'),
-      },
-    },
+
     {
       path: 'watermark',
       name: 'WatermarkDemo',
@@ -164,14 +112,7 @@ const feat: AppRouteModule = {
         title: t('routes.demo.feat.watermark'),
       },
     },
-    {
-      path: 'ripple',
-      name: 'RippleDemo',
-      component: () => import('/@/views/demo/feat/ripple/index.vue'),
-      meta: {
-        title: t('routes.demo.feat.ripple'),
-      },
-    },
+
     {
       path: 'full-screen',
       name: 'FullScreenDemo',
@@ -180,22 +121,8 @@ const feat: AppRouteModule = {
         title: t('routes.demo.feat.fullScreen'),
       },
     },
-    {
-      path: 'codemirror',
-      name: 'codemirrorDemo',
-      component: () => import('/@/views/demo/codemirror/index.vue'),
-      meta: {
-        title: t('routes.demo.feat.codemirror'),
-      },
-    },
-    {
-      path: 'fullCalendar',
-      name: 'fullCalendarDemo',
-      component: () => import('/@/views/demo/fullcalendar/index.vue'),
-      meta: {
-        title: t('routes.demo.feat.fullCalendar'),
-      },
-    },
+
+
     {
       path: '/error-log',
       name: 'ErrorLog',

@@ -10,12 +10,13 @@ import { useGlobSetting } from '/@/hooks/setting';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { RequestEnum, ResultEnum, ContentTypeEnum,ConfigEnum } from '/@/enums/httpEnum';
 import { isString } from '/@/utils/is';
-import { getToken } from '/@/utils/auth';
+import { getToken,getTenantId } from '/@/utils/auth';
 import { setObjToUrlParams, deepMerge } from '/@/utils';
+import signMd5Utils from '/@/utils/encryption/signMd5Utils'
 import { useErrorLogStoreWithOut } from '/@/store/modules/errorLog';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { joinTimestamp, formatRequestDate } from './helper';
-
+import { useUserStoreWithOut } from '/@/store/modules/user';
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
 const { createMessage, createErrorModal } = useMessage();
@@ -64,6 +65,9 @@ const transform: AxiosTransform = {
     switch (code) {
       case ResultEnum.TIMEOUT:
         timeoutMsg = t('sys.api.timeoutMessage');
+        const userStore = useUserStoreWithOut();
+        userStore.setToken(undefined);
+        userStore.logout(true);
         break;
       default:
         if (message) {
@@ -84,7 +88,7 @@ const transform: AxiosTransform = {
 
   // 请求之前处理config
   beforeRequestHook: (config, options) => {
-    const { apiUrl, joinPrefix, joinParamsToUrl, formatDate, joinTime = true } = options;
+    const { apiUrl, joinPrefix, joinParamsToUrl, formatDate, joinTime = true,urlPrefix } = options;
 
     if (joinPrefix) {
       config.url = `${urlPrefix}${config.url}`;
@@ -137,12 +141,22 @@ const transform: AxiosTransform = {
   requestInterceptors: (config, options) => {
     // 请求之前处理config
     const token = getToken();
+    let tenantid = getTenantId();
     if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
       // jwt token
-      config.headers.Authorization = options.authenticationScheme
-        ? `${options.authenticationScheme} ${token}`
-        : token;
+      config.headers.Authorization = options.authenticationScheme ? `${options.authenticationScheme} ${token}` : token;
       config.headers[ConfigEnum.TOKEN] = token
+      //--update-begin--author:liusq---date:20210831---for:将签名和时间戳，添加在请求接口 Header
+      config.headers[ConfigEnum.TIMESTAMP] = signMd5Utils.getDateTimeToString();
+      config.headers[ConfigEnum.Sign] = signMd5Utils.getSign(config.url, config.params);
+      //--update-end--author:liusq---date:20210831---for:将签名和时间戳，添加在请求接口 Header
+      //--update-begin--author:liusq---date:20211105---for: for:将多租户id，添加在请求接口 Header
+      if (!tenantid) {
+         tenantid = 0;
+      }
+      config.headers[ConfigEnum.TENANT_ID ] = tenantid
+      //--update-end--author:liusq---date:20211105---for:将多租户id，添加在请求接口 Header
+
     }
     return config;
   },
@@ -203,8 +217,6 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
         timeout: 10 * 1000,
         // 基础接口地址
         // baseURL: globSetting.apiUrl,
-        // 接口可能会有通用的地址部分，可以统一抽取出来
-        urlPrefix: urlPrefix,
         headers: { 'Content-Type': ContentTypeEnum.JSON },
         // 如果是form-data格式
         // headers: { 'Content-Type': ContentTypeEnum.FORM_URLENCODED },
@@ -228,6 +240,8 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
           successMessageMode: 'success',
           // 接口地址
           apiUrl: globSetting.apiUrl,
+          // 接口拼接地址
+          urlPrefix: urlPrefix,
           //  是否加入时间戳
           joinTime: true,
           // 忽略重复请求

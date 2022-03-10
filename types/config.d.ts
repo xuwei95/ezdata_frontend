@@ -40,6 +40,7 @@ export interface MultiTabsSetting {
   canDrag: boolean;
   showRedo: boolean;
   showFold: boolean;
+  theme: string;
 }
 
 export interface HeaderSetting {
@@ -140,8 +141,14 @@ export interface GlobConfig {
   title: string;
   // Service interface url
   apiUrl: string;
-  // Upload url
+  domainUrl: string;
+  // Upload url (作废)
   uploadUrl?: string;
+  openSso?: string;
+  openQianKun?: string;
+  casBaseUrl?: string;
+  // onlineview url
+  viewUrl?: string;
   //  Service interface url prefix
   urlPrefix?: string;
   // Project abbreviation
@@ -152,10 +159,20 @@ export interface GlobEnvConfig {
   VITE_GLOB_APP_TITLE: string;
   // Service interface url
   VITE_GLOB_API_URL: string;
+  VITE_USE_MOCK: string;
   // Service interface url prefix
   VITE_GLOB_API_URL_PREFIX?: string;
   // Project abbreviation
   VITE_GLOB_APP_SHORT_NAME: string;
+  //是否开启单点登录
+  VITE_GLOB_APP_OPEN_SSO: string;
+  //是否开启微应用模式
+  VITE_GLOB_APP_OPEN_QIANKUN: string;
+  //单点服务端地址
+  VITE_GLOBE_APP_CAS_BASE_URL: string;
+  VITE_GLOB_DOMAIN_URL: string;
   // Upload url
   VITE_GLOB_UPLOAD_URL?: string;
+  // view url
+  VITE_GLOB_ONLINE_VIEW_URL?: string;
 }

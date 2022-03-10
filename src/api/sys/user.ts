@@ -11,6 +11,10 @@ enum Api {
   phoneLogin = '/sys/phoneLogin',
   Logout = '/sys/logout',
   GetUserInfo = '/sys/user/getUserInfo',
+  // 获取系统权限
+  // 1、查询用户拥有的按钮/表单访问权限
+  // 2、所有权限
+  // 3、系统安全模式
   GetPermCode = '/sys/permission/getPermCode',
   //新加的获取图形验证码的接口
   getInputCode = '/sys/randomImage',
@@ -20,10 +24,20 @@ enum Api {
   registerApi = '/sys/user/register',
   //校验用户接口
   checkOnlyUser = '/sys/user/checkOnlyUser',
+  //SSO登录校验
+  validateCasLogin = '/sys/cas/client/validateLogin',
   //校验手机号
   phoneVerify = '/sys/user/phoneVerification',
   //修改密码
   passwordChange = '/sys/user/passwordChange',
+  //第三方登录
+  thirdLogin = '/sys/thirdLogin/getLoginUser',
+  //第三方登录
+  getThirdCaptcha = '/sys/thirdSms',
+  //获取二维码信息
+  getLoginQrcode = '/sys/getLoginQrcode',
+  //监控二维码扫描状态
+  getQrcodeToken = '/sys/getQrcodeToken',
 }
 
 /**
@@ -60,11 +74,11 @@ export function phoneLoginApi(params: LoginParams, mode: ErrorMessageMode = 'mod
  * @description: getUserInfo
  */
 export function getUserInfo() {
-  return defHttp.get<GetUserInfoModel>({ url: Api.GetUserInfo });
+  return defHttp.get<GetUserInfoModel>({ url: Api.GetUserInfo }, { errorMessageMode: 'none' });
 }
 
 export function getPermCode() {
-  return defHttp.get<string[]>({ url: Api.GetPermCode });
+  return defHttp.get({ url: Api.GetPermCode });
 }
 
 export function doLogout() {
@@ -80,7 +94,7 @@ export function getCodeInfo(currdatetime) {
  */
 export function getCaptcha(params) {
   return new Promise((resolve, reject) => {
-    defHttp.post({url: Api.getCaptcha,params},{isTransformResponse: false}).then(res=>{
+    defHttp.post({url:Api.getCaptcha,params},{isTransformResponse: false}).then(res=>{
       console.log(res)
       if(res.success){
         resolve(true)
@@ -117,3 +131,56 @@ export const phoneVerify = (params) =>
  */
 export const passwordChange = (params) =>
   defHttp.get({url: Api.passwordChange, params},{isTransformResponse:false});
+/**
+ * @description: 第三方登录
+ */
+export function thirdLogin(params, mode: ErrorMessageMode = 'modal') {
+    return defHttp.get<LoginResultModel>(
+        {
+            url: `${Api.thirdLogin}/${params.token}/${params.thirdType}`,
+        },
+        {
+            errorMessageMode: mode,
+        }
+    );
+}
+/**
+ * @description: 获取第三方短信验证码
+ */
+export function setThirdCaptcha(params) {
+    return new Promise((resolve, reject) => {
+        defHttp.post({url:Api.getThirdCaptcha,params},{isTransformResponse: false}).then(res=>{
+            console.log(res)
+            if(res.success){
+                resolve(true)
+            }else{
+                createErrorModal({ title: '错误提示', content: res.message||'未知问题' });
+                reject()
+            }
+        });
+    })
+}
+
+/**
+ * 获取登录二维码信息
+ */
+export function getLoginQrcode() {
+  let url = Api.getLoginQrcode
+  return defHttp.get({ url: url });
+}
+
+/**
+ * 监控扫码状态
+ */
+export function getQrcodeToken(params) {
+  let url = Api.getQrcodeToken
+  return defHttp.get({ url: url,params});
+}
+
+/**
+ * SSO登录校验
+ */
+export async function validateCasLogin(params) {
+  let url = Api.validateCasLogin
+  return defHttp.get({ url: url,params});
+}

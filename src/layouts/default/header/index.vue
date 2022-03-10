@@ -41,6 +41,8 @@
 
       <FullScreen v-if="getShowFullScreen" :class="`${prefixCls}-action__item fullscreen-item`" />
 
+      <LockScreen  v-if="getUseLockPage"  />
+
       <AppLocalePicker
         v-if="getShowLocalePicker"
         :reload="true"
@@ -53,9 +55,10 @@
       <SettingDrawer v-if="getShowSetting" :class="`${prefixCls}-action__item`" />
     </div>
   </Header>
+  <LoginSelect ref="loginSelectRef" @success="loginSelectOk"></LoginSelect>
 </template>
 <script lang="ts">
-  import { defineComponent, unref, computed } from 'vue';
+  import { defineComponent, unref, computed , ref , onMounted , toRaw} from 'vue';
 
   import { propTypes } from '/@/utils/propTypes';
 
@@ -74,12 +77,17 @@
   import { SettingButtonPositionEnum } from '/@/enums/appEnum';
   import { AppLocalePicker } from '/@/components/Application';
 
-  import { UserDropDown, LayoutBreadcrumb, FullScreen, Notify, ErrorAction } from './components';
+  import { UserDropDown, LayoutBreadcrumb, FullScreen, Notify, ErrorAction, LockScreen } from './components';
   import { useAppInject } from '/@/hooks/web/useAppInject';
   import { useDesign } from '/@/hooks/web/useDesign';
 
   import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
   import { useLocale } from '/@/locales/useLocale';
+
+  import LoginSelect from '/@/views/sys/login/LoginSelect.vue';
+  import { useUserStore } from '/@/store/modules/user';
+  import { getUserTenantId,setAuthCache } from '/@/utils/auth';
+  import { TENANT_ID } from '/@/enums/cacheEnum';
 
   export default defineComponent({
     name: 'LayoutHeader',
@@ -95,6 +103,8 @@
       Notify,
       AppSearch,
       ErrorAction,
+      LockScreen,
+      LoginSelect,
       SettingDrawer: createAsyncComponent(() => import('/@/layouts/default/setting/index.vue'), {
         loading: true,
       }),
@@ -104,6 +114,7 @@
     },
     setup(props) {
       const { prefixCls } = useDesign('layout-header');
+      const userStore = useUserStore();
       const {
         getShowTopMenu,
         getShowHeaderTrigger,
@@ -124,6 +135,7 @@
         getShowHeaderLogo,
         getShowHeader,
         getShowSearch,
+        getUseLockPage,
       } = useHeaderSetting();
 
       const { getShowLocalePicker } = useLocale();
@@ -170,6 +182,34 @@
         return unref(getSplit) ? MenuModeEnum.HORIZONTAL : null;
       });
 
+       /**
+       * 首页多租户部门弹窗逻辑
+       */
+      const loginSelectRef = ref();
+
+      function showLoginSelect(){
+          //update-begin---author:liusq  Date:20220101  for：判断登录进来是否需要弹窗选择租户----
+          //判断当前用户的租户在缓存中是否存在
+          const userTenantId = getUserTenantId(userStore.getUserInfo.username);
+          if(!userTenantId && userTenantId!=0){
+              //当前用户的租户不存在，弹窗选择
+              const loginInfo = toRaw(userStore.getLoginInfo) || {};
+              loginSelectRef.value.show(loginInfo)
+          }else{
+              //当前用户的租户存在，直接赋值
+              setAuthCache(TENANT_ID, userTenantId);
+          }
+          //update-end---author:liusq  Date:20220101  for：判断登录进来是否需要弹窗选择租户----
+      }
+
+      function loginSelectOk(){
+         console.log("成功。。。。。")
+      }
+
+      onMounted(() => {
+          showLoginSelect();
+      });
+
       return {
         prefixCls,
         getHeaderClass,
@@ -192,6 +232,9 @@
         getShowSettingButton,
         getShowSetting,
         getShowSearch,
+        getUseLockPage,
+        loginSelectOk,
+        loginSelectRef,
       };
     },
   });

@@ -1,5 +1,5 @@
 <template>
-    <BasicModal v-bind="$attrs" @register="registerModal" :title="getTitle" @ok="handleSubmit" width="40%">
+    <BasicModal v-bind="$attrs" @register="registerModal" :title="title" @ok="handleSubmit" width="700px">
         <BasicForm @register="registerForm"/>
     </BasicModal>
 </template>
@@ -9,10 +9,8 @@
     import {BasicForm, useForm} from '/@/components/Form/index';
     import {formSchema} from './tenant.data';
     import {saveOrUpdateTenant, getTenantById} from './tenant.api';
-    import {useMessage} from "/@/hooks/web/useMessage";
-    import {defineEmits} from 'vue'
-    // 获取emit
-    const emit = defineEmits(['success']);
+    // Emits声明
+    const emit = defineEmits(['register','success']);
     const isUpdate = ref(true);
     //表单配置
     const [registerForm, {resetFields, setFieldsValue, validate}] = useForm({
@@ -36,11 +34,11 @@
         }
     });
     //设置标题
-    const getTitle = computed(() => (!unref(isUpdate) ? '新增租户' : '编辑租户'));
+    const title = computed(() => (!unref(isUpdate) ? '新增租户' : '编辑租户'));
     //表单提交事件
-    async function handleSubmit() {
+    async function handleSubmit(v) {
         try {
-            const values = await validate();
+            let values = await validate();
             setModalProps({confirmLoading: true});
             //提交表单
             await saveOrUpdateTenant(values, isUpdate.value);

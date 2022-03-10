@@ -86,14 +86,13 @@ function handleIndexColumn(
 }
 
 function handleActionColumn(propsRef: ComputedRef<BasicTableProps>, columns: BasicColumn[]) {
-  const { actionColumn } = unref(propsRef);
-  if (!actionColumn) return;
+  const { actionColumn, showActionColumn } = unref(propsRef);
+  if (!actionColumn || !showActionColumn) return;
 
   const hasIndex = columns.findIndex((column) => column.flag === ACTION_COLUMN_FLAG);
   if (hasIndex === -1) {
     columns.push({
       ...columns[hasIndex],
-      fixed: 'right',
       ...actionColumn,
       flag: ACTION_COLUMN_FLAG,
     });
@@ -152,13 +151,19 @@ export function useColumns(
           return hasPermission(column.auth) && isIfShow(column);
         })
         .map((column) => {
-          const { slots, dataIndex, customRender, format, edit, editRow, flag } = column;
+          const { slots, dataIndex, customRender, format, edit, editRow, flag, title:metaTitle } = column;
 
           if (!slots || !slots?.title) {
             column.slots = { title: `header-${dataIndex}`, ...(slots || {}) };
             column.customTitle = column.title;
             Reflect.deleteProperty(column, 'title');
           }
+          //update-begin-author:taoyan date:20211203 for:【online报表】分组标题显示错误，都显示成了联系信息 LOWCOD-2343
+          if(column.children){
+            column.title = metaTitle;
+          }
+          //update-end-author:taoyan date:20211203 for:【online报表】分组标题显示错误，都显示成了联系信息 LOWCOD-2343
+
           const isDefaultAction = [INDEX_COLUMN_FLAG, ACTION_COLUMN_FLAG].includes(flag!);
           if (!customRender && format && !edit && !isDefaultAction) {
             column.customRender = ({ text, record, index }) => {

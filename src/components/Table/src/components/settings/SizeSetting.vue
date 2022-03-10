@@ -1,5 +1,5 @@
 <template>
-  <Tooltip placement="top">
+  <Tooltip placement="top" v-bind="getBindProps">
     <template #title>
       <span>{{ t('component.table.settingDens') }}</span>
     </template>
@@ -24,7 +24,7 @@
 </template>
 <script lang="ts">
   import type { SizeType } from '../../types/table';
-  import { defineComponent, ref } from 'vue';
+  import { computed, defineComponent, ref } from 'vue';
   import { Tooltip, Dropdown, Menu } from 'ant-design-vue';
   import { ColumnHeightOutlined } from '@ant-design/icons-vue';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -33,6 +33,9 @@
 
   export default defineComponent({
     name: 'SizeSetting',
+    props: {
+      isMobile: Boolean,
+    },
     components: {
       ColumnHeightOutlined,
       Tooltip,
@@ -40,12 +43,18 @@
       Menu,
       MenuItem: Menu.Item,
     },
-    setup() {
+    setup(props) {
       const table = useTableContext();
       const { t } = useI18n();
 
       const selectedKeysRef = ref<SizeType[]>([table.getSize()]);
-
+      const getBindProps = computed(() => {
+        let obj = {}
+        if (props.isMobile){
+          obj['visible'] = false
+        }
+        return obj
+      })
       function handleTitleClick({ key }: { key: SizeType }) {
         selectedKeysRef.value = [key];
         table.setProps({
@@ -54,6 +63,7 @@
       }
 
       return {
+        getBindProps,
         handleTitleClick,
         selectedKeysRef,
         getPopupContainer,

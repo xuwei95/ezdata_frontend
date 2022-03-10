@@ -32,6 +32,12 @@
   background-color: @border-color-dark;
 }
 
+[data-theme='dark'] {
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #5e6063;
+  }
+}
+
 // =================================
 // ==============nprogress==========
 // =================================
@@ -47,5 +53,61 @@
     height: 2px;
     background-color: @primary-color;
     opacity: 0.75;
+  }
+}
+
+// =======================================
+// ============ [sjl] 按钮组样式 ==========
+// =======================================
+.j-table-operator {
+  // Button按钮间距
+  .ant-btn {
+    margin: 0 8px 8px 0;
+    transition: margin 0s;
+  }
+
+  & > .ant-btn:last-of-type {
+    margin: 0 0 8px 0;
+  }
+
+  .ant-btn-group,
+  &.ant-btn-group {
+    .ant-btn {
+      margin: 0;
+      transition: margin 0s;
+    }
+
+    & > .ant-btn:last-of-type {
+      margin: 0 8px 8px 0;
+    }
+  }
+}
+
+// ========================================
+// ============ [sjl] 底部按钮样式 ==========
+// ========================================
+.j-box-bottom-button {
+  height: 28px;
+
+  &-float {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-top: 1px solid #e8e8e8;
+    padding: 10px 16px;
+    text-align: right;
+    background: #fff;
+    border-radius: 0 0 2px 2px;
+
+    & .ant-btn {
+      margin-left: 8px;
+    }
+  }
+
+  &.offset-20 &-float {
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
   }
 }

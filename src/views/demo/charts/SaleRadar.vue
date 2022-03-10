@@ -4,8 +4,8 @@
   </Card>
 </template>
 <script lang="ts">
-  import { defineComponent, Ref, ref, watch } from 'vue';
-
+  import type { Ref } from 'vue';
+  import { defineComponent, ref, watch } from 'vue';
   import { Card } from 'ant-design-vue';
   import { useECharts } from '/@/hooks/web/useECharts';
 

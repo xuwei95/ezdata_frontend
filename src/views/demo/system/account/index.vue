@@ -2,7 +2,7 @@
   <PageWrapper dense contentFullHeight fixedHeight contentClass="flex">
     <DeptTree class="w-1/4 xl:w-1/5" @select="handleSelect" />
     <BasicTable @register="registerTable" class="w-3/4 xl:w-4/5" :searchInfo="searchInfo">
-      <template #toolbar>
+      <template #tableTitle>
         <a-button type="primary" @click="handleCreate">新增账号</a-button>
       </template>
       <template #action="{ record }">
@@ -49,7 +49,7 @@
   import { useGo } from '/@/hooks/web/usePage';
 
   export default defineComponent({
-    name: 'AccountManagement',
+    name: 'system-account',
     components: { BasicTable, PageWrapper, DeptTree, AccountModal, TableAction },
     setup() {
       const go = useGo();

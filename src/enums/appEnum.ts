@@ -1,6 +1,16 @@
 export const SIDE_BAR_MINI_WIDTH = 48;
 export const SIDE_BAR_SHOW_TIT_MINI_WIDTH = 80;
 
+// 标签页样式
+export enum TabsThemeEnum {
+  // 圆滑
+  SMOOTH = 'smooth',
+  // 卡片
+  CARD = 'card',
+  // 极简
+  SIMPLE = 'simple',
+}
+
 export enum ContentEnum {
   // auto width
   FULL = 'full',

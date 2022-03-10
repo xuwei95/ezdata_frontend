@@ -1,4 +1,4 @@
-import { ContentEnum, RouterTransitionEnum } from '/@/enums/appEnum';
+import { TabsThemeEnum, ContentEnum, RouterTransitionEnum } from '/@/enums/appEnum';
 import {
   MenuModeEnum,
   MenuTypeEnum,
@@ -42,6 +42,7 @@ export enum HandlerEnum {
   TABS_SHOW_REDO,
   TABS_SHOW,
   TABS_SHOW_FOLD,
+  TABS_THEME,
 
   LOCK_TIME,
   FULL_CONTENT,
@@ -58,6 +59,22 @@ export enum HandlerEnum {
   OPEN_PAGE_LOADING,
   OPEN_ROUTE_TRANSITION,
 }
+
+// 标签页样式
+export const tabsThemeOptions = [
+  {
+    value: TabsThemeEnum.SMOOTH,
+    label: t('layout.setting.tabsThemeSmooth'),
+  },
+  {
+    value: TabsThemeEnum.CARD,
+    label: t('layout.setting.tabsThemeCard'),
+  },
+  {
+    value: TabsThemeEnum.SIMPLE,
+    label: t('layout.setting.tabsThemeSimple'),
+  },
+]
 
 export const contentModeOptions = [
   {

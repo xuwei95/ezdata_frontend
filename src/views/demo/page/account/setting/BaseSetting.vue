@@ -8,7 +8,7 @@
         <div class="change-avatar">
           <div class="mb-2"> 头像 </div>
           <CropperAvatar
-            :uploadApi="uploadApi"
+            :uploadApi="uploadImg"
             :value="avatar"
             btnText="更换头像"
             :btnProps="{ preIcon: 'ant-design:cloud-upload-outlined' }"
@@ -31,10 +31,10 @@
   import { useMessage } from '/@/hooks/web/useMessage';
 
   import headerImg from '/@/assets/images/header.jpg';
-  import { accountInfoApi } from '/@/api/demo/account';
+  import {defHttp} from '/@/utils/http/axios';
   import { baseSetschemas } from './data';
   import { useUserStore } from '/@/store/modules/user';
-  import { uploadApi } from '/@/api/sys/upload';
+  import { uploadImg } from '/@/api/sys/upload';
 
   export default defineComponent({
     components: {
@@ -49,15 +49,16 @@
       const { createMessage } = useMessage();
       const userStore = useUserStore();
 
-      const [register, { setFieldsValue }] = useForm({
+      const [register, { setFieldsValue,validate }] = useForm({
         labelWidth: 120,
         schemas: baseSetschemas,
         showActionButtonGroup: false,
       });
 
       onMounted(async () => {
-        const data = await accountInfoApi();
-        setFieldsValue(data);
+        //const data = await accountInfoApi();
+        const userInfo = userStore.getUserInfo;
+        setFieldsValue(userInfo);
       });
 
       const avatar = computed(() => {
@@ -65,20 +66,36 @@
         return avatar || headerImg;
       });
 
-      function updateAvatar(src: string) {
+      function updateAvatar(src: string, data:string) {
+        console.log("data====》",data)
         const userinfo = userStore.getUserInfo;
-        userinfo.avatar = src;
+        userinfo.avatar = data;
         userStore.setUserInfo(userinfo);
+      }
+      /**
+       *更新基本信息 
+       * */
+      async function handleSubmit() {
+          try {
+              let values = await validate();
+              console.log("values",values);
+              //提交表单
+              defHttp.post({url: '/sys/user/appEdit', params:values});
+              const userinfo = userStore.getUserInfo;
+              Object.assign(userinfo,values);
+              userStore.setUserInfo(userinfo);
+              createMessage.success("更新成功")
+          } catch(e) {
+              console.log("e",e)
+          }
       }
 
       return {
         avatar,
         register,
-        uploadApi: uploadApi as any,
+        uploadImg,
         updateAvatar,
-        handleSubmit: () => {
-          createMessage.success('更新成功！');
-        },
+        handleSubmit
       };
     },
   });

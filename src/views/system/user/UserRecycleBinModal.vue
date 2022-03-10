@@ -1,64 +1,121 @@
 <template>
-  <BasicModal v-bind="$attrs" @register="registerModal" title="用户回收站" :showOkBtn="false" width="50%" destroyOnClose>
-    <BasicTable @register="registerTable">
+  <BasicModal v-bind="$attrs" @register="registerModal" title="用户回收站" :showOkBtn="false" width="1000px" destroyOnClose>
+    <BasicTable @register="registerTable" :rowSelection="rowSelection">
+      <!--插槽:table标题-->
+      <template #tableTitle>
+        <a-dropdown v-if="checkedKeys.length > 0">
+          <template #overlay>
+            <a-menu>
+              <a-menu-item key="1" @click="batchHandleDelete">
+                <Icon icon="ant-design:delete-outlined"></Icon>
+                批量删除
+              </a-menu-item>
+              <a-menu-item key="1" @click="batchHandleRevert">
+                <Icon icon="ant-design:redo-outlined"></Icon>
+                批量还原
+              </a-menu-item>
+            </a-menu>
+          </template>
+          <a-button>批量操作
+            <Icon icon="ant-design:down-outlined"></Icon>
+          </a-button>
+        </a-dropdown>
+      </template>
       <!--操作栏-->
       <template #action="{ record }">
-        <TableAction
-          :actions="getTableAction(record)"
-        />
+        <TableAction :actions="getTableAction(record)"/>
       </template>
     </BasicTable>
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import {defineEmits} from 'vue';
+  import {ref,toRaw,unref} from 'vue';
   import {BasicModal, useModalInner} from '/@/components/Modal';
   import {BasicTable, useTable, TableAction} from '/@/components/Table';
-  import {columns} from './user.data';
+  import {recycleColumns} from './user.data';
   import {getRecycleBinList, putRecycleBin, deleteRecycleBin} from './user.api';
-  // 获取emit
+  // 声明Emits
   const emit = defineEmits(['success', 'register']);
-  const [registerModal, {setModalProps, closeModal}] = useModalInner();
+  const checkedKeys = ref<Array<string | number>>([]);
+  const [registerModal] = useModalInner(() => {
+    checkedKeys.value = []
+  })
   //注册table数据
   const [registerTable, {reload}] = useTable({
     api: getRecycleBinList,
-    columns,
+    columns:recycleColumns,
+    rowKey: 'id',
+    striped: true,
     useSearchForm: false,
     showTableSetting: false,
+    clickToRowSelect: false,
     bordered: true,
     showIndexColumn: false,
-    pagination: false,
-    maxHeight: 200,
+    pagination: true,
+    tableSetting: {fullScreen: true},
+    canResize: false,
     actionColumn: {
-      width: 80,
+      width: 150,
       title: '操作',
       dataIndex: 'action',
       slots: {customRender: 'action'},
       fixed: undefined,
     },
   })
-  //还原
-  async function handleRevert(record) {
-    const result = await putRecycleBin({userIds: record.id})
-    if (result.success) {
-      reload();
-      emit('success')
-    }
+  /**
+   * 选择列配置
+   */
+  const rowSelection = {
+    type: 'checkbox',
+    columnWidth: 50,
+    selectedRowKeys: checkedKeys,
+    onChange: onSelectChange
   }
-  //删除
+  /**
+   * 选择事件
+   */
+  function onSelectChange(selectedRowKeys: (string | number)[]) {
+    checkedKeys.value = selectedRowKeys;
+  }
+  /**
+   * 还原事件
+   */
+  async function handleRevert(record) {
+    await putRecycleBin({userIds: record.id},reload)
+    emit('success')
+  }
+  /**
+   * 批量还原事件
+   */
+  function batchHandleRevert() {
+    handleRevert({id:toRaw(unref(checkedKeys)).join(",")})
+  }
+  /**
+   * 删除事件
+   */
   async function handleDelete(record) {
     await deleteRecycleBin({userIds: record.id},reload)
+  }
+  /**
+   * 批量删除事件
+   */
+  function batchHandleDelete() {
+    handleDelete({id:toRaw(unref(checkedKeys)).join(",")})
   }
   //获取操作栏事件
   function getTableAction(record) {
     return [
       {
+        label:"取回",
         icon: 'ant-design:redo-outlined',
-        onClick: handleRevert.bind(null, record),
+        popConfirm: {
+          title: '是否确认还原',
+          confirm: handleRevert.bind(null, record),
+        }
       },
       {
-        icon: 'ant-design:delete-outlined',
-        color: 'error',
+        label:"彻底删除",
+        icon: 'ant-design:scissor-outlined',
         popConfirm: {
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
@@ -66,5 +123,5 @@
       }
     ]
   }
-   
+
 </script>

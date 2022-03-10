@@ -15,6 +15,9 @@ export function useMultipleTabSetting() {
 
   const getShowFold = computed(() => appStore.getMultiTabsSetting.showFold);
 
+  // 获取标签页样式
+  const getTabsTheme = computed(() => appStore.getMultiTabsSetting.theme);
+
   function setMultipleTabSetting(multiTabsSetting: Partial<MultiTabsSetting>) {
     appStore.setProjectConfig({ multiTabsSetting });
   }
@@ -24,5 +27,6 @@ export function useMultipleTabSetting() {
     getShowQuick,
     getShowRedo,
     getShowFold,
+    getTabsTheme,
   };
 }

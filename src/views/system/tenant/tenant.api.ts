@@ -8,6 +8,7 @@ enum Api {
     get = "/sys/tenant/queryById",
     delete = "/sys/tenant/delete",
     deleteBatch = "/sys/tenant/deleteBatch",
+    getCurrentUserTenants = "/sys/tenant/getCurrentUserTenant",
 }
 
 /**
@@ -63,3 +64,7 @@ export const batchDeleteTenant = (params, handleSuccess) => {
     });
 }
 
+/**
+ * 获取登录用户部门信息
+ */
+export const getUserTenants = (params?) => defHttp.get({ url: Api.getCurrentUserTenants, params })

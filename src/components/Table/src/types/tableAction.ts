@@ -23,4 +23,5 @@ export interface PopConfirm {
   confirm: Fn;
   cancel?: Fn;
   icon?: string;
+  placement?: string;
 }

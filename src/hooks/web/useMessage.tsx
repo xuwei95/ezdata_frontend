@@ -57,7 +57,7 @@ function renderContent({ content }: Pick<ModalOptionsEx, 'content'>) {
 /**
  * @description: Create confirmation box
  */
-function createConfirm(options: ModalOptionsEx): ConfirmOptions {
+function createConfirm(options: ModalOptionsEx): ReturnType<ModalFunc> {
   const iconType = options.iconType || 'warning';
   Reflect.deleteProperty(options, 'iconType');
   const opt: ModalFuncProps = {
@@ -66,7 +66,7 @@ function createConfirm(options: ModalOptionsEx): ConfirmOptions {
     ...options,
     content: renderContent(options),
   };
-  return Modal.confirm(opt) as unknown as ConfirmOptions;
+  return Modal.confirm(opt)
 }
 
 const getBaseOptions = () => {

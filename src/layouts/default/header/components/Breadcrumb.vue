@@ -6,7 +6,7 @@
         <span v-if="!hasRedirect(routesMatched, route)">
           {{ t(route.name || route.meta.title) }}
         </span>
-        <router-link v-else to="" @click="handleClick(route, paths, $event)">
+        <router-link v-else to="" @click="handleClick(route, paths, $event)" style="color: inherit">
           {{ t(route.name || route.meta.title) }}
         </router-link>
       </template>
@@ -101,12 +101,12 @@
           if (!meta) {
             return !!name;
           }
-          const { title, hideBreadcrumb, hideMenu } = meta;
-          if (!title || hideBreadcrumb || hideMenu) {
+          const { title, hideBreadcrumb } = meta;
+          if (!title || hideBreadcrumb) {
             return false;
           }
           return true;
-        }).filter((item) => !item.meta?.hideBreadcrumb || !item.meta?.hideMenu);
+        }).filter((item) => !item.meta?.hideBreadcrumb);
       }
 
       function handleClick(route: RouteLocationMatched, paths: string[], e: Event) {

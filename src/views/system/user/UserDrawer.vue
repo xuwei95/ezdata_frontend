@@ -1,22 +1,22 @@
 <template>
-  <BasicDrawer v-bind="$attrs" @register="registerDrawer" :title="getTitle" width="30%" @ok="handleSubmit">
-    <BasicForm @register="registerForm"/>
+  <BasicDrawer v-bind="$attrs" @register="registerDrawer" :title="getTitle" width="600" @ok="handleSubmit" destroyOnClose>
+    <BasicForm @register="registerForm" />
   </BasicDrawer>
 </template>
 <script lang="ts" setup>
-  import {defineComponent, ref, computed, unref,defineEmits} from 'vue';
+  import {defineComponent, ref, computed, unref,useAttrs} from 'vue';
   import {BasicForm, useForm} from '/@/components/Form/index';
   import {formSchema} from './user.data';
   import {BasicDrawer, useDrawerInner} from '/@/components/Drawer';
-  import {saveOrUpdateUser} from './user.api';
-  // 获取emit
+  import {saveOrUpdateUser,getUserRoles,getUserDepartList} from './user.api';
+  // 声明Emits
   const emit = defineEmits(['success', 'register']);
+  const attrs = useAttrs()
   const isUpdate = ref(true);
-  // 隐藏下角按钮
-  const hideFooter = ref(true);
   const rowId = ref('');
+  const departOptions = ref([]);
   //表单配置
-  const [registerForm, {resetFields, setFieldsValue, validate, updateSchema}] = useForm({
+  const [registerForm, {setProps,resetFields, setFieldsValue, validate, updateSchema}] = useForm({
     labelWidth: 90,
     schemas: formSchema,
     showActionButtonGroup: false,
@@ -24,21 +24,45 @@
   //表单赋值
   const [registerDrawer, {setDrawerProps, closeDrawer}] = useDrawerInner(async (data) => {
     await resetFields();
-    hideFooter.value = !!data?.hideFooter;
-    setDrawerProps({confirmLoading: false, showFooter: !unref(hideFooter)});
-    rowId.value = data.record.id;
+    let showFooter = data?.showFooter ?? true
+    setDrawerProps({ confirmLoading: false, showFooter })
     isUpdate.value = !!data?.isUpdate;
     if (unref(isUpdate)) {
-      //TODO 目前的图片设置，暂时先这样
-      console.log("data",data)
-      if (!Array.isArray(data.record.avatar)) {
-        data.record.avatar = [data.record.avatar];
+      rowId.value = data.record.id;
+      //租户信息定义成数组
+      if (data.record.relTenantIds && !Array.isArray(data.record.relTenantIds)) {
+        data.record.relTenantIds = data.record.relTenantIds.split(",");
+      }else{
+        data.record.relTenantIds = [];
       }
-      setFieldsValue({
-        ...data.record,
-      });
+     //查角色/赋值/try catch 处理，不然编辑有问题
+     try {
+        const userRoles = await getUserRoles({userid: data.record.id});
+        if(userRoles && userRoles.length > 0 ){
+            data.record.selectedroles = userRoles
+        }
+     } catch (error) {
+     }
+
+     //查所属部门/赋值
+     const userDepart = await getUserDepartList({userId: data.record.id});
+     if(userDepart && userDepart.length > 0 ){
+         data.record.selecteddeparts = userDepart;
+         let selectDepartKeys = Array.from(userDepart, ({key}) => key);
+         data.record.selecteddeparts = selectDepartKeys.join(",");
+         departOptions.value = userDepart.map(item=>{
+             return {label: item.title,value: item.key}
+         });
+     }
+     //负责部门/赋值
+     data.record.departIds && !Array.isArray(data.record.departIds) &&(data.record.departIds = data.record.departIds.split(","));
+    //update-begin---author:zyf   Date:20211210  for：避免空值显示异常------------
+     data.record.departIds=data.record.departIds==""?[]:data.record.departIds
+     //update-begin---author:zyf   Date:20211210  for：避免空值显示异常------------
     }
-    //编辑时隐藏密码
+    //处理角色用户列表情况(和角色列表有关系)
+    data.selectedroles && await setFieldsValue({selectedroles:data.selectedroles});
+    //编辑时隐藏密码/角色列表隐藏角色信息/我的部门时隐藏所属部门
     updateSchema([
       {
         field: 'password',
@@ -47,22 +71,38 @@
       {
         field: 'confirmPassword',
         ifShow: !unref(isUpdate),
+      },
+      {
+        field: 'selectedroles',
+        show: !data.isRole
+      },
+      {
+        field: 'departIds',
+        componentProps: {options:departOptions},
+      },
+      {
+        field: 'selecteddeparts',
+        show: !data?.departDisabled ?? false
       }
     ]);
+    // 无论新增还是编辑，都可以设置表单值
+    if (typeof data.record === 'object') {
+      setFieldsValue({
+        ...data.record,
+      })
+    }
+    // 隐藏底部时禁用整个表单
+    setProps({ disabled: !showFooter })
   });
   //获取标题
   const getTitle = computed(() => (!unref(isUpdate) ? '新增用户' : '编辑用户'));
 
+  //提交事件
   async function handleSubmit() {
     try {
       let values = await validate();
-      if (values.selectedroles) {
-        values.selectedroles = values.selectedroles.join(",");
-      }
-      if (Array.isArray(values.avatar)) {
-        values.avatar = values.avatar[0];
-      }
       setDrawerProps({confirmLoading: true});
+      values.userIdentity===1&&(values.departIds='');
       //提交表单
       await saveOrUpdateUser(values, unref(isUpdate));
       //关闭弹窗

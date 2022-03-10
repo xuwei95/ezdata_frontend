@@ -40,6 +40,7 @@
         settingList,
         tabBarStyle: {
           width: '220px',
+          marginBottom:'200px'
         },
       };
     },

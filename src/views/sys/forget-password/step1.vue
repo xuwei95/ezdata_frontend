@@ -45,7 +45,7 @@
     setup(_, { emit }) {
       const { t } = useI18n();
       const { handleBackLogin } = useLoginState();
-      const { createErrorModal } = useMessage();
+      const { notification } = useMessage();
 
       const formRef = ref();
       const { validForm } = useFormValid(formRef);
@@ -77,9 +77,10 @@
           };
           emit('nextStep',accountInfo)
         }else{
-          createErrorModal({
-            title: t('sys.api.errorTip'),
-            content: resultInfo.message || t('sys.api.networkExceptionMsg'),
+          notification.error({
+            message: t('sys.api.errorTip'),
+            description:  resultInfo.message || t('sys.api.networkExceptionMsg'),
+            duration: 3,
           });
         }
       }

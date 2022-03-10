@@ -1,26 +1,12 @@
 <template>
     <div ref="wrapRef" :class="getWrapperClass">
-        <BasicForm
-                submitOnReset
-                v-bind="getFormProps"
-                v-if="getBindValues.useSearchForm"
-                :tableAction="tableAction"
-                @register="registerForm"
-                @submit="handleSearchInfoChange"
-                @advanced-change="redoHeight"
-        >
+        <BasicForm submitOnReset v-bind="getFormProps" v-if="getBindValues.useSearchForm" :tableAction="tableAction" @register="registerForm" @submit="handleSearchInfoChange" @advanced-change="redoHeight">
             <template #[replaceFormSlotKey(item)]="data" v-for="item in getFormSlotKeys">
                 <slot :name="item" v-bind="data || {}"></slot>
             </template>
         </BasicForm>
 
-        <Table
-                ref="tableElRef"
-                v-bind="getBindValues"
-                :rowClassName="getRowClassName"
-                v-show="getEmptyDataIsShowTable"
-                @change="handleTableChange"
-        >
+        <Table ref="tableElRef" v-bind="getBindValues" :rowClassName="getRowClassName" v-show="getEmptyDataIsShowTable" @change="handleTableChange">
             <template #[item]="data" v-for="item in Object.keys($slots)" :key="item">
                 <slot :name="item" v-bind="data || {}"></slot>
             </template>
@@ -46,7 +32,6 @@
     import expandIcon from './components/ExpandIcon';
     import HeaderCell from './components/HeaderCell.vue';
     import { InnerHandlers } from './types/table';
-
     import { usePagination } from './hooks/usePagination';
     import { useColumns } from './hooks/useColumns';
     import { useDataSource } from './hooks/useDataSource';
@@ -91,6 +76,7 @@
             'expanded-rows-change',
             'change',
             'columns-change',
+            'table-redo',
         ],
         setup(props, { attrs, emit, slots, expose }) {
             const tableElRef = ref(null);
@@ -141,6 +127,8 @@
                 getRawDataSource,
                 setTableData,
                 updateTableDataRecord,
+                deleteTableDataRecord,
+                insertTableDataRecord,
                 findTableDataRecord,
                 fetch,
                 getRowKey,
@@ -220,11 +208,11 @@
             const getBindValues = computed(() => {
                 const dataSource = unref(getDataSourceRef);
                 let propsData: Recordable = {
-                    size: 'middle',
                     // ...(dataSource.length === 0 ? { getPopupContainer: () => document.body } : {}),
                     ...attrs,
                     customRow,
-                    expandIcon: slots.expandIcon ? null : expandIcon(),
+                    //树列表展开使用AntDesignVue默认的加减图标 author:scott date:20210914
+                    //expandIcon: slots.expandIcon ? null : expandIcon(),
                     ...unref(getProps),
                     ...unref(getHeaderProps),
                     scroll: unref(getScrollRef),
@@ -279,6 +267,8 @@
                 setPagination,
                 setTableData,
                 updateTableDataRecord,
+                deleteTableDataRecord,
+                insertTableDataRecord,
                 findTableDataRecord,
                 redoHeight,
                 setSelectedRowKeys,
@@ -334,6 +324,21 @@
 
     @prefix-cls: ~'@{namespace}-basic-table';
 
+    [data-theme='dark'] {
+        .ant-table-tbody > tr:hover.ant-table-row-selected > td,
+        .ant-table-tbody > tr.ant-table-row-selected td {
+            background-color: #262626;
+        }
+
+      .@{prefix-cls} {
+        //表格选择工具栏样式
+        .alert {
+          background-color: #323232;
+          border-color: #424242;
+        }
+      }
+    }
+
     .@{prefix-cls} {
         max-width: 100%;
 
@@ -344,19 +349,13 @@
         }
 
         &-form-container {
-            padding: 16px;
+            padding: 10px;
 
             .ant-form {
                 padding: 12px 10px 6px 10px;
-                margin-bottom: 16px;
+                margin-bottom: 8px;
                 background-color: @component-background;
                 border-radius: 2px;
-            }
-        }
-
-        &--inset {
-            .ant-table-wrapper {
-                padding: 0;
             }
         }
 
@@ -389,6 +388,11 @@
                 border-bottom: none;
                 justify-content: space-between;
                 align-items: center;
+            }
+            //定义行颜色
+            .trcolor{
+              background-color: rgba(255, 192, 203, 0.31);
+              color:red;
             }
 
             //.ant-table-tbody > tr.ant-table-row-selected td {
@@ -423,7 +427,13 @@
         //表格选择工具栏样式
         .alert {
             height: 38px;
-            margin-left: -5px
+            background-color: #f3f3f3;
+            border-color: #e3e3e3;
+        }
+        &--inset {
+          .ant-table-wrapper {
+            padding: 0;
+          }
         }
     }
 </style>

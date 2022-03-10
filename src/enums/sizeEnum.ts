@@ -10,6 +10,14 @@ export enum SizeNumberEnum {
   LARGE = 64,
 }
 
+export enum ScreenSizeEnum {
+ XS = 480,
+ SM = 576,
+ MD = 768,
+ LG = 992,
+ XL = 1200,
+}
+
 export const sizeMap: Map<SizeEnum, SizeNumberEnum> = (() => {
   const map = new Map<SizeEnum, SizeNumberEnum>();
   map.set(SizeEnum.DEFAULT, SizeNumberEnum.DEFAULT);

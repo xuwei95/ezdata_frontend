@@ -1,5 +1,5 @@
-import {MockMethod} from 'vite-plugin-mock';
-import {resultError, resultPageSuccess, resultSuccess} from '../_util';
+import { MockMethod } from 'vite-plugin-mock';
+import { resultError, resultPageSuccess, resultSuccess, baseUrl } from '../_util';
 
 const accountList = (() => {
     const result: any[] = [];
@@ -150,7 +150,7 @@ const menuList = (() => {
                         permission: ['menu1:view', 'menu2:add', 'menu3:update', 'menu4:del'][index],
                         component: [
                             '/dashboard/welcome/index',
-                            '/dashboard/analysis/index',
+                            '/dashboard/Analysis/index',
                             '/dashboard/workbench/index',
                             '/dashboard/test/index',
                         ][j],
@@ -172,7 +172,7 @@ const menuList = (() => {
                                         (k + 1),
                                     component: [
                                         '/dashboard/welcome/index',
-                                        '/dashboard/analysis/index',
+                                        '/dashboard/Analysis/index',
                                         '/dashboard/workbench/index',
                                         '/dashboard/test/index',
                                     ][j],
@@ -195,104 +195,104 @@ const menuList = (() => {
 })();
 
 export default [
-    {
-        url: '/jeecg-boot/system/getAccountList',
-        timeout: 100,
-        method: 'get',
-        response: ({query}) => {
-            const {page = 1, pageSize = 20} = query;
-            return resultPageSuccess(page, pageSize, accountList);
-        },
+  {
+    url: `${baseUrl}/system/getAccountList`,
+    timeout: 100,
+    method: 'get',
+    response: ({ query }) => {
+      const { page = 1, pageSize = 20 } = query;
+      return resultPageSuccess(page, pageSize, accountList);
     },
-    {
-      url: '/jeecg-boot/sys/user/list',
-      timeout: 100,
-      method: 'get',
-      response: ({query}) => {
-        const {page = 1, pageSize = 20} = query;
-        return resultPageSuccess(page, pageSize, userList);
-      },
+  },
+  {
+    url: `${baseUrl}/sys/user/list`,
+    timeout: 100,
+    method: 'get',
+    response: ({ query }) => {
+      const { page = 1, pageSize = 20 } = query;
+      return resultPageSuccess(page, pageSize, userList);
     },
-    {
-        url: '/jeecg-boot/system/getRoleListByPage',
-        timeout: 100,
-        method: 'get',
-        response: ({query}) => {
-            const {page = 1, pageSize = 20} = query;
-            return resultPageSuccess(page, pageSize, roleList);
-        },
+  },
+  {
+    url: `${baseUrl}/system/getRoleListByPage`,
+    timeout: 100,
+    method: 'get',
+    response: ({ query }) => {
+      const { page = 1, pageSize = 20 } = query;
+      return resultPageSuccess(page, pageSize, roleList);
     },
-    {
-        url: '/jeecg-boot/sys/role/list',
-        timeout: 100,
-        method: 'get',
-        response: ({query}) => {
-            const {page = 1, pageSize = 20} = query;
-            return resultPageSuccess(page, pageSize, newRoleList);
-        },
+  },
+  {
+    url: `${baseUrl}/sys/role/list`,
+    timeout: 100,
+    method: 'get',
+    response: ({ query }) => {
+      const { page = 1, pageSize = 20 } = query;
+      return resultPageSuccess(page, pageSize, newRoleList);
     },
-    {
-        url: '/jeecg-boot/system/getTestListByPage',
-        timeout: 100,
-        method: 'get',
-        response: ({query}) => {
-            const {page = 1, pageSize = 20} = query;
-            return resultPageSuccess(page, pageSize, testList);
-        },
+  },
+  {
+    url: `${baseUrl}/system/getTestListByPage`,
+    timeout: 100,
+    method: 'get',
+    response: ({ query }) => {
+      const { page = 1, pageSize = 20 } = query;
+      return resultPageSuccess(page, pageSize, testList);
     },
-    {
-        url: '/jeecg-boot/system/getDemoTableListByPage',
-        timeout: 100,
-        method: 'get',
-        response: ({query}) => {
-            const {page = 1, pageSize = 20} = query;
-            return resultPageSuccess(page, pageSize, tableDemoList);
-        },
+  },
+  {
+    url: `${baseUrl}/system/getDemoTableListByPage`,
+    timeout: 100,
+    method: 'get',
+    response: ({ query }) => {
+      const { page = 1, pageSize = 20 } = query;
+      return resultPageSuccess(page, pageSize, tableDemoList);
     },
-    {
-        url: '/jeecg-boot/system/setRoleStatus',
-        timeout: 500,
-        method: 'post',
-        response: ({query}) => {
-            const {id, status} = query;
-            return resultSuccess({id, status});
-        },
+  },
+  {
+    url: `${baseUrl}/system/setRoleStatus`,
+    timeout: 500,
+    method: 'post',
+    response: ({ query }) => {
+      const { id, status } = query;
+      return resultSuccess({ id, status });
     },
-    {
-        url: '/jeecg-boot/system/getAllRoleList',
-        timeout: 100,
-        method: 'get',
-        response: () => {
-            return resultSuccess(roleList);
-        },
+  },
+  {
+    url: `${baseUrl}/system/getAllRoleList`,
+    timeout: 100,
+    method: 'get',
+    response: () => {
+      return resultSuccess(roleList);
     },
-    {
-        url: '/jeecg-boot/system/getDeptList',
-        timeout: 100,
-        method: 'get',
-        response: () => {
-            return resultSuccess(deptList);
-        },
+  },
+  {
+    url: `${baseUrl}/system/getDeptList`,
+    timeout: 100,
+    method: 'get',
+    response: () => {
+      return resultSuccess(deptList);
     },
-    {
-        url: '/jeecg-boot/system/getMenuList',
-        timeout: 100,
-        method: 'get',
-        response: () => {
-            return resultSuccess(menuList);
-        },
+  },
+  {
+    url: `${baseUrl}/system/getMenuList`,
+    timeout: 100,
+    method: 'get',
+    response: () => {
+      return resultSuccess(menuList);
     },
-    {
-        url: '/jeecg-boot/system/accountExist',
-        timeout: 500,
-        method: 'post',
-        response: ({body}) => {
-            const {account} = body || {};
-            if (account && account.indexOf('admin') !== -1) {
-                return resultError('该字段不能包含admin');
-            } else {
-                return resultSuccess(`${account} can use`);
-            }
-        },
+  },
+  {
+    url: `${baseUrl}/system/accountExist`,
+    timeout: 500,
+    method: 'post',
+    response: ({ body }) => {
+      const { account } = body || {};
+      if (account && account.indexOf('admin') !== -1) {
+        return resultError('该字段不能包含admin');
+      } else {
+        return resultSuccess(`${account} can use`);
+      }
     },
+  },
 ] as MockMethod[];

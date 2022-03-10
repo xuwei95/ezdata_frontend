@@ -64,6 +64,21 @@ export function getDynamicProps<T, U>(props: T): Partial<U> {
   return ret as Partial<U>;
 }
 
+/**
+ * 获取表单字段值数据类型
+ * @param props
+ * @param field
+ * @updateBy:zyf
+ */
+export function getValueType(props,field){
+  let formSchema = unref(props.schemas);
+  let valueType = "string";
+  if (formSchema) {
+    let schema = formSchema.filter((item) => item.field === field)[0];
+    valueType = schema.componentProps&&schema.componentProps.valueType ? schema.componentProps.valueType : valueType;
+  }
+  return valueType;
+}
 export function getRawRoute(route: RouteLocationNormalized): RouteLocationNormalized {
   if (!route) return route;
   const { matched, ...opt } = route;
@@ -78,6 +93,14 @@ export function getRawRoute(route: RouteLocationNormalized): RouteLocationNormal
       : undefined) as RouteRecordNormalized[],
   };
 }
+/**
+ * 深度克隆对象、数组
+ * @param obj 被克隆的对象
+ * @return 克隆后的对象
+ */
+export function cloneObject(obj) {
+    return JSON.parse(JSON.stringify(obj))
+}
 
 export const withInstall = <T>(component: T, alias?: string) => {
   const comp = component as any;
@@ -89,3 +112,42 @@ export const withInstall = <T>(component: T, alias?: string) => {
   };
   return component as T & Plugin;
 };
+
+/**
+ * 获取url地址参数
+ * @param paraName
+ */
+export function getUrlParam(paraName) {
+  let url = document.location.toString();
+  let arrObj = url.split("?");
+
+  if (arrObj.length > 1) {
+    let arrPara = arrObj[1].split("&");
+    let arr;
+
+    for (let i = 0; i < arrPara.length; i++) {
+      arr = arrPara[i].split("=");
+
+      if (arr != null && arr[0] == paraName) {
+        return arr[1];
+      }
+    }
+    return "";
+  }
+  else {
+    return "";
+  }
+}
+
+/**
+ * 休眠（setTimeout的promise版）
+ * @param ms 要休眠的时间，单位：毫秒
+ * @param fn callback，可空
+ * @return Promise
+ */
+export function sleep(ms: number, fn?: Fn) {
+  return new Promise<void>(resolve => setTimeout(() => {
+    fn && fn()
+    resolve()
+  }, ms))
+}

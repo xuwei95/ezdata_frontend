@@ -4,6 +4,8 @@ export default {
     // user dropdown
     dropdownItemDoc: 'Document',
     dropdownItemLoginOut: 'Login Out',
+    dropdownItemSwitchDepart: 'Switch Department',
+    dropdownItemRefreshCache: 'Clean cache',
 
     tooltipErrorLog: 'Error log',
     tooltipLock: 'Lock screen',
@@ -84,9 +86,14 @@ export default {
     breadcrumb: 'Breadcrumbs',
     breadcrumbIcon: 'Breadcrumbs Icon',
     tabs: 'Tabs',
+    tabDetail: 'Tab Detail',
     tabsQuickBtn: 'Tabs quick button',
     tabsRedoBtn: 'Tabs redo button',
     tabsFoldBtn: 'Tabs flod button',
+    tabsTheme: 'tabs theme',
+    tabsThemeSmooth: 'Smooth',
+    tabsThemeCard: 'Card',
+    tabsThemeSimple: 'Simple',
     sidebar: 'Sidebar',
     header: 'Header',
     footer: 'Footer',

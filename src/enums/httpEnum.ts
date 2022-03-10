@@ -31,9 +31,16 @@ export enum ContentTypeEnum {
 }
 
 /**
+ * 请求header
  * @description:  contentTyp
  */
 export enum ConfigEnum {
   // TOKEN
   TOKEN = 'X-Access-Token',
+  // TIMESTAMP
+  TIMESTAMP = 'X-TIMESTAMP',
+  // Sign
+  Sign = 'X-Sign',
+  // 租户id
+  TENANT_ID = 'tenant-id',
 }

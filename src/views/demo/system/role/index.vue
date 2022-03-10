@@ -1,7 +1,7 @@
 <template>
   <div>
     <BasicTable @register="registerTable">
-      <template #toolbar>
+      <template #tableTitle>
         <a-button type="primary" @click="handleCreate"> 新增角色 </a-button>
       </template>
       <template #action="{ record }">
@@ -38,7 +38,7 @@
   import { columns, searchFormSchema } from './role.data';
 
   export default defineComponent({
-    name: 'RoleManagement',
+    name: 'system-demorole',
     components: { BasicTable, RoleDrawer, TableAction },
     setup() {
       const [registerDrawer, { openDrawer }] = useDrawer();

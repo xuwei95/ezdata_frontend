@@ -1,6 +1,6 @@
 import { MockMethod } from 'vite-plugin-mock';
 import { Random } from 'mockjs';
-import { resultPageSuccess } from '../_util';
+import { resultPageSuccess, baseUrl } from '../_util';
 
 function getRandomPics(count = 10): string[] {
   const arr: string[] = [];
@@ -12,7 +12,7 @@ function getRandomPics(count = 10): string[] {
 
 const demoList = (() => {
   const result: any[] = [];
-  for (let index = 0; index < 60; index++) {
+  for (let index = 0; index < 200; index++) {
     result.push({
       id: `${index}`,
       beginTime: '@datetime',
@@ -41,7 +41,7 @@ const demoList = (() => {
 
 export default [
   {
-    url: '/jeecg-boot/table/getDemoList',
+    url: `${baseUrl}/table/getDemoList`,
     timeout: 100,
     method: 'get',
     response: ({ query }) => {

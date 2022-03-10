@@ -61,7 +61,7 @@ export default function ({
       { immediate: true }
   );
 
-  function getAdvanced(itemCol: Partial<ColEx>, itemColSum = 0, isLastAction = false) {
+  function getAdvanced(itemCol: Partial<ColEx>, itemColSum = 0, isLastAction = false, index = 0) {
     const width = unref(realWidthRef);
 
     const mdWidth =
@@ -84,27 +84,41 @@ export default function ({
       itemColSum += xxlWidth;
     }
 
+    let autoAdvancedCol = (unref(getProps).autoAdvancedCol ?? 3)
+
     if (isLastAction) {
-      advanceState.hideAdvanceBtn = false;
-      if (itemColSum <= BASIC_COL_LEN * 2) {
-        // When less than or equal to 2 lines, the collapse and expand buttons are not displayed
+      advanceState.hideAdvanceBtn = unref(getSchema).length <= autoAdvancedCol;
+      // update-begin--author:sunjianlei---date:20211108---for: 注释掉该逻辑，使小于等于2行时，也显示展开收起按钮
+      /* if (itemColSum <= BASIC_COL_LEN * 2) {
+        // 小于等于2行时，不显示折叠和展开按钮
         advanceState.hideAdvanceBtn = true;
         advanceState.isAdvanced = true;
-      } else if (
+      } else */
+      // update-end--author:sunjianlei---date:20211108---for: 注释掉该逻辑，使小于等于2行时，也显示展开收起按钮
+      if (
           itemColSum > BASIC_COL_LEN * 2 &&
           itemColSum <= BASIC_COL_LEN * (unref(getProps).autoAdvancedLine || 3)
       ) {
         advanceState.hideAdvanceBtn = false;
 
-        // More than 3 lines collapsed by default
+        // 默认超过 3 行折叠
       } else if (!advanceState.isLoad) {
         advanceState.isLoad = true;
         advanceState.isAdvanced = !advanceState.isAdvanced;
+        // update-begin--author:sunjianlei---date:20211108---for: 如果总列数大于 autoAdvancedCol，就默认折叠
+        if (unref(getSchema).length > autoAdvancedCol) {
+          advanceState.hideAdvanceBtn = false
+          advanceState.isAdvanced = false
+        }
+        // update-end--author:sunjianlei---date:20211108---for: 如果总列数大于 autoAdvancedCol，就默认折叠
       }
       return { isAdvanced: advanceState.isAdvanced, itemColSum };
     }
     if (itemColSum > BASIC_COL_LEN * (unref(getProps).alwaysShowLines || 1)) {
       return { isAdvanced: advanceState.isAdvanced, itemColSum };
+    } else if (!advanceState.isAdvanced && (index + 1) > autoAdvancedCol) {
+      // 如果当前是收起状态，并且当前列下标 > autoAdvancedCol，就隐藏
+      return { isAdvanced: false, itemColSum }
     } else {
       // The first line is always displayed
       return { isAdvanced: true, itemColSum };
@@ -116,7 +130,9 @@ export default function ({
     let realItemColSum = 0;
     const { baseColProps = {} } = unref(getProps);
 
-    for (const schema of unref(getSchema)) {
+    const schemas  = unref(getSchema)
+    for (let i = 0; i < schemas.length; i++) {
+      const schema = schemas[i]
       const { show, colProps } = schema;
       let isShow = true;
 
@@ -139,7 +155,7 @@ export default function ({
       if (isShow && (colProps || baseColProps)) {
         const { itemColSum: sum, isAdvanced } = getAdvanced(
             { ...baseColProps, ...colProps },
-            itemColSum
+            itemColSum, false, i,
         );
 
         itemColSum = sum || 0;

@@ -31,7 +31,8 @@ import {
   routerTransitionOptions,
   menuTypeList,
   mixSidebarTriggerOptions,
-} from './enum';
+  tabsThemeOptions,
+} from './enum'
 
 import {
   HEADER_PRESET_BG_COLOR_LIST,
@@ -89,7 +90,7 @@ export default defineComponent({
       getShowSearch,
     } = useHeaderSetting();
 
-    const { getShowMultipleTab, getShowQuick, getShowRedo, getShowFold } = useMultipleTabSetting();
+    const { getShowMultipleTab, getShowQuick, getShowRedo, getShowFold, getTabsTheme } = useMultipleTabSetting()
 
     const getShowMenuRef = computed(() => {
       return unref(getShowMenu) && !unref(getIsHorizontal);
@@ -157,76 +158,70 @@ export default defineComponent({
 
       return (
         <>
-          <SwitchItem
-            title={t('layout.setting.splitMenu')}
-            event={HandlerEnum.MENU_SPLIT}
-            def={unref(getSplit)}
-            disabled={!unref(getShowMenuRef) || unref(getMenuType) !== MenuTypeEnum.MIX}
-          />
-          <SwitchItem
-            title={t('layout.setting.mixSidebarFixed')}
-            event={HandlerEnum.MENU_FIXED_MIX_SIDEBAR}
-            def={unref(getMixSideFixed)}
-            disabled={!unref(getIsMixSidebar)}
-          />
+          {/*<SwitchItem*/}
+          {/*  title={t('layout.setting.splitMenu')}*/}
+          {/*  event={HandlerEnum.MENU_SPLIT}*/}
+          {/*  def={unref(getSplit)}*/}
+          {/*  disabled={!unref(getShowMenuRef) || unref(getMenuType) !== MenuTypeEnum.MIX}*/}
+          {/*/>*/}
+          {/*<SwitchItem*/}
+          {/*  title={t('layout.setting.mixSidebarFixed')}*/}
+          {/*  event={HandlerEnum.MENU_FIXED_MIX_SIDEBAR}*/}
+          {/*  def={unref(getMixSideFixed)}*/}
+          {/*  disabled={!unref(getIsMixSidebar)}*/}
+          {/*/>*/}
 
-          <SwitchItem
-            title={t('layout.setting.closeMixSidebarOnChange')}
-            event={HandlerEnum.MENU_CLOSE_MIX_SIDEBAR_ON_CHANGE}
-            def={unref(getCloseMixSidebarOnChange)}
-            disabled={!unref(getIsMixSidebar)}
-          />
-          <SwitchItem
-            title={t('layout.setting.menuCollapse')}
-            event={HandlerEnum.MENU_COLLAPSED}
-            def={unref(getCollapsed)}
-            disabled={!unref(getShowMenuRef)}
-          />
+          {/*<SwitchItem*/}
+          {/*  title={t('layout.setting.closeMixSidebarOnChange')}*/}
+          {/*  event={HandlerEnum.MENU_CLOSE_MIX_SIDEBAR_ON_CHANGE}*/}
+          {/*  def={unref(getCloseMixSidebarOnChange)}*/}
+          {/*  disabled={!unref(getIsMixSidebar)}*/}
+          {/*/>*/}
+          {/*<SwitchItem*/}
+          {/*  title={t('layout.setting.menuCollapse')}*/}
+          {/*  event={HandlerEnum.MENU_COLLAPSED}*/}
+          {/*  def={unref(getCollapsed)}*/}
+          {/*  disabled={!unref(getShowMenuRef)}*/}
+          {/*/>*/}
 
-          <SwitchItem
-            title={t('layout.setting.menuDrag')}
-            event={HandlerEnum.MENU_HAS_DRAG}
-            def={unref(getCanDrag)}
-            disabled={!unref(getShowMenuRef)}
-          />
-          <SwitchItem
-            title={t('layout.setting.menuSearch')}
-            event={HandlerEnum.HEADER_SEARCH}
-            def={unref(getShowSearch)}
-            disabled={!unref(getShowHeader)}
-          />
-          <SwitchItem
-            title={t('layout.setting.menuAccordion')}
-            event={HandlerEnum.MENU_ACCORDION}
-            def={unref(getAccordion)}
-            disabled={!unref(getShowMenuRef)}
-          />
 
-          <SwitchItem
-            title={t('layout.setting.collapseMenuDisplayName')}
-            event={HandlerEnum.MENU_COLLAPSED_SHOW_TITLE}
-            def={unref(getCollapsedShowTitle)}
-            disabled={!unref(getShowMenuRef) || !unref(getCollapsed) || unref(getIsMixSidebar)}
-          />
+          {/*<SwitchItem*/}
+          {/*  title={t('layout.setting.menuSearch')}*/}
+          {/*  event={HandlerEnum.HEADER_SEARCH}*/}
+          {/*  def={unref(getShowSearch)}*/}
+          {/*  disabled={!unref(getShowHeader)}*/}
+          {/*/>*/}
+          {/*<SwitchItem*/}
+          {/*  title={t('layout.setting.menuAccordion')}*/}
+          {/*  event={HandlerEnum.MENU_ACCORDION}*/}
+          {/*  def={unref(getAccordion)}*/}
+          {/*  disabled={!unref(getShowMenuRef)}*/}
+          {/*/>*/}
 
-          <SwitchItem
-            title={t('layout.setting.fixedHeader')}
-            event={HandlerEnum.HEADER_FIXED}
-            def={unref(getHeaderFixed)}
-            disabled={!unref(getShowHeader)}
-          />
-          <SwitchItem
-            title={t('layout.setting.fixedSideBar')}
-            event={HandlerEnum.MENU_FIXED}
-            def={unref(getMenuFixed)}
-            disabled={!unref(getShowMenuRef) || unref(getIsMixSidebar)}
-          />
+          {/*<SwitchItem*/}
+          {/*  title={t('layout.setting.fixedHeader')}*/}
+          {/*  event={HandlerEnum.HEADER_FIXED}*/}
+          {/*  def={unref(getHeaderFixed)}*/}
+          {/*  disabled={!unref(getShowHeader)}*/}
+          {/*/>*/}
+          {/*<SwitchItem*/}
+          {/*  title={t('layout.setting.fixedSideBar')}*/}
+          {/*  event={HandlerEnum.MENU_FIXED}*/}
+          {/*  def={unref(getMenuFixed)}*/}
+          {/*  disabled={!unref(getShowMenuRef) || unref(getIsMixSidebar)}*/}
+          {/*/>*/}
+          {/*<SelectItem*/}
+          {/*  title={t('layout.setting.mixSidebarTrigger')}*/}
+          {/*  event={HandlerEnum.MENU_TRIGGER_MIX_SIDEBAR}*/}
+          {/*  def={unref(getMixSideTrigger)}*/}
+          {/*  options={mixSidebarTriggerOptions}*/}
+          {/*  disabled={!unref(getIsMixSidebar)}*/}
+          {/*/>*/}
           <SelectItem
-            title={t('layout.setting.mixSidebarTrigger')}
-            event={HandlerEnum.MENU_TRIGGER_MIX_SIDEBAR}
-            def={unref(getMixSideTrigger)}
-            options={mixSidebarTriggerOptions}
-            disabled={!unref(getIsMixSidebar)}
+            title={t('layout.setting.tabsTheme')}
+            event={HandlerEnum.TABS_THEME}
+            def={unref(getTabsTheme)}
+            options={tabsThemeOptions}
           />
           <SelectItem
             title={t('layout.setting.topMenuLayout')}
@@ -282,73 +277,84 @@ export default defineComponent({
       return (
         <>
           <SwitchItem
+            title={t('layout.setting.menuDrag')}
+            event={HandlerEnum.MENU_HAS_DRAG}
+            def={unref(getCanDrag)}
+            disabled={!unref(getShowMenuRef)}
+          />
+          <SwitchItem
+            title={t('layout.setting.collapseMenuDisplayName')}
+            event={HandlerEnum.MENU_COLLAPSED_SHOW_TITLE}
+            def={unref(getCollapsedShowTitle)}
+            disabled={!unref(getShowMenuRef) || !unref(getCollapsed) || unref(getIsMixSidebar)}
+          />
+          <SwitchItem
+            title={t('layout.setting.tabs')}
+            event={HandlerEnum.TABS_SHOW}
+            def={unref(getShowMultipleTab)}
+          />
+          <SwitchItem
             title={t('layout.setting.breadcrumb')}
             event={HandlerEnum.SHOW_BREADCRUMB}
             def={unref(getShowBreadCrumb)}
             disabled={!unref(getShowHeader)}
           />
 
-          <SwitchItem
-            title={t('layout.setting.breadcrumbIcon')}
-            event={HandlerEnum.SHOW_BREADCRUMB_ICON}
-            def={unref(getShowBreadCrumbIcon)}
-            disabled={!unref(getShowHeader)}
-          />
+          {/*<SwitchItem*/}
+          {/*  title={t('layout.setting.breadcrumbIcon')}*/}
+          {/*  event={HandlerEnum.SHOW_BREADCRUMB_ICON}*/}
+          {/*  def={unref(getShowBreadCrumbIcon)}*/}
+          {/*  disabled={!unref(getShowHeader)}*/}
+          {/*/>*/}
 
-          <SwitchItem
-            title={t('layout.setting.tabs')}
-            event={HandlerEnum.TABS_SHOW}
-            def={unref(getShowMultipleTab)}
-          />
+          {/*<SwitchItem*/}
+          {/*  title={t('layout.setting.tabsRedoBtn')}*/}
+          {/*  event={HandlerEnum.TABS_SHOW_REDO}*/}
+          {/*  def={unref(getShowRedo)}*/}
+          {/*  disabled={!unref(getShowMultipleTab)}*/}
+          {/*/>*/}
 
-          <SwitchItem
-            title={t('layout.setting.tabsRedoBtn')}
-            event={HandlerEnum.TABS_SHOW_REDO}
-            def={unref(getShowRedo)}
-            disabled={!unref(getShowMultipleTab)}
-          />
+          {/*<SwitchItem*/}
+          {/*  title={t('layout.setting.tabsQuickBtn')}*/}
+          {/*  event={HandlerEnum.TABS_SHOW_QUICK}*/}
+          {/*  def={unref(getShowQuick)}*/}
+          {/*  disabled={!unref(getShowMultipleTab)}*/}
+          {/*/>*/}
+          {/*<SwitchItem*/}
+          {/*  title={t('layout.setting.tabsFoldBtn')}*/}
+          {/*  event={HandlerEnum.TABS_SHOW_FOLD}*/}
+          {/*  def={unref(getShowFold)}*/}
+          {/*  disabled={!unref(getShowMultipleTab)}*/}
+          {/*/>*/}
 
-          <SwitchItem
-            title={t('layout.setting.tabsQuickBtn')}
-            event={HandlerEnum.TABS_SHOW_QUICK}
-            def={unref(getShowQuick)}
-            disabled={!unref(getShowMultipleTab)}
-          />
-          <SwitchItem
-            title={t('layout.setting.tabsFoldBtn')}
-            event={HandlerEnum.TABS_SHOW_FOLD}
-            def={unref(getShowFold)}
-            disabled={!unref(getShowMultipleTab)}
-          />
+          {/*<SwitchItem*/}
+          {/*  title={t('layout.setting.sidebar')}*/}
+          {/*  event={HandlerEnum.MENU_SHOW_SIDEBAR}*/}
+          {/*  def={unref(getShowMenu)}*/}
+          {/*  disabled={unref(getIsHorizontal)}*/}
+          {/*/>*/}
 
-          <SwitchItem
-            title={t('layout.setting.sidebar')}
-            event={HandlerEnum.MENU_SHOW_SIDEBAR}
-            def={unref(getShowMenu)}
-            disabled={unref(getIsHorizontal)}
-          />
-
-          <SwitchItem
-            title={t('layout.setting.header')}
-            event={HandlerEnum.HEADER_SHOW}
-            def={unref(getShowHeader)}
-          />
-          <SwitchItem
-            title="Logo"
-            event={HandlerEnum.SHOW_LOGO}
-            def={unref(getShowLogo)}
-            disabled={unref(getIsMixSidebar)}
-          />
+          {/*<SwitchItem*/}
+          {/*  title={t('layout.setting.header')}*/}
+          {/*  event={HandlerEnum.HEADER_SHOW}*/}
+          {/*  def={unref(getShowHeader)}*/}
+          {/*/>*/}
+          {/*<SwitchItem*/}
+          {/*  title="Logo"*/}
+          {/*  event={HandlerEnum.SHOW_LOGO}*/}
+          {/*  def={unref(getShowLogo)}*/}
+          {/*  disabled={unref(getIsMixSidebar)}*/}
+          {/*/>*/}
           <SwitchItem
             title={t('layout.setting.footer')}
             event={HandlerEnum.SHOW_FOOTER}
             def={unref(getShowFooter)}
           />
-          <SwitchItem
-            title={t('layout.setting.fullContent')}
-            event={HandlerEnum.FULL_CONTENT}
-            def={unref(getFullContent)}
-          />
+          {/*<SwitchItem*/}
+          {/*  title={t('layout.setting.fullContent')}*/}
+          {/*  event={HandlerEnum.FULL_CONTENT}*/}
+          {/*  def={unref(getFullContent)}*/}
+          {/*/>*/}
 
           <SwitchItem
             title={t('layout.setting.grayMode')}
@@ -415,10 +421,10 @@ export default defineComponent({
         {renderSiderTheme()}
         <Divider>{() => t('layout.setting.interfaceFunction')}</Divider>
         {renderFeatures()}
-        <Divider>{() => t('layout.setting.interfaceDisplay')}</Divider>
+        {/*<Divider>{() => t('layout.setting.interfaceDisplay')}</Divider>*/}
         {renderContent()}
-        <Divider>{() => t('layout.setting.animation')}</Divider>
-        {renderTransition()}
+        {/*<Divider>{() => t('layout.setting.animation')}</Divider>*/}
+        {/*{renderTransition()}*/}
         <Divider />
         <SettingFooter />
       </BasicDrawer>

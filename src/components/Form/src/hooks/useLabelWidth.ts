@@ -16,8 +16,14 @@ export function useItemLabelWidth(schemaItemRef: Ref<FormSchema>, propsRef: Ref<
       wrapperCol: globWrapperCol,
     } = unref(propsRef);
 
+    // update-begin--author:sunjianlei---date:20211104---for: 禁用全局 labelWidth，不自动设置 textAlign --------
+    if (disabledLabelWidth) {
+      return { labelCol, wrapperCol }
+    }
+    // update-begin--author:sunjianlei---date:20211104---for: 禁用全局 labelWidth，不自动设置 textAlign --------
+
     // If labelWidth is set globally, all items setting
-    if ((!globalLabelWidth && !labelWidth && !globalLabelCol) || disabledLabelWidth) {
+    if ((!globalLabelWidth && !labelWidth && !globalLabelCol)) {
       labelCol.style = {
         textAlign: 'left',
       };

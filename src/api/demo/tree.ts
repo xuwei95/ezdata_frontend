@@ -1,7 +1,7 @@
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  TREE_OPTIONS_LIST = '/tree/getDemoOptions',
+  TREE_OPTIONS_LIST = '/mock/tree/getDemoOptions',
 }
 
 /**

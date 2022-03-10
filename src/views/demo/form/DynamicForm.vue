@@ -20,47 +20,86 @@
   import { BasicForm, FormSchema, useForm } from '/@/components/Form/index';
   import { CollapseContainer } from '/@/components/Container/index';
   import { PageWrapper } from '/@/components/Page';
-
+  import { usePermission } from '/@/hooks/web/usePermission';
+  const { hasPermission } = usePermission();
   const schemas: FormSchema[] = [
+    {
+        field: 'field5',
+        component: 'Switch',
+        label: '是否显示字段1(css控制)',
+        defaultValue:true,
+        colProps: {
+            span: 12,
+        },
+        labelWidth: 200,
+    },
     {
       field: 'field1',
       component: 'Input',
       label: '字段1',
       colProps: {
-        span: 8,
+        span: 12,
       },
       show: ({ values }) => {
-        return !!values.field5;
+        return hasPermission('test001');
       },
+    },
+    {
+        field: 'field6',
+        component: 'Switch',
+        label: '是否显示字段2(dom控制)',
+        defaultValue:true,
+        colProps: {
+            span: 12,
+        },
+        labelWidth: 200,
     },
     {
       field: 'field2',
       component: 'Input',
       label: '字段2',
       colProps: {
-        span: 8,
+        span: 12,
       },
       ifShow: ({ values }) => {
         return !!values.field6;
       },
     },
     {
+        field: 'field7',
+        component: 'Switch',
+        label: '是否禁用字段3',
+        colProps: {
+            span: 12,
+        },
+        labelWidth: 200,
+    },
+    {
       field: 'field3',
       component: 'DatePicker',
       label: '字段3',
       colProps: {
-        span: 8,
+        span: 12,
       },
       dynamicDisabled: ({ values }) => {
         return !!values.field7;
       },
     },
     {
+        field: 'field8',
+        component: 'Switch',
+        label: '字段4是否必填',
+        colProps: {
+            span: 12,
+        },
+        labelWidth: 200,
+    },
+    {
       field: 'field4',
       component: 'Select',
       label: '字段4',
       colProps: {
-        span: 8,
+        span: 12,
       },
       dynamicRules: ({ values }) => {
         return values.field8 ? [{ required: true, message: '字段4必填' }] : [];
@@ -87,42 +126,6 @@
       colProps: {
         span: 8,
       },
-    },
-    {
-      field: 'field5',
-      component: 'Switch',
-      label: '是否显示字段1(css控制)',
-      colProps: {
-        span: 8,
-      },
-      labelWidth: 200,
-    },
-    {
-      field: 'field6',
-      component: 'Switch',
-      label: '是否显示字段2(dom控制)',
-      colProps: {
-        span: 8,
-      },
-      labelWidth: 200,
-    },
-    {
-      field: 'field7',
-      component: 'Switch',
-      label: '是否禁用字段3',
-      colProps: {
-        span: 8,
-      },
-      labelWidth: 200,
-    },
-    {
-      field: 'field8',
-      component: 'Switch',
-      label: '字段4是否必填',
-      colProps: {
-        span: 8,
-      },
-      labelWidth: 200,
     },
   ];
 
@@ -185,6 +188,16 @@
         useForm({
           labelWidth: 120,
           schemas,
+          //禁用表单所有组件
+          disabled:true,
+          labelCol: {
+              xs: { span: 24 },
+              sm: { span: 6 },
+          },
+          wrapperCol: {
+              xs: { span: 24 },
+              sm: { span: 18 },
+          },
           actionColOptions: {
             span: 24,
           },

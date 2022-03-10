@@ -1,0 +1,61 @@
+import { unref } from 'vue';
+import { dateUtil } from '/@/utils/dateUtil';
+
+/**
+ * 表单区间时间数值字段转换
+ * @param props
+ * @param values
+ */
+export function handleRangeValue(props, values){
+    //判断是否配置并处理fieldMapToTime
+    const fieldMapToTime = unref(props)?.fieldMapToTime;
+    fieldMapToTime && (values = handleRangeTimeValue(props, values));
+    //判断是否配置并处理fieldMapToNumber
+    const fieldMapToNumber = unref(props)?.fieldMapToNumber;
+    fieldMapToNumber && (values =handleRangeNumberValue(props, values));
+    return values;
+}
+/**
+ * 处理时间转换成2个字段
+ * @param props
+ * @param values
+ */
+export function handleRangeTimeValue(props, values) {
+  const fieldMapToTime = unref(props).fieldMapToTime;
+  if (!fieldMapToTime || !Array.isArray(fieldMapToTime)) {
+    return values;
+  }
+  for (const [field, [startTimeKey, endTimeKey], format = 'YYYY-MM-DD'] of fieldMapToTime) {
+    if (!field || !startTimeKey || !endTimeKey || !values[field]) {
+      continue;
+    }
+    const [startTime, endTime]: string[] = values[field];
+    values[startTimeKey] = dateUtil(startTime).format(format);
+    values[endTimeKey] = dateUtil(endTime).format(format);
+    Reflect.deleteProperty(values, field);
+  }
+  return values;
+}
+/**
+ * 处理数字转换成2个字段
+ * @param props
+ * @param values
+ * @updateby liusq
+ * @updateDate:2021-09-16
+ */
+export function handleRangeNumberValue(props, values) {
+    const fieldMapToNumber = unref(props).fieldMapToNumber;
+    if (!fieldMapToNumber || !Array.isArray(fieldMapToNumber)) {
+        return values;
+    }
+    for (const [field, [startNumberKey, endNumberKey]] of fieldMapToNumber) {
+        if (!field || !startNumberKey || !endNumberKey || !values[field]) {
+            continue;
+        }
+        const [startNumber, endNumber]: number[] = values[field];
+        values[startNumberKey] = startNumber;
+        values[endNumberKey] = endNumber;
+        Reflect.deleteProperty(values, field);
+    }
+    return values;
+}

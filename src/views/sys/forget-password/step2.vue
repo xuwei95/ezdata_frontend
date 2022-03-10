@@ -2,7 +2,7 @@
     <Form class="p-4 enter-x" :model="formData" :rules="getFormRules" ref="formRef">
 
       <FormItem name="username" class="enter-x">
-        <Input size="large" v-model:value="formData.username" :placeholder="t('sys.login.userName')" />
+        <Input size="large" v-model:value="formData.username" :placeholder="t('sys.login.userName')" disabled/>
       </FormItem>
 
       <FormItem name="password" class="enter-x">
@@ -52,17 +52,16 @@
     setup(props, { emit }) {
       const { t } = useI18n();
       const { createErrorModal } = useMessage();
+      const { accountInfo } = props;
       const formRef = ref();
       const formData = reactive({
-        username: '',
+        username: accountInfo.obj.username || '',
         password:'',
         confirmPassword:''
       });
       const {getFormRules} = useFormRules(formData);
       const {validForm} = useFormValid(formRef);
       
-      const { accountInfo } = props;
-
       /**
        * 上一步
        */

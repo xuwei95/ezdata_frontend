@@ -5,19 +5,35 @@ enum Api {
   list = '/sys/user/list',
   save='/sys/user/add',
   edit='/sys/user/edit',
+  agentSave='/sys/sysUserAgent/add',
+  agentEdit='/sys/sysUserAgent/edit',
   getUserRole = '/sys/user/queryUserRole',
   duplicateCheck = '/sys/duplicate/check',
   deleteUser = '/sys/user/delete',
   deleteBatch = '/sys/user/deleteBatch',
-  importExcel = '/jeecg-boot/sys/user/importExcel',
+  importExcel = '/sys/user/importExcel',
+  exportXls = '/sys/user/exportXls',
   recycleBinList = '/sys/user/recycleBin',
   putRecycleBin = '/sys/user/putRecycleBin',
   deleteRecycleBin = '/sys/user/deleteRecycleBin',
   allRolesList = '/sys/role/queryall',
   allTenantList = '/sys/tenant/queryList',
   allPostList = '/sys/position/list',
+  userDepartList = '/sys/user/userDepartList',
+  changePassword = '/sys/user/changePassword',
+  frozenBatch = '/sys/user/frozenBatch',
+  getUserAgent = '/sys/sysUserAgent/queryByUserName',
+  syncUser = '/act/process/extActProcess/doSyncUser',
 }
-
+/**
+ * 导出api
+ * @param params
+ */
+export const getExportUrl = Api.exportXls;
+/**
+ * 导入api
+ */
+export const getImportUrl = Api.importExcel;
 /**
  * 列表接口
  * @param params
@@ -72,27 +88,26 @@ export const saveOrUpdateUser = (params, isUpdate) => {
 export const duplicateCheck = (params) =>
   defHttp.get({url: Api.duplicateCheck, params},{isTransformResponse:false});
 /**
- * 自定义上传
- * @param customUpload
- */
-export const customUpload = (params) =>
-  defHttp.uploadFile({url: Api.importExcel},params);
-/**
  * 获取全部角色
  * @param params
  */
 export const getAllRolesList = (params) =>
-  defHttp.get<RoleListGetResultModel>({url: Api.allRolesList, params});
+  defHttp.get({url: Api.allRolesList, params});
 /**
  * 获取全部租户
  */
 export const getAllTenantList = (params) =>
   defHttp.get({url: Api.allTenantList, params});
 /**
+ * 获取指定用户负责部门
+ */
+export const getUserDepartList = (params) =>
+  defHttp.get({url: Api.userDepartList, params},{successMessageMode:'none'});
+/**
  * 获取全部职务
  */
 export const getAllPostList = (params) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     defHttp.get({url: Api.allPostList, params}).then(res => {
       resolve(res.records)
     });
@@ -108,8 +123,11 @@ export const getRecycleBinList = (params) =>
  * 回收站还原
  * @param params
  */
-export const putRecycleBin = (params) =>
-  defHttp.put({url: Api.putRecycleBin, params},{isTransformResponse:false});
+export const putRecycleBin = (params,handleSuccess) =>{
+  return defHttp.put({url: Api.putRecycleBin, params}).then(() => {
+    handleSuccess();
+  });
+}
 /**
  * 回收站删除
  * @param params
@@ -119,3 +137,40 @@ export const deleteRecycleBin = (params,handleSuccess) => {
     handleSuccess();
   });
 }
+/**
+ * 修改密码
+ * @param params
+ */
+export const changePassword = (params) =>{
+  return defHttp.put({url: Api.changePassword, params})
+}
+/**
+ * 冻结解冻
+ * @param params
+ */
+export const frozenBatch = (params,handleSuccess) => {
+  return defHttp.put({url: Api.frozenBatch, params}).then(() => {
+    handleSuccess();
+  });
+}
+/**
+ * 获取用户代理
+ * @param params
+ */
+export const getUserAgent = (params) =>
+  defHttp.get({url: Api.getUserAgent, params},{isTransformResponse:false});
+/**
+ * 保存或者更新用户代理
+ * @param params
+ */
+export const saveOrUpdateAgent = (params) => {
+  let url = params.id ? Api.agentEdit : Api.agentSave;
+  return defHttp.post({url: url, params});
+}
+
+/**
+ * 用户同步流程
+ * @param params
+ */
+export const syncUser = () =>
+  defHttp.put({url: Api.syncUser});

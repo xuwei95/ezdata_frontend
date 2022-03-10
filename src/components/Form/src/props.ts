@@ -5,7 +5,8 @@ import type { TableActionType } from '/@/components/Table';
 import type { ButtonProps } from 'ant-design-vue/es/button/buttonTypes';
 import type { RowProps } from 'ant-design-vue/lib/grid/Row';
 import { propTypes } from '/@/utils/propTypes';
-
+import componentSetting from '/@/settings/componentSetting';
+const { form } = componentSetting;
 export const basicProps = {
   model: {
     type: Object as PropType<Recordable>,
@@ -17,6 +18,10 @@ export const basicProps = {
     default: 0,
   },
   fieldMapToTime: {
+    type: Array as PropType<FieldMapToTime>,
+    default: () => [],
+  },
+  fieldMapToNumber: {
     type: Array as PropType<FieldMapToTime>,
     default: () => [],
   },
@@ -57,6 +62,8 @@ export const basicProps = {
     },
   },
   rulesMessageJoinLabel: propTypes.bool.def(true),
+  // 【jeecg】超过3列自动折叠
+  autoAdvancedCol: propTypes.number.def(3),
   // 超过3行自动折叠
   autoAdvancedLine: propTypes.number.def(3),
   // 不受折叠影响的行数
@@ -85,16 +92,22 @@ export const basicProps = {
   // 以下为默认props
   hideRequiredMark: propTypes.bool,
 
-  labelCol: Object as PropType<Partial<ColEx>>,
+  labelCol:{
+    type: Object as PropType<Partial<ColEx>>,
+    default:form.labelCol
+  },
 
   layout: propTypes.oneOf(['horizontal', 'vertical', 'inline']).def('horizontal'),
   tableAction: {
     type: Object as PropType<TableActionType>,
   },
 
-  wrapperCol: Object as PropType<Partial<ColEx>>,
+  wrapperCol: {
+    type:Object as PropType<Partial<ColEx>>,
+    default:form.wrapperCol
+  },
 
-  colon: propTypes.bool,
+  colon: propTypes.bool.def(form.colon),
 
   labelAlign: propTypes.string,
 

@@ -1,14 +1,14 @@
-import type {VNodeChild} from 'vue';
-import type {PaginationProps} from './pagination';
-import type {FormProps} from '/@/components/Form';
+import type { VNodeChild } from 'vue';
+import type { PaginationProps } from './pagination';
+import type { FormProps } from '/@/components/Form';
 import type {
     ColumnProps,
     TableRowSelection as ITableRowSelection,
 } from 'ant-design-vue/lib/table/interface';
 
-import {ComponentType} from './componentType';
-import {VueNode} from '/@/utils/propTypes';
-import {RoleEnum} from '/@/enums/roleEnum';
+import { ComponentType } from './componentType';
+import { VueNode } from '/@/utils/propTypes';
+import { RoleEnum } from '/@/enums/roleEnum';
 
 export declare type SortOrder = 'ascend' | 'descend';
 
@@ -25,7 +25,7 @@ export interface TableRowSelection<T = any> extends ITableRowSelection {
 
     /**
      * Callback executed when select/deselect one row
-     * @type FunctionT
+     * @type Function
      */
     onSelect?: (record: T, selected: boolean, selectedRows: Object[], nativeEvent: Event) => any;
 
@@ -96,6 +96,8 @@ export interface TableActionType {
     setPagination: (info: Partial<PaginationProps>) => void;
     setTableData: <T = Recordable>(values: T[]) => void;
     updateTableDataRecord: (rowKey: string | number, record: Recordable) => Recordable | void;
+    deleteTableDataRecord: (rowKey: string | number | string[] | number[]) => void;
+    insertTableDataRecord: (record: Recordable, index?: number) => Recordable | void;
     findTableDataRecord: (rowKey: string | number) => Recordable | void;
     getColumns: (opt?: GetColumnsParams) => BasicColumn[];
     setColumns: (columns: BasicColumn[] | string[]) => void;
@@ -175,6 +177,8 @@ export interface BasicTableProps<T = any> {
     emptyDataIsShowTable?: boolean;
     // 额外的请求参数
     searchInfo?: Recordable;
+    // 默认的排序参数
+    defSort?: Recordable;
     // 使用搜索表单
     useSearchForm?: boolean;
     // 表单配置
@@ -185,6 +189,9 @@ export interface BasicTableProps<T = any> {
     showIndexColumn?: boolean;
     // 序号列配置
     indexColumnProps?: BasicColumn;
+    // 是否显示操作列
+    showActionColumn?: boolean,
+    // 操作列配置
     actionColumn?: BasicColumn;
     // 文本超过宽度是否显示。。。
     ellipsis?: boolean;
@@ -201,6 +208,8 @@ export interface BasicTableProps<T = any> {
     dataSource?: Recordable[];
     // 标题右侧提示
     titleHelpMessage?: string | string[];
+    // 表格最小高度
+    minHeight?: number;
     // 表格滚动最大高度
     maxHeight?: number;
     // 是否显示边框
@@ -290,7 +299,7 @@ export interface BasicTableProps<T = any> {
      * Row's className
      * @type Function
      */
-    rowClassName?: (record: TableCustomRecord<T>) => string;
+    rowClassName?: (record: TableCustomRecord<T>, index: number) => string;
 
     /**
      * Row selection config

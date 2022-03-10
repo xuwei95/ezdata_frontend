@@ -126,6 +126,8 @@
     import {defineComponent, ref, reactive, computed, unref} from 'vue';
     import {BasicModal, useModalInner} from '/@/components/Modal';
     import {ValidateErrorEntity} from 'ant-design-vue/es/form/interface';
+    import { saveOrUpdate } from './jvxetable/jvxetable.api'
+    import { orderCustomerList,orderTicketList } from './api'
 
     export default defineComponent({
         name: 'tableModal',
@@ -158,13 +160,17 @@
                 jeecgOrderTicketList: []
             });
             const [registerModal, {setModalProps, closeModal}] = useModalInner(async (data) => {
-                orderMainModel.orderCode = '';
                 setModalProps({confirmLoading: false});
                 isUpdate.value = !!data?.isUpdate;
-
+                reset()
                 if (unref(isUpdate)) {
                     rowId.value = data.record.id;
-                    orderMainModel.orderCode = data.record.orderCode;
+                    Object.assign(orderMainModel, data.record);
+                    let params = { id: orderMainModel.id };
+                    const customerList = await orderCustomerList(params);
+                    orderMainModel.jeecgOrderCustomerList = customerList;
+                    const ticketList = await orderTicketList(params);
+                    orderMainModel.jeecgOrderTicketList = ticketList
                 }
             });
             const getTitle = computed(() => (!unref(isUpdate) ? '新增' : '编辑'));
@@ -179,7 +185,16 @@
                 orderMainModel['jeecgOrderCustomerList'].splice(index, 1);
                 orderMainModel.jeecgOrderCustomerList.splice(index, 1);
             }
-
+            function reset(){
+                orderMainModel.id = null;
+                orderMainModel.orderCode = "";
+                orderMainModel.orderMoney = "";
+                orderMainModel.orderDate = null;
+                orderMainModel.ctype = "";
+                orderMainModel.content = "";
+                orderMainModel.jeecgOrderCustomerList = [];
+                orderMainModel.jeecgOrderTicketList = []
+            }
             function addRowTicket() {
                 orderMainModel.jeecgOrderTicketList.push({});
             }
@@ -191,12 +206,13 @@
             }
 
             async function handleSubmit() {
-                formRef.value.validate().then(() => {
+                formRef.value.validate().then(async() => {
                     try {
                         console.log('formData', JSON.stringify(orderMainModel));
                         setModalProps({confirmLoading: true});
+                        await saveOrUpdate(orderMainModel,unref(isUpdate));
                         closeModal();
-                        emit('success', {isUpdate: unref(isUpdate), values: {id: rowId.value}});
+                        emit('success');
                     } finally {
                         setModalProps({confirmLoading: false});
                     }

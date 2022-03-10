@@ -3,7 +3,7 @@ import pkg from './package.json';
 import moment from 'moment';
 import { loadEnv } from 'vite';
 import { resolve } from 'path';
-
+//require('vue-jeecg-plugs/packages/utils')
 import { generateModifyVars } from './build/generate/generateModifyVars';
 import { createProxy } from './build/vite/proxy';
 import { wrapperEnv } from './build/utils';

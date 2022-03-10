@@ -54,7 +54,7 @@ export function usePermission() {
   }
 
   /**
-   * Determine whether there is permission
+   * 确定是否存在权限
    */
   function hasPermission(value?: RoleEnum | RoleEnum[] | string | string[], def = true): boolean {
     // Visible by default
@@ -73,12 +73,18 @@ export function usePermission() {
 
     if (PermissionModeEnum.BACK === permMode) {
       const allCodeList = permissionStore.getPermCodeList as string[];
-      if (!isArray(value)) {
+      if (!isArray(value)&&allCodeList&&allCodeList.length>0) {
         return allCodeList.includes(value);
       }
       return (intersection(value, allCodeList) as string[]).length > 0;
     }
     return true;
+  }
+  /**
+   * 是否禁用组件
+   */
+  function isDisabledAuth(value?: RoleEnum | RoleEnum[] | string | string[], def = true): boolean {
+    return !hasPermission(value);
   }
 
   /**
@@ -106,5 +112,5 @@ export function usePermission() {
     resume();
   }
 
-  return { changeRole, hasPermission, togglePermissionMode, refreshMenu };
+  return { changeRole, hasPermission, togglePermissionMode, refreshMenu, isDisabledAuth };
 }

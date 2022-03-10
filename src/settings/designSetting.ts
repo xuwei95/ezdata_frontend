@@ -1,13 +1,13 @@
 import { ThemeEnum } from '../enums/appEnum';
 
-export const prefixCls = 'Jeecg';
+export const prefixCls = 'jeecg';
 
 export const darkMode = ThemeEnum.LIGHT;
 
 // app theme preset color
 export const APP_PRESET_COLOR_LIST: string[] = [
   '#0960bd',
-  '#0084f4',
+  '#1890ff',
   '#009688',
   '#536dfe',
   '#ff5c93',

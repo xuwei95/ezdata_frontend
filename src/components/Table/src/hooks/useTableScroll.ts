@@ -55,7 +55,7 @@ export function useTableScroll(
   let bodyEl: HTMLElement | null;
 
   async function calcTableHeight() {
-    const { resizeHeightOffset, pagination, maxHeight } = unref(propsRef);
+    const { resizeHeightOffset, pagination, maxHeight, minHeight } = unref(propsRef);
     const tableData = unref(getDataSourceRef);
 
     const table = unref(tableElRef);
@@ -140,6 +140,7 @@ export function useTableScroll(
         footerHeight -
         headerHeight;
 
+    height = (height < minHeight! ? (minHeight as number) : height) ?? height;
     height = (height > maxHeight! ? (maxHeight as number) : height) ?? height;
     setHeight(height);
 

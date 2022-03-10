@@ -17,13 +17,17 @@ import {setupGlobDirectives} from '/@/directives';
 import {setupI18n} from '/@/locales/setupI18n';
 import {registerGlobComp} from '/@/components/registerGlobComp';
 import {registerThirdComp} from '/@/settings/registerThirdComp';
+import {useSso} from '/@/hooks/web/useSso';
 // 在本地开发中引入的,以提高浏览器响应速度
 if (import.meta.env.DEV) {
-    //import('ant-design-vue/dist/antd.less');
+    import('ant-design-vue/dist/antd.less');
 }
 async function bootstrap() {
     // 创建应用实例
     const app = createApp(App);
+
+    // 多语言配置,异步情况:语言文件可以从服务器端获得
+    await setupI18n(app);
 
     // 配置存储
     setupStore(app);
@@ -34,8 +38,8 @@ async function bootstrap() {
     // 注册全局组件
     registerGlobComp(app);
 
-    // 多语言配置,异步情况:语言文件可以从服务器端获得
-    await setupI18n(app);
+    //CAS单点登录
+    await useSso().ssoLogin();
 
     // 配置路由
     setupRouter(app);
@@ -50,7 +54,7 @@ async function bootstrap() {
     setupErrorHandle(app);
 
     // 注册第三方组件
-    registerThirdComp(app);
+    await registerThirdComp(app);
 
     // 当路由准备好时在执行挂载( https://next.router.vuejs.org/api/#isready)
     await router.isReady();

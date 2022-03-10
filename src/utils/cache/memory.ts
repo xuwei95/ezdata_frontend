@@ -1,3 +1,14 @@
+import {
+    TOKEN_KEY,
+    ROLES_KEY,
+    USER_INFO_KEY,
+    DB_DICT_DATA_KEY,
+    TENANT_ID,
+    LOGIN_INFO_KEY,
+    PROJ_CFG_KEY,
+} from '/@/enums/cacheEnum';
+import {  omit } from 'lodash-es';
+
 export interface Cache<V = any> {
   value?: V;
   timeoutId?: ReturnType<typeof setTimeout>;
@@ -93,10 +104,15 @@ export class Memory<T = any, V = any> {
   }
 
   clear() {
+    console.log("------clear------进入clear方法")
     Object.keys(this.cache).forEach((key) => {
       const item = this.cache[key];
       item.timeoutId && clearTimeout(item.timeoutId);
     });
-    this.cache = {};
+   //update-begin---author:liusq  Date:20220108  for：不删除登录用户的租户id，其他缓存信息都清除----
+    this.cache = {
+       ...omit(this.cache, [TOKEN_KEY,USER_INFO_KEY,ROLES_KEY,DB_DICT_DATA_KEY,TENANT_ID,LOGIN_INFO_KEY,PROJ_CFG_KEY]),
+    };
+  //update-end---author:liusq  Date:20220108  for：不删除登录用户的租户id，其他缓存信息都清除----
   }
 }

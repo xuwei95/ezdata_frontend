@@ -1,7 +1,7 @@
 <template>
   <div>
     <BasicTable @register="registerTable">
-      <template #toolbar>
+      <template #tableTitle>
         <a-button type="primary" @click="handleCreate"> 新增部门 </a-button>
       </template>
       <template #action="{ record }">
@@ -38,7 +38,7 @@
   import { columns, searchFormSchema } from './dept.data';
 
   export default defineComponent({
-    name: 'DeptManagement',
+    name: 'system-dept',
     components: { BasicTable, DeptModal, TableAction },
     setup() {
       const [registerModal, { openModal }] = useModal();

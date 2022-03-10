@@ -1,7 +1,7 @@
 <template>
     <Select
             @dropdownVisibleChange="handleFetch"
-            v-bind="attrs"
+            v-bind="$attrs"
             @change="handleChange"
             :options="getOptions"
             v-model:value="state"
@@ -41,12 +41,7 @@
         },
         inheritAttrs: false,
         props: {
-            value: propTypes.oneOfType([
-                propTypes.object,
-                propTypes.number,
-                propTypes.string,
-                propTypes.array,
-            ]),
+            value: [Array, Object, String, Number],
             numberToString: propTypes.bool,
             api: {
                 type: Function as PropType<(arg?: Recordable) => Promise<OptionsItem[]>>,
@@ -73,18 +68,17 @@
             const { t } = useI18n();
 
             // Embedded in the form, just use the hook binding to perform form verification
-            const [state] = useRuleFormItem(props, 'value', 'change', emitData);
+            const [state, setState] = useRuleFormItem(props, 'value', 'change', emitData);
 
             const getOptions = computed(() => {
                 const { labelField, valueField, numberToString } = props;
-
                 return unref(options).reduce((prev, next: Recordable) => {
                     if (next) {
                         const value = next[valueField];
                         prev.push({
-                            label: next[labelField],
-                            value: numberToString ? `${value}` : value,
-                            ...omit(next, [labelField, valueField]),
+                          ...omit(next, [labelField, valueField]),
+                          label: next[labelField],
+                          value: numberToString ? `${value}` : value,
                         });
                     }
                     return prev;
@@ -123,6 +117,9 @@
                     console.warn(error);
                 } finally {
                     loading.value = false;
+                    //--@updateBy-begin----author:liusq---date:20210914------for:判断选择模式，multiple多选情况下的value值空的情况下需要设置为数组------
+                    unref(attrs).mode == 'multiple' && !Array.isArray(unref(state)) && setState([])
+                    //--@updateBy-end----author:liusq---date:20210914------for:判断选择模式，multiple多选情况下的value值空的情况下需要设置为数组------
                 }
             }
 

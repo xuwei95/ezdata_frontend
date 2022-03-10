@@ -11,9 +11,10 @@ export default {
   comp: {
     comp: '组件',
     basic: '基础组件',
-    demo: '示例组件',
+    jeecg: 'Jeecg组件',
     transition: '动画组件',
     countTo: '数字动画',
+    third: '第三方组件',
 
     scroll: '滚动组件',
     scrollBasic: '基础滚动',
@@ -25,8 +26,7 @@ export default {
     editTree: '可搜索/工具栏',
     actionTree: '函数操作示例',
 
-    modal: '弹窗扩展',
-    drawer: '抽屉扩展',
+    modal: '弹窗抽屉',
     desc: '详情组件',
 
     lazy: '懒加载组件',
@@ -45,8 +45,12 @@ export default {
 
     time: '相对时间',
     cropperImage: '图片裁剪',
+    cardList: '卡片列表',
     oneToMore:'一对多示例',
     vexTable:'一对多示例'
+  },
+  basic:{
+    button:'按钮组件'
   },
   editor: {
     editor: '编辑器',
@@ -69,6 +73,7 @@ export default {
     icon: '图标',
     sessionTimeout: '登录过期',
     tabs: '标签页操作',
+    tabDetail: '标签详情页',
     print: '打印',
     contextMenu: '右键菜单',
     download: '文件下载',
@@ -109,6 +114,10 @@ export default {
     dynamicForm: '动态表单',
     customerForm: '自定义组件',
     appendForm: '表单增删示例',
+  },
+  modal:{
+    basic: '弹窗扩展',
+    drawer: '抽屉扩展',
   },
   iframe: {
     frame: '外部页面',
@@ -192,4 +201,7 @@ export default {
     editRowTable: '可编辑行',
     authColumn: '权限列',
   },
+  jeecg:{
+    JAreaLinkage:'区域选择'
+  }
 };

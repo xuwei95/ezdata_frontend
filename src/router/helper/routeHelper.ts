@@ -1,18 +1,21 @@
 import type { AppRouteModule, AppRouteRecordRaw } from '/@/router/types';
 import type { Router, RouteRecordNormalized } from 'vue-router';
 
-import { getParentLayout, LAYOUT } from '/@/router/constant';
+import { getParentLayout, LAYOUT, EXCEPTION_COMPONENT } from '/@/router/constant';
 import { cloneDeep, omit } from 'lodash-es';
 import { warn } from '/@/utils/log';
 import { createRouter, createWebHashHistory } from 'vue-router';
-
+import { getToken } from '/@/utils/auth';
 export type LayoutMapKey = 'LAYOUT';
 const IFRAME = () => import('/@/views/sys/iframe/FrameBlank.vue');
+const LayoutContent = () => import('/@/layouts/default/content/index.vue');
 
 const LayoutMap = new Map<string, () => Promise<typeof import('*.vue')>>();
 
 LayoutMap.set('LAYOUT', LAYOUT);
 LayoutMap.set('IFRAME', IFRAME);
+//微前端qiankun
+LayoutMap.set('LayoutsContent', LayoutContent);
 
 let dynamicViewsModules: Record<string, () => Promise<Recordable>>;
 
@@ -21,16 +24,57 @@ function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
   dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../views/**/*.{vue,tsx}');
   if (!routes) return;
   routes.forEach((item) => {
+    // update-begin--author:sunjianlei---date:20210918---for:适配旧版路由选项 --------
+    // @ts-ignore 适配隐藏路由
+    if (item?.hidden) {
+      item.meta.hideMenu = true
+      //是否隐藏面包屑
+      item.meta.hideBreadcrumb = true
+    }
+    // @ts-ignore 添加忽略路由配置
+    if (item?.route==0) {
+      item.meta.ignoreRoute = true
+    }
+    // @ts-ignore 添加是否缓存路由配置
+    item.meta.ignoreKeepAlive = !item?.meta.keepAlive
+    let token=getToken();
+    // URL支持{{ window.xxx }}占位符变量
+    item.component = (item.component|| '').replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2)).replace('${token}',token);
+
+    // 适配 iframe
+    if (/^\/?http(s)?/.test(item.component as string)) {
+      item.component = item.component.substring(1, item.component.length)
+    }
+    if (/^http(s)?/.test(item.component as string)) {
+      if (item.meta?.internalOrExternal) {
+        // @ts-ignore 外部打开
+        item.path = item.component
+      } else {
+        // @ts-ignore 内部打开
+        item.meta.frameSrc = item.component
+      }
+      delete item.component
+    }
+    // update-end--author:sunjianlei---date:20210918---for:适配旧版路由选项 --------
     if (!item.component && item.meta?.frameSrc) {
       item.component = 'IFRAME';
     }
-    const { component, name } = item;
+    let { component, name } = item;
     const { children } = item;
     if (component) {
-      const layoutFound = LayoutMap.get(component as string);
+      const layoutFound = LayoutMap.get(component.toUpperCase());
       if (layoutFound) {
         item.component = layoutFound;
       } else {
+
+        // update-end--author:zyf---date:20220307--for:VUEN-219兼容后台返回动态首页,目的适配跟v2版本配置一致 --------
+        if(component.indexOf('dashboard/')>-1){
+          //当数据标sys_permission中component没有拼接index时前端需要拼接
+          if(component.indexOf('/index')<0) {
+            component = component + '/index'
+          }
+        }
+        // update-end--author:zyf---date:20220307---for:VUEN-219兼容后台返回动态首页,目的适配跟v2版本配置一致 --------
         item.component = dynamicImport(dynamicViewsModules, component as string);
       }
     } else if (name) {
@@ -46,16 +90,18 @@ function dynamicImport(
 ) {
   const keys = Object.keys(dynamicViewsModules);
   const matchKeys = keys.filter((key) => {
-    let k = key.replace('../../views', '');
-    const lastIndex = k.lastIndexOf('.');
-    k = k.substring(0, lastIndex);
-    return k === component;
+    const k = key.replace('../../views', '');
+    const startFlag = component.startsWith('/');
+    const endFlag = component.endsWith('.vue') || component.endsWith('.tsx');
+    const startIndex = startFlag ? 0 : 1;
+    const lastIndex = endFlag ? k.length : k.lastIndexOf('.');
+    return k.substring(startIndex, lastIndex) === component;
   });
   if (matchKeys?.length === 1) {
     const matchKey = matchKeys[0];
     return dynamicViewsModules[matchKey];
   }
-  if (matchKeys?.length > 1) {
+  else if (matchKeys?.length > 1) {
     warn(
       'Please do not create `.vue` and `.TSX` files with the same file name in the same hierarchical directory under the views folder. This will cause dynamic introduction failure'
     );
@@ -80,6 +126,9 @@ export function transformObjToRoute<T = AppRouteModule>(routeList: AppRouteModul
         meta.affix = false;
         route.meta = meta;
       }
+    }
+    else {
+      warn('请正确配置路由：' + route?.name + '的component属性');
     }
     route.children && asyncImportRoute(route.children);
   });
@@ -155,4 +204,22 @@ function isMultipleRoute(routeModule: AppRouteModule) {
     }
   }
   return flag;
+}
+/**
+ * 组件地址前加斜杠处理
+ * @updateBy:lsq
+ * @updateDate:2021-09-08
+ */
+export function addSlashToRouteComponent(routeList: AppRouteRecordRaw[]){
+  routeList.forEach((route) => {
+    let component = route.component as string;
+    if (component) {
+      const layoutFound = LayoutMap.get(component);
+      if (!layoutFound) {
+        route.component = component.startsWith('/') ? component : `/${component}`;
+      }
+    }
+    route.children && addSlashToRouteComponent(route.children);
+  });
+  return routeList as unknown as T[];
 }

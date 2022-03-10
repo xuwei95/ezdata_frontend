@@ -44,7 +44,7 @@
           <a-descriptions-item label="用户姓名"> 付小小 </a-descriptions-item>
           <a-descriptions-item label="会员卡号"> XX 32943898021309809423 </a-descriptions-item>
           <a-descriptions-item label="身份证"> 3321944288191034921 </a-descriptions-item>
-          <a-descriptions-item label="联系方式"> 18112345678 </a-descriptions-item>
+          <a-descriptions-item label="联系方式"> 18100000000 </a-descriptions-item>
           <a-descriptions-item label="联系地址" :span="2">
             曲丽丽 18100000000 浙江省杭州市西湖区黄姑山路工专路交叉路口
           </a-descriptions-item>

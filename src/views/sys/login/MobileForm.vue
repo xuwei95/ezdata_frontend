@@ -78,9 +78,10 @@
         });
       }
     } catch (error) {
-      createErrorModal({
-        title: t('sys.api.errorTip'),
-        content: error.message || t('sys.api.networkExceptionMsg'),
+      notification.error({
+        message: t('sys.api.errorTip'),
+        description: error.message || t('sys.api.networkExceptionMsg'),
+        duration: 3,
       });
     } finally {
       loading.value = false;

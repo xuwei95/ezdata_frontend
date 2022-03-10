@@ -124,4 +124,70 @@ for (let i = 0, len = regionDataPlus.length; i < len; i++) {
         }
     }
 }
-export {provinceAndCityData, regionData, provinceAndCityDataPlus, regionDataPlus, CodeToText, TextToCode}
+//--begin--@updateBy:liusq----date:20210922---for:省市区三级联动需求方法-----
+//省份数据
+const provinceOptions = []
+for (const prop in provinceObject) {
+    provinceOptions.push({
+        value: prop, // 省份code值
+        label: provinceObject[prop] // 省份汉字
+    })
+}
+/**
+ * 根据code获取下拉option的数据
+ * @param code
+ * @returns []
+ */
+function getDataByCode(code){
+    let data=[];
+    for (const prop in REGION_DATA[code]) {
+        data.push({
+            value: prop, // 省份code值
+            label: REGION_DATA[code][prop] // 省份汉字
+        })
+    }
+    return data;
+}
+
+/**
+ * 获取全部省市区的层级
+ * @type {Array}
+ */
+const pca = [];
+Object.keys(provinceObject).map(province=>{
+    pca.push({id:province, text:provinceObject[province], pid:'86', index:1});
+    const cityObject = REGION_DATA[province];
+    Object.keys(cityObject).map(city=>{
+        pca.push({id:city, text:cityObject[city], pid:province, index:2});
+        const areaObject = REGION_DATA[city];
+        if(areaObject){
+            Object.keys(areaObject).map(area=>{
+                pca.push({id:area, text:areaObject[area], pid:city, index:3});
+            })
+        }
+    })
+});
+
+/**
+ * 根据code反推value
+ * @param code
+ * @param level
+ * @returns {Array}
+ */
+function getRealCode(code,level){
+    let arr = [];
+    getPcode(code, arr, level);
+    return arr;
+}
+function getPcode(id, arr, index){
+    for(let item of pca){
+        if(item.id === id && item.index == index){
+            arr.unshift(id)
+            if(item.pid != '86'){
+                getPcode(item.pid, arr, --index)
+            }
+        }
+    }
+}
+//--end--@updateBy:liusq----date:20210922---for:省市区三级联动需求方法-----
+export {provinceAndCityData, regionData, provinceAndCityDataPlus, regionDataPlus, CodeToText, TextToCode,getDataByCode,provinceOptions,getRealCode}

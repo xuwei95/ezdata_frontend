@@ -1,37 +1,129 @@
-import { BasicColumn } from '/@/components/Table';
-import { FormSchema } from '/@/components/Table';
-import { getAllRolesList, duplicateCheck ,getAllTenantList,getAllPostList} from "./user.api";
-import { uploadApi } from '/@/api/sys/upload';
-import {h} from 'vue';
-import {Avatar} from 'ant-design-vue';
-
+import {BasicColumn} from '/@/components/Table';
+import {FormSchema} from '/@/components/Table';
+import {getAllRolesList, getAllTenantList} from "./user.api";
+import { rules} from '/@/utils/helper/validator';
+import { render } from '/@/utils/common/renderUtils';
 export const columns: BasicColumn[] = [
   {
     title: '用户账号',
     dataIndex: 'username',
-    width: 200,
+    width: 120,
   },
   {
     title: '用户姓名',
     dataIndex: 'realname',
-    width: 180,
+    width: 100,
   },
   {
     title: '头像',
     dataIndex: 'avatar',
-    width: 180,
-    customRender: ({record}) => {
-      return h(Avatar, {src: record.avatar,shape:'square',size:'large'});
-    },
+    width: 120,
+    customRender:render.renderAvatar,
+  },
+  {
+    title: '性别',
+    dataIndex: 'sex',
+    width: 80,
+    sorter: true,
+    customRender: ({text}) => {
+      return  render.renderDict(text, 'sex')
+    }
+  },
+  {
+    title: '生日',
+    dataIndex: 'birthday',
+    width: 100,
+  },
+  {
+    title: '手机号',
+    dataIndex: 'phone',
+    width: 100,
+  },
+  {
+    title: '部门',
+    width: 150,
+    dataIndex: 'orgCodeTxt'
+  },
+  {
+    title: '负责部门',
+    width: 150,
+    dataIndex: 'departIds_dictText'
+  },
+  {
+    title: '状态',
+    dataIndex: 'status_dictText',
+    width: 80,
+  }
+];
+
+export const recycleColumns: BasicColumn[] = [
+  {
+    title: '用户账号',
+    dataIndex: 'username',
+    width: 100,
+  },
+  {
+    title: '用户姓名',
+    dataIndex: 'realname',
+    width: 100,
+  },
+  {
+    title: '头像',
+    dataIndex: 'avatar',
+    width: 80,
+    customRender:render.renderAvatar,
+  },
+  {
+    title: '性别',
+    dataIndex: 'sex',
+    width: 80,
+    sorter: true,
+    customRender: ({text}) => {
+      return  render.renderDict(text, 'sex')
+    }
   }
 ];
 
 export const searchFormSchema: FormSchema[] = [
   {
+    label: '账号',
     field: 'username',
-    label: '用户名',
+    component: 'JInput',
+    colProps: {span: 6}
+  },
+  {
+    label: '性别',
+    field: 'sex',
+    component: 'JDictSelectTag',
+    componentProps: {
+      dictCode:'sex',
+      placeholder:'请选择性别',
+      stringToNumber:true
+    },
+    colProps: {span: 6},
+  },
+  {
+    label: '真实名称',
+    field: 'realname',
     component: 'Input',
-    colProps: { span: 8 },
+    colProps: {span: 6},
+  },
+  {
+    label: '手机号码',
+    field: 'phone',
+    component: 'Input',
+    colProps: {span: 6},
+  },
+  {
+    label: '用户状态',
+    field: 'status',
+    component: 'JDictSelectTag',
+    componentProps: {
+      dictCode:'user_status',
+      placeholder:'请选择状态',
+      stringToNumber:true
+    },
+    colProps: {span: 6},
   }
 ];
 
@@ -46,43 +138,15 @@ export const formSchema: FormSchema[] = [
     label: '用户账号',
     field: 'username',
     component: 'Input',
-    dynamicDisabled: ({ values }) => {
+    dynamicDisabled: ({values}) => {
       return !!values.id;
     },
-    dynamicRules: ({ model }) => {
-      return [
-        {
-          required: true,
-          validator: (_, value) => {
-            if (!value) {
-              return Promise.reject('请输入用户账号');
-            }
-            return new Promise((resolve, reject) => {
-              let params = {
-                tableName: "sys_user",
-                fieldName: "username",
-                fieldVal: value,
-                dataId: model.id,
-              };
-              duplicateCheck(params)
-                .then((res) => {
-                  res.success? resolve(): reject(res.message || '校验失败');
-                }).catch((err) => {
-                reject(err.message || '验证失败');
-              });
-            });
-          },
-        },
-      ];
-    },
+    dynamicRules: ({model,schema}) =>rules.duplicateCheckRule("sys_user", "username",model,schema,true),
   },
   {
     label: '登录密码',
     field: 'password',
     component: 'StrengthMeter',
-    componentProps: {
-      placeholder: '登录密码',
-    },
     rules: [
       {
         required: true,
@@ -94,22 +158,7 @@ export const formSchema: FormSchema[] = [
     label: '确认密码',
     field: 'confirmPassword',
     component: 'InputPassword',
-    dynamicRules: ({ values }) => {
-      return [
-        {
-          required: true,
-          validator: (_, value) => {
-            if (!value) {
-              return Promise.reject('不能为空');
-            }
-            if (value !== values.password) {
-              return Promise.reject('两次输入的密码不一致!');
-            }
-            return Promise.resolve();
-          },
-        },
-      ];
-    },
+    dynamicRules: ({values}) => rules.confirmPassword(values,true)
   },
   {
     label: '用户姓名',
@@ -122,41 +171,16 @@ export const formSchema: FormSchema[] = [
     field: 'workNo',
     required: true,
     component: 'Input',
-    dynamicRules: ({ model }) => {
-      return [
-        {
-          required: true,
-          validator: (_, value) => {
-            if (!value) {
-              return Promise.reject('请输入工号');
-            }
-            return new Promise((resolve, reject) => {
-              let params = {
-                tableName: "sys_user",
-                fieldName: "work_no",
-                fieldVal: value,
-                dataId: model.id,
-              };
-              duplicateCheck(params)
-                .then((res) => {
-                  res.success? resolve(): reject(res.message || '校验失败');
-                }).catch((err) => {
-                reject(err.message || '验证失败');
-              });
-            });
-          },
-        },
-      ];
-    },
+    dynamicRules: ({model,schema}) =>rules.duplicateCheckRule( "sys_user", "work_no",model,schema,true),
   },
   {
     label: '职务',
     field: 'post',
-    component: 'ApiSelect',
+    required: true,
+    component: 'JSelectPosition',
     componentProps: {
-      api: getAllPostList,
-      labelField: 'name',
-      valueField: 'code',
+        rowKey:'code',
+        labelKey:'name'
     },
   },
   {
@@ -164,51 +188,77 @@ export const formSchema: FormSchema[] = [
     field: 'selectedroles',
     component: 'ApiSelect',
     componentProps: {
-      mode:"multiple",
+      mode: "multiple",
       api: getAllRolesList,
       labelField: 'roleName',
       valueField: 'id',
     },
   },
-  /*{
+  {
+    label: '所属部门',
+    field: 'selecteddeparts',
+    component: 'JSelectDept',
+    componentProps:({formActionType,formModel}) => {
+        return {
+            sync:false,
+            checkStrictly:true,
+            defaultExpandLevel: 2,
+
+            onSelect: (options,values) => {
+                const {updateSchema} = formActionType;
+                //所属部门修改后更新负责部门下拉框数据
+                updateSchema([{
+                    field: 'departIds',
+                    componentProps: {options},
+                }]);
+                //所属部门修改后更新负责部门数据
+                formModel.departIds&&(formModel.departIds = formModel.departIds.filter(item=>values.value.indexOf(item)>-1));
+            }
+        }
+    }
+  },
+  {
     label: '租户',
     field: 'relTenantIds',
     component: 'ApiSelect',
     componentProps: {
-      mode:"multiple",
-      numberToString:true,
+      mode: "multiple",
       api: getAllTenantList,
+      numberToString:true,
       labelField: 'name',
       valueField: 'id',
     }
-  },*/
- /* {
-    label: '所属部门',
-    field: 'selecteddeparts',
-    component: 'ApiTreeSelect',
-    componentProps: {
-      replaceFields: {
-        title: 'deptName',
-        key: 'id',
-        value: 'id',
-      },
-      getPopupContainer: () => document.body,
+  },
+  {
+    label: '身份',
+    field: 'userIdentity',
+    component: 'RadioGroup',
+    defaultValue: 1,
+    componentProps:({ formModel }) => {
+      return {
+          options: [{label: '普通用户',value: 1,key: '1'},{label: '上级',value: 2,key: '2'}],
+          onChange: () => {
+              formModel.userIdentity==1&&(formModel.departIds=[]);
+          }
+      }
     },
-  },*/
+  },
+  {
+    label: '负责部门',
+    field: 'departIds',
+    component: 'Select',
+    componentProps: {
+      mode: "multiple",
+    },
+    ifShow: ({values}) => (values.userIdentity==2),
+  },
   {
     label: '头像',
     field: 'avatar',
-    component: 'Upload',
-    componentProps: ({formModel, formActionType}) => {
-      return {
-        api: uploadApi,
-        maxNumber:1,
-        emptyHidePreview:true,
-        onChange: (fileList) => {
-            console.log("fileList===>",fileList);
-          },
-      };
-    }
+    component: 'JImageUpload',
+    componentProps: {
+      fileMax:1
+    },
   },
   {
     label: '生日',
@@ -218,90 +268,132 @@ export const formSchema: FormSchema[] = [
   {
     label: '性别',
     field: 'sex',
-    component: 'Select',
+    component: 'JDictSelectTag',
     componentProps: {
-      options: [
-        {
-          label: '男',
-          value: 1,
-          key: '1',
-        },
-        {
-          label: '女',
-          value: 2,
-          key: '2',
-        },
-      ],
+      dictCode:'sex',
+      placeholder:'请选择性别',
+      stringToNumber:true
     },
   },
   {
     label: '邮箱',
     field: 'email',
     component: 'Input',
-    rules: [
-      {
-        required: false,
-        // @ts-ignore
-        validator: async (rule, value) => {
-          if (!new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(value)) {
-            return Promise.reject('邮箱格式有误');
-          }
-          return Promise.resolve();
-        },
-        trigger: 'change',
-      },
-    ],
+    rules: rules.rule('email',false),
   },
   {
     label: '手机号码',
     field: 'phone',
     component: 'Input',
-    dynamicRules: ({ model }) => {
+    dynamicRules: ({model,schema}) => {
       return [
-        {
-          required: true,
-          validator: (_, value) => {
-            if (!value) {
-              return Promise.reject('请输入手机号码');
-            }
-            console.log("new RegExp(/^1[3|4|5|7|8|9][0-9]\\d{8}$/).test(value)",new RegExp(/^1[3|4|5|7|8|9][0-9]\d{8}$/).test(value))
-            if (!new RegExp(/^1[3|4|5|7|8|9][0-9]\d{8}$/).test(value)) {
-              return Promise.reject('手机号码格式有误');
-            }
-            return new Promise((resolve, reject) => {
-              let params = {
-                tableName: "sys_user",
-                fieldName: "phone",
-                fieldVal: value,
-                dataId: model.id,
-              };
-              duplicateCheck(params)
-                .then((res) => {
-                  res.success? resolve(): reject(res.message || '校验失败');
-                }).catch((err) => {
-                reject(err.message || '验证失败');
-              });
-            });
-          },
-        },
+        {...rules.duplicateCheckRule( "sys_user", "phone",model,schema,true)[0]},
+        { pattern: /^1[3|4|5|7|8|9][0-9]\d{8}$/, message: '手机号码格式有误' }
       ];
     },
   },
   {
+    label: '座机',
+    field: 'telephone',
+    component: 'Input',
+    rules: [{ pattern: /^0\d{2,3}-[1-9]\d{6,7}$/, message: '请输入正确的座机号码' }]
+  },
+  {
     label: '工作流引擎',
     field: 'activitiSync',
-    component: 'RadioGroup',
+    defaultValue: 1,
+    component: 'JDictSelectTag',
     componentProps: {
-      options: [
-        {
-          label: '同步',
-          value: 1,
-        },
-        {
-          label: '不同步',
-          value: 0,
-        },
-      ],
+      dictCode:'activiti_sync',
+      type:'radio',
+      stringToNumber:true
     },
   }
 ];
+
+export const formPasswordSchema: FormSchema[] = [
+  {
+    label: '用户账号',
+    field: 'username',
+    component: 'Input',
+    componentProps: {readOnly: true}
+  },
+  {
+    label: '登录密码',
+    field: 'password',
+    component: 'StrengthMeter',
+    componentProps: {
+      placeholder: '请输入登录密码',
+    },
+    rules: [
+      {
+        required: true,
+        message: '请输入登录密码',
+      },
+    ],
+  },
+  {
+    label: '确认密码',
+    field: 'confirmPassword',
+    component: 'InputPassword',
+    dynamicRules: ({values}) => rules.confirmPassword(values,true)
+  }
+];
+
+export const formAgentSchema: FormSchema[] = [{
+  label: '',
+  field: 'id',
+  component: 'Input',
+  show: false
+},{
+  field: 'userName',
+  label: '用户名',
+  component: 'Input',
+  componentProps: {
+    readOnly: true,
+    allowClear:false
+  }
+},
+  {
+    field: 'agentUserName',
+    label: '代理人用户名',
+    required: true,
+    component: 'JSelectUser',
+    componentProps: {
+      rowKey:'username',
+      labelKey:'realname',
+      maxSelectCount:10
+    },
+  },
+  {
+    field: 'startTime',
+    label: '代理开始时间',
+    component: 'DatePicker',
+    required: true,
+    componentProps: {
+      showTime: true,
+      valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      placeholder: '请选择代理开始时间',
+    }
+  },
+  {
+    field: 'endTime',
+    label: '代理结束时间',
+    component: 'DatePicker',
+    required: true,
+    componentProps: {
+      showTime: true,
+      valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      placeholder: '请选择代理结束时间',
+    }
+  },
+  {
+    field: 'status',
+    label: '状态',
+    component: 'JDictSelectTag',
+    defaultValue: "1",
+    componentProps: {
+      dictCode:'valid_status',
+      type:'radioButton'
+    },
+  }]

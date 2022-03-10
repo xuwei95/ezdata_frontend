@@ -8,17 +8,17 @@
             <InputPassword size="large" visibilityToggle v-model:value="formData.password" :placeholder="t('sys.login.password')"/>
         </FormItem>
 
-        <!--验证码 111-->
+        <!--验证码-->
         <ARow class="enter-x">
             <ACol :span="12">
                 <FormItem name="inputCode" class="enter-x">
-                    <Input size="large" v-model:value="formData.inputCode" :placeholder="t('sys.login.inputCode')" style="min-width:180px"/>
+                    <Input size="large" v-model:value="formData.inputCode" :placeholder="t('sys.login.inputCode')" style="min-width: 100px"/>
                 </FormItem>
             </ACol>
-            <ACol :span="6">
+            <ACol :span="8">
                 <FormItem :style="{ 'text-align': 'right','margin-left':'20px' }" class="enter-x">
-                    <img v-if="randCodeData.requestCodeSuccess" style="margin-top: 2px;min-height: 40px;" :src="randCodeData.randCodeImage" @click="handleChangeCheckCode"/>
-                    <img v-else style="margin-top: 2px;min-height: 40px;" src="../../../assets/images/checkcode.png"  @click="handleChangeCheckCode"/>
+                    <img v-if="randCodeData.requestCodeSuccess" style="margin-top: 2px;max-width: initial;" :src="randCodeData.randCodeImage" @click="handleChangeCheckCode"/>
+                    <img v-else style="margin-top: 2px;max-width: initial;" src="../../../assets/images/checkcode.png"  @click="handleChangeCheckCode"/>
                 </FormItem>
             </ACol>
         </ARow>
@@ -71,13 +71,15 @@
         <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
 
         <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
-            <GithubFilled/>
-            <WechatFilled/>
-            <AlipayCircleFilled/>
-            <GoogleCircleFilled/>
-            <TwitterCircleFilled/>
+            <a @click="onThirdLogin('github')" title="github"><GithubFilled /></a>
+            <a @click="onThirdLogin('wechat_enterprise')" title="企业微信"> <icon-font class="item-icon" type="icon-qiyeweixin3" /></a>
+            <a @click="onThirdLogin('dingtalk')" title="钉钉"><DingtalkCircleFilled /></a>
+            <a @click="onThirdLogin('wechat_open')" title="微信"><WechatFilled/></a>
         </div>
     </Form>
+    <!-- 第三方登录相关弹框 -->
+    <ThirdModal ref="thirdModalRef"></ThirdModal>
+
 </template>
 <script lang="ts" setup>
     import {reactive, ref, toRaw, unref, computed,onMounted} from 'vue';
@@ -86,12 +88,12 @@
     import {
         GithubFilled,
         WechatFilled,
-        AlipayCircleFilled,
-        GoogleCircleFilled,
-        TwitterCircleFilled,
+        DingtalkCircleFilled,
+        QuestionCircleFilled,
+        createFromIconfontCN
     } from '@ant-design/icons-vue';
     import LoginFormTitle from './LoginFormTitle.vue';
-
+    import ThirdModal from './ThirdModal.vue';
     import {useI18n} from '/@/hooks/web/useI18n';
     import {useMessage} from '/@/hooks/web/useMessage';
 
@@ -105,6 +107,9 @@
     const ARow = Row;
     const FormItem = Form.Item;
     const InputPassword = Input.Password;
+    const IconFont = createFromIconfontCN({
+        scriptUrl: '//at.alicdn.com/t/font_2316098_umqusozousr.js',
+    });
     const {t} = useI18n();
     const {notification, createErrorModal} = useMessage();
     const {prefixCls} = useDesign('login');
@@ -114,11 +119,12 @@
     const {getFormRules} = useFormRules();
 
     const formRef = ref();
+    const thirdModalRef = ref();
     const loading = ref(false);
     const rememberMe = ref(false);
 
     const formData = reactive({
-        account: 'jeecg',
+        account: 'admin',
         password: '123456',
         inputCode: '',
     });
@@ -139,7 +145,7 @@
         if (!data) return;
         try {
             loading.value = true;
-            const userInfo = await userStore.login(
+            const {userInfo} = await userStore.login(
                 toRaw({
                     password: data.password,
                     username: data.account,
@@ -151,17 +157,16 @@
             if (userInfo) {
                 notification.success({
                     message: t('sys.login.loginSuccessTitle'),
-                    description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realName}`,
+                    description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.realname}`,
                     duration: 3,
                 });
             }
         } catch (error) {
-            createErrorModal({
-                title: t('sys.api.errorTip'),
-                content: error.message || t('sys.api.networkExceptionMsg'),
-                getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
+            notification.error({
+              message: t('sys.api.errorTip'),
+              description:  error.message || t('sys.api.networkExceptionMsg'),
+              duration: 3,
             });
-        } finally {
             loading.value = false;
         }
     }
@@ -170,10 +175,17 @@
         //TODO 兼容mock和接口，暂时这样处理
         randCodeData.checkKey = 1629428467008 //new Date().getTime();
         getCodeInfo(randCodeData.checkKey).then(res=>{
-            console.log("###########",res)
             randCodeData.randCodeImage = res
             randCodeData.requestCodeSuccess = true
         });
+    }
+
+    /**
+     * 第三方登录
+     * @param type
+     */
+    function onThirdLogin(type){
+        thirdModalRef.value.onThirdLogin(type);
     }
     //初始化验证码
     onMounted(() => {

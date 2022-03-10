@@ -2,7 +2,7 @@ import componentSetting from '/@/settings/componentSetting';
 
 const { table } = componentSetting;
 
-const { pageSizeOptions, defaultPageSize, fetchSetting, defaultSortFn, defaultFilterFn } = table;
+const { pageSizeOptions, defaultPageSize,  defaultSize, fetchSetting, defaultSortFn, defaultFilterFn } = table;
 
 export const ROW_KEY = 'key';
 
@@ -22,6 +22,8 @@ export const DEFAULT_FILTER_FN = defaultFilterFn;
 
 //  Default layout of table cells
 export const DEFAULT_ALIGN = 'center';
+// Default Size
+export const DEFAULT_SIZE = defaultSize;
 
 export const INDEX_COLUMN_FLAG = 'INDEX';
 

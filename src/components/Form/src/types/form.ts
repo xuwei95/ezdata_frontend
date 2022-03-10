@@ -8,6 +8,7 @@ import type { CSSProperties } from 'vue';
 import type { RowProps } from 'ant-design-vue/lib/grid/Row';
 
 export type FieldMapToTime = [string, [string, string], string?][];
+export type FieldMapToNumber = [string, [string, string]][];
 
 export type Rule = RuleObject & {
   trigger?: 'blur' | 'change' | ['change', 'blur'];
@@ -85,19 +86,23 @@ export interface FormProps {
   disabled?: boolean;
   // Time interval fields are mapped into multiple
   fieldMapToTime?: FieldMapToTime;
+  // number interval fields are mapped into multiple
+  fieldMapToNumber?: FieldMapToNumber;
   // Placeholder is set automatically
   autoSetPlaceHolder?: boolean;
   // Auto submit on press enter on input
   autoSubmitOnEnter?: boolean;
   // Check whether the information is added to the label
   rulesMessageJoinLabel?: boolean;
-  // Whether to show collapse and expand buttons
+  // 是否显示展开收起按钮
   showAdvancedButton?: boolean;
   // Whether to focus on the first input box, only works when the first form item is input
   autoFocusFirstItem?: boolean;
-  // Automatically collapse over the specified number of rows
+  // 【jeecg】如果 showAdvancedButton 为 true，超过指定列数默认折叠，默认为3
+  autoAdvancedCol?: number;
+  // 如果 showAdvancedButton 为 true，超过指定行数行默认折叠
   autoAdvancedLine?: number;
-  // Always show lines
+  // 折叠时始终保持显示的行数
   alwaysShowLines?: number;
   // Whether to show the operation button
   showActionButtonGroup?: boolean;
@@ -129,7 +134,7 @@ export interface FormSchema {
   // Variable name bound to v-model Default value
   valueField?: string;
   // Label name
-  label: string;
+  label: string | VNode;
   // Auxiliary text
   subLabel?: string;
   // Help text on the right side of the text

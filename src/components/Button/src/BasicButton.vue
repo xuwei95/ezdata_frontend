@@ -21,7 +21,6 @@
     import Icon from '/@/components/Icon/src/Icon.vue';
     import { buttonProps } from './props';
     import { useAttrs } from '/@/hooks/core/useAttrs';
-
     const props = defineProps(buttonProps);
     // get component class
     const attrs = useAttrs({ excludeDefaultKeys: false });

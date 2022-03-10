@@ -14,6 +14,8 @@ export interface RequestOptions {
   joinPrefix?: boolean;
   // 接口地址，如果保留为空，则使用默认值
   apiUrl?: string;
+  // 请求拼接路径
+  urlPrefix?: string;
   // 错误消息提示类型
   errorMessageMode?: ErrorMessageMode;
   // 成功消息提示类型
@@ -43,4 +45,11 @@ export interface UploadFileParams {
   // 文件名
   filename?: string;
   [key: string]: any;
+}
+//文件返回参数
+export interface UploadFileCallBack {
+  // 成功回调方法
+  success?: any;
+  // 是否返回响应头,需要获取响应头时使用此属性
+  isReturnResponse?: boolean;
 }

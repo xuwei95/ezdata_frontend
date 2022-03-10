@@ -1,14 +1,14 @@
 <template>
   <PageWrapper title="excel数据导入示例">
-    <ImpExcel @success="loadDataSuccess">
+    <ImpExcel @success="loadDataSuccess" dateFormat="YYYY-MM-DD">
       <a-button class="m-3"> 导入Excel </a-button>
     </ImpExcel>
     <BasicTable
-      v-for="(table, index) in tableListRef"
-      :key="index"
-      :title="table.title"
-      :columns="table.columns"
-      :dataSource="table.dataSource"
+            v-for="(table, index) in tableListRef"
+            :key="index"
+            :title="table.title"
+            :columns="table.columns"
+            :dataSource="table.dataSource"
     />
   </PageWrapper>
 </template>
@@ -29,7 +29,7 @@
           columns?: any[];
           dataSource?: any[];
         }[]
-      >([]);
+        >([]);
 
       function loadDataSuccess(excelDataList: ExcelData[]) {
         tableListRef.value = [];

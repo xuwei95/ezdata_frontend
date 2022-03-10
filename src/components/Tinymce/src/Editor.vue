@@ -52,7 +52,10 @@
     import 'tinymce/plugins/visualblocks';
     import 'tinymce/plugins/visualchars';
     import 'tinymce/plugins/wordcount';
-
+    import 'tinymce/plugins/image'
+    import 'tinymce/plugins/table'
+    import 'tinymce/plugins/textcolor'
+    import 'tinymce/plugins/contextmenu'
     import {
         defineComponent,
         computed,
@@ -64,7 +67,7 @@
         onBeforeUnmount,
     } from 'vue';
     import ImgUpload from './ImgUpload.vue';
-    import { toolbar, plugins } from './tinymce';
+    import { toolbar, plugins,simplePlugins,simpleToolbar,menubar } from './tinymce';
     import { buildShortUUID } from '/@/utils/uuid';
     import { bindHandlers } from './helper';
     import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActivated';
@@ -72,7 +75,8 @@
     import { isNumber } from '/@/utils/is';
     import { useLocale } from '/@/locales/useLocale';
     import { useAppStore } from '/@/store/modules/app';
-
+    import { uploadFile } from '/@/api/common/api';
+    import { getFileAccessHttpUrl } from '/@/utils/common/compUtils';
     const tinymceProps = {
         options: {
             type: Object as PropType<Partial<RawEditorSettings>>,
@@ -89,6 +93,10 @@
         plugins: {
             type: Array as PropType<string[]>,
             default: plugins,
+        },
+        menubar: {
+            type: Object,
+            default: menubar,
         },
         modelValue: {
             type: String,
@@ -136,7 +144,7 @@
             });
 
             const skinName = computed(() => {
-                return appStore.getDarkMode === 'light' ? 'oxide' : 'oxide-dark';
+                return appStore.getDarkMode === 'light' ? 'jeecg' : 'oxide-dark';
             });
 
             const langName = computed(() => {
@@ -145,23 +153,44 @@
             });
 
             const initOptions = computed((): RawEditorSettings => {
-                const { height, options, toolbar, plugins } = props;
+                const { height, options, toolbar, plugins,menubar } = props;
                 const publicPath = import.meta.env.VITE_PUBLIC_PATH || '/';
                 return {
                     selector: `#${unref(tinymceId)}`,
                     height,
                     toolbar,
-                    menubar: 'file edit insert view format table',
+                    menubar: menubar,
                     plugins,
                     language_url: publicPath + 'resource/tinymce/langs/' + langName.value + '.js',
                     language: langName.value,
                     branding: false,
                     default_link_target: '_blank',
                     link_title: false,
-                    object_resizing: false,
+                    object_resizing: true,
+                    toolbar_mode:'sliding',
                     auto_focus: true,
+                    toolbar_groups:true,
                     skin: skinName.value,
                     skin_url: publicPath + 'resource/tinymce/skins/ui/' + skinName.value,
+                    images_upload_handler: (blobInfo, success) => {
+                        let params = {
+                            'file':blobInfo.blob(),
+                            'filename':blobInfo.filename(),
+                            'data':{biz:"jeditor",jeditor:"1"}
+                        };
+                        const uploadSuccess = (res)=>{
+                            if (res.success) {
+                                if(res.message == 'local'){
+                                    const img = 'data:image/jpeg;base64,' + blobInfo.base64()
+                                    success(img)
+                                }else{
+                                    let img = getFileAccessHttpUrl(res.message)
+                                    success(img)
+                                }
+                            }
+                        }
+                        uploadFile(params,uploadSuccess);
+                    },
                     content_css:
                         publicPath + 'resource/tinymce/skins/ui/' + skinName.value + '/content.min.css',
                     ...options,

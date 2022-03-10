@@ -3,7 +3,7 @@ import type { FormProps, FormSchema, FormActionType } from '../types/form';
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
 import { unref, toRaw } from 'vue';
 import { isArray, isFunction, isObject, isString } from '/@/utils/is';
-import { deepMerge } from '/@/utils';
+import { deepMerge, getValueType } from '/@/utils';
 import { dateItemType, handleInputNumberValue } from '../helper';
 import { dateUtil } from '/@/utils/dateUtil';
 import { cloneDeep, uniqBy } from 'lodash-es';
@@ -240,6 +240,17 @@ export function useFormEvents({
         if (!formEl) return;
         try {
             const values = await validate();
+            //update-begin---author:zhangdaihao   Date:20140212  for：[bug号]树机构调整------------
+            //--updateBy-begin----author:zyf---date:20211206------for:对查询表单提交的数组处理成字符串------
+            for (let key in values) {
+              if (values[key] instanceof Array) {
+                let valueType = getValueType(getProps, key);
+                if (valueType === 'string') {
+                  values[key] = values[key].join(',');
+                }
+              }
+            }
+            //--updateBy-end----author:zyf---date:20211206------for:对查询表单提交的数组处理成字符串------
             const res = handleFormValues(values);
             emit('submit', res);
         } catch (error) {

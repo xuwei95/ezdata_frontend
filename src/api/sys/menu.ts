@@ -10,13 +10,13 @@ enum Api {
  */
 
 export const getMenuList = () => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     //为了兼容mock和接口数据
     defHttp.get<getMenuListResultModel>({ url: Api.GetMenuList }).then(res=>{
       if(Array.isArray(res)){
         resolve(res)
       }else{
-        resolve(res.menu)
+        resolve(res['menu'])
       }
     });
   })

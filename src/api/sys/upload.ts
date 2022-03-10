@@ -20,3 +20,18 @@ export function uploadApi(
     params
   );
 }
+/**
+ * @description: Upload interface
+ */
+export function uploadImg(
+  params: UploadFileParams,
+  onUploadProgress: (progressEvent: ProgressEvent) => void
+) {
+  return defHttp.uploadFile<UploadApiResult>(
+    {
+      url: `${uploadUrl}/sys/common/upload`,
+      onUploadProgress,
+    },
+    params, {isReturnResponse:true}
+  );
+}

@@ -1,13 +1,14 @@
 <template>
     <div class="table-settings">
-        <RedoSetting v-if="getSetting.redo" :getPopupContainer="getTableContainer"/>
-        <SizeSetting v-if="getSetting.size" :getPopupContainer="getTableContainer"/>
+        <RedoSetting v-if="getSetting.redo" :isMobile="isMobile" :getPopupContainer="getTableContainer"/>
+        <SizeSetting v-if="getSetting.size" :isMobile="isMobile" :getPopupContainer="getTableContainer"/>
         <ColumnSetting
                 v-if="getSetting.setting"
+                :isMobile="isMobile"
                 @columns-change="handleColumnChange"
                 :getPopupContainer="getTableContainer"
         />
-        <FullScreenSetting v-if="getSetting.fullScreen" :getPopupContainer="getTableContainer"/>
+        <FullScreenSetting v-if="getSetting.fullScreen" :isMobile="isMobile" :getPopupContainer="getTableContainer"/>
     </div>
 </template>
 <script lang="ts">
@@ -34,6 +35,7 @@
                 type: Object as PropType<TableSetting>,
                 default: () => ({}),
             },
+            mode: String,
         },
         emits: ['columns-change'],
         setup(props, {emit}) {
@@ -49,6 +51,7 @@
                     ...props.setting,
                 };
             });
+            const isMobile = computed(() => props.mode === 'mobile')
 
             function handleColumnChange(data: ColumnChangeParam[]) {
                 emit('columns-change', data);
@@ -58,7 +61,7 @@
                 return table ? unref(table.wrapRef) : document.body;
             }
 
-            return {getSetting, t, handleColumnChange, getTableContainer};
+            return {getSetting, t, handleColumnChange, getTableContainer, isMobile};
         },
     });
 </script>

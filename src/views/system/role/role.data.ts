@@ -1,37 +1,66 @@
-import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { isRoleExist } from './role.api';
-
-export const columns: BasicColumn[] = [
+export const columns = [
   {
     title: '角色名称',
     dataIndex: 'roleName',
-    width: 200,
+    width: 100,
   },
   {
     title: '角色编码',
     dataIndex: 'roleCode',
-    width: 180,
+    width: 100,
   },
   {
     title: '创建时间',
     dataIndex: 'createTime',
-    width: 180,
+    width: 100,
   },
 ];
-
+/**
+ * 角色用户Columns
+ */
+export const userColumns = [
+  {
+    title: '用户账号',
+    dataIndex: 'username',
+    width: 100,
+  },
+  {
+    title: '用户姓名',
+    dataIndex: 'realname',
+    width: 100,
+  },
+  {
+    title: '状态',
+    dataIndex: 'status_dictText',
+    width: 80,
+  }
+];
 export const searchFormSchema: FormSchema[] = [
   {
-    field: 'roleNme',
+    field: 'roleName',
     label: '角色名称',
     component: 'Input',
-    colProps: { span: 8 },
+    colProps: { span: 6},
+  }
+];
+/**
+ * 角色用户搜索form
+ */
+export const searchUserFormSchema: FormSchema[] = [
+  {
+    field: 'username',
+    label: '用户账号',
+    component: 'Input',
+    colProps: { span: 12 },
   }
 ];
 
 export const formSchema: FormSchema[] = [
   {
     field: 'id',
+    label: '',
     component: 'Input',
     show:false
   },
@@ -46,6 +75,9 @@ export const formSchema: FormSchema[] = [
     label: '角色编码',
     required: true,
     component: 'Input',
+    dynamicDisabled: ({values}) => {
+      return !!values.id;
+    },
     dynamicRules: ({ values,model }) => {
       console.log("values:",values)
       return [
@@ -77,4 +109,20 @@ export const formSchema: FormSchema[] = [
     component: 'InputTextArea',
   }
 ];
+
+export const formDescSchema = [
+  {
+    field: 'roleName',
+    label: '角色名称',
+  },
+  {
+    field: 'roleCode',
+    label: '角色编码'
+  },
+  {
+    label: '备注',
+    field: 'description',
+  }
+];
+
 

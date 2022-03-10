@@ -1,7 +1,7 @@
 <template>
   <div>
     <BasicTable @register="registerTable" @fetch-success="onFetchSuccess">
-      <template #toolbar>
+      <template #tableTitle>
         <a-button type="primary" @click="handleCreate"> 新增菜单 </a-button>
       </template>
       <template #action="{ record }">

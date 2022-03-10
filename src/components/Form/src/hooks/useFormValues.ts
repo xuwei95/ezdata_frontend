@@ -4,6 +4,7 @@ import { unref } from 'vue';
 import type { Ref, ComputedRef } from 'vue';
 import type { FormProps, FormSchema } from '../types/form';
 import { set } from 'lodash-es';
+import { handleRangeValue } from '/@/components/Form/src/utils/formUtils';
 
 interface UseFormValuesContext {
   defaultValueRef: Ref<any>;
@@ -42,33 +43,9 @@ export function useFormValues({
       }
       set(res, key, value);
     }
-    return handleRangeTimeValue(res);
+    return handleRangeValue(getProps,res);
   }
 
-  /**
-   * @description: Processing time interval parameters
-   */
-  function handleRangeTimeValue(values: Recordable) {
-    const fieldMapToTime = unref(getProps).fieldMapToTime;
-
-    if (!fieldMapToTime || !Array.isArray(fieldMapToTime)) {
-      return values;
-    }
-
-    for (const [field, [startTimeKey, endTimeKey], format = 'YYYY-MM-DD'] of fieldMapToTime) {
-      if (!field || !startTimeKey || !endTimeKey || !values[field]) {
-        continue;
-      }
-
-      const [startTime, endTime]: string[] = values[field];
-
-      values[startTimeKey] = dateUtil(startTime).format(format);
-      values[endTimeKey] = dateUtil(endTime).format(format);
-      Reflect.deleteProperty(values, field);
-    }
-
-    return values;
-  }
 
   function initDefault() {
     const schemas = unref(getSchema);

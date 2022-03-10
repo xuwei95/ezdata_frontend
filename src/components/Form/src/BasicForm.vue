@@ -1,23 +1,9 @@
 <template>
-    <Form
-            v-bind="getBindValue"
-            :class="getFormClass"
-            ref="formElRef"
-            :model="formModel"
-            @keypress.enter="handleEnterPress"
-    >
+    <Form v-bind="getBindValue" :class="getFormClass" ref="formElRef" :model="formModel" @keypress.enter="handleEnterPress">
         <Row v-bind="getRow">
             <slot name="formHeader"></slot>
             <template v-for="schema in getSchema" :key="schema.field">
-                <FormItem
-                        :tableAction="tableAction"
-                        :formActionType="formActionType"
-                        :schema="schema"
-                        :formProps="getProps"
-                        :allDefaultValues="defaultValueRef"
-                        :formModel="formModel"
-                        :setFormModel="setFormModel"
-                >
+                <FormItem :tableAction="tableAction" :formActionType="formActionType" :schema="schema" :formProps="getProps" :allDefaultValues="defaultValueRef" :formModel="formModel" :setFormModel="setFormModel">
                     <template #[item]="data" v-for="item in Object.keys($slots)">
                         <slot :name="item" v-bind="data || {}"></slot>
                     </template>
@@ -25,10 +11,7 @@
             </template>
 
             <FormAction v-bind="getFormActionBindProps" @toggle-advanced="handleToggleAdvanced">
-                <template
-                        #[item]="data"
-                        v-for="item in ['resetBefore', 'submitBefore', 'advanceBefore', 'advanceAfter']"
-                >
+                <template #[item]="data" v-for="item in ['resetBefore', 'submitBefore', 'advanceBefore', 'advanceAfter']">
                     <slot :name="item" v-bind="data || {}"></slot>
                 </template>
             </FormAction>
@@ -72,8 +55,9 @@
             const modalFn = useModalContext();
 
             const advanceState = reactive<AdvanceState>({
-                isAdvanced: true,
-                hideAdvanceBtn: false,
+                // 默认是收起状态
+                isAdvanced: false,
+                hideAdvanceBtn: true,
                 isLoad: false,
                 actionSpan: 6,
             });

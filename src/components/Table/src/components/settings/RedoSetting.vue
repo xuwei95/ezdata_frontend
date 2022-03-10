@@ -1,5 +1,5 @@
 <template>
-  <Tooltip placement="top">
+  <Tooltip placement="top" v-bind="getBindProps">
     <template #title>
       <span>{{ t('common.redo') }}</span>
     </template>
@@ -7,7 +7,7 @@
   </Tooltip>
 </template>
 <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { computed, defineComponent } from 'vue';
   import { Tooltip } from 'ant-design-vue';
   import { RedoOutlined } from '@ant-design/icons-vue';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -15,19 +15,31 @@
 
   export default defineComponent({
     name: 'RedoSetting',
+    props: {
+      isMobile: Boolean,
+    },
     components: {
       RedoOutlined,
       Tooltip,
     },
-    setup() {
+    setup(props) {
       const table = useTableContext();
       const { t } = useI18n();
 
+      const getBindProps = computed(() => {
+        let obj = {}
+        if (props.isMobile){
+          obj['visible'] = false
+        }
+        return obj
+      })
+
       function redo() {
         table.reload();
+        table.emit!('table-redo')
       }
 
-      return { redo, t };
+      return { getBindProps, redo, t };
     },
   });
 </script>

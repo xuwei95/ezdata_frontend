@@ -10,10 +10,12 @@ export const buttonProps = {
    * Text after icon.
    */
   postIcon: { type: String },
+  type: { type: String },
   /**
    * preIcon and postIcon icon size.
    * @default: 14
    */
   iconSize: { type: Number, default: 14 },
+  isUpload:{type:Boolean,default:false},
   onClick: { type: Function as PropType<(...args) => any>, default: null },
 };

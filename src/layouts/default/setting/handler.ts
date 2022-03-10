@@ -155,6 +155,9 @@ export function handler(event: HandlerEnum, value: any): DeepPartial<ProjectConf
     case HandlerEnum.TABS_SHOW_FOLD:
       return { multiTabsSetting: { showFold: value } };
 
+    case HandlerEnum.TABS_THEME:
+      return { multiTabsSetting: { theme: value } };
+
     // ============header==================
     case HandlerEnum.HEADER_THEME:
       updateHeaderBgColor(value);

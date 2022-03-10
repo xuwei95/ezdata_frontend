@@ -1,5 +1,5 @@
 <template>
-    <Tooltip placement="top">
+    <Tooltip placement="top" v-bind="getBindProps">
         <template #title>
             <span>{{ t('component.table.settingColumn') }}</span>
         </template>
@@ -24,13 +24,13 @@
                         {{ t('component.table.settingIndexColumnShow') }}
                     </Checkbox>
 
-                    <Checkbox
-                            v-model:checked="checkSelect"
-                            @change="handleSelectCheckChange"
-                            :disabled="!defaultRowSelection"
-                    >
-                        {{ t('component.table.settingSelectColumnShow') }}
-                    </Checkbox>
+<!--                    <Checkbox-->
+<!--                            v-model:checked="checkSelect"-->
+<!--                            @change="handleSelectCheckChange"-->
+<!--                            :disabled="!defaultRowSelection"-->
+<!--                    >-->
+<!--                        {{ t('component.table.settingSelectColumnShow') }}-->
+<!--                    </Checkbox>-->
 
                     <a-button size="small" type="link" @click="reset">
                         {{ t('common.resetText') }}
@@ -42,7 +42,7 @@
                 <ScrollContainer>
                     <CheckboxGroup v-model:value="checkedList" @change="onChange" ref="columnListRef">
                         <template v-for="item in plainOptions" :key="item.value">
-                            <div :class="`${prefixCls}__check-item`">
+                            <div :class="`${prefixCls}__check-item`" v-if="!('ifShow' in item && !item.ifShow)">
                                 <DragOutlined class="table-coulmn-drag-icon" />
                                 <Checkbox :value="item.value">
                                     {{ item.label }}
@@ -136,6 +136,9 @@
 
     export default defineComponent({
         name: 'ColumnSetting',
+        props: {
+          isMobile: Boolean,
+        },
         components: {
             SettingOutlined,
             Popover,
@@ -149,7 +152,7 @@
         },
         emits: ['columns-change'],
 
-        setup(_, { emit, attrs }) {
+        setup(props, { emit, attrs }) {
             const { t } = useI18n();
             const table = useTableContext();
 
@@ -177,6 +180,14 @@
             const getValues = computed(() => {
                 return unref(table?.getBindValues) || {};
             });
+
+            const getBindProps = computed(() => {
+              let obj = {}
+              if (props.isMobile){
+                obj['visible'] = false
+              }
+              return obj
+            })
 
             watchEffect(() => {
                 const columns = table.getColumns();
@@ -366,6 +377,7 @@
             }
 
             return {
+                getBindProps,
                 t,
                 ...toRefs(state),
                 indeterminate,
