@@ -34,36 +34,6 @@ JeecgBoot-Vue3采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术�
 *  Vben文档：[https://vvbin.cn/doc-next](https://vvbin.cn/doc-next/)
 *  Antd-vue文档： [Ant-Design-Vue文档](https://2x.antdv.com/docs/vue/getting-started-cn) 
 
-## 入门必备
-
-本项目需要一定前端基础知识，请确保掌握 Vue 的基础知识，以便能处理一些常见的问题。 建议在开发前先学一下以下内容，提前了解和学习这些知识，会对项目理解非常有帮助:
-
-*   [Vue3 文档](https://v3.vuejs.org/)
-*   [TypeScript](https://www.typescriptlang.org/)
-*   [Vue-router](https://next.router.vuejs.org/)
-*   [Ant-Design-Vue](https://2x.antdv.com/docs/vue/introduce-cn/)
-*   [Es6](https://es6.ruanyifeng.com/)
-*   [Vitejs](https://vitejs.dev/)
-*   [Pinia(vuex替代方案)](https://pinia.esm.dev/introduction.html)
-*   [Vue-RFCS](https://github.com/vuejs/rfcs)
-*   [Vue2 迁移到 3](https://v3.vuejs.org/guide/migration/introduction.html)
-*   [~~WindiCss~~](https://windicss.netlify.app/)
-
-
-##   浏览器支持
-
-**本地开发**推荐使用`Chrome 最新版`浏览器，**不支持**`Chrome 80`以下版本。
-
-**生产环境**支持现代浏览器，不支持 IE。
-
-| [![IE](https://raw.githubusercontent.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png)](http://godban.github.io/browsers-support-badges/)IE | [![ Edge](https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png)](http://godban.github.io/browsers-support-badges/)Edge | [![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png)](http://godban.github.io/browsers-support-badges/)Firefox | [![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png)](http://godban.github.io/browsers-support-badges/)Chrome | [![Safari](https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png)](http://godban.github.io/browsers-support-badges/)Safari |
-| --- | --- | --- | --- | --- |
-| not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
-
-
-
-
-
 
 ## Install and use
 
@@ -220,3 +190,30 @@ yarn build
 └─更多功能开发中。。
    
 ```
+
+
+## 入门必备
+
+本项目需要一定前端基础知识，请确保掌握 Vue 的基础知识，以便能处理一些常见的问题。 建议在开发前先学一下以下内容，提前了解和学习这些知识，会对项目理解非常有帮助:
+
+*   [Vue3 文档](https://v3.vuejs.org/)
+*   [TypeScript](https://www.typescriptlang.org/)
+*   [Vue-router](https://next.router.vuejs.org/)
+*   [Ant-Design-Vue](https://2x.antdv.com/docs/vue/introduce-cn/)
+*   [Es6](https://es6.ruanyifeng.com/)
+*   [Vitejs](https://vitejs.dev/)
+*   [Pinia(vuex替代方案)](https://pinia.esm.dev/introduction.html)
+*   [Vue-RFCS](https://github.com/vuejs/rfcs)
+*   [Vue2 迁移到 3](https://v3.vuejs.org/guide/migration/introduction.html)
+*   [~~WindiCss~~](https://windicss.netlify.app/)
+
+
+##   浏览器支持
+
+**本地开发**推荐使用`Chrome 最新版`浏览器，**不支持**`Chrome 80`以下版本。
+
+**生产环境**支持现代浏览器，不支持 IE。
+
+| [![IE](https://raw.githubusercontent.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png)](http://godban.github.io/browsers-support-badges/)IE | [![ Edge](https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png)](http://godban.github.io/browsers-support-badges/)Edge | [![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png)](http://godban.github.io/browsers-support-badges/)Firefox | [![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png)](http://godban.github.io/browsers-support-badges/)Chrome | [![Safari](https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png)](http://godban.github.io/browsers-support-badges/)Safari |
+| --- | --- | --- | --- | --- |
+| not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
