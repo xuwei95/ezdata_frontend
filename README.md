@@ -1,8 +1,4 @@
-![JEECG](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/jeecgfengm.png "JeecgBoot低代码开发平台")
-
-
-
-JEECG BOOT 低代码平台（Vue3前端版本）
+JEECG BOOT 低代码平台（Vue3前端）
 ===============
 
 当前最新版本： 1.0.0-beta（预计时间：20220321）
