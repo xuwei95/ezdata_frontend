@@ -85,6 +85,7 @@
     "xe-utils": "^3.3.1",
     "xlsx": "^0.17.3",
     "qiankun": "^2.5.1",
+    "vuedraggable": "^4.1.0",
     "vue-json-pretty": "^2.0.4"
   },
   "devDependencies": {
