@@ -256,5 +256,6 @@ INSERT INTO `sys_permission` VALUES ('5c2f42277948043026b7a14692456828', 'd7d6e2
 INSERT INTO `sys_permission` VALUES ('9502685863ab87f0ad1134142788a385', '1438108176273760258', '首页', '/dashboard/analysis', 'dashboard/Analysis', 1, NULL, NULL, 1, NULL, NULL, 1, 0, 'ant-design:bank-filled', 1, 1, 0, NULL, NULL, NULL, '2018-12-25 20:34:38', 'admin', '2021-09-17 15:43:16', 0, 0, NULL, 0);
 INSERT INTO `sys_permission` VALUES ('d7d6e2e4e2934f2c9385a623fd98c6f3', '', '系统管理', '/isystem', 'layouts/RouteView', 1, NULL, NULL, 0, NULL, NULL, 2, 0, 'ant-design:setting', 0, 0, 0, NULL, NULL, NULL, '2018-12-25 20:34:38', 'admin', '2020-01-07 11:00:45', 0, 0, NULL, 0);
 
+delete from sys_permission where id = '1449995470942593026';
 
 -- 角色授权vue3的菜单
