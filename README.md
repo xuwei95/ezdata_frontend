@@ -13,8 +13,8 @@ JeecgBoot-Vue3采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术�
 
 ### 源码下载：
 
-> - 必看：切换Vue3路由： [http://vue3.jeecg.com/2671576](http://vue3.jeecg.com/2671576)
-> - (重要：必须切换，不然会报错 Error: Invalid route component)
+> - 重要必看：切换Vue3路由： [http://vue3.jeecg.com/2671576](http://vue3.jeecg.com/2671576)
+> - 后台版本要求：`jeecgboot v3.0+`以上， 因为从3.0版本开始，后台为了兼容vue3.0前端做了很多适配工作。
 
 |     |   后端源码   | vue3前端源码  |
 |---  |--- | --- |
