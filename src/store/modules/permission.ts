@@ -197,7 +197,7 @@ export const usePermissionStore = defineStore({
 
         // 后台菜单构建
         case PermissionModeEnum.BACK:
-          const { createMessage } = useMessage();
+          const { createMessage, createWarningModal } = useMessage();
           // 菜单加载提示
           // createMessage.loading({
           //   content: t('sys.app.menuLoading'),
@@ -210,6 +210,33 @@ export const usePermissionStore = defineStore({
           try {
             this.changePermissionCode();
             routeList = (await getMenuList()) as AppRouteRecordRaw[];
+            // update-begin----author:sunjianlei---date:20220315------for: 判断是否是 vue3 版本的菜单 ---
+            let hasIndex: boolean = false
+            let hasIcon: boolean = false
+            for (let menuItem of routeList) {
+              // 条件1：判断组件是否是 layouts/default/index
+              if (!hasIndex) {
+                hasIndex = menuItem.component === 'layouts/default/index'
+              }
+              // 条件2：判断图标是否带有 冒号
+              if (!hasIcon) {
+                hasIcon = !!menuItem.meta?.icon?.includes(':')
+              }
+              // 满足任何一个条件都直接跳出循环
+              if (hasIcon || hasIndex) {
+                break
+              }
+            }
+            // 两个条件都不满足，就弹出提示框
+            if (!hasIcon && !hasIndex) {
+              // 延迟1.5秒之后再出现提示，否则提示框出不来
+              setTimeout(() => createWarningModal({
+                title: '提示',
+                content: '检测到你可能使用了<b>非vue3版本</b>的数据库表，这将会导致菜单或其他功能出现异常，请更换成vue3版本的数据库表后刷新。'
+                  + '<br>文档地址：<a href="http://vue3.jeecg.com/2671576" target="_blank">http://vue3.jeecg.com/2671576</a>',
+              }), 1500)
+            }
+            // update-end----author:sunjianlei---date:20220315------for: 判断是否是 vue3 版本的菜单 ---
           } catch (error) {
             console.error(error);
           }
