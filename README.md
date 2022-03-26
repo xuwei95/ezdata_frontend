@@ -1,7 +1,7 @@
 JEECG BOOT 低代码平台（Vue3前端）
 ===============
 
-当前最新版本： 1.0.0（预计时间：20220321）
+当前最新版本： 1.0.0（20220321）
 
 
 ## 简介
@@ -24,12 +24,13 @@ JeecgBoot-Vue3采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术�
 
 ### 相关文档：
 
-*  JEECG官网：[www.jeecg.com](http://www.jeecg.com)
-*  在线演示：http://boot3.jeecg.com
-*  QQ交流群：683903138
+
 *  开发文档：http://vue3.jeecg.com
 *  入门视频：https://www.bilibili.com/video/BV1V34y187Y9
+*  JEECG官网：[www.jeecg.com](http://www.jeecg.com)
 *  代码生成：http://vue3.jeecg.com/2677352
+*  在线演示：http://boot3.jeecg.com
+*  QQ交流群：683903138
 
 ## Install and use
 
