@@ -26,7 +26,7 @@ JeecgBoot-Vue3采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术�
 
 
 *  开发文档：http://vue3.jeecg.com
-*  入门视频：https://www.bilibili.com/video/BV1V34y187Y9
+*  入门视频：[新手零基础入门视频](https://www.bilibili.com/video/BV1V34y187Y9)
 *  JEECG官网：[www.jeecg.com](http://www.jeecg.com)
 *  代码生成：http://vue3.jeecg.com/2677352
 *  在线演示：http://boot3.jeecg.com
