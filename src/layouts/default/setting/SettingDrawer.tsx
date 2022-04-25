@@ -158,12 +158,12 @@ export default defineComponent({
 
       return (
         <>
-          {/*<SwitchItem*/}
-          {/*  title={t('layout.setting.splitMenu')}*/}
-          {/*  event={HandlerEnum.MENU_SPLIT}*/}
-          {/*  def={unref(getSplit)}*/}
-          {/*  disabled={!unref(getShowMenuRef) || unref(getMenuType) !== MenuTypeEnum.MIX}*/}
-          {/*/>*/}
+          <SwitchItem
+            title={t('layout.setting.splitMenu')}
+            event={HandlerEnum.MENU_SPLIT}
+            def={unref(getSplit)}
+            disabled={!unref(getShowMenuRef) || unref(getMenuType) !== MenuTypeEnum.MIX}
+          />
           {/*<SwitchItem*/}
           {/*  title={t('layout.setting.mixSidebarFixed')}*/}
           {/*  event={HandlerEnum.MENU_FIXED_MIX_SIDEBAR}*/}
