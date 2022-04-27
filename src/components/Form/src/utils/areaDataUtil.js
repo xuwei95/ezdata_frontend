@@ -190,4 +190,4 @@ function getPcode(id, arr, index){
     }
 }
 //--end--@updateBy:liusq----date:20210922---for:省市区三级联动需求方法-----
-export {provinceAndCityData, regionData, provinceAndCityDataPlus, regionDataPlus, CodeToText, TextToCode,getDataByCode,provinceOptions,getRealCode}
+export {provinceAndCityData, regionData, provinceAndCityDataPlus, regionDataPlus,getDataByCode,provinceOptions,getRealCode}

@@ -138,7 +138,7 @@ const transform: AxiosTransform = {
   /**
    * @description: 请求拦截器处理
    */
-  requestInterceptors: (config, options) => {
+  requestInterceptors: (config:Recordable, options) => {
     // 请求之前处理config
     const token = getToken();
     let tenantid = getTenantId();
@@ -147,7 +147,11 @@ const transform: AxiosTransform = {
       config.headers.Authorization = options.authenticationScheme ? `${options.authenticationScheme} ${token}` : token;
       config.headers[ConfigEnum.TOKEN] = token
       //--update-begin--author:liusq---date:20210831---for:将签名和时间戳，添加在请求接口 Header
-      config.headers[ConfigEnum.TIMESTAMP] = signMd5Utils.getDateTimeToString();
+      
+      // update-begin--author:taoyan---date:20220421--for: VUEN-410【签名改造】 X-TIMESTAMP牵扯
+      config.headers[ConfigEnum.TIMESTAMP] = signMd5Utils.getTimestamp();
+      // update-end--author:taoyan---date:20220421--for: VUEN-410【签名改造】 X-TIMESTAMP牵扯
+      
       config.headers[ConfigEnum.Sign] = signMd5Utils.getSign(config.url, config.params);
       //--update-end--author:liusq---date:20210831---for:将签名和时间戳，添加在请求接口 Header
       //--update-begin--author:liusq---date:20211105---for: for:将多租户id，添加在请求接口 Header
@@ -155,6 +159,9 @@ const transform: AxiosTransform = {
          tenantid = 0;
       }
       config.headers[ConfigEnum.TENANT_ID ] = tenantid
+      //--update-begin--author:liusq---date:20220325---for: 增加vue3标记
+       config.headers[ConfigEnum.VERSION] = "v3"
+      //--update-end--author:liusq---date:20220325---for:增加vue3标记
       //--update-end--author:liusq---date:20211105---for:将多租户id，添加在请求接口 Header
 
     }
@@ -177,7 +184,9 @@ const transform: AxiosTransform = {
     errorLogStore.addAjaxErrorInfo(error);
     const { response, code, message, config } = error || {};
     const errorMessageMode = config?.requestOptions?.errorMessageMode || 'none';
-    const msg: string = response?.data?.error?.message ?? '';
+    //scott 20211022 token失效提示信息
+    //const msg: string = response?.data?.error?.message ?? '';
+    const msg: string = response?.data?.message ?? '';
     const err: string = error?.toString?.() ?? '';
     let errMessage = '';
 

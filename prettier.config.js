@@ -1,10 +1,10 @@
 module.exports = {
-  printWidth: 100,
+  printWidth: 200,
   tabWidth: 2,
   useTabs: false,
-  semi: true,
+  semi: true, //语句末尾使用分号
   vueIndentScriptAndStyle: true,
-  singleQuote: true,
+  singleQuote: true, // 使用单引号
   quoteProps: 'as-needed',
   bracketSpacing: true,
   trailingComma: 'es5',

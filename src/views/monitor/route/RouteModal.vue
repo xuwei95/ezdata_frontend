@@ -15,33 +15,57 @@
             </a-form-item>
 
             <a-form-item name="predicates" label="路由条件">
-                <div v-for="(item,index) in router.predicates">
+                <div v-for="(item,index) in router.predicates" >
+                  <!--当name在noKeyRouter时不需要指定key-->
+                   <template v-if="noKeyRouter.includes(item.name)">
+                     <a-divider>{{item.name}}
+                       <DeleteOutlined size="22" @click="removePredicate(router,index)"/>
+                     </a-divider>
+                     <div>
+                       <template v-for="(tag, tagIndx) in item.args">
+                         <a-input ref="inputRef2" v-if="tagIndx==currentTagIndex&&index==currentNameIndex"  type="text" size="small" :style="{ width: '190px' }" v-model:value="state.inputValue" @change="handleInputChange" @blur="handleInputEditConfirm(item,tag,tagIndx)" @keyup.enter="handleInputEditConfirm(item,tag,tagIndx)"/>
+                         <a-tag v-else :key="tag" style="margin-bottom:2px" :closable="true" @close="() => removeTag(item,tag)" @click="editTag(item,tag,tagIndx,index)">
+                           {{ tag }}
+                         </a-tag>
+                       </template>
+                       <a-input ref="inputRef" v-if="state.inputVisible&&index==currentNameIndex" type="text" size="small" :style="{ width: '100px' }" v-model:value="state.inputValue" @change="handleInputChange" @blur="handleInputConfirm(item)" @keyup.enter="handleInputConfirm(item)"/>
+                       <a-tag v-else style="background: #fff; borderStyle: dashed;margin-bottom:2px" @click="showInput(item,index)">
+                         <PlusOutlined size="22" />
+                         新建{{item.name}}
+                       </a-tag>
+                     </div>
+                   </template>
+                  <!--当name不在noKeyRouter时需要指定key-->
+                  <template v-if="!noKeyRouter.includes(item.name)">
                     <a-divider>{{item.name}}
-                        <Icon preIcon="mdi:access-point-remove" size="22" @click="removePredicate(router,index)"/>
+                      <DeleteOutlined size="22" @click="removePredicate(router,index)"/>
                     </a-divider>
                     <div>
-                        <template v-for="(tag, tagIndx) in item.args">
-                            <a-input ref="inputRef2" v-if="tagIndx==currentTagIndex"  type="text" size="small" :style="{ width: '190px' }" v-model:value="state.inputValue" @change="handleInputChange" @blur="handleInputEditConfirm(item,tag,tagIndx)" @keyup.enter="handleInputEditConfirm(item,tag,tagIndx)"/>
-                            <a-tag v-else :key="tag" style="margin-bottom:2px" :closable="true" @close="() => removeTag(item,tag)" @click="editTag(tag,tagIndx)">
-                                {{ tag }}
-                            </a-tag>
+                        <template v-for="(value, key) in item.args">
+                          <a-row>
+                            <a-col :span="5" style="margin-top: 8px">
+                              <span v-if="key=='header'" >Header名称</span>
+                              <span v-if="key=='regexp'">参数值</span>
+                              <span v-if="key=='param'">参数名</span>
+                              <span v-if="key=='name'">参数名</span>
+                            </a-col>
+                            <a-col :span="18">
+                              <a-input :defaultValue="value" placeholder="参数值" style="width: 70%; margin-right: 8px;margin-top: 3px" @change="(e)=>valueChange(e,item.args,key)"/>
+                            </a-col>
+                          </a-row>
                         </template>
-                        <a-input ref="inputRef" v-if="state.inputVisible&&index==currentNameIndex" type="text" size="small" :style="{ width: '100px' }" v-model:value="state.inputValue" @change="handleInputChange" @blur="handleInputConfirm(item)" @keyup.enter="handleInputConfirm(item)"/>
-                        <a-tag v-else style="background: #fff; borderStyle: dashed;margin-bottom:2px" @click="showInput(item,index)">
-                            <Icon type="plus"/>
-                            新建{{item.name}}
-                        </a-tag>
                     </div>
+                   </template>
                 </div>
                 <p class="btn" style="padding-top: 10px">
                     <a-dropdown>
                         <template #overlay>
-                            <a-menu @click="predicatesHandleMenuClick">
-                                <a-menu-item :key="item" v-for="item in tagArray">{{item}}</a-menu-item>
+                            <a-menu >
+                                <a-menu-item :key="item.name" v-for="item in tagArray" @click="predicatesHandleMenuClick(item)">{{item.name}}</a-menu-item>
                             </a-menu>
                         </template>
                         <a-button type="dashed" style="margin-left: 8px;width:100%"> 添加路由条件
-                            <Icon type="down"/>
+                          <DownOutlined :size="22"/>
                         </a-button>
                     </a-dropdown>
                 </p>
@@ -49,15 +73,15 @@
             <a-form-item name="predicates" label="过滤器">
                 <div v-for="(item,index) in router.filters">
                     <a-divider>{{item.name}}
-                        <Icon type="delete" size="22" @click="removeFilter(router,index)"/>
+                        <DeleteOutlined  size="22" @click="removeFilter(router,index)"/>
                     </a-divider>
                     <div v-for="(tag, index) in item.args" :key="tag.key">
                         <a-input v-model:value="tag.key" placeholder="参数键" style="width: 45%; margin-right: 8px"/>
                         <a-input v-model:value="tag.value" placeholder="参数值" style="width: 40%; margin-right: 8px;margin-top: 3px"/>
-                        <Icon class="dynamic-delete-button" type="minus-circle-o" @click="removeFilterParams(item,index)"/>
+                        <CloseOutlined :size="22" @click="removeFilterParams(item,index)"/>
                     </div>
                     <a-button type="dashed" style="margin-left:28%;width: 37%;margin-top:5px" size="small" @click="addFilterParams(item)">
-                        <Icon type="plus"/>
+                        <DownOutlined :size="22"/>
                         添加参数
                     </a-button>
                 </div>
@@ -69,7 +93,7 @@
                             </a-menu>
                         </template>
                         <a-button type="dashed" style="margin-left: 8px;width:100%"> 添加过滤器
-                            <Icon type="down"/>
+                            <DownOutlined />
                         </a-button>
                     </a-dropdown>
                 </p>
@@ -80,9 +104,12 @@
 </template>
 <script lang="ts" setup>
   import { ref, computed, unref, useAttrs, reactive,nextTick } from 'vue';
-  import { BasicDrawer, useDrawerInner } from '/src/components/Drawer';
+  import {BasicDrawer, useDrawerInner} from '/@/components/Drawer';
   import { saveOrUpdateRoute } from './route.api';
-  import { saveOrUpdateTenant } from '../../system/tenant/tenant.api';
+  import {DeleteOutlined} from '@ant-design/icons-vue';
+  import {PlusOutlined} from '@ant-design/icons-vue';
+  import {CloseOutlined} from '@ant-design/icons-vue';
+  import {DownOutlined} from '@ant-design/icons-vue';
   // 声明Emits
   const emit = defineEmits(['register', 'success']);
   const labelCol = reactive({
@@ -114,8 +141,55 @@
       { required: true, message: 'uri不能为空', trigger: 'blur' },
     ],
   };
-  const filterArray = [{ key: 0, name: '熔断器' }, { key: 1, name: '限流过滤器' }];
-  const tagArray = ref(['Path', 'Host', 'Cookie', 'Header', 'Method', 'Query', 'After', 'Before', 'Between', 'RemoteAddr']);
+  const noKeyRouter=["Path","Host","Method","After","Before","Between","RemoteAddr"];
+  const filterArray = [/*{ key: 0, name: '熔断器' },*/ { key: 1, name: '限流过滤器' }];
+  const tagArray = ref([
+    {
+      name:'Header',
+      args:{
+        header:'',
+        regexp:''
+      }
+    },
+    {
+      name:'Query',
+      args:{
+        param:'',
+        regexp:''
+      }
+    },
+    {
+      name:'Method',
+      args:[]
+    },
+    {
+      name:'Host',
+      args:[]
+    },
+    {
+      name:'Cookie',
+      args:{
+        name:'',
+        regexp:''
+      }
+    },
+    {
+      name:'After',
+      args:[]
+    },
+    {
+      name:'Before',
+      args:[]
+    },
+    {
+      name:'Between',
+      args:[]
+    },
+    {
+      name:'RemoteAddr',
+      args:[]
+    }
+  ]);
   const formRef = ref();
   let router = reactive({});
 
@@ -155,13 +229,24 @@
   //添加路由选项
   function predicatesHandleMenuClick(e) {
     router.predicates.push({
-      args: [],
-      name: e.key,
+      args: e.args,
+      name: e.name,
     });
   }
 
-  function editTag(tag, index) {
-    currentTagIndex.value = index;
+  /**
+   * 值修改事件
+   * @param e
+   * @param item
+   * @param key
+   */
+  function valueChange(e,item,key){
+    item[key]=e.target.value
+  }
+
+  function editTag(item,tag, tagIndex,index) {
+    currentNameIndex.value = index;
+    currentTagIndex.value = tagIndex;
     state.inputValue=tag;
     nextTick(() => {
       inputRef2.value.focus();
@@ -239,7 +324,7 @@
           value: 20,
         }],
         name: 'RequestRateLimiter',
-        title: filterArray[1].name,
+        title: filterArray[0].name,
       });
     }
   }
@@ -280,14 +365,16 @@
     await formRef.value.validate().then(() => {
       try {
         setDrawerProps({ confirmLoading: true });
-        console.log('formData', JSON.stringify(router));
-        router.predicates = JSON.stringify(router.predicates);
-        router.filters = JSON.stringify(router.filters);
+        //重新构造表单提交对象,切记不可修改router对象，数组修改为字符串容易造成界面混乱
+        let params=Object.assign({},router,{
+          predicates:JSON.stringify(router.predicates),
+          filters:JSON.stringify(router.filters),
+        })
         //提交表单
-        saveOrUpdateRoute({ router: router }).then(() => {
+        saveOrUpdateRoute({ router: params }).then(() => {
+          closeDrawer();
           //刷新列表
           emit('success');
-          closeDrawer();
         });
 
       } finally {

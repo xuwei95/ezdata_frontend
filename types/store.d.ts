@@ -40,6 +40,7 @@ export interface UserInfo {
   homePath?: string;
   tenantid?: string | number;
   roles: RoleInfo[];
+  orgCode?: string;
 }
 
 export interface LoginInfo {

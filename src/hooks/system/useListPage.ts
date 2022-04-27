@@ -23,6 +23,8 @@ interface ListPageOptions {
     url: string,
     // 导出文件名
     name?: string | (() => string),
+    //导出参数
+    params?: object,
   }
   // 导入配置
   importConfig?: {
@@ -59,14 +61,20 @@ export function useListPage(options: ListPageOptions) {
 
   // 导出 excel
   async function onExportXls() {
-    let { url, name } = options?.exportConfig ?? {}
+    //update-begin---author:wangshuai ---date:20220411  for：导出新增自定义参数------------
+    let { url, name,params } = options?.exportConfig ?? {}
     if (url) {
       let title = typeof name === 'function' ? name() : name
-      const params = await getForm().validate()
-      if(selectedRowKeys.value && selectedRowKeys.value.length>0){
-        params['selections'] = selectedRowKeys.value.join(",")
+      let paramsForm = await getForm().validate()
+      //如果参数不为空，则整合到一起
+      if(params){
+        paramsForm = Object.assign({},paramsForm,params);
       }
-      return handleExportXls(title as string, url,filterObj(params))
+      if(selectedRowKeys.value && selectedRowKeys.value.length>0){
+        paramsForm['selections'] = selectedRowKeys.value.join(",")
+      }
+      return handleExportXls(title as string, url,filterObj(paramsForm))
+     //update-end---author:wangshuai ---date:20220411  for：导出新增自定义参数--------------
     } else {
       $message.createMessage.warn('没有传递 exportConfig.url 参数')
       return Promise.reject()

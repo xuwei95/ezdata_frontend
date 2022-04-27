@@ -8,6 +8,14 @@ export enum JInputTypeEnum {
     JINPUT_QUERY_NE = 'ne',
     //大于等于
     JINPUT_QUERY_GE = 'ge',
-    //小雨等于
+    //小于等于
     JINPUT_QUERY_LE = 'le',
+}
+
+/**
+ * 面板设计器需要的常量定义
+ */
+export enum JDragConfigEnum {
+    //baseURL
+    DRAG_BASE_URL = 'drag-base-url',
 }

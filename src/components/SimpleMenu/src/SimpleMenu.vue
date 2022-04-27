@@ -33,6 +33,8 @@
   import { openWindow } from '/@/utils';
 
   import { useOpenKeys } from './useOpenKeys';
+  import {URL_HASH_TAB} from '/@/utils'
+
   export default defineComponent({
     name: 'SimpleMenu',
     components: {
@@ -129,7 +131,11 @@
 
       async function handleSelect(key: string) {
         if (isUrl(key)) {
-          openWindow(key);
+          // update-begin--author:sunjianlei---date:20220408---for: 【VUEN-656】配置外部网址打不开，原因是带了#号，需要替换一下
+          let url = key.replace(URL_HASH_TAB, '#')
+          openWindow(url)
+          // openWindow(key);
+          // update-begin--author:sunjianlei---date:20220408---for: 【VUEN-656】配置外部网址打不开，原因是带了#号，需要替换一下
           return;
         }
         const { beforeClickFn } = props;

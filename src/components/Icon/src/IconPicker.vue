@@ -75,7 +75,7 @@
     </template>
   </a-input>
 </template>
-<script lang="ts" setup>
+<script lang="ts" setup name="icon-picker">
   import { ref, watchEffect, watch, unref } from 'vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { ScrollContainer } from '/@/components/Container';

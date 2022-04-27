@@ -1,6 +1,6 @@
 <!--字典下拉多选-->
 <template>
-    <a-select :value="arrayValue" @change="onChange" mode="multiple" :placeholder="placeholder">
+    <a-select :value="arrayValue" @change="onChange" mode="multiple" :placeholder="placeholder" allowClear :getPopupContainer="getParentContainer">
         <a-select-option v-for="(item,index) in dictOptions" :key="index" :getPopupContainer="getParentContainer" :value="item.value">
             {{ item.text || item.label }}
         </a-select-option>
@@ -61,7 +61,7 @@
     },
     emits: ['options-change', 'change', 'input', 'update:value'],
     setup(props, { emit, refs }) {
-      console.info(props);
+      //console.info(props);
       const emitData = ref<any[]>([]);
       const arrayValue = ref<any[]>(!props.value ? [] : props.value.split(props.spliter));
       const dictOptions = ref<any[]>([]);
@@ -109,7 +109,7 @@
         getDictItems(props.dictCode).then(res => {
           if (res) {
             dictOptions.value = res.map(item => ({ value: item.value, label: item.text }));
-            console.info('res', dictOptions.value);
+            //console.info('res', dictOptions.value);
           } else {
             console.error('getDictItems error: : ', res);
             dictOptions.value = [];

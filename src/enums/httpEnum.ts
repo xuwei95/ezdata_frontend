@@ -43,4 +43,6 @@ export enum ConfigEnum {
   Sign = 'X-Sign',
   // 租户id
   TENANT_ID = 'tenant-id',
+  // 版本
+  VERSION = 'X-Version',
 }

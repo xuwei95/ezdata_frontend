@@ -2,10 +2,13 @@ import { unref, computed } from 'vue'
 import { merge } from 'lodash-es'
 import { isArray } from '/@/utils/is'
 import { useAttrs } from '/@/hooks/core/useAttrs'
+import {useKeyboardEdit} from '../hooks/useKeyboardEdit'
 import { JVxeDataProps, JVxeTableMethods, JVxeTableProps } from '../types'
 
 export function useFinallyProps(props: JVxeTableProps, data: JVxeDataProps, methods: JVxeTableMethods) {
   const attrs = useAttrs()
+  // vxe 键盘操作配置
+  const {keyboardEditConfig} = useKeyboardEdit(props)
   // vxe 最终 editRules
   const vxeEditRules = computed(() => merge({}, props.editRules, data.innerEditRules))
   // vxe 最终 events
@@ -63,7 +66,7 @@ export function useFinallyProps(props: JVxeTableProps, data: JVxeDataProps, meth
       checkboxConfig: {
         checkMethod: methods.handleCheckMethod,
       },
-    }, unref(vxeEvents))
+    }, unref(vxeEvents), unref(keyboardEditConfig))
   })
   return {
     vxeProps,

@@ -38,7 +38,7 @@
         dict: propTypes.string.def('id'),
         parentCode: propTypes.string.def(''),
         pidField: propTypes.string.def('pid'),
-        pidValue: propTypes.string.def(''),
+        pidValue: propTypes.string.def('0'),
         hasChildField: propTypes.string.def(''),
         condition: propTypes.string.def(''),
         multiple: propTypes.bool.def(false),

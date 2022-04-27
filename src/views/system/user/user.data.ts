@@ -176,7 +176,7 @@ export const formSchema: FormSchema[] = [
   {
     label: '职务',
     field: 'post',
-    required: true,
+    required: false,
     component: 'JSelectPosition',
     componentProps: {
         rowKey:'code',

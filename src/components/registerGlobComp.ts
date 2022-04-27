@@ -42,7 +42,11 @@ import {
     Spin,
     Space,
     Layout,
-    Collapse
+    Collapse,
+    Slider,
+    InputNumber,
+    Carousel,
+    Popconfirm,
 } from 'ant-design-vue';
 
 const compList = [AntButton.Group, Icon, AIcon,UploadButton];
@@ -91,4 +95,8 @@ export function registerGlobComp(app: App) {
         .use(Space)
         .use(Layout)
         .use(Collapse)
+        .use(Slider)
+        .use(InputNumber)
+        .use(Carousel)
+        .use(Popconfirm)
 }

@@ -4,6 +4,10 @@ import type { App, Plugin } from 'vue';
 import { unref } from 'vue';
 import { isObject } from '/@/utils/is';
 
+// update-begin--author:sunjianlei---date:20220408---for: 【VUEN-656】配置外部网址打不开，原因是带了#号，需要替换一下
+export const URL_HASH_TAB = `__AGWE4H__HASH__TAG__PWHRG__`
+// update-end--author:sunjianlei---date:20220408---for: 【VUEN-656】配置外部网址打不开，原因是带了#号，需要替换一下
+
 export const noop = () => {};
 
 /**
@@ -71,7 +75,7 @@ export function getDynamicProps<T, U>(props: T): Partial<U> {
  * @updateBy:zyf
  */
 export function getValueType(props,field){
-  let formSchema = unref(props.schemas);
+  let formSchema = unref(unref(props)?.schemas)
   let valueType = "string";
   if (formSchema) {
     let schema = formSchema.filter((item) => item.field === field)[0];
@@ -150,4 +154,20 @@ export function sleep(ms: number, fn?: Fn) {
     fn && fn()
     resolve()
   }, ms))
+}
+
+/**
+ * 不用正则的方式替换所有值
+ * @param text 被替换的字符串
+ * @param checker  替换前的内容
+ * @param replacer 替换后的内容
+ * @returns {String} 替换后的字符串
+ */
+export function replaceAll(text, checker, replacer) {
+  let lastText = text
+  text = text.replace(checker, replacer)
+  if (lastText !== text) {
+    return replaceAll(text, checker, replacer)
+  }
+  return text
 }

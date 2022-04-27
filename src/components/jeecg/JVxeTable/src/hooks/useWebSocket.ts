@@ -4,6 +4,7 @@ import { useGlobSetting } from '/@/hooks/setting'
 import { useUserStore } from '/@/store/modules/user'
 import { JVxeDataProps, JVxeTableMethods, JVxeTableProps } from '../types'
 import { isArray } from '/@/utils/is'
+import { getToken } from '/@/utils/auth';
 
 // vxe socket
 const vs = {
@@ -55,7 +56,10 @@ const vs = {
       const domainURL = useGlobSetting().uploadUrl!
       const domain = domainURL.replace('https://', 'wss://').replace('http://', 'ws://')
       const url = `${domain}/vxeSocket/${userId}/${this.pageId}`
-      this.ws = new WebSocket(url)
+      //update-begin-author:taoyan date:2022-4-24 for: v2.4.6 的 websocket 服务端，存在性能和安全问题。 #3278
+      let token = (getToken() || '') as string
+      this.ws = new WebSocket(url, [token])
+      //update-end-author:taoyan date:2022-4-24 for: v2.4.6 的 websocket 服务端，存在性能和安全问题。 #3278
       this.ws.onopen = this.on.open.bind(this)
       this.ws.onerror = this.on.error.bind(this)
       this.ws.onmessage = this.on.message.bind(this)

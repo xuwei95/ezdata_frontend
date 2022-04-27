@@ -3,8 +3,13 @@ import { LoginParams, LoginResultModel, GetUserInfoModel } from './model/userMod
 
 import { ErrorMessageMode } from '/#/axios';
 import {useMessage} from "/@/hooks/web/useMessage";
+import {useUserStoreWithOut} from "/@/store/modules/user";
+import {setAuthCache} from "/@/utils/auth";
+import {TOKEN_KEY} from "/@/enums/cacheEnum";
+import {router} from "/@/router";
+import {PageEnum} from "/@/enums/pageEnum";
 
-const { createMessage, createErrorModal } = useMessage();
+const { createErrorModal } = useMessage();
 enum Api {
 
   Login = '/sys/login',
@@ -73,8 +78,18 @@ export function phoneLoginApi(params: LoginParams, mode: ErrorMessageMode = 'mod
 /**
  * @description: getUserInfo
  */
-export function getUserInfo() {
-  return defHttp.get<GetUserInfoModel>({ url: Api.GetUserInfo }, { errorMessageMode: 'none' });
+export  function getUserInfo() {
+  return  defHttp.get<GetUserInfoModel>({ url: Api.GetUserInfo }, { errorMessageMode: 'none' }).catch((e)=>{
+      // update-begin--author:zyf---date:20220425---for:【VUEN-76】捕获接口超时异常,跳转到登录界面
+      if (e && e.message.includes('timeout')) {
+          //接口不通时跳转到登录界面
+          const userStore = useUserStoreWithOut();
+          userStore.setToken('');
+          setAuthCache(TOKEN_KEY, null);
+          router.push(PageEnum.BASE_LOGIN);
+      }
+      // update-end--author:zyf---date:20220425---for:【VUEN-76】捕获接口超时异常,跳转到登录界面
+  });
 }
 
 export function getPermCode() {

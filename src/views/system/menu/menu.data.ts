@@ -6,6 +6,8 @@ import {duplicateCheck} from "../user/user.api";
 import {ajaxGetDictItems} from "./menu.api";
 import {render} from "/@/utils/common/renderUtils";
 import { Select } from 'ant-design-vue';
+import {rules} from '/@/utils/helper/validator'
+
 const isDir = (type) => type === 0;
 const isMenu = (type) => type === 1;
 const isButton = (type) => type === 2;
@@ -131,7 +133,10 @@ export const formSchema: FormSchema[] = [
     label: '访问路径',
     component: 'Input',
     required: true,
-    ifShow: ({ values }) => !(values.component === ComponentTypes.IFrame && values.internalOrExternal),
+    ifShow: ({ values }) => !(values.component === ComponentTypes.IFrame && values.internalOrExternal) && values.menuType !== 2,
+    dynamicRules: ({model, schema}) => {
+      return rules.duplicateCheckRule('sys_permission', 'url', model, schema, true)
+    },
   },
   {
     field: 'component',

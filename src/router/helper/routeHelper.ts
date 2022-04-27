@@ -6,6 +6,8 @@ import { cloneDeep, omit } from 'lodash-es';
 import { warn } from '/@/utils/log';
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { getToken } from '/@/utils/auth';
+import {URL_HASH_TAB} from '/@/utils'
+
 export type LayoutMapKey = 'LAYOUT';
 const IFRAME = () => import('/@/views/sys/iframe/FrameBlank.vue');
 const LayoutContent = () => import('/@/layouts/default/content/index.vue');
@@ -49,6 +51,9 @@ function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
       if (item.meta?.internalOrExternal) {
         // @ts-ignore 外部打开
         item.path = item.component
+        // update-begin--author:sunjianlei---date:20220408---for: 【VUEN-656】配置外部网址打不开，原因是带了#号，需要替换一下
+        item.path = item.path.replace('#', URL_HASH_TAB)
+        // update-end--author:sunjianlei---date:20220408---for: 【VUEN-656】配置外部网址打不开，原因是带了#号，需要替换一下
       } else {
         // @ts-ignore 内部打开
         item.meta.frameSrc = item.component

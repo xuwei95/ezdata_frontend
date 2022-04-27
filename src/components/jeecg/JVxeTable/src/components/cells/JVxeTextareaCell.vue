@@ -31,12 +31,14 @@ export default defineComponent({
       autofocus: '.ant-input',
     },
     aopEvents: {
-      editActived({$event, column}) {
+      editActived({$event, row, column}) {
         // 是否默认打开右侧弹窗
         if ((column.params.defaultOpen ?? false)) {
           dispatchEvent({
             $event,
+            row, column,
             props: this.props,
+            instance: this,
             className: '.ant-input-suffix .app-iconify',
             isClick: true,
           })

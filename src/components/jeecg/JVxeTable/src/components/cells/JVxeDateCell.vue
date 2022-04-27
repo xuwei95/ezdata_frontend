@@ -58,10 +58,12 @@ export default defineComponent({
   // 【组件增强】注释详见：JVxeComponent.Enhanced
   enhanced: {
     aopEvents: {
-      editActived({ $event }) {
+      editActived({$event, row, column}) {
         dispatchEvent({
           $event,
+          row, column,
           props: this.props,
+          instance: this,
           className: '.ant-calendar-picker',
           isClick: false,
           handler: (el) => el.children[0].click(),

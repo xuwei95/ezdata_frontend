@@ -56,9 +56,12 @@ import JSelectUserByDept from './jeecg/components/JSelectUserByDept.vue';
 import JUpload from './jeecg/components/JUpload/JUpload.vue'
 import JSearchSelect from './jeecg/components/JSearchSelect.vue'
 import JAddInput from './jeecg/components/JAddInput.vue'
+import {Time} from '/@/components/Time';
+import JOnlineSelectCascade from './jeecg/components/JOnlineSelectCascade.vue'
 
 const componentMap = new Map<ComponentType, Component>();
 
+componentMap.set('Time', Time);
 componentMap.set('Input', Input);
 componentMap.set('InputGroup', Input.Group);
 componentMap.set('InputPassword', Input.Password);
@@ -121,6 +124,7 @@ componentMap.set('JSelectUserByDept', JSelectUserByDept);
 componentMap.set('JUpload', JUpload);
 componentMap.set('JSearchSelect', JSearchSelect);
 componentMap.set('JAddInput', JAddInput);
+componentMap.set('JOnlineSelectCascade', JOnlineSelectCascade)
 
 export function add(compName: ComponentType, component: Component) {
   componentMap.set(compName, component);

@@ -9,8 +9,8 @@
           <template #overlay>
             <a-menu>
               <a-menu-item key="1" @click="batchHandleDelete">
-                <Icon icon="ant-design:delete-outlined"></Icon>
-                删除
+                <Icon icon="bx:bx-unlink"></Icon>
+                取消关联
               </a-menu-item>
             </a-menu>
           </template>
@@ -72,7 +72,7 @@
     canResize: false,
     rowKey: 'id',
     actionColumn: {
-      width: 50,
+      width: 180,
       title: '操作',
       dataIndex: 'action',
       slots: {customRender: 'action'},
@@ -172,9 +172,9 @@
         onClick: handleEdit.bind(null, record),
       },
       {
-        label: '删除',
+        label: '取消关联',
         popConfirm: {
-          title: '是否确认删除',
+          title: '是否确认取消关联',
           confirm: handleDelete.bind(null, record),
         }
       }

@@ -29,7 +29,13 @@ export function handleRangeTimeValue(props, values) {
     if (!field || !startTimeKey || !endTimeKey || !values[field]) {
       continue;
     }
-    const [startTime, endTime]: string[] = values[field];
+
+    // 【issues/I53G9Y】 日期区间组件有可能是字符串
+    let timeValue = values[field]
+    if (!Array.isArray(timeValue)) {
+      timeValue = timeValue.split(',')
+    }
+    const [startTime, endTime]: string[] = timeValue;
     values[startTimeKey] = dateUtil(startTime).format(format);
     values[endTimeKey] = dateUtil(endTime).format(format);
     Reflect.deleteProperty(values, field);

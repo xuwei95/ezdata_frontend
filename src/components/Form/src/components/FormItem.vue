@@ -346,7 +346,8 @@
                             wrapperCol={wrapperCol}
                         >
                             <div style="display:flex">
-                                <div style="flex:1;">{getContent()}</div>
+                                {/* author: sunjianlei for: 【VUEN-744】此处加上 width: 100%; 因为要防止组件宽度超出 FormItem */ }
+                                <div style="flex:1; width: 100%;">{getContent()}</div>
                                 {showSuffix && <span class="suffix">{getSuffix}</span>}
                             </div>
                         </Form.Item>

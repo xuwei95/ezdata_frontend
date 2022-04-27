@@ -1,4 +1,5 @@
-import { unref, isRef, Ref } from 'vue'
+import type {Ref, ComponentInternalInstance} from 'vue'
+import {unref, isRef} from 'vue'
 import { useDefaultEnhanced } from '../hooks/useJVxeComponent'
 import { isFunction, isObject, isString } from '/@/utils/is'
 import { JVxeTypes } from '../types'
@@ -53,12 +54,27 @@ export function replaceProps(col, value) {
   return value
 }
 
-type dispatchEventOptions = { props, $event, className: string, handler?: Fn, isClick?: boolean }
+type dispatchEventOptions = {
+  // JVxeTable 的 props
+  props,
+  // 触发的 event 事件对象
+  $event,
+  // 行、列
+  row?, column?,
+  // JVxeTable的vue3实例
+  instance?: ComponentInternalInstance,
+  // 要寻找的className
+  className: string,
+  // 重写找到dom后的处理方法
+  handler?: Fn,
+  // 是否直接执行click方法而不是模拟click事件
+  isClick?: boolean,
+}
 
 /** 模拟触发事件 */
 export function dispatchEvent(options: dispatchEventOptions) {
-  const { props, $event, className, handler, isClick } = options
-  if (!$event || !$event.path) {
+  const {props, $event, row, column, instance, className, handler, isClick} = options
+  if ((!$event || !$event.path) && !instance) {
     return
   }
   // alwaysEdit 下不模拟触发事件，否者会导致触发两次
@@ -66,9 +82,18 @@ export function dispatchEvent(options: dispatchEventOptions) {
     return
   }
   let getCell = () => {
-    for (const el of $event.path) {
-      if (el.classList.contains('vxe-body--column')) {
-        return el as HTMLElement
+    let paths: HTMLElement[] = [...($event?.path ?? [])]
+    // 通过 instance 获取 cell dom对象
+    if (row && column) {
+      let selector = `table.vxe-table--body tbody tr[rowid='${row.id}'] td[colid='${column.id}']`
+      let cellDom = instance!.vnode?.el?.querySelector(selector)
+      if (cellDom) {
+        paths.unshift(cellDom)
+      }
+    }
+    for (const el of paths) {
+      if (el.classList?.contains('vxe-body--column')) {
+        return el
       }
     }
     return null

@@ -1,7 +1,7 @@
 <!--用户选择组件-->
 <template>
     <div>
-        <JSelectBiz @change="handleChange" @handleOpen="handleOpen"  v-bind="attrs"></JSelectBiz>
+        <JSelectBiz @change="handleChange" @handleOpen="handleOpen" :loading="loadingEcho" v-bind="attrs"></JSelectBiz>
         <UserSelectByDepModal :rowKey="rowKey" @register="regModal" @getSelectResult="setValue"  v-bind="getBindValue"></UserSelectByDepModal>
     </div>
 </template>
@@ -49,10 +49,14 @@
                 value: [],
                 change: false
             });
+            // 是否正在加载回显数据
+            const loadingEcho = ref<boolean>(false)
             //下发 selectOptions,xxxBiz组件接收
             provide('selectOptions', selectOptions);
             //下发 selectValues,xxxBiz组件接收
             provide('selectValues', selectValues);
+            //下发 loadingEcho,xxxBiz组件接收
+            provide('loadingEcho', loadingEcho);
 
             const tag = ref(false);
             const attrs = useAttrs();
@@ -118,6 +122,7 @@
                 selectOptions,
                 getBindValue,
                 selectValues,
+                loadingEcho,
                 tag,
                 regModal,
                 setValue,

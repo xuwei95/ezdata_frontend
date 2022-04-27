@@ -15,6 +15,8 @@ import { configThemePlugin } from './theme';
 import { configImageminPlugin } from './imagemin';
 import { configSvgIconsPlugin } from './svgSprite';
 import { configHmrPlugin } from './hmr';
+import OptimizationPersist from 'vite-plugin-optimize-persist'
+import PkgConfig from 'vite-plugin-package-config'
 
 export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
     const {
@@ -77,6 +79,10 @@ export function createVitePlugins(viteEnv: ViteEnv, isBuild: boolean) {
         // vite-plugin-pwa
         vitePlugins.push(configPwaConfig(viteEnv));
     }
+
+    //vite-plugin-theme【解决vite首次打开界面加载慢问题】
+    vitePlugins.push(PkgConfig());
+    vitePlugins.push(OptimizationPersist());
 
     return vitePlugins;
 }

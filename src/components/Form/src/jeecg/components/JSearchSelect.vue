@@ -76,6 +76,8 @@
             const selectedValue = ref([]);
             const selectedAsyncValue = ref([]);
             const lastLoad = ref(0);
+            // 是否根据value加载text
+            const loadSelectText = ref(true);
             /**
              * 监听字典code
              */
@@ -88,7 +90,7 @@
             watch(
                 () => props.value,
                 (val) => {
-                    if (val || val == 0) {
+                    if (val || val === 0) {
                         initSelectValue()
                     } else {
                         selectedValue.value = []
@@ -132,6 +134,12 @@
              * 初始化value
              */
             function initSelectValue() {
+                //update-begin-author:taoyan date:2022-4-24 for: 下拉搜索组件每次选中值会触发value的监听事件，触发此方法，但是实际不需要
+                if(loadSelectText.value===false){
+                    loadSelectText.value = true
+                    return
+                }
+                //update-end-author:taoyan date:2022-4-24 for: 下拉搜索组件每次选中值会触发value的监听事件，触发此方法，但是实际不需要
                 let {async, value, dict} = props;
                 if (async) {
                     if (!selectedAsyncValue || !selectedAsyncValue.key || selectedAsyncValue.key !== value) {
@@ -216,6 +224,7 @@
              *回调方法
              * */
             function callback(){
+                loadSelectText.value = false;
                 emit('change', unref(selectedValue));
                 emit('update:value', unref(selectedValue));
             }
@@ -227,13 +236,17 @@
             }
             
             function getParentContainer(node){
+              // update-begin-author:taoyan date:20220407 for: getPopupContainer一直有值 导致popContainer的逻辑永远走不进去，把它挪到前面判断
+              if(props.popContainer){
+                return document.querySelector(props.popContainer)
+              }else{
                 if(typeof props.getPopupContainer === 'function'){
-                    return props.getPopupContainer(node)
-                } else if(!props.popContainer){
-                    return node.parentNode
-                }else{
-                    return document.querySelector(props.popContainer)
+                  return props.getPopupContainer(node)
+                } else {
+                  return node.parentNode
                 }
+              }
+              // update-end-author:taoyan date:20220407 for: getPopupContainer一直有值 导致popContainer的逻辑永远走不进去，把它挪到前面判断
             }
             return {
                 attrs,

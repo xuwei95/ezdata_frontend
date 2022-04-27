@@ -5,7 +5,7 @@ import type { VxeGridInstance, VxeTablePropTypes } from 'vxe-table'
 import { JVxeTypes } from './JVxeTypes'
 import { vxeProps } from '../vxe.data'
 import { useMethods } from '../hooks/useMethods'
-import { getJVxeAuths } from '/@/utils/auth/authFilter'
+import { getJVxeAuths } from '../utils/authUtils'
 
 export type JVxeTableProps = Partial<ExtractPropTypes<ReturnType<typeof vxeProps>>>;
 export type JVxeTableMethods = ReturnType<typeof useMethods>['methods']

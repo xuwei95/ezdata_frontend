@@ -30,6 +30,11 @@
              */
             watchEffect(() => {
                 props.value && (checkboxArray.value = props.value ? props.value.split(",") : []);
+                //update-begin-author:taoyan date:20220401 for: 调用表单的 resetFields不会清空当前信息，界面显示上一次的数据
+                if(props.value === '' || props.value === undefined){
+                  checkboxArray.value = []
+                }
+                //update-end-author:taoyan date:20220401 for: 调用表单的 resetFields不会清空当前信息，界面显示上一次的数据
             });
             /**
              * 监听字典code

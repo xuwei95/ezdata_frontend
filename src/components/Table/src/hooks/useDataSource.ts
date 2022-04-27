@@ -21,7 +21,9 @@ interface ActionType {
     getPaginationInfo: ComputedRef<boolean | PaginationProps>;
     setPagination: (info: Partial<PaginationProps>) => void;
     setLoading: (loading: boolean) => void;
-    getFieldsValue: () => Recordable;
+    // update-begin--author:sunjianlei---date:220220419---for：由于 getFieldsValue 返回的不是逗号分割的数据，所以改用 validate
+    validate: () => Recordable;
+    // update-end--author:sunjianlei---date:220220419---for：由于 getFieldsValue 返回的不是逗号分割的数据，所以改用 validate
     clearSelectedRowKeys: () => void;
     tableData: Ref<Recordable[]>;
 }
@@ -36,7 +38,7 @@ export function useDataSource(
         getPaginationInfo,
         setPagination,
         setLoading,
-        getFieldsValue,
+        validate,
         clearSelectedRowKeys,
         tableData,
     }: ActionType,
@@ -264,7 +266,8 @@ export function useDataSource(
 
             let params: Recordable = {
                 ...pageParams,
-                ...(useSearchForm ? getFieldsValue() : {}),
+                // 由于 getFieldsValue 返回的不是逗号分割的数据，所以改用 validate
+                ...(useSearchForm ? (await validate()) : {}),
                 ...searchInfo,
                 ...defSort,
                 ...(opt?.searchInfo ?? {}),

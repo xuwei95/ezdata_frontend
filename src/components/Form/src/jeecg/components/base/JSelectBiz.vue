@@ -2,7 +2,13 @@
     <div>
         <a-row class="j-select-row" type="flex" :gutter="8">
             <a-col class="left" :class="{'full': !showButton}">
-                <a-select ref="select" v-model:value="selectValues.value" :placeholder="placeholder" :mode="multiple" :open="false" :disabled="disabled" :options="options" @change="handleChange" style="width: 100%;" @click="openModal(false)"></a-select>
+              <!-- 显示加载效果 -->
+              <a-input v-if="loading" readOnly placeholder="加载中…">
+                <template #prefix>
+                  <LoadingOutlined/>
+                </template>
+              </a-input>
+              <a-select v-else ref="select" v-model:value="selectValues.value" :placeholder="placeholder" :mode="multiple" :open="false" :disabled="disabled" :options="options" @change="handleChange" style="width: 100%;" @click="!disabled && openModal(false)"></a-select>
             </a-col>
             <a-col v-if="showButton" class="right">
                 <a-button type="primary" @click="openModal(true)" :disabled="disabled">选择</a-button>
@@ -14,10 +20,11 @@
     import {defineComponent, ref, inject, reactive} from 'vue';
     import {propTypes} from "/@/utils/propTypes";
     import {useAttrs} from "/@/hooks/core/useAttrs";
+    import {LoadingOutlined} from '@ant-design/icons-vue'
 
     export default defineComponent({
         name: 'JSelectBiz',
-        components: {},
+        components: {LoadingOutlined},
         inheritAttrs: false,
         props: {
             showButton: propTypes.bool.def(true),
@@ -30,7 +37,9 @@
             multiple: {
                 type: String,
                 default: 'multiple',
-            }
+            },
+            // 是否正在加载
+            loading: propTypes.bool.def(false),
         },
         emits: ['handleOpen','change'],
         setup(props, {emit, refs}) {

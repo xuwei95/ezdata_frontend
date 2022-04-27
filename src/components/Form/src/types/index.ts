@@ -140,4 +140,6 @@ export type ComponentType =
     | 'JUpload'
     | 'JSearchSelect'
     | 'JAddInput'
+    | 'Time'
+    | 'JOnlineSelectCascade'
   ;

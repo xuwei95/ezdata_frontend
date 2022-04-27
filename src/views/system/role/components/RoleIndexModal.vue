@@ -1,21 +1,22 @@
 <template>
-    <BasicModal v-bind="$attrs" @register="registerModal" :title="title" @ok="handleSubmit" width="700px">
+    <BasicModal v-bind="$attrs" @register="registerModal" title="首页配置" @ok="handleSubmit" width="40%">
         <BasicForm @register="registerForm"/>
     </BasicModal>
 </template>
+
 <script lang="ts" setup>
     import {ref, computed, unref} from 'vue';
     import {BasicModal, useModalInner} from '/@/components/Modal';
     import {BasicForm, useForm} from '/@/components/Form/index';
-    import {formSchema} from './tenant.data';
-    import {saveOrUpdateTenant, getTenantById} from './tenant.api';
+    import {roleIndexFormSchema} from '../role.data';
+    import {saveOrUpdateRoleIndex, queryIndexByCode} from '../role.api';
     // Emits声明
-    const emit = defineEmits(['register','success']);
+    const emit = defineEmits(['register', 'success']);
     const isUpdate = ref(true);
     //表单配置
-    const [registerForm, {resetFields, setFieldsValue, validate, updateSchema}] = useForm({
+    const [registerForm, {resetFields, setFieldsValue, validate}] = useForm({
         labelWidth: 150,
-        schemas: formSchema,
+        schemas: roleIndexFormSchema,
         showActionButtonGroup: false,
     });
     //表单赋值
@@ -23,35 +24,34 @@
         //重置表单
         await resetFields();
         setModalProps({confirmLoading: false});
-        isUpdate.value = !!data?.isUpdate;
+        setFieldsValue({roleCode: data.roleCode});
+        let res = await queryIndexByCode({roleCode: data.roleCode});
+        isUpdate.value = !!res.result?.id;
         if (unref(isUpdate)) {
-            // 编辑模式下禁用id字段
-            updateSchema({field: 'id', dynamicDisabled: true})
-            //获取详情
-            data.record = await getTenantById({id: data.record.id});
             //表单赋值
             await setFieldsValue({
-                ...data.record,
+                ...res.result,
             });
-        } else {
-          updateSchema({field: 'id', dynamicDisabled: false})
         }
     });
-    //设置标题
-    const title = computed(() => (!unref(isUpdate) ? '新增租户' : '编辑租户'));
+
     //表单提交事件
     async function handleSubmit(v) {
         try {
             let values = await validate();
             setModalProps({confirmLoading: true});
             //提交表单
-            await saveOrUpdateTenant(values, isUpdate.value);
+            await saveOrUpdateRoleIndex(values, isUpdate.value);
             //关闭弹窗
             closeModal();
             //刷新列表
-            emit('success');
+            emit('success', {isUpdate: isUpdate.value, values});
         } finally {
             setModalProps({confirmLoading: false});
         }
     }
 </script>
+
+<style lang="less" scoped>
+
+</style>

@@ -1,4 +1,4 @@
-import {inject, reactive, ref, watch,unref} from "vue";
+import {inject, reactive, ref, watch, unref, Ref} from 'vue'
 import {useMessage} from "/@/hooks/web/useMessage";
 
 export function useSelectBiz(getList,props) {
@@ -6,6 +6,8 @@ export function useSelectBiz(getList,props) {
     const selectOptions = inject('selectOptions', ref<Array<object>>([]));
     //接收已选择的值
     const selectValues = <object>inject('selectValues', reactive({}));
+    // 是否正在加载回显
+    const loadingEcho = inject<Ref<boolean>>('loadingEcho', ref(false))
     //数据集
     const dataSource = ref<Array<object>>([]);
     //已选择的值
@@ -14,19 +16,27 @@ export function useSelectBiz(getList,props) {
     const selectRows = ref<Array<object>>([]);
     //提示弹窗
     const $message = useMessage()
+    // 是否是首次加载回显，只有首次加载，才会显示 loading
+    let isFirstLoadEcho = true
+
     /**
      * 监听selectValues变化
      */
     watch(selectValues, () => {
         if (selectValues["change"] == false) {
-            let params={
-              code: selectValues["value"].join(",")
-            };
-            getDataSource(params, true).then();
+            //update-begin---author:wangshuai ---date:20220412  for：[VUEN-672]发文草稿箱编辑时拟稿人显示用户名------------
+            let params={};
+            params[props.rowKey] = selectValues["value"].join(",")
+            //update-end---author:wangshuai ---date:20220412  for：[VUEN-672]发文草稿箱编辑时拟稿人显示用户名--------------
+            loadingEcho.value = isFirstLoadEcho
+            isFirstLoadEcho = false
+            getDataSource(params, true).then().finally(()=>{
+                loadingEcho.value = isFirstLoadEcho
+            });
         }
         //设置列表默认选中
         checkedKeys["value"] = selectValues["value"]
-    })
+    }, {immediate: true})
 
     async function onSelectChange(selectedRowKeys: (string | number)[], selectRow) {
         checkedKeys.value = selectedRowKeys;

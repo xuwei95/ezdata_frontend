@@ -34,6 +34,9 @@
   import {BasicTable, useTable, TableAction} from '/@/components/Table';
   import {recycleColumns} from './user.data';
   import {getRecycleBinList, putRecycleBin, deleteRecycleBin} from './user.api';
+  import {useMessage} from '/@/hooks/web/useMessage'
+
+  const {createConfirm} = useMessage()
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
   const checkedKeys = ref<Array<string | number>>([]);
@@ -100,7 +103,14 @@
    * 批量删除事件
    */
   function batchHandleDelete() {
-    handleDelete({id:toRaw(unref(checkedKeys)).join(",")})
+    createConfirm({
+      iconType: 'warning',
+      title: '删除',
+      content: '确定要永久删除吗？删除后将不可恢复！',
+      onOk: () => handleDelete({id: toRaw(unref(checkedKeys)).join(',')}),
+      onCancel() {
+      },
+    })
   }
   //获取操作栏事件
   function getTableAction(record) {

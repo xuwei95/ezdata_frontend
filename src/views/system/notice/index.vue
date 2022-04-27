@@ -153,7 +153,10 @@
         {
           label: '撤销',
           ifShow: record.sendStatus == 1,
-          onClick: handleReovke.bind(null, record.id),
+          popConfirm: {
+            title: '确定要撤销吗？',
+            confirm: handleReovke.bind(null, record.id),
+          },
         },
         {
           label: '查看',

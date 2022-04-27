@@ -3,6 +3,7 @@
     <template v-if="treeData.length > 0">
       <BasicTree
           ref="basicTree"
+          class="depart-rule-tree"
           checkable
           :treeData="treeData"
           :checkedKeys="checkedKeys"
@@ -159,3 +160,11 @@ async function toggleCheckALL(flag) {
   checkedKeys.value = basicTree.value.getCheckedKeys()
 }
 </script>
+
+<style lang="less" scoped>
+
+// 【VUEN-188】解决滚动条不灵敏的问题
+.depart-rule-tree ::v-deep(.scrollbar__bar) {
+  pointer-events: none;
+}
+</style>

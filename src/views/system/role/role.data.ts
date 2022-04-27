@@ -24,12 +24,10 @@ export const userColumns = [
   {
     title: '用户账号',
     dataIndex: 'username',
-    width: 100,
   },
   {
     title: '用户姓名',
     dataIndex: 'realname',
-    width: 100,
   },
   {
     title: '状态',
@@ -125,4 +123,36 @@ export const formDescSchema = [
   }
 ];
 
-
+export const roleIndexFormSchema: FormSchema[] = [
+    {
+        field: 'id',
+        label: '',
+        component: 'Input',
+        show:false
+    },
+    {
+        label: '角色编码',
+        field: 'roleCode',
+        component: 'Input',
+        dynamicDisabled: true
+    },
+    {
+        label: '首页路由',
+        field: 'url',
+        component: 'Input',
+        required:true
+    },
+    {
+        label: '优先级',
+        field: 'priority',
+        component: 'InputNumber'
+    },
+    {
+        label: '是否开启',
+        field: 'status',
+        component: 'JSwitch',
+        componentProps:{
+            options	: ['1', '0'], 
+       }
+    }
+];

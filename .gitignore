@@ -1,5 +1,6 @@
 node_modules
 .DS_Store
+.github
 dist
 .npmrc
 .cache
@@ -27,3 +28,4 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+/os_del.cmd

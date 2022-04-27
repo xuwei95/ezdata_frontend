@@ -75,5 +75,7 @@ export const treeProps = {
   //是否显示复选框
   checkable: propTypes.bool.def(true),
   //checkable 状态下节点选择完全受控（父子节点选中状态不再关联）
-  checkStrictly: propTypes.bool.def(false)
+  checkStrictly: propTypes.bool.def(false),
+  // 是否允许多选，默认 true
+  multiple: propTypes.bool.def(true),
 };

@@ -21,6 +21,9 @@ enum Api {
   deleteUserRole = '/sys/user/deleteUserRole',
   batchDeleteUserRole = '/sys/user/deleteUserRoleBatch',
   addUserRole = '/sys/user/addSysUserRole',
+  saveRoleIndex='/sys/sysRoleIndex/add',
+  editRoleIndex='/sys/sysRoleIndex/edit',
+  queryIndexByCode='/sys/sysRoleIndex/queryByCode',
 }
 /**
  * 导出api
@@ -157,3 +160,18 @@ export const addUserRole = (params, handleSuccess) => {
     handleSuccess();
   });
 }
+/**
+ * 保存或者更新
+ * @param params
+ * @param isUpdate 是否是更新数据
+ */
+export const saveOrUpdateRoleIndex = (params, isUpdate) => {
+    let url = isUpdate ? Api.editRoleIndex : Api.saveRoleIndex;
+    return defHttp.post({url: url, params});
+}
+/**
+ * 根据code查询首页配置
+ * @param params
+ */
+export const queryIndexByCode = (params) =>
+    defHttp.get({url: Api.queryIndexByCode, params}, {isTransformResponse: false});

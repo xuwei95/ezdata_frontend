@@ -4,7 +4,7 @@
 <script lang="ts">
     import {defineComponent, PropType, ref,reactive, watchEffect, computed, unref, watch, onMounted} from 'vue';
     import {Cascader} from 'ant-design-vue';
-    import {provinceAndCityData, regionData, provinceAndCityDataPlus, regionDataPlus, CodeToText, TextToCode} from "../../utils/areaDataUtil";
+    import {provinceAndCityData, regionData, provinceAndCityDataPlus, regionDataPlus} from "../../utils/areaDataUtil";
     import {useRuleFormItem} from "/@/hooks/component/useFormItem";
     import {propTypes} from "/@/utils/propTypes";
     import {useAttrs} from "/@/hooks/core/useAttrs";

@@ -6,7 +6,6 @@
         :action="uploadUrl"
         :fileList="fileList"
         :disabled="disabled"
-        :beforeUpload="onBeforeUpload"
         :remove="onRemove"
         v-bind="bindProps"
         @change="onFileChange"
@@ -87,7 +86,15 @@ const bindProps = computed(() => {
   bind.listType = isImageMode.value ? 'picture-card' : 'text'
   bind.class = [bind.class, { 'upload-disabled': props.disabled }]
   bind.data = { 'biz': props.bizPath, ...(bind.data) }
-  bind.beforeUpload = onBeforeUpload
+  //update-begin-author:taoyan date:20220407 for: 自定义beforeUpload return false，并不能中断上传过程
+  if(!bind.beforeUpload){
+    bind.beforeUpload = onBeforeUpload
+  }
+  //update-end-author:taoyan date:20220407 for: 自定义beforeUpload return false，并不能中断上传过程
+  // 如果当前是图片上传模式，就只能上传图片
+  if (isImageMode.value && !bind.accept) {
+    bind.accept = 'image/*'
+  }
   return bind
 })
 
@@ -150,8 +157,8 @@ function onAddActionsButton(event) {
   createApp(UploadItemActions, {
     element: uploadItem,
     fileList: fileList,
-    mover: true,
-    download: true,
+    mover: props.mover,
+    download: props.download,
     emitValue: emitValue,
   }).mount(div)
   actions[0].appendChild(div)

@@ -205,9 +205,14 @@
                 const { options } = props;
                 const getdDisabled = options && Reflect.get(options, 'readonly');
                 const editor = unref(editorRef);
+                // update-begin-author:taoyan date:20220407 for: 设置disabled，图片上传没有被禁用
                 if (editor) {
-                    editor.setMode(getdDisabled ? 'readonly' : 'design');
+                    editor.setMode(getdDisabled||(attrs.disabled === true)  ? 'readonly' : 'design');
                 }
+                if(attrs.disabled === true){
+                  return true;
+                }
+                // update-end-author:taoyan date:20220407 for: 设置disabled，图片上传没有被禁用
                 return getdDisabled ?? false;
             });
 

@@ -1,4 +1,5 @@
 import { BasicColumn, FormSchema } from '/@/components/Table';
+import {rules} from '/@/utils/helper/validator'
 
 export const columns: BasicColumn[] = [
     {
@@ -60,6 +61,9 @@ export const formSchema: FormSchema[] = [
     required: true,
     dynamicDisabled: ({values}) => {
       return !!values.id;
+    },
+    dynamicRules: ({model, schema}) => {
+      return rules.duplicateCheckRule('sys_position', 'code', model, schema, true)
     },
   }
 ];

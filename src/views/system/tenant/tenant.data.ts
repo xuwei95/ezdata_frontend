@@ -50,8 +50,8 @@ export const searchFormSchema: FormSchema[] = [
     component: 'Select',
     componentProps: {
       options: [
-        { label: '启用', value: 1 },
-        { label: '停用', value: 0 },
+        { label: '正常', value: 1 },
+        { label: '冻结', value: 0 },
       ],
     },
     colProps: { span: 8 },
@@ -77,9 +77,6 @@ export const formSchema: FormSchema[] = [
         field: 'id',
         label: '租户编号',
         component: 'InputNumber',
-        dynamicDisabled: ({values}) => {
-          return !!values.id;
-        },
         required: true
     },
     {

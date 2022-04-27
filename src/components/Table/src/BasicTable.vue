@@ -142,7 +142,7 @@
                     getPaginationInfo,
                     setLoading,
                     setPagination,
-                    getFieldsValue: formActions.getFieldsValue,
+                    validate: formActions.validate,
                     clearSelectedRowKeys,
                 },
                 emit

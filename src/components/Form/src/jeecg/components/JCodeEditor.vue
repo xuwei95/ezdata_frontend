@@ -44,6 +44,7 @@
   import "codemirror/addon/hint/anyword-hint.js";
   import { useAttrs } from '/@/hooks/core/useAttrs';
   import {useDesign} from '/@/hooks/web/useDesign'
+  import {isJsonObjectString} from '/@/utils/is.ts'
 
   export default defineComponent({
     name: 'JCodeEditor',
@@ -86,6 +87,14 @@
         // 启用代码折叠相关功能:结束
         // 光标行高亮  
         styleActiveLine: true,
+          //代码格式化
+        extraKeys:{
+           Tab: function autoFormat(editor) {
+               //var totalLines = editor.lineCount();
+               //editor.autoFormatRange({line:0, ch:0}, {line:totalLines});
+              setValue(innerValue,false)
+           }
+        }
       });
       let innerValue = ''
       // 全屏状态
@@ -125,6 +134,9 @@
        * @param trigger 是否触发 change 事件
        */
       function setValue(value: string, trigger = true) {
+        if(value && isJsonObjectString(value)){
+           value = JSON.stringify(JSON.parse(value),null,2);
+        }
         coder?.setValue(value ?? '')
         innerValue = value
         trigger && emitChange(innerValue)
@@ -132,7 +144,8 @@
 
       //编辑器值修改事件
       function onChange(obj) {
-        innerValue = obj.getValue() ?? '';
+        let value = obj.getValue();
+        innerValue = value || '';
         if (props.value != innerValue) {
           emitChange(innerValue)
         }

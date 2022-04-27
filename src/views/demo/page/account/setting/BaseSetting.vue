@@ -35,6 +35,7 @@
   import { baseSetschemas } from './data';
   import { useUserStore } from '/@/store/modules/user';
   import { uploadImg } from '/@/api/sys/upload';
+  import {getFileAccessHttpUrl} from '/@/utils/common/compUtils'
 
   export default defineComponent({
     components: {
@@ -63,7 +64,7 @@
 
       const avatar = computed(() => {
         const { avatar } = userStore.getUserInfo;
-        return avatar || headerImg;
+        return getFileAccessHttpUrl(avatar) || headerImg;
       });
 
       function updateAvatar(src: string, data:string) {

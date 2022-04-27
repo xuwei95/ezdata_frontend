@@ -1,4 +1,5 @@
-import { inject, reactive, ref, unref, watch, nextTick } from 'vue';
+import type {Ref} from 'vue'
+import { inject, reactive, ref, computed, unref, watch, nextTick } from 'vue';
 import { TreeActionType } from '/@/components/Tree';
 import { listToTree } from '/@/utils/common/compUtils';
 
@@ -7,6 +8,8 @@ export function useTreeBiz(treeRef, getList, props) {
   const selectOptions = inject('selectOptions', ref<Array<object>>([]));
   //接收已选择的值
   const selectValues = <object>inject('selectValues', reactive({}));
+  // 是否正在加载回显
+  const loadingEcho = inject<Ref<boolean>>('loadingEcho', ref(false))
   //数据集
   const treeData = ref<Array<object>>([]);
   //已选择的值
@@ -15,15 +18,23 @@ export function useTreeBiz(treeRef, getList, props) {
   const selectRows = ref<Array<object>>([]);
   //是否是打开弹框模式
   const openModal = ref(false);
+  // 是否开启父子关联，如果不可以多选，就始终取消父子关联
+  const getCheckStrictly = computed(() => props.multiple ? props.checkStrictly : true)
+  // 是否是首次加载回显，只有首次加载，才会显示 loading
+  let isFirstLoadEcho = true
 
   /**
    * 监听selectValues变化
    */
-  watch(selectValues, () => {
-    if (openModal.value == false) {
-      onLoadData(null, selectValues['value'].join(',')).then();
+  watch(selectValues, ({value: values}: Recordable) => {
+    if (openModal.value == false && values.length > 0) {
+      loadingEcho.value = isFirstLoadEcho
+      isFirstLoadEcho = false
+      onLoadData(null, values.join(',')).finally(() => {
+        loadingEcho.value = false
+      })
     }
-  });
+  }, {immediate: true});
 
 
   /**
@@ -72,6 +83,20 @@ export function useTreeBiz(treeRef, getList, props) {
    */
   function onCheck(keys, info) {
     if(props.checkable==true) {
+      // 如果不能多选，就只保留最后一个选中的
+      if (!props.multiple) {
+        if (info.checked) {
+          //update-begin-author:taoyan date:20220408 for: 单选模式下，设定rowKey，无法选中数据-
+          checkedKeys.value = [info.node.eventKey]
+          let temp = info.checkedNodes.find(n => n.key === info.node.eventKey)
+          selectRows.value = [temp.props.node]
+          //update-end-author:taoyan date:20220408 for: 单选模式下，设定rowKey，无法选中数据-
+        } else {
+          checkedKeys.value = []
+          selectRows.value = []
+        }
+        return
+      }
       checkedKeys.value = props.checkStrictly?keys.checked:keys;
       const { checkedNodes } = info;
       let rows = <any[]>[];
@@ -105,7 +130,9 @@ export function useTreeBiz(treeRef, getList, props) {
     let startPid=''
     if (treeNode) {
       startPid=treeNode.eventKey;
-      params['pid'] = treeNode.eventKey;
+      //update-begin---author:wangshuai ---date:20220407  for：rowkey不设置成id，sync开启异步的时候，点击上级下级不显示------------
+      params['pid'] = treeNode.value;
+      //update-end---author:wangshuai ---date:20220407  for：rowkey不设置成id，sync开启异步的时候，点击上级下级不显示------------
     }
     if (ids) {
       startPid='';
@@ -215,6 +242,7 @@ export function useTreeBiz(treeRef, getList, props) {
       checkedKeys,
       selectRows,
       treeData,
+      getCheckStrictly,
       getSelectTreeData,
     },
   ];

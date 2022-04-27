@@ -89,6 +89,8 @@ export const vxeProps = () => ({
   socketKey: propTypes.string.def('vxe-default'),
   // 新增行时切换行的激活状态
   addSetActive: propTypes.bool.def(true),
+  // 是否开启键盘编辑
+  keyboardEdit: propTypes.bool.def(false),
 })
 
 export const vxeEmits = ['save', 'added', 'removed', 'inserted', 'dragged', 'selectRowChange', 'pageChange', 'valueChange']

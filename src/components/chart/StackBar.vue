@@ -2,7 +2,7 @@
     <div ref="chartRef" :style="{ height, width }"></div>
 </template>
 <script lang="ts">
-    import {defineComponent, PropType, ref, Ref, reactive, watchEffect} from 'vue';
+    import {defineComponent, PropType, ref, Ref, reactive, watchEffect,watch} from 'vue';
     import {useECharts} from '/@/hooks/web/useECharts';
 
     export default defineComponent({
@@ -12,6 +12,10 @@
                 type: Array,
                 default: () => ([]),
                 required: true
+            },
+            size: {
+                type: Object,
+                default: ()=>{}
             },
             option: {
                 type: Object,
@@ -32,7 +36,7 @@
         },
         setup(props) {
             const chartRef = ref<HTMLDivElement | null>(null);
-            const {setOptions, echarts} = useECharts(chartRef as Ref<HTMLDivElement>);
+            const {setOptions, echarts,resize} = useECharts(chartRef as Ref<HTMLDivElement>);
             const option = reactive({
                 tooltip: {
                     trigger: 'axis',
@@ -63,7 +67,19 @@
             watchEffect(() => {
                 props.chartData && initCharts();
             });
-
+            /**
+             * 监听拖拽大小变化
+             */
+            watch(
+                () => props.size,
+                () => {
+                    console.log("props.size",props.size)
+                    resize();
+                },
+                {
+                    immediate: true,
+                }
+            );
             function initCharts() {
                 if (props.option) {
                     Object.assign(option, props.option);

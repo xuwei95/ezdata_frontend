@@ -1,7 +1,7 @@
 <!--部门选择组件-->
 <template>
     <div>
-        <JSelectBiz @handleOpen="handleOpen"  v-bind="attrs"/>
+        <JSelectBiz @handleOpen="handleOpen" :loading="loadingEcho" v-bind="attrs"/>
         <DeptSelectModal @register="regModal" @getSelectResult="setValue" v-bind="getBindValue" />
     </div>
 </template>
@@ -24,6 +24,8 @@
     inheritAttrs: false,
     props: {
       value: propTypes.oneOfType([propTypes.string, propTypes.array]),
+      // 是否允许多选，默认 true
+      multiple: propTypes.bool.def(true),
     },
     emits: ['options-change', 'change','select','update:value'],
     setup(props, { emit, refs }) {
@@ -38,10 +40,14 @@
       let selectValues = reactive<object>({
         value: []
       });
+      // 是否正在加载回显数据
+      const loadingEcho = ref<boolean>(false)
       //下发 selectOptions,xxxBiz组件接收
       provide('selectOptions', selectOptions);
       //下发 selectValues,xxxBiz组件接收
       provide('selectValues', selectValues);
+      //下发 loadingEcho,xxxBiz组件接收
+      provide('loadingEcho', loadingEcho);
 
       const tag = ref(false);
       const attrs = useAttrs();
@@ -51,6 +57,12 @@
        */
       watchEffect(() => {
         props.value && initValue();
+        // update-begin-author:taoyan date:20220401 for:调用表单的 resetFields不会清空当前部门信息，界面显示上一次的数据
+        if(props.value==='' || props.value===undefined){
+          state.value = []
+          selectValues.value = []
+        }
+        // update-end-author:taoyan date:20220401 for:调用表单的 resetFields不会清空当前部门信息，界面显示上一次的数据
       });
 
       /**
@@ -89,6 +101,7 @@
           state.value = value.split(',');
           selectValues.value = value.split(',');
         }
+     
       }
 
       /**
@@ -107,6 +120,7 @@
         attrs,
         selectOptions,
         selectValues,
+        loadingEcho,
         getBindValue,
         tag,
         regModal,

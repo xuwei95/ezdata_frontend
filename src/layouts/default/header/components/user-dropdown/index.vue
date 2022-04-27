@@ -1,7 +1,7 @@
 <template>
   <Dropdown placement="bottomLeft" :overlayClassName="`${prefixCls}-dropdown-overlay`">
     <span :class="[prefixCls, `${prefixCls}--${theme}`]" class="flex">
-      <img :class="`${prefixCls}__header`" :src="getUserInfo.avatar" />
+      <img :class="`${prefixCls}__header`" :src="getAvatarUrl" />
       <span :class="`${prefixCls}__info hidden md:block`">
         <span :class="`${prefixCls}__name  `" class="truncate">
           {{ getUserInfo.realname }}
@@ -80,6 +80,8 @@
   import {refreshCache,queryAllDictItems} from '/@/views/system/dict/dict.api';
   import { DB_DICT_DATA_KEY } from '/src/enums/cacheEnum';
   import { removeAuthCache,setAuthCache } from '/src/utils/auth';
+  import {getFileAccessHttpUrl} from '/@/utils/common/compUtils'
+
   type MenuEvent = 'logout' | 'doc' | 'lock'|'cache' | 'depart';
   const {createMessage} = useMessage();
   export default defineComponent({
@@ -108,6 +110,8 @@
         return { realname, avatar: avatar || headerImg, desc };
       });
 
+      const getAvatarUrl = computed(() => getFileAccessHttpUrl(getUserInfo.value?.avatar))
+      
       const [register, { openModal }] = useModal();
        /**
        * 多部门弹窗逻辑
@@ -179,6 +183,7 @@
         prefixCls,
         t,
         getUserInfo,
+        getAvatarUrl,
         handleMenuClick,
         getShowDoc,
         register,

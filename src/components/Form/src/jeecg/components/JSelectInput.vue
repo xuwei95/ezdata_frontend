@@ -6,7 +6,7 @@
 import { propTypes } from '/@/utils/propTypes'
 import { defineComponent, ref, watch, computed } from 'vue'
 
-// 可以输入的下拉框
+// 可以输入的下拉框（此组件暂时没有人用）
 export default defineComponent({
   name: 'JSelectInput',
   props: {
@@ -50,11 +50,11 @@ export default defineComponent({
     }
 
     // 删除无用的因搜索（用户输入）而创建的项
-    function deleteSearchAdd(value) {
+    function deleteSearchAdd(value = '') {
       let indexes: any[] = []
       options.value.forEach((option, index) => {
         if (option.searchAdd) {
-          if (option.value.toLocaleString() !== value.toLocaleString()) {
+          if ((option.value ?? '').toString() !== value.toString()) {
             indexes.push(index)
           }
         }

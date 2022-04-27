@@ -1,5 +1,5 @@
 <template>
-  <BasicDrawer v-bind="$attrs" @register="registerDrawer" :title="getTitle" width="600" @ok="handleSubmit" destroyOnClose>
+  <BasicDrawer v-bind="$attrs" @register="registerDrawer" :title="getTitle" :width="adaptiveWidth" @ok="handleSubmit" :showFooter="showFooter" destroyOnClose>
     <BasicForm @register="registerForm" />
   </BasicDrawer>
 </template>
@@ -9,6 +9,7 @@
   import {formSchema} from './user.data';
   import {BasicDrawer, useDrawerInner} from '/@/components/Drawer';
   import {saveOrUpdateUser,getUserRoles,getUserDepartList} from './user.api';
+  import {useDrawerAdaptiveWidth} from '/@/hooks/jeecg/useAdaptiveWidth'
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
   const attrs = useAttrs()
@@ -21,11 +22,13 @@
     schemas: formSchema,
     showActionButtonGroup: false,
   });
+  // TODO [VUEN-527] https://www.teambition.com/task/6239beb894b358003fe93626
+  const showFooter = ref(true)
   //表单赋值
   const [registerDrawer, {setDrawerProps, closeDrawer}] = useDrawerInner(async (data) => {
     await resetFields();
-    let showFooter = data?.showFooter ?? true
-    setDrawerProps({ confirmLoading: false, showFooter })
+    showFooter.value = data?.showFooter ?? true
+    setDrawerProps({ confirmLoading: false, showFooter: showFooter.value })
     isUpdate.value = !!data?.isUpdate;
     if (unref(isUpdate)) {
       rowId.value = data.record.id;
@@ -96,6 +99,7 @@
   });
   //获取标题
   const getTitle = computed(() => (!unref(isUpdate) ? '新增用户' : '编辑用户'));
+  const {adaptiveWidth} = useDrawerAdaptiveWidth()
 
   //提交事件
   async function handleSubmit() {

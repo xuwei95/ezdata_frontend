@@ -1,7 +1,7 @@
 <!--用户选择组件-->
 <template>
     <div>
-        <JSelectBiz @handleOpen="handleOpen" v-bind="attrs"></JSelectBiz>
+        <JSelectBiz @handleOpen="handleOpen" :loading="loadingEcho" v-bind="attrs"></JSelectBiz>
         <UserSelectModal :rowKey="rowKey" @register="regModal" @getSelectResult="setValue"  v-bind="getBindValue"></UserSelectModal>
     </div>
 </template>
@@ -15,7 +15,7 @@
     import {useRuleFormItem} from "/@/hooks/component/useFormItem";
     import {useAttrs} from "/@/hooks/core/useAttrs";
     import {SelectTypes} from 'ant-design-vue/es/select';
-    import {unref} from 'vue';
+
     export default defineComponent({
         name: 'JSelectUser',
         components: {
@@ -55,10 +55,14 @@
                 value: [],
                 change: false
             });
+            // 是否正在加载回显数据
+            const loadingEcho = ref<boolean>(false)
             //下发 selectOptions,xxxBiz组件接收
             provide('selectOptions', selectOptions);
             //下发 selectValues,xxxBiz组件接收
             provide('selectValues', selectValues);
+            //下发 loadingEcho,xxxBiz组件接收
+            provide('loadingEcho', loadingEcho);
 
             const tag = ref(false);
             const attrs = useAttrs();
@@ -122,6 +126,7 @@
                 selectOptions,
                 getBindValue,
                 selectValues,
+                loadingEcho,
                 tag,
                 regModal,
                 setValue,

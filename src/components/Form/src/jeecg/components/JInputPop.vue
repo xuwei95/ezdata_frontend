@@ -3,6 +3,7 @@
       trigger="contextmenu"
       v-model:visible="visible"
       :overlayClassName="`${prefixCls}-popover`"
+      :getPopupContainer="getPopupContainer"
       :placement="position">
     <template #title>
       <span>{{ title }}</span>

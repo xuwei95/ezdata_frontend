@@ -41,6 +41,23 @@ export function useData(props: JVxeTableProps): JVxeDataProps {
       // },
       radioConfig: { highlight: true },
       checkboxConfig: { highlight: true },
+      mouseConfig: {selected: false},
+      keyboardConfig: {
+        // 删除键功能
+        isDel: false,
+        // Esc键关闭编辑功能
+        isEsc: true,
+        // Tab 键功能
+        isTab: true,
+        // 任意键进入编辑（功能键除外）
+        isEdit: true,
+        // 方向键功能
+        isArrow: true,
+        // 回车键功能
+        isEnter: true,
+        // 如果功能被支持，用于 column.type=checkbox|radio，开启空格键切换复选框或单选框状态功能
+        isChecked: true,
+      },
     }),
     selectedRows: ref<any[]>([]),
     selectedRowIds: ref<string[]>([]),

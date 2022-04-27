@@ -14,6 +14,9 @@
         <a-tab-pane tab="联动示例" key="4">
           <JVxeDemo4/>
         </a-tab-pane>
+        <a-tab-pane tab="键盘操作" key="5">
+          <JVxeDemo5/>
+        </a-tab-pane>
       </a-tabs>
     </a-card>
   </PageWrapper>
@@ -26,4 +29,5 @@ import JVxeDemo1 from './JVxeDemo1.vue'
 import JVxeDemo2 from './JVxeDemo2.vue'
 import JVxeDemo3 from './JVxeDemo3.vue'
 import JVxeDemo4 from './JVxeDemo4.vue'
+import JVxeDemo5 from './JVxeDemo5.vue'
 </script>

@@ -169,7 +169,7 @@ export interface GlobEnvConfig {
   //是否开启微应用模式
   VITE_GLOB_APP_OPEN_QIANKUN: string;
   //单点服务端地址
-  VITE_GLOBE_APP_CAS_BASE_URL: string;
+  VITE_GLOB_APP_CAS_BASE_URL: string;
   VITE_GLOB_DOMAIN_URL: string;
   // Upload url
   VITE_GLOB_UPLOAD_URL?: string;

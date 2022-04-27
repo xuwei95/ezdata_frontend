@@ -31,6 +31,8 @@
     <RolePermissionDrawer @register="rolePermissionDrawer"/>
     <!--角色工单授权-->
     <RoleDesignModal @register="registerModal"/>
+    <!--角色工单授权-->
+    <RoleIndexModal @register="registerIndexModal"/>
 </template>
 <script lang="ts" name="system-role" setup>
   import {ref} from 'vue'
@@ -41,6 +43,7 @@
   import RoleDesc from './components/RoleDesc.vue';
   import RolePermissionDrawer from './components/RolePermissionDrawer.vue';
   import RoleDesignModal from './components/RoleDesignModal.vue';
+  import RoleIndexModal from './components/RoleIndexModal.vue';
   import RoleUserTable from './components/RoleUserTable.vue';
   import {columns, searchFormSchema} from './role.data';
   import {list, deleteRole, batchDeleteRole, getExportUrl,getImportUrl} from './role.api';
@@ -49,6 +52,7 @@
   const [roleUserDrawer, {openDrawer:openRoleUserDrawer}] = useDrawer();
   const [registerDrawer, {openDrawer}] = useDrawer();
   const [registerModal, {openModal}] = useModal();
+  const [registerIndexModal, {openModal:openIndexModal}] = useModal();
   const [rolePermissionDrawer, {openDrawer: openRolePermissionDrawer}] = useDrawer();
   const [registerDesc, {openDrawer: openRoleDesc}] = useDrawer();
 
@@ -131,6 +135,12 @@
     openModal(true, {roleId: id});
   }
   /**
+   * 首页配置弹窗
+   */
+  function handleIndexConfig(roleCode) {
+    openIndexModal(true, {roleCode});
+  }
+  /**
    * 角色用户
    */
   function handleUser(record) {
@@ -171,6 +181,9 @@
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
         },
+      },{
+        label: '首页配置',
+        onClick: handleIndexConfig.bind(null, record.roleCode),
       }, {
         label: '工单?',
         onClick: handleDesign.bind(null, record.id),
