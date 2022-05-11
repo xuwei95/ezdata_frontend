@@ -58,7 +58,7 @@ const vs = {
       const url = `${domain}/vxeSocket/${userId}/${this.pageId}`
       //update-begin-author:taoyan date:2022-4-24 for: v2.4.6 的 websocket 服务端，存在性能和安全问题。 #3278
       let token = (getToken() || '') as string
-      this.ws = new WebSocket(url, [token])
+      this.ws = new WebSocket(url)
       //update-end-author:taoyan date:2022-4-24 for: v2.4.6 的 websocket 服务端，存在性能和安全问题。 #3278
       this.ws.onopen = this.on.open.bind(this)
       this.ws.onerror = this.on.error.bind(this)
