@@ -145,6 +145,10 @@
   const filterArray = [/*{ key: 0, name: '熔断器' },*/ { key: 1, name: '限流过滤器' }];
   const tagArray = ref([
     {
+      name:'Path',
+      args:[]
+    },
+    {
       name:'Header',
       args:{
         header:'',
