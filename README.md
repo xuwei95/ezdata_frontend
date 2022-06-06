@@ -49,22 +49,82 @@ yarn install
 
 ```
 
+- 配置后台接口地址
+```bash
+.env.development
+```
+
 - run
 
 ```bash
 yarn serve
 ```
 
-```bash
-手工修改后台接口地址：
-.env.development
-```
 
 - build
 
 ```bash
 yarn build
 ```
+
+
+
+
+
+
+
+
+##   系统效果
+系统后台
+
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142327.png "在这里输入图片标题")
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142354.png "在这里输入图片标题")
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142339.png "在这里输入图片标题")
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142409.png "在这里输入图片标题")
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142401.png "在这里输入图片标题")
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_11.png "在这里输入图片标题")
+
+Online表单&Online报表
+![](https://oscimg.oschina.net/oscnet/up-e8862f2c3c14eace9090c20a8fb928234a4.png)
+![](https://oscimg.oschina.net/oscnet/up-e3b3a736236bc66f255a9a32ab3f9b7196b.png)
+![](https://oscimg.oschina.net/oscnet/up-221b8cbdea3c17d31a1365023a73d3d439f.png)
+
+报表效果
+
+![](https://static.oschina.net/uploads/img/201904/14160828_pkFr.png "")
+![](https://static.oschina.net/uploads/img/201904/14160834_Lo23.png "")
+![](https://static.oschina.net/uploads/img/201904/14160842_QK7B.png "")
+![](https://static.oschina.net/uploads/img/201904/14160849_GBm5.png "")
+![](https://static.oschina.net/uploads/img/201904/14160858_6RAM.png "")
+
+接口文档
+
+![](https://oscimg.oschina.net/oscnet/up-e6ea09dbaa01b8458c2e23614077ba9507f.png)
+
+
+流程设计&表单设计
+
+![](https://oscimg.oschina.net/oscnet/up-fe98e9f766e5abb6759f6f13d5f9186f0cf.png)
+![](https://static.oschina.net/uploads/img/201904/14160917_9Ftz.png "")
+![](https://static.oschina.net/uploads/img/201904/14160633_u59G.png "")
+![](https://static.oschina.net/uploads/img/201907/05165142_yyQ7.png "")
+
+报表设计
+
+![](https://oscimg.oschina.net/oscnet/up-da89eb034b8583d57b3f61493fec313ed28.png)
+![](https://oscimg.oschina.net/oscnet/up-35deca9d020d61ad464accfdeb3bb90ba5c.png)
+![](https://oscimg.oschina.net/oscnet/up-d1695b4a53ebbc9e9651e309e5af1c8bd30.png)
+![](https://oscimg.oschina.net/oscnet/up-4cc634b612e97f08ab702ef34f2ede53f2a.png)
+
+
+大屏模板
+
+![](https://static.oschina.net/uploads/img/201912/25133248_Ag1C.jpg "")
+
+![](https://static.oschina.net/uploads/img/201912/25133301_k9Kc.jpg "")
+
+![](https://oscimg.oschina.net/oscnet/up-649cb79c01eb95d5c2217a5dad28515da82.png)
+
 
 
 
@@ -180,47 +240,6 @@ yarn build
 └─更多功能开发中。。
    
 ```
-
-
-
-
-
-##   系统效果
-系统后台
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142327.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142354.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142339.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142409.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142401.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_11.png "在这里输入图片标题")
-
-online表单&online报表
-![](https://oscimg.oschina.net/oscnet/up-84c0b938696a23f17cd3de3d315d78ec46a.png)
-![](https://oscimg.oschina.net/oscnet/up-a884f4e410519426f556cec974a86579508.png)
-报表效果
-![](https://static.oschina.net/uploads/img/201904/14160828_pkFr.png "")
-![](https://static.oschina.net/uploads/img/201904/14160834_Lo23.png "")
-![](https://static.oschina.net/uploads/img/201904/14160842_QK7B.png "")
-![](https://static.oschina.net/uploads/img/201904/14160849_GBm5.png "")
-![](https://static.oschina.net/uploads/img/201904/14160858_6RAM.png "")
-
-接口文档
-![](https://oscimg.oschina.net/oscnet/up-a8f2c5392742b64aca4918f1fc5798512c0.png)
-
-流程设计&表单设计&报表设计
-![](https://oscimg.oschina.net/oscnet/up-9994c95e161469d21846257894525e966ae.png)
-![](https://static.oschina.net/uploads/img/201904/14160917_9Ftz.png "")
-![](https://static.oschina.net/uploads/img/201904/14160633_u59G.png "")
-![](https://static.oschina.net/uploads/img/201907/05165142_yyQ7.png "")
-![](https://oscimg.oschina.net/oscnet/up-7d6d8a56320c59300158212b6a7ab97c1f3.png)
-![](https://oscimg.oschina.net/oscnet/up-80c27c964b94e16c3e2c0b17f49b4c71063.png)
-![](https://oscimg.oschina.net/oscnet/up-649cb79c01eb95d5c2217a5dad28515da82.png)
-
-大屏模板
-![](https://static.oschina.net/uploads/img/201912/25133248_Ag1C.jpg "")
-
-![](https://static.oschina.net/uploads/img/201912/25133301_k9Kc.jpg "")
-
 
 ## 入门必备
 
