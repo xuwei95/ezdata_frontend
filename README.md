@@ -1,43 +1,39 @@
 JEECG BOOT 低代码平台（Vue3前端）
 ===============
-
-当前最新版本： 1.1.0-beta（预计发布时间：20220516）
+当前最新版本： 1.2.0（发布时间：20220606）
 
 
 ## 简介
 JeecgBoot-Vue3采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术方案，包括二次封装组件、utils、hooks、动态菜单、权限校验、按钮级别权限控制等功能。
 是在 Vben-Admin 基础上研发的，适合于JeecgBoot的新版前端VUE3框架。
+ 
+> 强大的代码生成器让前后端代码一键生成! JeecgBoot引领低代码开发模式(OnlineCoding-> 代码生成-> 手工MERGE)， 帮助解决Java项目70%的重复工作，让开发更多关注业务。既能快速提高效率，节省成本，同时又不失灵活性
 
-> 全新的VUE3技术栈，不只是追赶技术潮流，用了之后才能体会到Vue3的好处，的确比2更加适合大型项目。
+##  源码下载
+
+####  Github
+- 前端：https://github.com/jeecgboot/jeecgboot-vue3
+- 后端：https://github.com/jeecgboot/jeecg-boot 
+
+#### Gitee
+- 前端：https://gitee.com/jeecg/jeecgboot-vue3
+- 后端：https://gitee.com/jeecg/jeecg-boot
+
+> 入门必看(切换Vue3路由) [http://vue3.jeecg.com/2671576](http://vue3.jeecg.com/2671576)
 
 
+## 技术文档
 
-## 相关文档
-
-
-*  开发文档：http://vue3.jeecg.com
-*  入门视频：[新手零基础入门视频](https://www.bilibili.com/video/BV1V34y187Y9)
-*  JEECG官网：[www.jeecg.com](http://www.jeecg.com)
-*  代码生成：http://vue3.jeecg.com/2677352
-*  在线演示：http://boot3.jeecg.com
-*  QQ交流群：683903138
-
-
-## 源码下载
-
-> - 重要必看：切换Vue3路由： [http://vue3.jeecg.com/2671576](http://vue3.jeecg.com/2671576)
-> - 后台版本要求：`jeecgboot v3.0+`以上， 因为从3.0版本开始，后台为了兼容vue3.0前端做了很多适配工作。
-
-|     |   JAVA后端   | VUE3前端  |
-|---  |--- | --- |
-|  github   | https://github.com/jeecgboot/jeecg-boot   | https://github.com/jeecgboot/jeecgboot-vue3  |
-|  码云   |  https://gitee.com/jeecg/jeecg-boot   | https://gitee.com/jeecg/jeecgboot-vue3  |
-
+-   开发文档：[http://vue3.jeecg.com](http://vue3.jeecg.com)
+-   官方网站： [http://www.jeecg.com](http://www.jeecg.com)
+-   在线演示：[http://boot3.jeecg.com](http://boot3.jeecg.com)
+-  快速入门：[入门视频](https://www.bilibili.com/video/BV1V34y187Y9 "入门视频") |  [ 代码生成](http://vue3.jeecg.com/2677352)
+-   QQ交流群：683903138
 
 ## 安装与使用
 
 
-
+  
 - Get the project code
 
 ```bash
@@ -59,6 +55,11 @@ yarn install
 yarn serve
 ```
 
+```bash
+手工修改后台接口地址：
+.env.development
+```
+
 - build
 
 ```bash
@@ -68,8 +69,7 @@ yarn build
 
 
 ## 功能模块
-> vue3版本已经实现了系统管理、系统监控、报表、各种组件、前端权限、GUI代码生成 等平台基础模块，
-> 除了Online表单、Online报表模块其他都已完成。
+> vue3版本已经实现了系统管理、系统监控、报表、各种组件、前端权限、GUI代码生成、Online表单、Online报表等平台功能。
 
 ```
 ├─首页
@@ -173,13 +173,53 @@ yarn build
 │  ├─集成Websocket消息通知机制
 │  ├─支持第三方登录（QQ、钉钉、微信等）
 │  ├─系统编码规则
-├─Online在线开发（尚未实现）
+├─Online在线开发
 │  ├─Online在线表单 
 │  ├─Online代码生成器
 │  ├─Online在线报表 
 └─更多功能开发中。。
    
 ```
+
+
+
+
+
+##   系统效果
+系统后台
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142327.png "在这里输入图片标题")
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142354.png "在这里输入图片标题")
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142339.png "在这里输入图片标题")
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142409.png "在这里输入图片标题")
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142401.png "在这里输入图片标题")
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_11.png "在这里输入图片标题")
+
+online表单&online报表
+![](https://oscimg.oschina.net/oscnet/up-84c0b938696a23f17cd3de3d315d78ec46a.png)
+![](https://oscimg.oschina.net/oscnet/up-a884f4e410519426f556cec974a86579508.png)
+报表效果
+![](https://static.oschina.net/uploads/img/201904/14160828_pkFr.png "")
+![](https://static.oschina.net/uploads/img/201904/14160834_Lo23.png "")
+![](https://static.oschina.net/uploads/img/201904/14160842_QK7B.png "")
+![](https://static.oschina.net/uploads/img/201904/14160849_GBm5.png "")
+![](https://static.oschina.net/uploads/img/201904/14160858_6RAM.png "")
+
+接口文档
+![](https://oscimg.oschina.net/oscnet/up-a8f2c5392742b64aca4918f1fc5798512c0.png)
+
+流程设计&表单设计&报表设计
+![](https://oscimg.oschina.net/oscnet/up-9994c95e161469d21846257894525e966ae.png)
+![](https://static.oschina.net/uploads/img/201904/14160917_9Ftz.png "")
+![](https://static.oschina.net/uploads/img/201904/14160633_u59G.png "")
+![](https://static.oschina.net/uploads/img/201907/05165142_yyQ7.png "")
+![](https://oscimg.oschina.net/oscnet/up-7d6d8a56320c59300158212b6a7ab97c1f3.png)
+![](https://oscimg.oschina.net/oscnet/up-80c27c964b94e16c3e2c0b17f49b4c71063.png)
+![](https://oscimg.oschina.net/oscnet/up-649cb79c01eb95d5c2217a5dad28515da82.png)
+
+大屏模板
+![](https://static.oschina.net/uploads/img/201912/25133248_Ag1C.jpg "")
+
+![](https://static.oschina.net/uploads/img/201912/25133301_k9Kc.jpg "")
 
 
 ## 入门必备
@@ -208,19 +248,6 @@ yarn build
 | [![IE](https://raw.githubusercontent.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png)](http://godban.github.io/browsers-support-badges/)IE | [![ Edge](https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png)](http://godban.github.io/browsers-support-badges/)Edge | [![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png)](http://godban.github.io/browsers-support-badges/)Firefox | [![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png)](http://godban.github.io/browsers-support-badges/)Chrome | [![Safari](https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png)](http://godban.github.io/browsers-support-badges/)Safari |
 | --- | --- | --- | --- | --- |
 | not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
-
-
-
-
-##   系统效果
-
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142327.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142354.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142339.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142409.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142401.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_11.png "在这里输入图片标题")
-
 
 
 
