@@ -7,6 +7,7 @@ import { warn } from '/@/utils/log';
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { getToken } from '/@/utils/auth';
 import {URL_HASH_TAB} from '/@/utils'
+import { packageViews } from '/@/utils/monorepo/dynamicRouter';
 
 export type LayoutMapKey = 'LAYOUT';
 const IFRAME = () => import('/@/views/sys/iframe/FrameBlank.vue');
@@ -23,7 +24,11 @@ let dynamicViewsModules: Record<string, () => Promise<Recordable>>;
 
 // Dynamic introduction
 function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
-  dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../views/**/*.{vue,tsx}');
+  if (!dynamicViewsModules) {
+    dynamicViewsModules = import.meta.glob('../../views/**/*.{vue,tsx}');
+    // 跟模块views合并
+    dynamicViewsModules = Object.assign({}, dynamicViewsModules, packageViews);
+  }
   if (!routes) return;
   routes.forEach((item) => {
     // update-begin--author:sunjianlei---date:20210918---for:适配旧版路由选项 --------

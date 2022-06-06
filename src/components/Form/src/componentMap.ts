@@ -58,6 +58,7 @@ import JSearchSelect from './jeecg/components/JSearchSelect.vue'
 import JAddInput from './jeecg/components/JAddInput.vue'
 import {Time} from '/@/components/Time';
 import JOnlineSelectCascade from './jeecg/components/JOnlineSelectCascade.vue'
+import JRangeNumber from './jeecg/components/JRangeNumber.vue'
 
 const componentMap = new Map<ComponentType, Component>();
 
@@ -125,6 +126,7 @@ componentMap.set('JUpload', JUpload);
 componentMap.set('JSearchSelect', JSearchSelect);
 componentMap.set('JAddInput', JAddInput);
 componentMap.set('JOnlineSelectCascade', JOnlineSelectCascade)
+componentMap.set('JRangeNumber', JRangeNumber)
 
 export function add(compName: ComponentType, component: Component) {
   componentMap.set(compName, component);

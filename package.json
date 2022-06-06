@@ -10,6 +10,7 @@
     "bootstrap": "yarn install",
     "serve": "npm run dev",
     "dev": "vite",
+    "clean:cache": "rimraf node_modules/.cache/ && rimraf node_modules/.vite",
     "build": "cross-env NODE_ENV=production NODE_OPTIONS=--max-old-space-size=4096 vite build && esno ./build/script/postBuild.ts",
     "build:test": "cross-env vite build --mode test && esno ./build/script/postBuild.ts",
     "build:no-cache": "yarn clean:cache && npm run build",
@@ -18,7 +19,6 @@
     "preview": "npm run build && vite preview",
     "preview:dist": "vite preview",
     "log": "conventional-changelog -p angular -i CHANGELOG.md -s",
-    "clean:cache": "rimraf node_modules/.cache/ && rimraf node_modules/.vite",
     "clean:lib": "rimraf node_modules",
     "lint:eslint": "eslint --cache --max-warnings 0  \"{src,mock}/**/*.{vue,ts,tsx}\" --fix",
     "lint:prettier": "prettier --write  \"src/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
@@ -34,6 +34,7 @@
     "gen:icon": "esno ./build/generate/icon/index.ts"
   },
   "dependencies": {
+    "@jeecg/online": "1.0.1",
     "@iconify/iconify": "^2.0.4",
     "@fullcalendar/core": "^5.10.1",
     "@fullcalendar/daygrid": "^5.10.1",
@@ -191,6 +192,7 @@
         "@fullcalendar/interaction",
         "@fullcalendar/timegrid",
         "@fullcalendar/vue3",
+        "@jeecg/online",
         "@vueuse/core",
         "@vueuse/shared",
         "@zxcvbn-ts/core",

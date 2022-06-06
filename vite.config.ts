@@ -62,6 +62,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     },
     build: {
       target: 'es2015',
+      cssTarget: 'chrome80',
       outDir: OUTPUT_DIR,
       terserOptions: {
         compress: {
@@ -93,6 +94,9 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     plugins: createVitePlugins(viteEnv, isBuild),
 
     optimizeDeps: {
+      esbuildOptions: {
+        target: 'es2020',
+      },
       // @iconify/iconify: The dependency is dynamically and virtually loaded by @purge-icons/generated, so it needs to be specified explicitly
       include: [
         '@iconify/iconify',
