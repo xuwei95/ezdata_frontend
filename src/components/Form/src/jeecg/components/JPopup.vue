@@ -15,6 +15,7 @@
     </div>
 </template>
 <script lang="ts">
+    import JPopupOnlReportModal from './modal/JPopupOnlReportModal.vue'
     import {defineComponent, ref, reactive, onMounted, watchEffect, watch, computed, unref} from 'vue';
     import {useModal} from '/@/components/Modal';
     import {propTypes} from "/@/utils/propTypes";
@@ -24,6 +25,7 @@
     export default defineComponent({
         name: 'JPopup',
         components: {
+          JPopupOnlReportModal
         },
         inheritAttrs: false,
         props: {
