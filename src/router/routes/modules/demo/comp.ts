@@ -23,7 +23,7 @@ const comp: AppRouteModule = {
       meta: {
         title: t('routes.demo.comp.jeecg'),
       },
-      children:[
+      children: [
         {
           path: 'basic',
           name: 'JAreaLinkage',
@@ -40,7 +40,7 @@ const comp: AppRouteModule = {
             title: t('routes.demo.comp.oneToMore'),
           },
         },
-      ]
+      ],
     },
     {
       path: 'basic',
@@ -49,7 +49,7 @@ const comp: AppRouteModule = {
       meta: {
         title: t('routes.demo.comp.basic'),
       },
-      children:[
+      children: [
         {
           path: 'button',
           name: 'ButtonDemo',
@@ -97,9 +97,8 @@ const comp: AppRouteModule = {
             },
           ],
         },
-      ]
+      ],
     },
-
 
     {
       path: 'form',
@@ -334,7 +333,7 @@ const comp: AppRouteModule = {
       meta: {
         title: t('routes.demo.comp.modal'),
       },
-      children:[
+      children: [
         {
           path: 'basic',
           name: 'ModalBasicDemo',
@@ -351,7 +350,7 @@ const comp: AppRouteModule = {
             title: t('routes.demo.comp.modal.drawer'),
           },
         },
-      ]
+      ],
     },
 
     {
@@ -362,7 +361,7 @@ const comp: AppRouteModule = {
       meta: {
         title: t('routes.demo.comp.third'),
       },
-      children:[
+      children: [
         {
           path: 'basic',
           name: 'CropperDemo',
@@ -491,7 +490,7 @@ const comp: AppRouteModule = {
             title: t('routes.demo.feat.ripple'),
           },
         },
-      ]
+      ],
     },
     {
       path: 'tree',
@@ -702,7 +701,7 @@ const comp: AppRouteModule = {
           },
         },
       ],
-    }
+    },
   ],
 };
 

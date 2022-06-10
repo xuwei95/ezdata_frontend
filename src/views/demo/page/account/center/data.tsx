@@ -10,15 +10,7 @@ export interface TabItem {
   component: string;
 }
 
-export const tags: string[] = [
-  '很有想法的',
-  '专注设计',
-  '川妹子',
-  '大长腿',
-  '海纳百川',
-  '前端开发',
-  'vue3',
-];
+export const tags: string[] = ['很有想法的', '专注设计', '川妹子', '大长腿', '海纳百川', '前端开发', 'vue3'];
 <span class="iconify" data-icon="jam:codepen-circle" data-inline="false"></span>;
 export const teams: ListItem[] = [
   {

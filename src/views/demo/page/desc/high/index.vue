@@ -45,9 +45,7 @@
           <a-descriptions-item label="会员卡号"> XX 32943898021309809423 </a-descriptions-item>
           <a-descriptions-item label="身份证"> 3321944288191034921 </a-descriptions-item>
           <a-descriptions-item label="联系方式"> 18100000000 </a-descriptions-item>
-          <a-descriptions-item label="联系地址" :span="2">
-            曲丽丽 18100000000 浙江省杭州市西湖区黄姑山路工专路交叉路口
-          </a-descriptions-item>
+          <a-descriptions-item label="联系地址" :span="2"> 曲丽丽 18100000000 浙江省杭州市西湖区黄姑山路工专路交叉路口 </a-descriptions-item>
         </a-descriptions>
 
         <a-descriptions title="信息组" :column="3">
@@ -64,16 +62,11 @@
             <a-descriptions-item label="角色码"> 1234567 </a-descriptions-item>
             <a-descriptions-item label="所属部门"> XX公司 - YY部 </a-descriptions-item>
             <a-descriptions-item label="过期时间"> 2017-08-08 </a-descriptions-item>
-            <a-descriptions-item label="描述" :span="2">
-              这段描述很长很长很长很长很长很长很长很长很长很长很长很长很长很长...
-            </a-descriptions-item>
+            <a-descriptions-item label="描述" :span="2"> 这段描述很长很长很长很长很长很长很长很长很长很长很长很长很长很长... </a-descriptions-item>
           </a-descriptions>
           <a-divider />
           <a-descriptions title="组名称" :column="1">
-            <a-descriptions-item label="学名">
-              Citrullus lanatus (Thunb.) Matsum. et
-              Nakai一年生蔓生藤本；茎、枝粗壮，具明显的棱。卷须较粗..
-            </a-descriptions-item>
+            <a-descriptions-item label="学名"> Citrullus lanatus (Thunb.) Matsum. et Nakai一年生蔓生藤本；茎、枝粗壮，具明显的棱。卷须较粗.. </a-descriptions-item>
           </a-descriptions>
           <a-divider />
           <a-descriptions title="组名称" :column="1">

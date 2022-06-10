@@ -35,11 +35,7 @@ export interface FormActionType {
   resetSchema: (data: Partial<FormSchema> | Partial<FormSchema>[]) => Promise<void>;
   setProps: (formProps: Partial<FormProps>) => Promise<void>;
   removeSchemaByFiled: (field: string | string[]) => Promise<void>;
-  appendSchemaByField: (
-      schema: FormSchema,
-      prefixField: string | undefined,
-      first?: boolean | undefined
-  ) => Promise<void>;
+  appendSchemaByField: (schema: FormSchema, prefixField: string | undefined, first?: boolean | undefined) => Promise<void>;
   validateFields: (nameList?: NamePath[]) => Promise<any>;
   validate: (nameList?: NamePath[]) => Promise<any>;
   scrollToField: (name: NamePath, options?: ScrollOptions) => Promise<void>;
@@ -138,10 +134,7 @@ export interface FormSchema {
   // Auxiliary text
   subLabel?: string;
   // Help text on the right side of the text
-  helpMessage?:
-      | string
-      | string[]
-      | ((renderCallbackParams: RenderCallbackParams) => string | string[]);
+  helpMessage?: string | string[] | ((renderCallbackParams: RenderCallbackParams) => string | string[]);
   // BaseHelp component props
   helpComponentProps?: Partial<HelpComponentProps>;
   // Label width, if it is passed, the labelCol and WrapperCol configured by itemProps will be invalid
@@ -151,14 +144,7 @@ export interface FormSchema {
   // render component
   component: ComponentType;
   // Component parameters
-  componentProps?:
-      | ((opt: {
-    schema: FormSchema;
-    tableAction: TableActionType;
-    formActionType: FormActionType;
-    formModel: Recordable;
-  }) => Recordable)
-      | object;
+  componentProps?: ((opt: { schema: FormSchema; tableAction: TableActionType; formActionType: FormActionType; formModel: Recordable }) => Recordable) | object;
   // Required
   required?: boolean | ((renderCallbackParams: RenderCallbackParams) => boolean);
 
@@ -192,11 +178,7 @@ export interface FormSchema {
   // Rendering col content requires outer wrapper form-item
   renderColContent?: (renderCallbackParams: RenderCallbackParams) => VNode | VNode[] | string;
 
-  renderComponentContent?:
-      | ((renderCallbackParams: RenderCallbackParams) => any)
-      | VNode
-      | VNode[]
-      | string;
+  renderComponentContent?: ((renderCallbackParams: RenderCallbackParams) => any) | VNode | VNode[] | string;
 
   // Custom slot, in from-item
   slot?: string;

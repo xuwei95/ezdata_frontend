@@ -1,12 +1,12 @@
-import { computed, defineComponent, h } from 'vue'
-import { useJVxeComponent, useJVxeCompProps } from '/@/components/jeecg/JVxeTable/src/hooks/useJVxeComponent'
-import { JVxeComponent } from '/@/components/jeecg/JVxeTable/src/types/JVxeComponent'
+import { computed, defineComponent, h } from 'vue';
+import { useJVxeComponent, useJVxeCompProps } from '/@/components/jeecg/JVxeTable/src/hooks/useJVxeComponent';
+import { JVxeComponent } from '/@/components/jeecg/JVxeTable/src/types/JVxeComponent';
 
 export default defineComponent({
   name: 'JVxeSlotCell',
   props: useJVxeCompProps(),
   setup(props: JVxeComponent.Props) {
-    const data = useJVxeComponent(props)
+    const data = useJVxeComponent(props);
     const slotProps = computed(() => {
       return {
         value: data.innerValue.value,
@@ -21,16 +21,16 @@ export default defineComponent({
         scrolling: props.renderOptions.scrolling,
         reloadEffect: props.renderOptions.reloadEffect.enabled,
         triggerChange: (v) => data.handleChangeCommon(v),
-      }
-    })
+      };
+    });
     return () => {
-      let { slot } = props.renderOptions
+      let { slot } = props.renderOptions;
       if (slot) {
-        return h('div', {}, slot(slotProps.value))
+        return h('div', {}, slot(slotProps.value));
       } else {
-        return h('div')
+        return h('div');
       }
-    }
+    };
   },
   // 【组件增强】注释详见：JVxeComponent.Enhanced
   enhanced: {
@@ -38,4 +38,4 @@ export default defineComponent({
       editRender: false,
     },
   } as JVxeComponent.EnhancedPartial,
-})
+});

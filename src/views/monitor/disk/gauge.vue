@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <div ref="chartRef" style="width:100%;height: 400px"></div>
-    </div>
+  <div>
+    <div ref="chartRef" style="width: 100%; height: 400px"></div>
+  </div>
 </template>
 <script lang="ts" setup>
   import { onMounted, ref, reactive, Ref, defineProps } from 'vue';
@@ -68,7 +68,6 @@
     ],
   });
 
-
   function initCharts() {
     option.series[0].data[0].name = props.data.name;
     option.series[0].data[0].value = props.data.restPPT;
@@ -80,6 +79,4 @@
     echarts.use(GaugeChart);
     initCharts();
   });
-
-
 </script>

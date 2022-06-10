@@ -27,12 +27,12 @@ type Upward = number | string | null | undefined;
  * @returns 响应式高度
  */
 export function useContentHeight(
-    flag: ComputedRef<Boolean>,
-    anchorRef: Ref,
-    subtractHeightRefs: Ref[],
-    substractSpaceRefs: Ref[],
-    upwardSpace: Ref<Upward> | ComputedRef<Upward> | Upward = 0,
-    offsetHeightRef: Ref<number> = ref(0),
+  flag: ComputedRef<Boolean>,
+  anchorRef: Ref,
+  subtractHeightRefs: Ref[],
+  substractSpaceRefs: Ref[],
+  upwardSpace: Ref<Upward> | ComputedRef<Upward> | Upward = 0,
+  offsetHeightRef: Ref<number> = ref(0)
 ) {
   const contentHeight: Ref<Nullable<number>> = ref(null);
   const { footerHeightRef: layoutFooterHeightRef } = useLayoutHeight();
@@ -50,10 +50,7 @@ export function useContentHeight(
     });
   }
 
-  function calcSubtractSpace(
-      element: Element | null | undefined,
-      direction: 'all' | 'top' | 'bottom' = 'all',
-  ): number {
+  function calcSubtractSpace(element: Element | null | undefined, direction: 'all' | 'top' | 'bottom' = 'all'): number {
     function numberPx(px: string) {
       return Number(px.replace(/[^\d]/g, ''));
     }
@@ -141,13 +138,7 @@ export function useContentHeight(
       upward(anchorEl, upwardSpace);
     }
 
-    let height =
-        bottomIncludeBody -
-        unref(layoutFooterHeightRef) -
-        unref(offsetHeightRef) -
-        substractHeight -
-        substractSpaceHeight -
-        upwardSpaceHeight;
+    let height = bottomIncludeBody - unref(layoutFooterHeightRef) - unref(offsetHeightRef) - substractHeight - substractSpaceHeight - upwardSpaceHeight;
 
     // compensation height
     const calcCompensationHeight = () => {
@@ -170,21 +161,21 @@ export function useContentHeight(
     });
   });
   useWindowSizeFn(
-      () => {
-        calcContentHeight();
-      },
-      50,
-      { immediate: true },
+    () => {
+      calcContentHeight();
+    },
+    50,
+    { immediate: true }
   );
   watch(
-      () => [layoutFooterHeightRef.value],
-      () => {
-        calcContentHeight();
-      },
-      {
-        flush: 'post',
-        immediate: true,
-      },
+    () => [layoutFooterHeightRef.value],
+    () => {
+      calcContentHeight();
+    },
+    {
+      flush: 'post',
+      immediate: true,
+    }
   );
 
   return { redoHeight, setCompensation, contentHeight };

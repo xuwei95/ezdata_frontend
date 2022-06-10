@@ -1,9 +1,9 @@
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch } from 'vue';
 
-import { getToken } from '/@/utils/auth'
-import { getFileAccessHttpUrl } from '/@/utils/common/compUtils'
-import { JVxeComponent } from '../../types/JVxeComponent'
-import { useJVxeComponent } from '../useJVxeComponent'
+import { getToken } from '/@/utils/auth';
+import { getFileAccessHttpUrl } from '/@/utils/common/compUtils';
+import { JVxeComponent } from '../../types/JVxeComponent';
+import { useJVxeComponent } from '../useJVxeComponent';
 
 /**
  * use 公共上传组件
@@ -11,41 +11,45 @@ import { useJVxeComponent } from '../useJVxeComponent'
  * @param options 组件选项，token：默认是否传递token，action：默认上传路径，multiple：是否允许多文件
  */
 export function useJVxeUploadCell(props: JVxeComponent.Props, options?) {
-  const setup = useJVxeComponent(props)
-  const { innerValue, originColumn, handleChangeCommon } = setup
+  const setup = useJVxeComponent(props);
+  const { innerValue, originColumn, handleChangeCommon } = setup;
 
-  const innerFile = ref<any>(null)
+  const innerFile = ref<any>(null);
 
   /** upload headers */
   const uploadHeaders = computed(() => {
-    let headers = {}
-    if ((originColumn.value.token ?? (options?.token ?? false)) === true) {
-      headers['X-Access-Token'] = getToken()
+    let headers = {};
+    if ((originColumn.value.token ?? options?.token ?? false) === true) {
+      headers['X-Access-Token'] = getToken();
     }
-    return headers
-  })
+    return headers;
+  });
 
   /** 上传请求地址 */
   const uploadAction = computed(() => {
     if (!originColumn.value.action) {
-      return options?.action ?? ''
+      return options?.action ?? '';
     } else {
-      return originColumn.value.action
+      return originColumn.value.action;
     }
-  })
-  const hasFile = computed(() => innerFile.value != null)
-  const responseName = computed(() => originColumn.value.responseName ?? 'message')
+  });
+  const hasFile = computed(() => innerFile.value != null);
+  const responseName = computed(() => originColumn.value.responseName ?? 'message');
 
-  watch(innerValue, (val) => {
-    if (val) {
-      innerFile.value = val
-    } else {
-      innerFile.value = null
-    }
-  }, { immediate: true })
+  watch(
+    innerValue,
+    (val) => {
+      if (val) {
+        innerFile.value = val;
+      } else {
+        innerFile.value = null;
+      }
+    },
+    { immediate: true }
+  );
 
   function handleChangeUpload(info) {
-    let { file } = info
+    let { file } = info;
     let value = {
       name: file.name,
       type: file.type,
@@ -53,50 +57,50 @@ export function useJVxeUploadCell(props: JVxeComponent.Props, options?) {
       status: file.status,
       percent: file.percent,
       path: innerFile.value?.path ?? '',
-    }
+    };
     if (file.response) {
-      value['responseName'] = file.response[responseName.value]
+      value['responseName'] = file.response[responseName.value];
     }
-    let paths: string[] = []
+    let paths: string[] = [];
     if (options?.multiple && innerFile.value && innerFile.value.path) {
-      paths = innerFile.value.path.split(',')
+      paths = innerFile.value.path.split(',');
     }
     if (file.status === 'done') {
       if (typeof file.response.success === 'boolean') {
         if (file.response.success) {
-          paths.push(file.response[responseName.value])
-          value['path'] = paths.join(',')
-          handleChangeCommon(value)
+          paths.push(file.response[responseName.value]);
+          value['path'] = paths.join(',');
+          handleChangeCommon(value);
         } else {
-          value['status'] = 'error'
-          value['message'] = file.response.message || '未知错误'
+          value['status'] = 'error';
+          value['message'] = file.response.message || '未知错误';
         }
       } else {
         // 考虑到如果设置action上传路径为非jeecg-boot后台，可能不会返回 success 属性的情况，就默认为成功
-        paths.push(file.response[responseName.value])
-        value['path'] = paths.join(',')
-        handleChangeCommon(value)
+        paths.push(file.response[responseName.value]);
+        value['path'] = paths.join(',');
+        handleChangeCommon(value);
       }
     } else if (file.status === 'error') {
-      value['message'] = file.response.message || '未知错误'
+      value['message'] = file.response.message || '未知错误';
     }
-    innerFile.value = value
+    innerFile.value = value;
   }
 
   function handleClickDownloadFile() {
-    let { url, path } = innerFile.value || {}
+    let { url, path } = innerFile.value || {};
     if (!url || url.length === 0) {
       if (path && path.length > 0) {
-        url = getFileAccessHttpUrl(path.split(',')[0])
+        url = getFileAccessHttpUrl(path.split(',')[0]);
       }
     }
     if (url) {
-      window.open(url)
+      window.open(url);
     }
   }
 
   function handleClickDeleteFile() {
-    handleChangeCommon(null)
+    handleChangeCommon(null);
   }
 
   return {
@@ -109,25 +113,25 @@ export function useJVxeUploadCell(props: JVxeComponent.Props, options?) {
     handleChangeUpload,
     handleClickDownloadFile,
     handleClickDeleteFile,
-  }
+  };
 }
 
 export function fileGetValue(value) {
   if (value && value.path) {
-    return value.path
+    return value.path;
   }
-  return value
+  return value;
 }
 
 export function fileSetValue(value) {
   if (value) {
-    let first = value.split(',')[0]
-    let name = first.substring(first.lastIndexOf('/') + 1)
+    let first = value.split(',')[0];
+    let name = first.substring(first.lastIndexOf('/') + 1);
     return {
       name: name,
       path: value,
       status: 'done',
-    }
+    };
   }
-  return value
+  return value;
 }

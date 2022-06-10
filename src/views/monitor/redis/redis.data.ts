@@ -4,7 +4,7 @@ export const columns: BasicColumn[] = [
   {
     title: 'Key',
     dataIndex: 'key',
-    width: 100
+    width: 100,
   },
   {
     title: 'Description',
@@ -15,5 +15,5 @@ export const columns: BasicColumn[] = [
     title: 'Value',
     dataIndex: 'value',
     width: 80,
-  }
+  },
 ];

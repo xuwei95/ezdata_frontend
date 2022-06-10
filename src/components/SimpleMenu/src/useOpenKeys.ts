@@ -10,13 +10,7 @@ import { getAllParentPath } from '/@/router/helper/menuHelper';
 import { useTimeoutFn } from '/@/hooks/core/useTimeout';
 import { useDebounceFn } from '@vueuse/core';
 
-export function useOpenKeys(
-  menuState: MenuState,
-  menus: Ref<MenuType[]>,
-  accordion: Ref<boolean>,
-  mixSider: Ref<boolean>,
-  collapse: Ref<boolean>
-) {
+export function useOpenKeys(menuState: MenuState, menus: Ref<MenuType[]>, accordion: Ref<boolean>, mixSider: Ref<boolean>, collapse: Ref<boolean>) {
   const debounceSetOpenKeys = useDebounceFn(setOpenKeys, 50);
   async function setOpenKeys(path: string) {
     const native = !mixSider.value;

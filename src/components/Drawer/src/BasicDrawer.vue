@@ -1,12 +1,7 @@
 <template>
   <Drawer :class="prefixCls" @close="onClose" v-bind="getBindValues">
     <template #title v-if="!$slots.title">
-      <DrawerHeader
-              :title="getMergeProps.title"
-              :isDetail="isDetail"
-              :showDetailBack="showDetailBack"
-              @close="onClose"
-      >
+      <DrawerHeader :title="getMergeProps.title" :isDetail="isDetail" :showDetailBack="showDetailBack" @close="onClose">
         <template #titleToolbar>
           <slot name="titleToolbar"></slot>
         </template>
@@ -16,11 +11,7 @@
       <slot name="title"></slot>
     </template>
 
-    <ScrollContainer
-            :style="getScrollContentStyle"
-            v-loading="getLoading"
-            :loading-tip="loadingText || t('common.loadingText')"
-    >
+    <ScrollContainer :style="getScrollContentStyle" v-loading="getLoading" :loading-tip="loadingText || t('common.loadingText')">
       <slot></slot>
     </ScrollContainer>
     <DrawerFooter v-bind="getProps" @close="onClose" @ok="handleOk" :height="getFooterHeight">
@@ -33,16 +24,7 @@
 <script lang="ts">
   import type { DrawerInstance, DrawerProps } from './typing';
   import type { CSSProperties } from 'vue';
-  import {
-    defineComponent,
-    ref,
-    computed,
-    watch,
-    unref,
-    nextTick,
-    toRaw,
-    getCurrentInstance,
-  } from 'vue';
+  import { defineComponent, ref, computed, watch, unref, nextTick, toRaw, getCurrentInstance } from 'vue';
   import { Drawer } from 'ant-design-vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { isFunction, isNumber } from '/@/utils/is';
@@ -115,9 +97,7 @@
       const getFooterHeight = computed(() => {
         const { footerHeight, showFooter } = unref(getProps);
         if (showFooter && footerHeight) {
-          return isNumber(footerHeight)
-                  ? `${footerHeight}px`
-                  : `${footerHeight.replace('px', '')}px`;
+          return isNumber(footerHeight) ? `${footerHeight}px` : `${footerHeight.replace('px', '')}px`;
         }
         return `0px`;
       });
@@ -135,21 +115,21 @@
       });
 
       watch(
-              () => props.visible,
-              (newVal, oldVal) => {
-                if (newVal !== oldVal) visibleRef.value = newVal;
-              },
-              { deep: true }
+        () => props.visible,
+        (newVal, oldVal) => {
+          if (newVal !== oldVal) visibleRef.value = newVal;
+        },
+        { deep: true }
       );
 
       watch(
-              () => visibleRef.value,
-              (visible) => {
-                nextTick(() => {
-                  emit('visible-change', visible);
-                  instance && drawerInstance.emitVisible?.(visible, instance.uid);
-                });
-              }
+        () => visibleRef.value,
+        (visible) => {
+          nextTick(() => {
+            emit('visible-change', visible);
+            instance && drawerInstance.emitVisible?.(visible, instance.uid);
+          });
+        }
       );
 
       // Cancel event

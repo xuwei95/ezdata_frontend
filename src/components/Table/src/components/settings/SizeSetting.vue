@@ -49,12 +49,12 @@
 
       const selectedKeysRef = ref<SizeType[]>([table.getSize()]);
       const getBindProps = computed(() => {
-        let obj = {}
-        if (props.isMobile){
-          obj['visible'] = false
+        let obj = {};
+        if (props.isMobile) {
+          obj['visible'] = false;
         }
-        return obj
-      })
+        return obj;
+      });
       function handleTitleClick({ key }: { key: SizeType }) {
         selectedKeysRef.value = [key];
         table.setProps({

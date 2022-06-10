@@ -7,23 +7,17 @@
 
     <div class="flex flex-1 justify-end items-center cursor-pointer" v-if="search || toolbar">
       <div :class="getInputSearchCls" v-if="search">
-        <InputSearch
-                :placeholder="t('common.searchText')"
-                size="small"
-                allowClear
-                v-model:value="searchValue"
-                @search="$emit('clickSearch',$event)"
-        />
+        <InputSearch :placeholder="t('common.searchText')" size="small" allowClear v-model:value="searchValue" @search="$emit('clickSearch', $event)" />
       </div>
       <Dropdown @click.prevent v-if="toolbar">
-        <Icon icon="ion:ellipsis-vertical"/>
+        <Icon icon="ion:ellipsis-vertical" />
         <template #overlay>
           <Menu @click="handleMenuClick">
             <template v-for="item in toolbarList" :key="item.value">
               <MenuItem v-bind="{ key: item.value }">
                 {{ item.label }}
               </MenuItem>
-              <MenuDivider v-if="item.divider"/>
+              <MenuDivider v-if="item.divider" />
             </template>
           </Menu>
         </template>
@@ -32,17 +26,17 @@
   </div>
 </template>
 <script lang="ts">
-  import  {PropType} from 'vue';
-  import {defineComponent, computed, ref, watch} from 'vue';
+  import { PropType } from 'vue';
+  import { defineComponent, computed, ref, watch } from 'vue';
 
-  import {Dropdown, Menu, Input} from 'ant-design-vue';
-  import {Icon} from '/@/components/Icon';
-  import {BasicTitle} from '/@/components/Basic';
+  import { Dropdown, Menu, Input } from 'ant-design-vue';
+  import { Icon } from '/@/components/Icon';
+  import { BasicTitle } from '/@/components/Basic';
 
-  import {propTypes} from '/@/utils/propTypes';
+  import { propTypes } from '/@/utils/propTypes';
 
-  import {useI18n} from '/@/hooks/web/useI18n';
-  import {useDebounceFn} from '@vueuse/core';
+  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useDebounceFn } from '@vueuse/core';
 
   enum ToolbarEnum {
     SELECT_ALL,
@@ -83,7 +77,7 @@
     },
     emits: ['strictly-change', 'search', 'clickSearch'],
     setup(props, { emit, slots }) {
-      const {t} = useI18n();
+      const { t } = useI18n();
       const searchValue = ref('');
       const getInputSearchCls = computed(() => {
         const titleExists = slots.headerTitle || props.title;
@@ -97,9 +91,9 @@
         ];
       });
       const toolbarList = computed(() => {
-        const {checkable} = props;
+        const { checkable } = props;
         const defaultToolbarList = [
-          {label: t('component.tree.expandAll'), value: ToolbarEnum.EXPAND_ALL},
+          { label: t('component.tree.expandAll'), value: ToolbarEnum.EXPAND_ALL },
           {
             label: t('component.tree.unExpandAll'),
             value: ToolbarEnum.UN_EXPAND_ALL,
@@ -109,21 +103,21 @@
 
         return checkable
           ? [
-            {label: t('component.tree.selectAll'), value: ToolbarEnum.SELECT_ALL},
-            {
-              label: t('component.tree.unSelectAll'),
-              value: ToolbarEnum.UN_SELECT_ALL,
-              divider: checkable,
-            },
-            ...defaultToolbarList,
-            {label: t('component.tree.checkStrictly'), value: ToolbarEnum.CHECK_STRICTLY},
-            {label: t('component.tree.checkUnStrictly'), value: ToolbarEnum.CHECK_UN_STRICTLY},
-          ]
+              { label: t('component.tree.selectAll'), value: ToolbarEnum.SELECT_ALL },
+              {
+                label: t('component.tree.unSelectAll'),
+                value: ToolbarEnum.UN_SELECT_ALL,
+                divider: checkable,
+              },
+              ...defaultToolbarList,
+              { label: t('component.tree.checkStrictly'), value: ToolbarEnum.CHECK_STRICTLY },
+              { label: t('component.tree.checkUnStrictly'), value: ToolbarEnum.CHECK_UN_STRICTLY },
+            ]
           : defaultToolbarList;
       });
 
       function handleMenuClick(e: MenuInfo) {
-        const {key} = e;
+        const { key } = e;
         switch (key) {
           case ToolbarEnum.SELECT_ALL:
             props.checkAll?.(true);
@@ -170,7 +164,7 @@
       //   debounceEmitChange(e.target.value);
       // }
 
-      return {t, toolbarList, handleMenuClick, searchValue,getInputSearchCls};
+      return { t, toolbarList, handleMenuClick, searchValue, getInputSearchCls };
     },
   });
 </script>

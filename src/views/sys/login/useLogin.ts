@@ -2,8 +2,8 @@ import type { ValidationRule } from 'ant-design-vue/lib/form/Form';
 import type { RuleObject } from 'ant-design-vue/lib/form/interface';
 import { ref, computed, unref, Ref } from 'vue';
 import { useI18n } from '/@/hooks/web/useI18n';
-import { checkOnlyUser } from "/@/api/sys/user";
-import {defHttp} from "/@/utils/http/axios";
+import { checkOnlyUser } from '/@/api/sys/user';
+import { defHttp } from '/@/utils/http/axios';
 
 export enum LoginStateEnum {
   LOGIN,
@@ -14,9 +14,9 @@ export enum LoginStateEnum {
 }
 
 export enum SmsEnum {
-  LOGIN  = "0",
-  REGISTER = "1",
-  FORGET_PASSWORD = "2",
+  LOGIN = '0',
+  REGISTER = '1',
+  FORGET_PASSWORD = '2',
 }
 const currentState = ref(LoginStateEnum.LOGIN);
 
@@ -52,11 +52,9 @@ export function useFormRules(formData?: Recordable) {
   const getPasswordFormRule = computed(() => createRule(t('sys.login.passwordPlaceholder')));
   const getSmsFormRule = computed(() => createRule(t('sys.login.smsPlaceholder')));
   const getMobileFormRule = computed(() => createRule(t('sys.login.mobilePlaceholder')));
-  
-  
+
   const getRegisterAccountRule = computed(() => createRegisterAccountRule('account'));
   const getRegisterMobileRule = computed(() => createRegisterAccountRule('mobile'));
-  
 
   const validatePolicy = async (_: RuleObject, value: boolean) => {
     return !value ? Promise.reject(t('sys.login.policyPlaceholder')) : Promise.resolve();
@@ -79,7 +77,7 @@ export function useFormRules(formData?: Recordable) {
     const passwordFormRule = unref(getPasswordFormRule);
     const smsFormRule = unref(getSmsFormRule);
     const mobileFormRule = unref(getMobileFormRule);
-    
+
     const registerAccountRule = unref(getRegisterAccountRule);
     const registerMobileRule = unref(getRegisterMobileRule);
 
@@ -95,9 +93,7 @@ export function useFormRules(formData?: Recordable) {
           password: passwordFormRule,
           mobile: registerMobileRule,
           sms: smsFormRule,
-          confirmPassword: [
-            { validator: validateConfirmPassword(formData?.password), trigger: 'change' },
-          ],
+          confirmPassword: [{ validator: validateConfirmPassword(formData?.password), trigger: 'change' }],
           policy: [{ validator: validatePolicy, trigger: 'change' }],
         };
 
@@ -105,9 +101,7 @@ export function useFormRules(formData?: Recordable) {
       case LoginStateEnum.RESET_PASSWORD:
         return {
           username: accountFormRule,
-          confirmPassword: [
-            { validator: validateConfirmPassword(formData?.password), trigger: 'change' },
-          ],
+          confirmPassword: [{ validator: validateConfirmPassword(formData?.password), trigger: 'change' }],
           ...mobileRule,
         };
 
@@ -136,35 +130,36 @@ function createRule(message: string) {
   ];
 }
 function createRegisterAccountRule(type) {
-  return [{
-      validator: type=='account'?checkUsername:checkPhone,
-      trigger: 'change'
-    }
+  return [
+    {
+      validator: type == 'account' ? checkUsername : checkPhone,
+      trigger: 'change',
+    },
   ];
 }
 
- function checkUsername(rule, value, callback) {
+function checkUsername(rule, value, callback) {
   const { t } = useI18n();
-  if(!value){
-    return Promise.reject(t('sys.login.accountPlaceholder'))
-  }else{
+  if (!value) {
+    return Promise.reject(t('sys.login.accountPlaceholder'));
+  } else {
     return new Promise((resolve, reject) => {
-      checkOnlyUser({username: value}).then((res) => {
-        res.success?resolve():reject("用户名已存在!");
-      })
-    })
+      checkOnlyUser({ username: value }).then((res) => {
+        res.success ? resolve() : reject('用户名已存在!');
+      });
+    });
   }
 }
 async function checkPhone(rule, value, callback) {
   const { t } = useI18n();
-  var reg=/^1[3456789]\d{9}$/
-  if(!reg.test(value)){
-    return Promise.reject(new Error("请输入正确手机号"))
-  }else{
+  var reg = /^1[3456789]\d{9}$/;
+  if (!reg.test(value)) {
+    return Promise.reject(new Error('请输入正确手机号'));
+  } else {
     return new Promise((resolve, reject) => {
-      checkOnlyUser({phone: value}).then((res) => {
-        res.success?resolve():reject("手机号已存在!");
-      })
-    })
+      checkOnlyUser({ phone: value }).then((res) => {
+        res.success ? resolve() : reject('手机号已存在!');
+      });
+    });
   }
 }

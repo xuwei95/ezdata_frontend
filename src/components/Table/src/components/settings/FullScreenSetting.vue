@@ -31,12 +31,12 @@
       const { t } = useI18n();
       const { toggle, isFullscreen } = useFullscreen(table.wrapRef);
       const getBindProps = computed(() => {
-        let obj = {}
-        if (props.isMobile){
-          obj['visible'] = false
+        let obj = {};
+        if (props.isMobile) {
+          obj['visible'] = false;
         }
-        return obj
-      })
+        return obj;
+      });
       return {
         getBindProps,
         toggle,

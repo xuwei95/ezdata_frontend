@@ -6,16 +6,8 @@
     <template #overlay>
       <a-menu :class="[`${prefixCls}-menu`]" :selectedKeys="selectedKeys">
         <template v-for="item in dropMenuList" :key="`${item.event}`">
-          <a-menu-item
-                  v-bind="getAttr(item.event)"
-                  @click="handleClickMenu(item)"
-                  :disabled="item.disabled"
-                  :class="[{'is-pop-confirm': item.popConfirm}]"
-          >
-            <a-popconfirm
-                    v-if="popconfirm && item.popConfirm"
-                    v-bind="getPopConfirmAttrs(item.popConfirm)"
-            >
+          <a-menu-item v-bind="getAttr(item.event)" @click="handleClickMenu(item)" :disabled="item.disabled" :class="[{ 'is-pop-confirm': item.popConfirm }]">
+            <a-popconfirm v-if="popconfirm && item.popConfirm" v-bind="getPopConfirmAttrs(item.popConfirm)">
               <template #icon v-if="item.popConfirm.icon">
                 <Icon :icon="item.popConfirm.icon" />
               </template>
@@ -43,7 +35,7 @@
   import { Icon } from '/@/components/Icon';
   import { omit } from 'lodash-es';
   import { isFunction } from '/@/utils/is';
-  import {useDesign} from '/@/hooks/web/useDesign'
+  import { useDesign } from '/@/hooks/web/useDesign';
 
   const ADropdown = Dropdown;
   const AMenu = Menu;
@@ -87,10 +79,8 @@
   const getPopConfirmAttrs = computed(() => {
     return (attrs) => {
       const originAttrs = omit(attrs, ['confirm', 'cancel', 'icon']);
-      if (!attrs.onConfirm && attrs.confirm && isFunction(attrs.confirm))
-        originAttrs['onConfirm'] = attrs.confirm;
-      if (!attrs.onCancel && attrs.cancel && isFunction(attrs.cancel))
-        originAttrs['onCancel'] = attrs.cancel;
+      if (!attrs.onConfirm && attrs.confirm && isFunction(attrs.confirm)) originAttrs['onConfirm'] = attrs.confirm;
+      if (!attrs.onCancel && attrs.cancel && isFunction(attrs.cancel)) originAttrs['onCancel'] = attrs.cancel;
       return originAttrs;
     };
   });
@@ -99,19 +89,17 @@
 </script>
 
 <style lang="less">
-@prefix-cls: ~'@{namespace}-basic-dropdown';
+  @prefix-cls: ~'@{namespace}-basic-dropdown';
 
-.@{prefix-cls} {
+  .@{prefix-cls} {
+    // update-begin--author:sunjianlei---date:20220322---for: 【VUEN-180】更多下拉菜单，只有点到字上才有效，点到空白处什么都不会发生，体验不好
+    &-menu .ant-dropdown-menu-item.is-pop-confirm {
+      padding: 0;
 
-  // update-begin--author:sunjianlei---date:20220322---for: 【VUEN-180】更多下拉菜单，只有点到字上才有效，点到空白处什么都不会发生，体验不好
-  &-menu .ant-dropdown-menu-item.is-pop-confirm {
-    padding: 0;
-
-    .dropdown-event-area {
-      padding: 5px 12px;
+      .dropdown-event-area {
+        padding: 5px 12px;
+      }
     }
+    // update-end--author:sunjianlei---date:20220322---for: 【VUEN-180】更多下拉菜单，只有点到字上才有效，点到空白处什么都不会发生，体验不好
   }
-  // update-end--author:sunjianlei---date:20220322---for: 【VUEN-180】更多下拉菜单，只有点到字上才有效，点到空白处什么都不会发生，体验不好
-
-}
 </style>

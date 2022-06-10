@@ -6,17 +6,17 @@
  * @activeRule: 微应用触发的路由规则 - 触发路由规则后将加载该微应用
  */
 //子应用列表
-const _apps:object[] = [];
+const _apps: object[] = [];
 for (const key in import.meta.env) {
-    if (key.includes('VITE_APP_SUB_')) {
-        const name = key.split('VITE_APP_SUB_')[1];
-        const obj = {
-            name,
-            entry: import.meta.env[key],
-            container: '#content',
-            activeRule: name,
-        };
-        _apps.push(obj)
-    }
+  if (key.includes('VITE_APP_SUB_')) {
+    const name = key.split('VITE_APP_SUB_')[1];
+    const obj = {
+      name,
+      entry: import.meta.env[key],
+      container: '#content',
+      activeRule: name,
+    };
+    _apps.push(obj);
+  }
 }
 export const apps = _apps;

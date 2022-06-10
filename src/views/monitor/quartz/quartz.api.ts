@@ -105,4 +105,3 @@ export const batchDeleteQuartz = (params, handleSuccess) => {
     },
   });
 };
-

@@ -1,10 +1,5 @@
 <template>
-  <PageWrapper
-    title="后台权限示例"
-    contentBackground
-    contentClass="p-4"
-    content="目前mock了两组数据， id为1 和 2 具体返回的菜单可以在mock/sys/menu.ts内查看"
-  >
+  <PageWrapper title="后台权限示例" contentBackground contentClass="p-4" content="目前mock了两组数据， id为1 和 2 具体返回的菜单可以在mock/sys/menu.ts内查看">
     <CurrentPermissionMode />
 
     <Alert class="mt-4" type="info" message="点击后请查看左侧菜单变化" show-icon />
@@ -12,12 +7,8 @@
     <div class="mt-4">
       权限切换(请先切换权限模式为后台权限模式):
       <a-button-group>
-        <a-button @click="switchToken(1)" :disabled="!isBackPremissionMode">
-          获取用户id为1的菜单
-        </a-button>
-        <a-button @click="switchToken(2)" :disabled="!isBackPremissionMode">
-          获取用户id为2的菜单
-        </a-button>
+        <a-button @click="switchToken(1)" :disabled="!isBackPremissionMode"> 获取用户id为1的菜单 </a-button>
+        <a-button @click="switchToken(2)" :disabled="!isBackPremissionMode"> 获取用户id为2的菜单 </a-button>
       </a-button-group>
     </div>
   </PageWrapper>
@@ -39,9 +30,7 @@
       const userStore = useUserStore();
       const appStore = useAppStore();
 
-      const isBackPremissionMode = computed(
-        () => appStore.getProjectConfig.permissionMode === PermissionModeEnum.BACK
-      );
+      const isBackPremissionMode = computed(() => appStore.getProjectConfig.permissionMode === PermissionModeEnum.BACK);
 
       async function switchToken(userId: number) {
         // 本函数切换用户登录Token的部分仅用于演示，实际生产时切换身份应当重新登录

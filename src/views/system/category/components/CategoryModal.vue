@@ -1,21 +1,21 @@
 <template>
   <BasicModal v-bind="$attrs" @register="registerModal" :title="getTitle" @ok="handleSubmit">
-    <BasicForm @register="registerForm"/>
+    <BasicForm @register="registerForm" />
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import {ref, computed, unref} from 'vue';
-  import {BasicModal, useModalInner} from '/src/components/Modal';
-  import {BasicForm, useForm} from '/src/components/Form';
-  import {formSchema} from '../category.data';
-  import {loadTreeData, saveOrUpdateDict} from '../category.api';
+  import { ref, computed, unref } from 'vue';
+  import { BasicModal, useModalInner } from '/src/components/Modal';
+  import { BasicForm, useForm } from '/src/components/Form';
+  import { formSchema } from '../category.data';
+  import { loadTreeData, saveOrUpdateDict } from '../category.api';
   // 获取emit
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(true);
   const expandedRowKeys = ref([]);
   const treeData = ref([]);
   //表单配置
-  const [registerForm, {resetFields, setFieldsValue, validate, updateSchema}] = useForm({
+  const [registerForm, { resetFields, setFieldsValue, validate, updateSchema }] = useForm({
     schemas: formSchema,
     showActionButtonGroup: false,
     labelCol: {
@@ -28,11 +28,11 @@
     },
   });
   //表单赋值
-  const [registerModal, {setModalProps, closeModal}] = useModalInner(async (data) => {
+  const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     //重置表单
     await resetFields();
     expandedRowKeys.value = [];
-    setModalProps({confirmLoading: false, minHeight: 80});
+    setModalProps({ confirmLoading: false, minHeight: 80 });
     isUpdate.value = !!data?.isUpdate;
     if (data?.record) {
       //表单赋值
@@ -41,10 +41,10 @@
       });
     }
     //父级节点树信息
-    treeData.value = await loadTreeData({'async': false,'pcode':''});
+    treeData.value = await loadTreeData({ async: false, pcode: '' });
     updateSchema({
       field: 'pid',
-      componentProps: {treeData},
+      componentProps: { treeData },
     });
   });
   //设置标题
@@ -55,14 +55,14 @@
    * @param pid
    * @param arr
    */
-  function getExpandKeysByPid(pid,arr){
-    if(pid && arr && arr.length>0){
-      for(let i=0;i<arr.length;i++){
-        if(arr[i].key==pid && unref(expandedRowKeys).indexOf(pid)<0){
+  function getExpandKeysByPid(pid, arr) {
+    if (pid && arr && arr.length > 0) {
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].key == pid && unref(expandedRowKeys).indexOf(pid) < 0) {
           expandedRowKeys.value.push(arr[i].key);
-          getExpandKeysByPid(arr[i]['parentId'],unref(treeData))
-        }else{
-          getExpandKeysByPid(pid,arr[i].children)
+          getExpandKeysByPid(arr[i]['parentId'], unref(treeData));
+        } else {
+          getExpandKeysByPid(pid, arr[i].children);
         }
       }
     }
@@ -71,17 +71,17 @@
   async function handleSubmit() {
     try {
       let values = await validate();
-      setModalProps({confirmLoading: true});
+      setModalProps({ confirmLoading: true });
       //提交表单
       await saveOrUpdateDict(values, isUpdate.value);
       //关闭弹窗
       closeModal();
       //展开的节点信息
-      await getExpandKeysByPid(values['pid'],unref(treeData))
+      await getExpandKeysByPid(values['pid'], unref(treeData));
       //刷新列表(isUpdate:是否编辑;values:表单信息;expandedArr:展开的节点信息)
-      emit('success', {isUpdate: unref(isUpdate), values:{...values},expandedArr: unref(expandedRowKeys).reverse()});
+      emit('success', { isUpdate: unref(isUpdate), values: { ...values }, expandedArr: unref(expandedRowKeys).reverse() });
     } finally {
-      setModalProps({confirmLoading: false});
+      setModalProps({ confirmLoading: false });
     }
   }
 </script>

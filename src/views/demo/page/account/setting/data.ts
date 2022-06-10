@@ -1,5 +1,5 @@
 import { FormSchema } from '/@/components/Form/index';
-import {rules} from "/@/utils/helper/validator";
+import { rules } from '/@/utils/helper/validator';
 
 export interface ListItem {
   key: string;
@@ -22,7 +22,7 @@ export const settingList = [
     name: '安全设置',
     component: 'SecureSetting',
   },
- /* {
+  /* {
     key: '3',
     name: '账号绑定',
     component: 'AccountBind',
@@ -40,8 +40,8 @@ export const baseSetschemas: FormSchema[] = [
     label: '',
     field: 'id',
     component: 'Input',
-    show:false
-  },  
+    show: false,
+  },
   {
     field: 'realname',
     component: 'Input',
@@ -53,9 +53,9 @@ export const baseSetschemas: FormSchema[] = [
     label: '性别',
     component: 'JDictSelectTag',
     componentProps: {
-      dictCode:'sex',
-      placeholder:'请选择性别',
-      stringToNumber:true
+      dictCode: 'sex',
+      placeholder: '请选择性别',
+      stringToNumber: true,
     },
     colProps: { span: 18 },
   },
@@ -63,7 +63,7 @@ export const baseSetschemas: FormSchema[] = [
     label: '生日',
     field: 'birthday',
     component: 'DatePicker',
-    colProps: { span: 18 },    
+    colProps: { span: 18 },
   },
   {
     field: 'email',
@@ -75,14 +75,11 @@ export const baseSetschemas: FormSchema[] = [
     field: 'phone',
     component: 'Input',
     label: '联系电话',
-    dynamicRules: ({model,schema}) => {
-      return [
-          {...rules.duplicateCheckRule( "sys_user", "phone",model,schema,false)[0]},
-          { pattern: /^1[3|4|5|7|8|9][0-9]\d{8}$/, message: '手机号码格式有误' }
-      ];
+    dynamicRules: ({ model, schema }) => {
+      return [{ ...rules.duplicateCheckRule('sys_user', 'phone', model, schema, false)[0] }, { pattern: /^1[3|4|5|7|8|9][0-9]\d{8}$/, message: '手机号码格式有误' }];
     },
     colProps: { span: 18 },
-  }
+  },
 ];
 
 // 安全设置 list

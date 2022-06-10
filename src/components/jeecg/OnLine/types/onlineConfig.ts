@@ -1,12 +1,12 @@
-interface ScopedSlots{
-  customRender: string
+interface ScopedSlots {
+  customRender: string;
 }
 
-interface HrefSlots{
+interface HrefSlots {
   // 链接地址
-  href: string
+  href: string;
   // fieldHref_字段名
-  slotName: string
+  slotName: string;
 }
 
 interface OnlineColumn {
@@ -20,7 +20,7 @@ interface OnlineColumn {
   isTotal?: string | number | boolean;
   groupTitle?: string;
   // 超链的时候 和HrefSlots中的slotName匹配
-  scopedSlots? : ScopedSlots;
+  scopedSlots?: ScopedSlots;
   // 一般用于字典 字典传过来的是字典编码字符串 后转函数
   customRender?: string | Function;
   // 这个类型不知道有什么用
@@ -29,12 +29,9 @@ interface OnlineColumn {
   children?: OnlineColumn[];
   sortOrder?: string;
   // 插槽对应控件类型(列表)
-  slots?:ScopedSlots,
+  slots?: ScopedSlots;
   //超过宽度将自动省略，暂不支持和排序筛选一起使用。
-  ellipsis?: boolean
+  ellipsis?: boolean;
 }
 
-export{
-  OnlineColumn,
-  HrefSlots
-}
+export { OnlineColumn, HrefSlots };

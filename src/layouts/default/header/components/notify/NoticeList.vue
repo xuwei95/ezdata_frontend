@@ -6,14 +6,10 @@
           <template #title>
             <div class="title">
               <a-typography-paragraph
-                      style="width: 100%; margin-bottom: 0 !important"
-                      :delete="!!item.titleDelete"
-                      :ellipsis="
-                  $props.titleRows && $props.titleRows > 0
-                    ? { rows: $props.titleRows, tooltip: !!item.title }
-                    : false
-                "
-                      :content="item.title"
+                style="width: 100%; margin-bottom: 0 !important"
+                :delete="!!item.titleDelete"
+                :ellipsis="$props.titleRows && $props.titleRows > 0 ? { rows: $props.titleRows, tooltip: !!item.title } : false"
+                :content="item.title"
               />
               <div class="extra" v-if="item.extra">
                 <a-tag class="tag" :color="item.color">
@@ -28,17 +24,17 @@
             <template v-else-if="item.priority">
               <a-avatar v-if="item.priority === PriorityTypes.L" class="avatar priority-L" title="一般消息">
                 <template #icon>
-                  <Icon icon="entypo:info"/>
+                  <Icon icon="entypo:info" />
                 </template>
               </a-avatar>
               <a-avatar v-if="item.priority === PriorityTypes.M" class="avatar priority-M" title="重要消息">
                 <template #icon>
-                  <Icon icon="bi:exclamation-lg"/>
+                  <Icon icon="bi:exclamation-lg" />
                 </template>
               </a-avatar>
               <a-avatar v-if="item.priority === PriorityTypes.H" class="avatar priority-H" title="紧急消息">
                 <template #icon>
-                  <Icon icon="ant-design:warning-filled"/>
+                  <Icon icon="ant-design:warning-filled" />
                 </template>
               </a-avatar>
             </template>
@@ -49,17 +45,13 @@
             <div>
               <div class="description" v-if="item.description">
                 <a-typography-paragraph
-                        style="width: 100%; margin-bottom: 0 !important"
-                        :ellipsis="
-                    $props.descRows && $props.descRows > 0
-                      ? { rows: $props.descRows, tooltip: !!item.description }
-                      : false
-                  "
-                        :content="item.description"
+                  style="width: 100%; margin-bottom: 0 !important"
+                  :ellipsis="$props.descRows && $props.descRows > 0 ? { rows: $props.descRows, tooltip: !!item.description } : false"
+                  :content="item.description"
                 />
               </div>
               <div class="datetime">
-                <Time :value="item.datetime" :title="item.datetime"/>
+                <Time :value="item.datetime" :title="item.datetime" />
               </div>
             </div>
           </template>
@@ -121,10 +113,10 @@
         return list.slice(size * (unref(current) - 1), size * unref(current));
       });
       watch(
-              () => props.currentPage,
-              (v) => {
-                current.value = v;
-              }
+        () => props.currentPage,
+        (v) => {
+          current.value = v;
+        }
       );
       const isTitleClickable = computed(() => !!props.onTitleClick);
       const getPagination = computed(() => {
@@ -206,8 +198,9 @@
     }
 
     .list-item {
-
-      .priority-L, .priority-M, .priority-H {
+      .priority-L,
+      .priority-M,
+      .priority-H {
         font-size: 12px;
       }
 

@@ -1,4 +1,4 @@
-import { BasicColumn, FormSchema } from '/@/components/Table'
+import { BasicColumn, FormSchema } from '/@/components/Table';
 
 export const columns: BasicColumn[] = [
   {
@@ -37,7 +37,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'esType_dictText',
     width: 120,
   },
-]
+];
 
 export const searchFormSchema: FormSchema[] = [
   {
@@ -61,7 +61,7 @@ export const searchFormSchema: FormSchema[] = [
       dictCode: 'msgType',
     },
   },
-]
+];
 
 export const formSchemas: FormSchema[] = [
   {
@@ -131,4 +131,4 @@ export const formSchemas: FormSchema[] = [
     component: 'InputTextArea',
     componentProps: { readOnly: true },
   },
-]
+];

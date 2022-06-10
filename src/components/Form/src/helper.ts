@@ -16,13 +16,7 @@ export function createPlaceholderMessage(component: ComponentType) {
   if (component.includes('Picker')) {
     return t('common.chooseText');
   }
-  if (
-    component.includes('Select') ||
-    component.includes('Cascader') ||
-    component.includes('Checkbox') ||
-    component.includes('Radio') ||
-    component.includes('Switch')
-  ) {
+  if (component.includes('Select') || component.includes('Cascader') || component.includes('Checkbox') || component.includes('Radio') || component.includes('Switch')) {
     // return `请选择${label}`;
     return t('common.chooseText');
   }
@@ -35,11 +29,7 @@ function genType() {
   return [...DATE_TYPE, 'RangePicker'];
 }
 
-export function setComponentRuleType(
-  rule: ValidationRule,
-  component: ComponentType,
-  valueFormat: string
-) {
+export function setComponentRuleType(rule: ValidationRule, component: ComponentType, valueFormat: string) {
   if (['DatePicker', 'MonthPicker', 'WeekPicker', 'TimePicker'].includes(component)) {
     rule.type = valueFormat ? 'string' : 'object';
   } else if (['RangePicker', 'Upload', 'CheckboxGroup', 'TimePicker'].includes(component)) {

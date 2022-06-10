@@ -34,20 +34,7 @@
       }
       const [
         registerTable,
-        {
-          setLoading,
-          setColumns,
-          getColumns,
-          getDataSource,
-          getRawDataSource,
-          reload,
-          getPaginationRef,
-          setPagination,
-          getSelectRows,
-          getSelectRowKeys,
-          setSelectedRowKeys,
-          clearSelectedRowKeys,
-        },
+        { setLoading, setColumns, getColumns, getDataSource, getRawDataSource, reload, getPaginationRef, setPagination, getSelectRows, getSelectRowKeys, setSelectedRowKeys, clearSelectedRowKeys },
       ] = useTable({
         canResize: true,
         title: 'useTable示例',

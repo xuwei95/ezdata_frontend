@@ -5,31 +5,31 @@
         <a-button type="primary" @click="handleCreate"> 新增</a-button>
       </template>
       <template #action="{ record }">
-        <TableAction :actions="getTableAction(record)"/>
+        <TableAction :actions="getTableAction(record)" />
       </template>
     </BasicTable>
   </BasicDrawer>
-  <DictItemModal @register="registerModal" @success="reload" :dictId="dictId"/>
+  <DictItemModal @register="registerModal" @success="reload" :dictId="dictId" />
 </template>
 <script lang="ts" setup>
-  import {ref,unref} from 'vue';
-  import {BasicDrawer, useDrawerInner} from '/src/components/Drawer';
-  import {BasicTable, useTable, TableAction} from '/src/components/Table';
-  import {useModal} from '/src/components/Modal';
-  import { useDesign } from '/@/hooks/web/useDesign'
+  import { ref, unref } from 'vue';
+  import { BasicDrawer, useDrawerInner } from '/src/components/Drawer';
+  import { BasicTable, useTable, TableAction } from '/src/components/Table';
+  import { useModal } from '/src/components/Modal';
+  import { useDesign } from '/@/hooks/web/useDesign';
   import DictItemModal from './DictItemModal.vue';
-  import {dictItemColumns, dictItemSearchFormSchema} from '../dict.data';
-  import {itemList,deleteItem} from '../dict.api';
+  import { dictItemColumns, dictItemSearchFormSchema } from '../dict.data';
+  import { itemList, deleteItem } from '../dict.api';
   import { ColEx } from '/@/components/Form/src/types';
 
   const { prefixCls } = useDesign('row-invalid');
   const dictId = ref('');
   //字典配置model
-  const [registerModal, {openModal}] = useModal();
+  const [registerModal, { openModal }] = useModal();
   const [registerDrawer] = useDrawerInner(async (data) => {
-    dictId.value = data.id
-    setProps({searchInfo:{dictId:unref(dictId)}});
-    reload()
+    dictId.value = data.id;
+    setProps({ searchInfo: { dictId: unref(dictId) } });
+    reload();
   });
   // 自适应列配置
   const adaptiveColProps: Partial<ColEx> = {
@@ -39,15 +39,15 @@
     lg: 12, // ≥992px
     xl: 12, // ≥1200px
     xxl: 8, // ≥1600px
-  }
-  const [registerTable, {reload,setProps}] = useTable({
+  };
+  const [registerTable, { reload, setProps }] = useTable({
     api: itemList,
     columns: dictItemColumns,
     formConfig: {
       baseColProps: adaptiveColProps,
-      labelAlign:"right",
+      labelAlign: 'right',
       labelCol: {
-        offset:1,
+        offset: 1,
         xs: 24,
         sm: 24,
         md: 24,
@@ -57,7 +57,7 @@
       },
       wrapperCol: {},
       schemas: dictItemSearchFormSchema,
-      autoSubmitOnEnter:true,
+      autoSubmitOnEnter: true,
     },
     striped: true,
     useSearchForm: true,
@@ -69,7 +69,7 @@
       width: 100,
       title: '操作',
       dataIndex: 'action',
-      slots: {customRender: 'action'},
+      slots: { customRender: 'action' },
       fixed: undefined,
     },
   });
@@ -97,7 +97,7 @@
    * 删除
    */
   async function handleDelete(record) {
-    await deleteItem({id: record.id}, reload);
+    await deleteItem({ id: record.id }, reload);
   }
 
   /**
@@ -115,18 +115,18 @@
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
         },
-      }
+      },
     ];
   }
-  function getRowClassName(record){
-      return record.status==0?prefixCls:'';
+  function getRowClassName(record) {
+    return record.status == 0 ? prefixCls : '';
   }
 </script>
 <style scoped lang="less">
-    @prefix-cls: ~'@{namespace}-row-invalid';
+  @prefix-cls: ~'@{namespace}-row-invalid';
 
-   ::v-deep(.@{prefix-cls}) {
-        background: #f4f4f4;
-        color: #bababa;
-    }
+  ::v-deep(.@{prefix-cls}) {
+    background: #f4f4f4;
+    color: #bababa;
+  }
 </style>

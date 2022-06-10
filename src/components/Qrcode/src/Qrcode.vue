@@ -97,13 +97,13 @@
 
       // 监听参数变化重新生成二维码
       watch(
-              props,
-              () => {
-                createQrcode();
-              },
-              {
-                deep: true,
-              }
+        props,
+        () => {
+          createQrcode();
+        },
+        {
+          deep: true,
+        }
       );
 
       return { wrapRef, download };

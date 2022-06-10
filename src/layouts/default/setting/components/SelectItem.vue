@@ -1,14 +1,7 @@
 <template>
   <div :class="prefixCls">
     <span> {{ title }}</span>
-    <Select
-      v-bind="getBindValue"
-      :class="`${prefixCls}-select`"
-      @change="handleChange"
-      :disabled="disabled"
-      size="small"
-      :options="options"
-    />
+    <Select v-bind="getBindValue" :class="`${prefixCls}-select`" @change="handleChange" :disabled="disabled" size="small" :options="options" />
   </div>
 </template>
 <script lang="ts">

@@ -1,19 +1,7 @@
 <template>
-  <Menu
-    v-bind="getBindValues"
-    :activeName="activeName"
-    :openNames="getOpenKeys"
-    :class="prefixCls"
-    :activeSubMenuNames="activeSubMenuNames"
-    @select="handleSelect"
-  >
+  <Menu v-bind="getBindValues" :activeName="activeName" :openNames="getOpenKeys" :class="prefixCls" :activeSubMenuNames="activeSubMenuNames" @select="handleSelect">
     <template v-for="item in items" :key="item.path">
-      <SimpleSubMenu
-        :item="item"
-        :parent="true"
-        :collapsedShowTitle="collapsedShowTitle"
-        :collapse="collapse"
-      />
+      <SimpleSubMenu :item="item" :parent="true" :collapsedShowTitle="collapsedShowTitle" :collapse="collapse" />
     </template>
   </Menu>
 </template>
@@ -33,7 +21,7 @@
   import { openWindow } from '/@/utils';
 
   import { useOpenKeys } from './useOpenKeys';
-  import {URL_HASH_TAB} from '/@/utils'
+  import { URL_HASH_TAB } from '/@/utils';
 
   export default defineComponent({
     name: 'SimpleMenu',
@@ -72,13 +60,7 @@
       const { prefixCls } = useDesign('simple-menu');
       const { items, accordion, mixSider, collapse } = toRefs(props);
 
-      const { setOpenKeys, getOpenKeys } = useOpenKeys(
-        menuState,
-        items,
-        accordion,
-        mixSider,
-        collapse
-      );
+      const { setOpenKeys, getOpenKeys } = useOpenKeys(menuState, items, accordion, mixSider, collapse);
 
       const getBindValues = computed(() => ({ ...attrs, ...props }));
 
@@ -132,8 +114,8 @@
       async function handleSelect(key: string) {
         if (isUrl(key)) {
           // update-begin--author:sunjianlei---date:20220408---for: 【VUEN-656】配置外部网址打不开，原因是带了#号，需要替换一下
-          let url = key.replace(URL_HASH_TAB, '#')
-          openWindow(url)
+          let url = key.replace(URL_HASH_TAB, '#');
+          openWindow(url);
           // openWindow(key);
           // update-begin--author:sunjianlei---date:20220408---for: 【VUEN-656】配置外部网址打不开，原因是带了#号，需要替换一下
           return;

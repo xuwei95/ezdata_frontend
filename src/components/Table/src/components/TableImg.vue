@@ -1,20 +1,15 @@
 <template>
-  <div
-          :class="prefixCls"
-          class="flex items-center mx-auto"
-          v-if="imgList && imgList.length"
-          :style="getWrapStyle"
-  >
+  <div :class="prefixCls" class="flex items-center mx-auto" v-if="imgList && imgList.length" :style="getWrapStyle">
     <Badge :count="!showBadge || imgList.length == 1 ? 0 : imgList.length" v-if="simpleShow">
       <div class="img-div">
         <PreviewGroup>
           <template v-for="(img, index) in imgList" :key="img">
             <Image
-                    :width="size"
-                    :style="{
+              :width="size"
+              :style="{
                 display: index === 0 ? '' : 'none !important',
               }"
-                    :src="srcPrefix + img"
+              :src="srcPrefix + img"
             />
           </template>
         </PreviewGroup>
@@ -22,11 +17,7 @@
     </Badge>
     <PreviewGroup v-else>
       <template v-for="(img, index) in imgList" :key="img">
-        <Image
-                :width="size"
-                :style="{ marginLeft: index === 0 ? 0 : margin }"
-                :src="srcPrefix + img"
-        />
+        <Image :width="size" :style="{ marginLeft: index === 0 ? 0 : margin }" :src="srcPrefix + img" />
       </template>
     </PreviewGroup>
   </div>

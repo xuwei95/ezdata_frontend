@@ -1,9 +1,5 @@
 <template>
-  <PageWrapper
-          contentFullHeight
-          title="基础组件"
-          content=" 基础组件依赖于ant-design-vue,组件库已有的基础组件,项目中不会再次进行demo展示（二次封装组件除外）"
-  >
+  <PageWrapper contentFullHeight title="基础组件" content=" 基础组件依赖于ant-design-vue,组件库已有的基础组件,项目中不会再次进行demo展示（二次封装组件除外）">
     <a-row :gutter="[20, 20]">
       <a-col :xl="10" :lg="24">
         <a-card title="BasicButton Color">
@@ -55,9 +51,7 @@
             <h3>primary</h3>
             <a-button type="primary" preIcon="mdi:page-next-outline"> 主按钮 </a-button>
             <a-button type="primary" class="ml-2" disabled> 禁用 </a-button>
-            <a-button type="primary" class="ml-2" danger preIcon="mdi:page-next-outline">
-              危险
-            </a-button>
+            <a-button type="primary" class="ml-2" danger preIcon="mdi:page-next-outline"> 危险 </a-button>
             <a-button type="primary" class="ml-2" loading> loading </a-button>
             <a-button type="link" class="ml-2"> link </a-button>
             <a-button type="link" class="ml-2" loading> loading link </a-button>

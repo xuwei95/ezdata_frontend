@@ -1,5 +1,5 @@
-import {BasicColumn} from '/@/components/Table';
-import {FormSchema} from '/@/components/Table';
+import { BasicColumn } from '/@/components/Table';
+import { FormSchema } from '/@/components/Table';
 
 export const columns: BasicColumn[] = [
   {
@@ -11,21 +11,22 @@ export const columns: BasicColumn[] = [
   {
     title: '分类编码',
     dataIndex: 'code',
-  }];
+  },
+];
 
 export const searchFormSchema: FormSchema[] = [
-    {
-        label: '名称',
-        field: 'name',
-        component: 'Input',
-        colProps: {span: 6},
-    },
-    {
-        label: '编码',
-        field: 'code',
-        component: 'Input',
-        colProps: {span: 6},
-    }
+  {
+    label: '名称',
+    field: 'name',
+    component: 'Input',
+    colProps: { span: 6 },
+  },
+  {
+    label: '编码',
+    field: 'code',
+    component: 'Input',
+    colProps: { span: 6 },
+  },
 ];
 
 export const formSchema: FormSchema[] = [
@@ -33,7 +34,7 @@ export const formSchema: FormSchema[] = [
     label: '',
     field: 'id',
     component: 'Input',
-    show:false
+    show: false,
   },
   {
     label: '父级节点',
@@ -43,15 +44,15 @@ export const formSchema: FormSchema[] = [
       replaceFields: {
         value: 'key',
       },
-      dropdownStyle:{
-        maxHeight:'50vh'
+      dropdownStyle: {
+        maxHeight: '50vh',
       },
-      getPopupContainer: () => document.body
+      getPopupContainer: () => document.body,
     },
-    show: ({values}) => {
-       return values.pid !== '0';
+    show: ({ values }) => {
+      return values.pid !== '0';
     },
-    dynamicDisabled: ({values}) => {
+    dynamicDisabled: ({ values }) => {
       return !!values.id;
     },
   },
@@ -60,6 +61,5 @@ export const formSchema: FormSchema[] = [
     field: 'name',
     required: true,
     component: 'Input',
-  }
+  },
 ];
-

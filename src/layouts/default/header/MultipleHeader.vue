@@ -18,7 +18,7 @@
   import { useAppInject } from '/@/hooks/web/useAppInject';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useLayoutHeight } from '../content/useContentViewHeight';
-  import { TabsThemeEnum } from '/@/enums/appEnum'
+  import { TabsThemeEnum } from '/@/enums/appEnum';
 
   const HEADER_HEIGHT = 48;
 
@@ -36,13 +36,7 @@
 
       const { getCalcContentWidth, getSplit } = useMenuSetting();
       const { getIsMobile } = useAppInject();
-      const {
-        getFixed,
-        getShowInsetHeaderRef,
-        getShowFullHeaderRef,
-        getHeaderTheme,
-        getShowHeader,
-      } = useHeaderSetting();
+      const { getFixed, getShowInsetHeaderRef, getShowFullHeaderRef, getHeaderTheme, getShowHeader } = useHeaderSetting();
 
       const { getFullContent } = useFullContent();
 
@@ -73,27 +67,23 @@
 
       // updateBy:sunjianlei---updateDate:2021-09-08---根据主题的不同，动态计算tabs高度
       const getTabsThemeHeight = computed(() => {
-        let tabsTheme = unref(getTabsTheme)
+        let tabsTheme = unref(getTabsTheme);
         if (tabsTheme === TabsThemeEnum.CARD) {
-          return TABS_HEIGHT_CARD
+          return TABS_HEIGHT_CARD;
         } else if (tabsTheme === TabsThemeEnum.SMOOTH) {
-          return TABS_HEIGHT_SMOOTH
+          return TABS_HEIGHT_SMOOTH;
         } else {
-          return TABS_HEIGHT
+          return TABS_HEIGHT;
         }
-      })
+      });
 
       const getPlaceholderDomStyle = computed((): CSSProperties => {
         let height = 0;
-        if (
-          (unref(getShowFullHeaderRef) || !unref(getSplit)) &&
-          unref(getShowHeader) &&
-          !unref(getFullContent)
-        ) {
+        if ((unref(getShowFullHeaderRef) || !unref(getSplit)) && unref(getShowHeader) && !unref(getFullContent)) {
           height += HEADER_HEIGHT;
         }
         if (unref(getShowMultipleTab) && !unref(getFullContent)) {
-          height += unref(getTabsThemeHeight)
+          height += unref(getTabsThemeHeight);
         }
         setHeaderHeight(height);
         return {
@@ -102,11 +92,7 @@
       });
 
       const getClass = computed(() => {
-        return [
-          prefixCls,
-          `${prefixCls}--${unref(getHeaderTheme)}`,
-          { [`${prefixCls}--fixed`]: unref(getIsFixed) },
-        ];
+        return [prefixCls, `${prefixCls}--${unref(getHeaderTheme)}`, { [`${prefixCls}--fixed`]: unref(getIsFixed) }];
       });
 
       return {

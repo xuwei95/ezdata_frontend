@@ -1,11 +1,5 @@
 import { TabsThemeEnum, ContentEnum, RouterTransitionEnum } from '/@/enums/appEnum';
-import {
-  MenuModeEnum,
-  MenuTypeEnum,
-  TopMenuAlignEnum,
-  TriggerEnum,
-  MixSidebarTriggerEnum,
-} from '/@/enums/menuEnum';
+import { MenuModeEnum, MenuTypeEnum, TopMenuAlignEnum, TriggerEnum, MixSidebarTriggerEnum } from '/@/enums/menuEnum';
 
 import { useI18n } from '/@/hooks/web/useI18n';
 
@@ -74,7 +68,7 @@ export const tabsThemeOptions = [
     value: TabsThemeEnum.SIMPLE,
     label: t('layout.setting.tabsThemeSimple'),
   },
-]
+];
 
 export const contentModeOptions = [
   {

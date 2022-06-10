@@ -1,4 +1,4 @@
-export type DynamicViewsRecord = Record<string, () => Promise<Recordable>>
+export type DynamicViewsRecord = Record<string, () => Promise<Recordable>>;
 
 /** 已注册模块的动态页面 */
 export const packageViews: DynamicViewsRecord = {};

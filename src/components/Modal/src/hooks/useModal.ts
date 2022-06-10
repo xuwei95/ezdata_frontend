@@ -1,20 +1,5 @@
-import type {
-  UseModalReturnType,
-  ModalMethods,
-  ModalProps,
-  ReturnMethods,
-  UseModalInnerReturnType,
-} from '../typing';
-import {
-  ref,
-  onUnmounted,
-  unref,
-  getCurrentInstance,
-  reactive,
-  watchEffect,
-  nextTick,
-  toRaw,
-} from 'vue';
+import type { UseModalReturnType, ModalMethods, ModalProps, ReturnMethods, UseModalInnerReturnType } from '../typing';
+import { ref, onUnmounted, unref, getCurrentInstance, reactive, watchEffect, nextTick, toRaw } from 'vue';
 import { isProdMode } from '/@/utils/env';
 import { isFunction } from '/@/utils/is';
 import { isEqual } from 'lodash-es';
@@ -40,11 +25,11 @@ export function useModal(): UseModalReturnType {
     }
     uid.value = uuid;
     isProdMode() &&
-    onUnmounted(() => {
-      modal.value = null;
-      loaded.value = false;
-      dataTransfer[unref(uid)] = null;
-    });
+      onUnmounted(() => {
+        modal.value = null;
+        loaded.value = false;
+        dataTransfer[unref(uid)] = null;
+      });
     if (unref(loaded) && isProdMode() && modalMethod === unref(modal)) return;
 
     modal.value = modalMethod;
@@ -115,9 +100,9 @@ export const useModalInner = (callbackFn?: Fn): UseModalInnerReturnType => {
 
   const register = (modalInstance: ModalMethods, uuid: string) => {
     isProdMode() &&
-    tryOnUnmounted(() => {
-      modalInstanceRef.value = null;
-    });
+      tryOnUnmounted(() => {
+        modalInstanceRef.value = null;
+      });
     uidRef.value = uuid;
     modalInstanceRef.value = modalInstance;
     currentInstance?.emit('register', modalInstance, uuid);

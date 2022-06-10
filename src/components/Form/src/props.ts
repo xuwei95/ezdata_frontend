@@ -92,9 +92,9 @@ export const basicProps = {
   // 以下为默认props
   hideRequiredMark: propTypes.bool,
 
-  labelCol:{
+  labelCol: {
     type: Object as PropType<Partial<ColEx>>,
-    default:form.labelCol
+    default: form.labelCol,
   },
 
   layout: propTypes.oneOf(['horizontal', 'vertical', 'inline']).def('horizontal'),
@@ -103,8 +103,8 @@ export const basicProps = {
   },
 
   wrapperCol: {
-    type:Object as PropType<Partial<ColEx>>,
-    default:form.wrapperCol
+    type: Object as PropType<Partial<ColEx>>,
+    default: form.wrapperCol,
   },
 
   colon: propTypes.bool.def(form.colon),

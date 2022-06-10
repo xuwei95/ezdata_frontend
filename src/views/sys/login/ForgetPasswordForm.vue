@@ -1,16 +1,16 @@
 <template>
   <template v-if="getShow">
     <!--节点-->
-    <a-steps style="margin-bottom:20px" :current="currentTab">
-      <a-step title="手机验证"/>
-      <a-step title="更改密码"/>
-      <a-step title="完成"/>
+    <a-steps style="margin-bottom: 20px" :current="currentTab">
+      <a-step title="手机验证" />
+      <a-step title="更改密码" />
+      <a-step title="完成" />
     </a-steps>
     <!--组件-->
     <div>
-      <step1 v-if="currentTab === 0" @nextStep="nextStep"/>
-      <step2 v-if="currentTab === 1" @nextStep="nextStep" @prevStep="prevStep" :accountInfo="accountInfo"/>
-      <step3 v-if="currentTab === 2" @prevStep="prevStep" @finish="finish"/>
+      <step1 v-if="currentTab === 0" @nextStep="nextStep" />
+      <step2 v-if="currentTab === 1" @nextStep="nextStep" @prevStep="prevStep" :accountInfo="accountInfo" />
+      <step3 v-if="currentTab === 2" @prevStep="prevStep" @finish="finish" />
     </div>
   </template>
 </template>
@@ -33,11 +33,11 @@
   });
   const getShow = computed(() => unref(getLoginState) === LoginStateEnum.RESET_PASSWORD);
   const accountInfo = reactive({
-    obj:{
-      username:'',
+    obj: {
+      username: '',
       phone: '',
-      smscode: ''
-    }
+      smscode: '',
+    },
   });
   /**
    * 下一步
@@ -46,7 +46,7 @@
   function nextStep(data) {
     accountInfo.obj = data;
     if (currentTab.value < 4) {
-      currentTab.value += 1
+      currentTab.value += 1;
     }
   }
   /**
@@ -55,14 +55,14 @@
    */
   function prevStep(data) {
     accountInfo.obj = data;
-    if ( currentTab.value > 0) {
-      currentTab.value -= 1
+    if (currentTab.value > 0) {
+      currentTab.value -= 1;
     }
   }
   /**
    * 结束
    */
   function finish() {
-    currentTab.value = 0
+    currentTab.value = 0;
   }
 </script>

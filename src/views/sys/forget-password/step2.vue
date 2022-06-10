@@ -1,27 +1,22 @@
 <template>
-    <Form class="p-4 enter-x" :model="formData" :rules="getFormRules" ref="formRef">
+  <Form class="p-4 enter-x" :model="formData" :rules="getFormRules" ref="formRef">
+    <FormItem name="username" class="enter-x">
+      <Input size="large" v-model:value="formData.username" :placeholder="t('sys.login.userName')" disabled />
+    </FormItem>
 
-      <FormItem name="username" class="enter-x">
-        <Input size="large" v-model:value="formData.username" :placeholder="t('sys.login.userName')" disabled/>
-      </FormItem>
+    <FormItem name="password" class="enter-x">
+      <StrengthMeter size="large" v-model:value="formData.password" :placeholder="t('sys.login.password')" />
+    </FormItem>
 
-      <FormItem name="password" class="enter-x">
-        <StrengthMeter size="large" v-model:value="formData.password" :placeholder="t('sys.login.password')"/>
-      </FormItem>
-      
-      <FormItem name="confirmPassword" class="enter-x">
-        <InputPassword size="large" visibilityToggle v-model:value="formData.confirmPassword" :placeholder="t('sys.login.confirmPassword')"/>
-      </FormItem>
+    <FormItem name="confirmPassword" class="enter-x">
+      <InputPassword size="large" visibilityToggle v-model:value="formData.confirmPassword" :placeholder="t('sys.login.confirmPassword')" />
+    </FormItem>
 
-      <FormItem class="enter-x">
-        <Button type="primary" size="large" block @click="handlePrev">
-          上一步
-        </Button>
-        <Button size="large" block class="mt-4" @click="handleNext">
-          下一步
-        </Button>
-      </FormItem>
-    </Form>
+    <FormItem class="enter-x">
+      <Button type="primary" size="large" block @click="handlePrev"> 上一步 </Button>
+      <Button size="large" block class="mt-4" @click="handleNext"> 下一步 </Button>
+    </FormItem>
+  </Form>
 </template>
 <script lang="ts">
   import { defineComponent, reactive, ref, computed, unref, toRaw, toRefs } from 'vue';
@@ -40,7 +35,7 @@
       FormItem: Form.Item,
       InputPassword: Input.Password,
       Input,
-      StrengthMeter
+      StrengthMeter,
     },
     props: {
       accountInfo: {
@@ -48,7 +43,7 @@
         default: () => ({}),
       },
     },
-    emits: ['prevStep','nextStep'],
+    emits: ['prevStep', 'nextStep'],
     setup(props, { emit }) {
       const { t } = useI18n();
       const { createErrorModal } = useMessage();
@@ -56,17 +51,17 @@
       const formRef = ref();
       const formData = reactive({
         username: accountInfo.obj.username || '',
-        password:'',
-        confirmPassword:''
+        password: '',
+        confirmPassword: '',
       });
-      const {getFormRules} = useFormRules(formData);
-      const {validForm} = useFormValid(formRef);
-      
+      const { getFormRules } = useFormRules(formData);
+      const { validForm } = useFormValid(formRef);
+
       /**
        * 上一步
        */
       function handlePrev() {
-        emit('prevStep',accountInfo.obj)
+        emit('prevStep', accountInfo.obj);
       }
 
       /**
@@ -76,17 +71,17 @@
         const data = await validForm();
         if (!data) return;
         const resultInfo = await passwordChange(
-           toRaw({
-             username: data.username,
-             password: data.password,
-             smscode: accountInfo.obj.smscode,
-             phone: accountInfo.obj.phone,
-           })
-         );
-        if(resultInfo.success){ 
+          toRaw({
+            username: data.username,
+            password: data.password,
+            smscode: accountInfo.obj.smscode,
+            phone: accountInfo.obj.phone,
+          })
+        );
+        if (resultInfo.success) {
           //修改密码
-          emit('nextStep', accountInfo.obj)
-        }else{
+          emit('nextStep', accountInfo.obj);
+        } else {
           //错误提示
           createErrorModal({
             title: t('sys.api.errorTip'),
@@ -94,7 +89,7 @@
           });
         }
       }
-     
+
       return {
         t,
         formRef,

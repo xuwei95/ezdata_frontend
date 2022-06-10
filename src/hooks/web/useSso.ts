@@ -5,14 +5,14 @@ import { useGlobSetting } from '/@/hooks/setting';
 import { validateCasLogin } from '/@/api/sys/user';
 import { useUserStore } from '/@/store/modules/user';
 const globSetting = useGlobSetting();
-const openSso =globSetting.openSso;
-export  function useSso() {
+const openSso = globSetting.openSso;
+export function useSso() {
   let locationUrl = 'http://' + window.location.host + '/';
   /**
    * 单点登录
    */
   async function ssoLogin() {
-    if (openSso=='true') {
+    if (openSso == 'true') {
       let token = getToken();
       let ticket = getUrlParam('ticket');
       if (!token) {
@@ -26,7 +26,7 @@ export  function useSso() {
             return userStore.afterLoginAction(true, {});
           });
         } else {
-          window.location.href =  globSetting.casBaseUrl+ '/login?service=' + encodeURIComponent(locationUrl);;
+          window.location.href = globSetting.casBaseUrl + '/login?service=' + encodeURIComponent(locationUrl);
         }
       }
     }
@@ -36,7 +36,7 @@ export  function useSso() {
    * 退出登录
    */
   async function ssoLoginOut() {
-    window.location.href =  globSetting.casBaseUrl+ '/logout?service=' + encodeURIComponent(locationUrl);
+    window.location.href = globSetting.casBaseUrl + '/logout?service=' + encodeURIComponent(locationUrl);
   }
-  return {ssoLogin,ssoLoginOut};
+  return { ssoLogin, ssoLoginOut };
 }

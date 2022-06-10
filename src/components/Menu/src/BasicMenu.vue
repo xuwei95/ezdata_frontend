@@ -1,16 +1,16 @@
 <template>
   <Menu
-          :selectedKeys="selectedKeys"
-          :defaultSelectedKeys="defaultSelectedKeys"
-          :mode="mode"
-          :openKeys="getOpenKeys"
-          :inlineIndent="inlineIndent"
-          :theme="theme"
-          @openChange="handleOpenChange"
-          :class="getMenuClass"
-          @click="handleMenuClick"
-          :subMenuOpenDelay="0.2"
-          v-bind="getInlineCollapseOptions"
+    :selectedKeys="selectedKeys"
+    :defaultSelectedKeys="defaultSelectedKeys"
+    :mode="mode"
+    :openKeys="getOpenKeys"
+    :inlineIndent="inlineIndent"
+    :theme="theme"
+    @openChange="handleOpenChange"
+    :class="getMenuClass"
+    @click="handleMenuClick"
+    :subMenuOpenDelay="0.2"
+    v-bind="getInlineCollapseOptions"
   >
     <template v-for="item in items" :key="item.path">
       <BasicSubMenuItem :item="item" :theme="theme" :isHorizontal="isHorizontal" />
@@ -60,20 +60,12 @@
 
       const { currentRoute } = useRouter();
 
-      const { handleOpenChange, setOpenKeys, getOpenKeys } = useOpenKeys(
-              menuState,
-              items,
-              mode as any,
-              accordion
-      );
+      const { handleOpenChange, setOpenKeys, getOpenKeys } = useOpenKeys(menuState, items, mode as any, accordion);
 
       const getIsTopMenu = computed(() => {
         const { type, mode } = props;
 
-        return (
-                (type === MenuTypeEnum.TOP_MENU && mode === MenuModeEnum.HORIZONTAL) ||
-                (props.isHorizontal && unref(getSplit))
-        );
+        return (type === MenuTypeEnum.TOP_MENU && mode === MenuModeEnum.HORIZONTAL) || (props.isHorizontal && unref(getSplit));
       });
 
       const getMenuClass = computed(() => {
@@ -110,12 +102,12 @@
       });
 
       !props.mixSider &&
-      watch(
-              () => props.items,
-              () => {
-                handleMenuChange();
-              }
-      );
+        watch(
+          () => props.items,
+          () => {
+            handleMenuChange();
+          }
+        );
 
       async function handleMenuClick({ key }: { key: string; keyPath: string[] }) {
         const { beforeClickFn } = props;
@@ -137,9 +129,7 @@
           isClickGo.value = false;
           return;
         }
-        const path =
-          (route || unref(currentRoute)).meta?.currentActiveMenu ||
-          (route || unref(currentRoute)).path;
+        const path = (route || unref(currentRoute)).meta?.currentActiveMenu || (route || unref(currentRoute)).path;
         setOpenKeys(path);
         if (unref(currentActiveMenu)) return;
         if (props.isHorizontal && unref(getSplit)) {

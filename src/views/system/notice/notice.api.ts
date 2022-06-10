@@ -1,16 +1,16 @@
-import {defHttp} from '/@/utils/http/axios';
-import {Modal} from 'ant-design-vue';
+import { defHttp } from '/@/utils/http/axios';
+import { Modal } from 'ant-design-vue';
 
 enum Api {
-  list = "/sys/annountCement/list",
-  save = "/sys/annountCement/add",
-  edit = "/sys/annountCement/edit",
-  delete = "/sys/annountCement/delete",
-  deleteBatch = "/sys/annountCement/deleteBatch",
-  exportXls = "/sys/annountCement/exportXls",
-  importExcel = "/sys/annountCement/importExcel",
-  releaseData = "/sys/annountCement/doReleaseData",
-  reovkeData = "/sys/annountCement/doReovkeData",
+  list = '/sys/annountCement/list',
+  save = '/sys/annountCement/add',
+  edit = '/sys/annountCement/edit',
+  delete = '/sys/annountCement/delete',
+  deleteBatch = '/sys/annountCement/deleteBatch',
+  exportXls = '/sys/annountCement/exportXls',
+  importExcel = '/sys/annountCement/importExcel',
+  releaseData = '/sys/annountCement/doReleaseData',
+  reovkeData = '/sys/annountCement/doReovkeData',
 }
 
 /**
@@ -26,8 +26,8 @@ export const getImportUrl = Api.importExcel;
  * @param params
  */
 export const getList = (params) => {
-  return defHttp.get({url: Api.list, params});
-}
+  return defHttp.get({ url: Api.list, params });
+};
 
 /**
  * 保存或者更新通告
@@ -35,18 +35,18 @@ export const getList = (params) => {
  */
 export const saveOrUpdate = (params, isUpdate) => {
   let url = isUpdate ? Api.edit : Api.save;
-  return defHttp.post({url: url, params});
-}
+  return defHttp.post({ url: url, params });
+};
 
 /**
  * 删除通告
  * @param params
  */
 export const deleteNotice = (params, handleSuccess) => {
-  return defHttp.delete({url: Api.delete, data: params}, {joinParamsToUrl: true}).then(() => {
+  return defHttp.delete({ url: Api.delete, data: params }, { joinParamsToUrl: true }).then(() => {
     handleSuccess();
   });
-}
+};
 
 /**
  * 批量删除租户
@@ -59,22 +59,20 @@ export const batchDeleteNotice = (params, handleSuccess) => {
     okText: '确认',
     cancelText: '取消',
     onOk: () => {
-      return defHttp.delete({url: Api.deleteBatch, data: params}, {joinParamsToUrl: true}).then(() => {
+      return defHttp.delete({ url: Api.deleteBatch, data: params }, { joinParamsToUrl: true }).then(() => {
         handleSuccess();
       });
-    }
+    },
   });
-}
+};
 
 /**
  * 发布
  * @param id
  */
-export const doReleaseData = (params) =>
-  defHttp.get({url: Api.releaseData, params});
+export const doReleaseData = (params) => defHttp.get({ url: Api.releaseData, params });
 /**
  * 撤销
  * @param id
  */
-export const doReovkeData = (params) =>
-  defHttp.get({url: Api.reovkeData, params});
+export const doReovkeData = (params) => defHttp.get({ url: Api.reovkeData, params });

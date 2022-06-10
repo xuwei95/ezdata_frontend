@@ -1206,53 +1206,53 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fullcalendar/common@~5.10.1":
-  version "5.10.1"
-  resolved "https://registry.npmmirror.com/@fullcalendar/common/download/@fullcalendar/common-5.10.1.tgz#a019951743852277a4095e536fd7716f6f85b9aa"
-  integrity sha1-oBmVF0OFInekCV5Tb9dxb2+Fuao=
+"@fullcalendar/common@~5.11.0":
+  version "5.11.0"
+  resolved "https://registry.npmmirror.com/@fullcalendar/common/-/common-5.11.0.tgz#d7e47b4272ba6824f95581fb7fb630c5880f4212"
+  integrity sha512-gWjbMAnN1u73Oqlgjbyky7i+3bY0hvFSnGT0YBPx44n874AkQa9e9OU12PMLTMOPy0tXPb8DEwRelFQ7CJNbcw==
   dependencies:
     tslib "^2.1.0"
 
-"@fullcalendar/core@^5.8.0", "@fullcalendar/core@~5.10.1":
-  version "5.10.1"
-  resolved "https://registry.npmmirror.com/@fullcalendar/core/download/@fullcalendar/core-5.10.1.tgz#05c7653e5004149a63bcb03e9dc8b049186ca50b"
-  integrity sha1-BcdlPlAEFJpjvLA+nciwSRhspQs=
+"@fullcalendar/core@^5.10.1", "@fullcalendar/core@~5.11.0":
+  version "5.11.0"
+  resolved "https://registry.npmmirror.com/@fullcalendar/core/-/core-5.11.0.tgz#336fcfb9799cf0c2d1ee15c110dce26a9e14881c"
+  integrity sha512-cF/d9LuJb/6xw14ms0urv1H4BiA70c4jrufe/EuVzLR6qTDpK92IZ3JK7GVtZtzptfTYZ/NQgDV9YCzIaO9Blw==
   dependencies:
-    "@fullcalendar/common" "~5.10.1"
+    "@fullcalendar/common" "~5.11.0"
     preact "^10.0.5"
     tslib "^2.1.0"
 
-"@fullcalendar/daygrid@^5.8.0", "@fullcalendar/daygrid@~5.10.1":
-  version "5.10.1"
-  resolved "https://registry.npmmirror.com/@fullcalendar/daygrid/download/@fullcalendar/daygrid-5.10.1.tgz#bdee4f58364fdab631b2abf8b56094ab5776f203"
-  integrity sha1-ve5PWDZP2rYxsqv4tWCUq1d28gM=
+"@fullcalendar/daygrid@^5.10.1", "@fullcalendar/daygrid@~5.11.0":
+  version "5.11.0"
+  resolved "https://registry.npmmirror.com/@fullcalendar/daygrid/-/daygrid-5.11.0.tgz#fd10391dfc2b6caa3538e0826f8d8f3e83e0e22a"
+  integrity sha512-Ybh/dfHn/VL0qOVIRVyJc9I8oYiqqHl6xQONk8xXCe456QbPzAQLsAxpLLJLH+3smWNCfoQgvDKzR9e9XTzLMQ==
   dependencies:
-    "@fullcalendar/common" "~5.10.1"
+    "@fullcalendar/common" "~5.11.0"
     tslib "^2.1.0"
 
-"@fullcalendar/interaction@^5.8.0":
-  version "5.10.1"
-  resolved "https://registry.npmmirror.com/@fullcalendar/interaction/download/@fullcalendar/interaction-5.10.1.tgz#dfa74b5c50bbd5608eb50aeab6e579c8d20cb367"
-  integrity sha1-36dLXFC71WCOtQrqtuV5yNIMs2c=
+"@fullcalendar/interaction@^5.10.1":
+  version "5.11.0"
+  resolved "https://registry.npmmirror.com/@fullcalendar/interaction/-/interaction-5.11.0.tgz#9cfb46cc5f75690394ef553d2c5cf4955782ff05"
+  integrity sha512-9XTI5+ydqrSX+IL3iWgKBURXfnPewn57Tmsv9mJZhiqrUEF7/+qtftLoKEAc8ZdWk/+01aBe67PFL16uPXj2Jg==
   dependencies:
-    "@fullcalendar/common" "~5.10.1"
+    "@fullcalendar/common" "~5.11.0"
     tslib "^2.1.0"
 
-"@fullcalendar/timegrid@^5.8.0":
-  version "5.10.1"
-  resolved "https://registry.npmmirror.com/@fullcalendar/timegrid/download/@fullcalendar/timegrid-5.10.1.tgz#fa7feb909bf599eac1466b9e70c0d56ce0d1aefc"
-  integrity sha1-+n/rkJv1merBRmuecMDVbODRrvw=
+"@fullcalendar/timegrid@^5.10.1":
+  version "5.11.0"
+  resolved "https://registry.npmmirror.com/@fullcalendar/timegrid/-/timegrid-5.11.0.tgz#b41153ef301f21f8c1e19a65023493c48c8bacf5"
+  integrity sha512-GNy+/PwAj510PS4Fu18Mf/CytNBVftFU7M8XwsUXOCJ6ouyroHZje0a7k5cH/nE5IQ6NJZfH2eAPBlxGath1MQ==
   dependencies:
-    "@fullcalendar/common" "~5.10.1"
-    "@fullcalendar/daygrid" "~5.10.1"
+    "@fullcalendar/common" "~5.11.0"
+    "@fullcalendar/daygrid" "~5.11.0"
     tslib "^2.1.0"
 
-"@fullcalendar/vue3@^5.8.0":
-  version "5.10.1"
-  resolved "https://registry.npmmirror.com/@fullcalendar/vue3/download/@fullcalendar/vue3-5.10.1.tgz#b34adcaf7837256a5aa9240592a0d97b55eb675d"
-  integrity sha1-s0rcr3g3JWpaqSQFkqDZe1XrZ10=
+"@fullcalendar/vue3@^5.10.1":
+  version "5.11.0"
+  resolved "https://registry.npmmirror.com/@fullcalendar/vue3/-/vue3-5.11.0.tgz#51b737e91aadab53a03162a8ade9f017429ba1cf"
+  integrity sha512-vqRJRItEdIdtO+6B3/jNppF9dU1zkZVuEL+YiXmuqH3bwqrOH0xK5ALm7YfPJvZJq9TnrVI2HPaVl9D49Mxr7g==
   dependencies:
-    "@fullcalendar/core" "~5.10.1"
+    "@fullcalendar/core" "~5.11.0"
     tslib "^2.1.0"
 
 "@humanwhocodes/config-array@^0.6.0":
@@ -1364,6 +1364,11 @@
   version "0.1.3"
   resolved "https://registry.npmmirror.com/@istanbuljs/schema/download/@istanbuljs/schema-0.1.3.tgz#e45e384e4b8ec16bce2fd903af78450f6bf7ec98"
   integrity sha1-5F44TkuOwWvOL9kDr3hFD2v37Jg=
+
+"@jeecg/online@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/@jeecg/online/-/online-1.0.1.tgz#68c8d573e9acc009915e7feff1776ed87e972ca6"
+  integrity sha512-wB93qHXc5HVEvOT59Too9OpeSlnQyGnvMkG2lo7dZ1DnkUDbYXPH3QoxuxmZxDTQ5gJVaq1dX0zmUKb+4kts2Q==
 
 "@jest/console@^27.3.1":
   version "27.3.1"
@@ -4124,6 +4129,13 @@ debug@^3.1.1, debug@^3.2.6:
   integrity sha1-clgLfpFF+zm2Z2+cXl+xALk0F5o=
   dependencies:
     ms "^2.1.1"
+
+debug@^4.3.3:
+  version "4.3.4"
+  resolved "https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
+  integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
+  dependencies:
+    ms "2.1.2"
 
 decamelize-keys@^1.1.0:
   version "1.1.0"
@@ -11350,6 +11362,21 @@ vite-plugin-mock@^2.9.6:
     esbuild "0.11.3"
     fast-glob "^3.2.7"
     path-to-regexp "^6.2.0"
+
+vite-plugin-optimize-persist@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.npmmirror.com/vite-plugin-optimize-persist/-/vite-plugin-optimize-persist-0.1.2.tgz#c2aa2712afa74db55f580e3d1656e8cc0b783019"
+  integrity sha512-H/Ebn2kZO8PvwUF08SsT5K5xMJNCWKoGX71+e9/ER3yNj7GHiFjNQlvGg5ih/zEx09MZ9m7WCxOwmEKbeIVzww==
+  dependencies:
+    debug "^4.3.2"
+    fs-extra "^10.0.0"
+
+vite-plugin-package-config@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.npmmirror.com/vite-plugin-package-config/-/vite-plugin-package-config-0.1.1.tgz#6bd579f71db7582ef9dcc05e9f7920e689c498c9"
+  integrity sha512-w9B3I8ZnqoyhlbzimXjXNk85imrMZgvI9m8f6j3zonK5IVA5KXzpT+PZOHlDz8lqh1vqvoEI1uhy+ZDoLAiA/w==
+  dependencies:
+    debug "^4.3.3"
 
 vite-plugin-purge-icons@^0.7.0:
   version "0.7.0"

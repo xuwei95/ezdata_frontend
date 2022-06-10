@@ -1,11 +1,6 @@
 <template>
   <div class="scrollbar">
-    <div
-      ref="wrap"
-      :class="[wrapClass, 'scrollbar__wrap', native ? '' : 'scrollbar__wrap--hidden-default']"
-      :style="style"
-      @scroll="handleScroll"
-    >
+    <div ref="wrap" :class="[wrapClass, 'scrollbar__wrap', native ? '' : 'scrollbar__wrap--hidden-default']" :style="style" @scroll="handleScroll">
       <component :is="tag" ref="resize" :class="['scrollbar__view', viewClass]" :style="viewStyle">
         <slot></slot>
       </component>
@@ -21,16 +16,7 @@
   import componentSetting from '/@/settings/componentSetting';
   const { scrollbar } = componentSetting;
   import { toObject } from './util';
-  import {
-    defineComponent,
-    ref,
-    onMounted,
-    onBeforeUnmount,
-    nextTick,
-    provide,
-    computed,
-    unref,
-  } from 'vue';
+  import { defineComponent, ref, onMounted, onBeforeUnmount, nextTick, provide, computed, unref } from 'vue';
   import Bar from './bar';
 
   export default defineComponent({

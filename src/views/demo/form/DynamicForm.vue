@@ -24,14 +24,14 @@
   const { hasPermission } = usePermission();
   const schemas: FormSchema[] = [
     {
-        field: 'field5',
-        component: 'Switch',
-        label: '是否显示字段1(css控制)',
-        defaultValue:true,
-        colProps: {
-            span: 12,
-        },
-        labelWidth: 200,
+      field: 'field5',
+      component: 'Switch',
+      label: '是否显示字段1(css控制)',
+      defaultValue: true,
+      colProps: {
+        span: 12,
+      },
+      labelWidth: 200,
     },
     {
       field: 'field1',
@@ -45,14 +45,14 @@
       },
     },
     {
-        field: 'field6',
-        component: 'Switch',
-        label: '是否显示字段2(dom控制)',
-        defaultValue:true,
-        colProps: {
-            span: 12,
-        },
-        labelWidth: 200,
+      field: 'field6',
+      component: 'Switch',
+      label: '是否显示字段2(dom控制)',
+      defaultValue: true,
+      colProps: {
+        span: 12,
+      },
+      labelWidth: 200,
     },
     {
       field: 'field2',
@@ -66,13 +66,13 @@
       },
     },
     {
-        field: 'field7',
-        component: 'Switch',
-        label: '是否禁用字段3',
-        colProps: {
-            span: 12,
-        },
-        labelWidth: 200,
+      field: 'field7',
+      component: 'Switch',
+      label: '是否禁用字段3',
+      colProps: {
+        span: 12,
+      },
+      labelWidth: 200,
     },
     {
       field: 'field3',
@@ -86,13 +86,13 @@
       },
     },
     {
-        field: 'field8',
-        component: 'Switch',
-        label: '字段4是否必填',
-        colProps: {
-            span: 12,
-        },
-        labelWidth: 200,
+      field: 'field8',
+      component: 'Switch',
+      label: '字段4是否必填',
+      colProps: {
+        span: 12,
+      },
+      labelWidth: 200,
     },
     {
       field: 'field4',
@@ -184,24 +184,23 @@
   export default defineComponent({
     components: { BasicForm, CollapseContainer, PageWrapper },
     setup() {
-      const [register, { setProps, updateSchema, appendSchemaByField, removeSchemaByFiled }] =
-        useForm({
-          labelWidth: 120,
-          schemas,
-          //禁用表单所有组件
-          disabled:true,
-          labelCol: {
-              xs: { span: 24 },
-              sm: { span: 6 },
-          },
-          wrapperCol: {
-              xs: { span: 24 },
-              sm: { span: 18 },
-          },
-          actionColOptions: {
-            span: 24,
-          },
-        });
+      const [register, { setProps, updateSchema, appendSchemaByField, removeSchemaByFiled }] = useForm({
+        labelWidth: 120,
+        schemas,
+        //禁用表单所有组件
+        disabled: true,
+        labelCol: {
+          xs: { span: 24 },
+          sm: { span: 6 },
+        },
+        wrapperCol: {
+          xs: { span: 24 },
+          sm: { span: 18 },
+        },
+        actionColOptions: {
+          span: 24,
+        },
+      });
       const [register1] = useForm({
         labelWidth: 120,
         schemas: schemas1,

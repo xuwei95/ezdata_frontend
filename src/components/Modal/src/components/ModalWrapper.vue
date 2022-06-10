@@ -7,17 +7,7 @@
 </template>
 <script lang="ts">
   import type { CSSProperties } from 'vue';
-  import {
-    defineComponent,
-    computed,
-    ref,
-    watchEffect,
-    unref,
-    watch,
-    onMounted,
-    nextTick,
-    onUnmounted,
-  } from 'vue';
+  import { defineComponent, computed, ref, watchEffect, unref, watch, onMounted, nextTick, onUnmounted } from 'vue';
   import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn';
   import { ScrollContainer } from '/@/components/Container';
   import { createModalContext } from '../hooks/useModalContext';
@@ -55,14 +45,14 @@
       useWindowSizeFn(setModalHeight.bind(null, false));
 
       useMutationObserver(
-              spinRef,
-              () => {
-                setModalHeight();
-              },
-              {
-                attributes: true,
-                subtree: true,
-              }
+        spinRef,
+        () => {
+          setModalHeight();
+        },
+        {
+          attributes: true,
+          subtree: true,
+        }
       );
 
       createModalContext({
@@ -81,15 +71,15 @@
       });
 
       watch(
-              () => props.fullScreen,
-              (v) => {
-                setModalHeight();
-                if (!v) {
-                  realHeightRef.value = minRealHeightRef.value;
-                } else {
-                  minRealHeightRef.value = realHeightRef.value;
-                }
-              }
+        () => props.fullScreen,
+        (v) => {
+          setModalHeight();
+          if (!v) {
+            realHeightRef.value = minRealHeightRef.value;
+          } else {
+            minRealHeightRef.value = realHeightRef.value;
+          }
+        }
       );
 
       onMounted(() => {
@@ -127,12 +117,7 @@
 
           const modalRect = getComputedStyle(modalDom as Element).top;
           const modalTop = Number.parseInt(modalRect);
-          let maxHeight =
-                  window.innerHeight -
-                  modalTop * 2 +
-                  (props.footerOffset! || 0) -
-                  props.modalFooterHeight -
-                  props.modalHeaderHeight;
+          let maxHeight = window.innerHeight - modalTop * 2 + (props.footerOffset! || 0) - props.modalFooterHeight - props.modalHeaderHeight;
 
           // 距离顶部过进会出现滚动条
           if (modalTop < 40) {
@@ -148,14 +133,9 @@
           // }
 
           if (props.fullScreen) {
-            realHeightRef.value =
-                    window.innerHeight - props.modalFooterHeight - props.modalHeaderHeight - 28;
+            realHeightRef.value = window.innerHeight - props.modalFooterHeight - props.modalHeaderHeight - 28;
           } else {
-            realHeightRef.value = props.height
-                    ? props.height
-                    : realHeight > maxHeight
-                            ? maxHeight
-                            : realHeight;
+            realHeightRef.value = props.height ? props.height : realHeight > maxHeight ? maxHeight : realHeight;
           }
           emit('height-change', unref(realHeightRef));
         } catch (error) {

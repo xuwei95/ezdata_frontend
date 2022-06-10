@@ -62,11 +62,11 @@ export function isString(val: unknown): val is string {
   return is(val, 'String');
 }
 
-export function isJsonObjectString(val: string ): val is string {
-    if(!val){
-        return false  
-    }
-    return val.startsWith('{') && val.endsWith('}');
+export function isJsonObjectString(val: string): val is string {
+  if (!val) {
+    return false;
+  }
+  return val.startsWith('{') && val.endsWith('}');
 }
 
 export function isFunction(val: unknown): val is Function {
@@ -102,7 +102,6 @@ export const isServer = typeof window === 'undefined';
 export const isClient = !isServer;
 
 export function isUrl(path: string): boolean {
-  const reg =
-      /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
+  const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
   return reg.test(path);
 }

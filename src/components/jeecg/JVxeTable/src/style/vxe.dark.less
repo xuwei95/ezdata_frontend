@@ -1,11 +1,14 @@
-@import "vxe.const";
+@import 'vxe.const';
 
 [data-theme='dark'] .@{prefix-cls} {
   @fontColor: #c9d1d9;
   @bgColor: #151515;
   @borderColor: #606060;
 
-  .vxe-cell--item, .vxe-cell--title, .vxe-cell, .vxe-body--expanded-cell {
+  .vxe-cell--item,
+  .vxe-cell--title,
+  .vxe-cell,
+  .vxe-body--expanded-cell {
     color: @fontColor;
   }
 
@@ -63,7 +66,6 @@
     background-color: #1d1d1d;
   }
 
-
   .vxe-table--render-default.border--default .vxe-body--column,
   .vxe-table--render-default.border--default .vxe-footer--column,
   .vxe-table--render-default.border--default .vxe-header--column,
@@ -73,12 +75,10 @@
     background-image: linear-gradient(#1d1d1d, #1d1d1d);
   }
 
-
   // 列宽拖动
   .vxe-header--column .vxe-resizable.is--line:before {
     background-color: #505050;
   }
-
 
   // checkbox
   .vxe-custom--option .vxe-checkbox--icon:before,
@@ -86,7 +86,7 @@
   .vxe-table--filter-option .vxe-checkbox--icon:before,
   .vxe-table--render-default .vxe-cell--checkbox .vxe-checkbox--icon:before {
     background-color: @bgColor;
-    border-color: @borderColor
+    border-color: @borderColor;
   }
 
   .vxe-toolbar .vxe-custom--option-wrapper {
@@ -95,7 +95,7 @@
 
   .vxe-button {
     background-color: @bgColor;
-    border-color: @borderColor
+    border-color: @borderColor;
   }
 
   .vxe-button.type--button:not(.is--disabled):active {

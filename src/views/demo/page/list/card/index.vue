@@ -20,9 +20,7 @@
                     <Icon class="icon" v-if="item.icon" :icon="item.icon" :color="item.color" />
                     {{ item.title }}
                   </div>
-                  <div :class="`${prefixCls}__card-detail`">
-                    基于Vue Next, TypeScript, Ant Design Vue实现的一套完整的企业级后台管理系统
-                  </div>
+                  <div :class="`${prefixCls}__card-detail`"> 基于Vue Next, TypeScript, Ant Design Vue实现的一套完整的企业级后台管理系统 </div>
                 </a-card>
               </a-list-item>
             </a-col>

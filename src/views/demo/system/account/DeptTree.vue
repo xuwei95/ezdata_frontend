@@ -1,14 +1,6 @@
 <template>
   <div class="bg-white m-4 mr-0 overflow-hidden">
-    <BasicTree
-      title="部门列表"
-      toolbar
-      search
-      :clickRowToExpand="false"
-      :treeData="treeData"
-      :replaceFields="{ key: 'id', title: 'deptName' }"
-      @select="handleSelect"
-    />
+    <BasicTree title="部门列表" toolbar search :clickRowToExpand="false" :treeData="treeData" :replaceFields="{ key: 'id', title: 'deptName' }" @select="handleSelect" />
   </div>
 </template>
 <script lang="ts">

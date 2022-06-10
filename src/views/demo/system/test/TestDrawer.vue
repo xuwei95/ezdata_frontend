@@ -1,15 +1,6 @@
 <template>
-  <BasicDrawer
-    v-bind="$attrs"
-    @register="registerDrawer"
-    showFooter
-    :title="getTitle"
-    width="500px"
-    @ok="handleSubmit"
-  >
-    <BasicForm @register="registerForm">
-
-    </BasicForm>
+  <BasicDrawer v-bind="$attrs" @register="registerDrawer" showFooter :title="getTitle" width="500px" @ok="handleSubmit">
+    <BasicForm @register="registerForm"> </BasicForm>
   </BasicDrawer>
 </template>
 <script lang="ts">

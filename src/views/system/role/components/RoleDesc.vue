@@ -1,7 +1,7 @@
 <template>
-    <BasicDrawer v-bind="$attrs" @register="registerDrawer" title="角色详情" width="500px" destroyOnClose>
-        <Description :column="1" :data="roleData" :schema="formDescSchema"/>
-    </BasicDrawer>
+  <BasicDrawer v-bind="$attrs" @register="registerDrawer" title="角色详情" width="500px" destroyOnClose>
+    <Description :column="1" :data="roleData" :schema="formDescSchema" />
+  </BasicDrawer>
 </template>
 <script lang="ts" setup>
   import { ref, useAttrs } from 'vue';

@@ -8,10 +8,7 @@ const { uploadUrl = '' } = useGlobSetting();
 /**
  * @description: Upload interface
  */
-export function uploadApi(
-  params: UploadFileParams,
-  onUploadProgress: (progressEvent: ProgressEvent) => void
-) {
+export function uploadApi(params: UploadFileParams, onUploadProgress: (progressEvent: ProgressEvent) => void) {
   return defHttp.uploadFile<UploadApiResult>(
     {
       url: uploadUrl,
@@ -23,15 +20,13 @@ export function uploadApi(
 /**
  * @description: Upload interface
  */
-export function uploadImg(
-  params: UploadFileParams,
-  onUploadProgress: (progressEvent: ProgressEvent) => void
-) {
+export function uploadImg(params: UploadFileParams, onUploadProgress: (progressEvent: ProgressEvent) => void) {
   return defHttp.uploadFile<UploadApiResult>(
     {
       url: `${uploadUrl}/sys/common/upload`,
       onUploadProgress,
     },
-    params, {isReturnResponse:true}
+    params,
+    { isReturnResponse: true }
   );
 }

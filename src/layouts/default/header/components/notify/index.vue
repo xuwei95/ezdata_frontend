@@ -22,52 +22,52 @@
             <a-button @click="onEmptyNotify" type="dashed" block>清空消息</a-button>
           </a-col>
           <a-col :span="count === 0 ? 24 : 12">
-            <a-button @click="popoverVisible=false" type="dashed" block>
+            <a-button @click="popoverVisible = false" type="dashed" block>
               <router-link to="/monitor/mynews">查看更多</router-link>
             </a-button>
           </a-col>
         </a-row>
       </template>
     </Popover>
-    <DynamicNotice ref="dynamicNoticeRef" v-bind="dynamicNoticeProps"/>
-    <DetailModal @register="registerDetail"/>
+    <DynamicNotice ref="dynamicNoticeRef" v-bind="dynamicNoticeProps" />
+    <DetailModal @register="registerDetail" />
   </div>
 </template>
 <script lang="ts">
-  import { computed, defineComponent, ref, unref, reactive, onMounted, getCurrentInstance } from 'vue'
+  import { computed, defineComponent, ref, unref, reactive, onMounted, getCurrentInstance } from 'vue';
   import { Popover, Tabs, Badge } from 'ant-design-vue';
   import { BellOutlined } from '@ant-design/icons-vue';
-  import { tabListData } from './data'
+  import { tabListData } from './data';
   import { listCementByUser, editCementSend } from './notify.api';
   import NoticeList from './NoticeList.vue';
   import DetailModal from '/@/views/monitor/mynews/DetailModal.vue';
   import DynamicNotice from '/@/views/monitor/mynews/DynamicNotice.vue';
-  import { useModal } from '/@/components/Modal'
+  import { useModal } from '/@/components/Modal';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { useGlobSetting } from '/@/hooks/setting'
+  import { useGlobSetting } from '/@/hooks/setting';
   import { useUserStore } from '/@/store/modules/user';
-  import { connectWebSocket, onWebSocket } from '/@/hooks/web/useWebSocket'
-  import { readAllMsg } from '/@/views/monitor/mynews/mynews.api'
+  import { connectWebSocket, onWebSocket } from '/@/hooks/web/useWebSocket';
+  import { readAllMsg } from '/@/views/monitor/mynews/mynews.api';
   import { getToken } from '/@/utils/auth';
   export default defineComponent({
     components: { Popover, BellOutlined, Tabs, TabPane: Tabs.TabPane, Badge, NoticeList, DetailModal, DynamicNotice },
     setup() {
       const { prefixCls } = useDesign('header-notify');
-      const instance: any = getCurrentInstance()
+      const instance: any = getCurrentInstance();
       const userStore = useUserStore();
       const glob = useGlobSetting();
-      const dynamicNoticeProps = reactive({ path: '', formData: {} })
+      const dynamicNoticeProps = reactive({ path: '', formData: {} });
       const [registerDetail, detailModal] = useModal();
       const popoverVisible = ref<boolean>(false);
       const listData = ref(tabListData);
-      listData.value[0].list = []
-      listData.value[1].list = []
-      listData.value[0].count = 0
-      listData.value[1].count = 0
+      listData.value[0].list = [];
+      listData.value[1].list = [];
+      listData.value[0].count = 0;
+      listData.value[1].count = 0;
 
       onMounted(() => {
-        initWebSocket()
-      })
+        initWebSocket();
+      });
 
       const count = computed(() => {
         let count = 0;
@@ -83,64 +83,64 @@
           title: item.titile,
           description: item.msgAbstract,
           datetime: item.sendTime,
-        }
+        };
       }
 
       // 获取系统消息
       async function loadData() {
         try {
-          let { anntMsgList, sysMsgList, anntMsgTotal, sysMsgTotal } = await listCementByUser({ pageSize: 5 })
-          listData.value[0].list = anntMsgList.map(mapAnnouncement)
-          listData.value[1].list = sysMsgList.map(mapAnnouncement)
-          listData.value[0].count = anntMsgTotal
-          listData.value[1].count = sysMsgTotal
+          let { anntMsgList, sysMsgList, anntMsgTotal, sysMsgTotal } = await listCementByUser({ pageSize: 5 });
+          listData.value[0].list = anntMsgList.map(mapAnnouncement);
+          listData.value[1].list = sysMsgList.map(mapAnnouncement);
+          listData.value[0].count = anntMsgTotal;
+          listData.value[1].count = sysMsgTotal;
         } catch (e) {
-          console.warn('系统消息通知异常：', e)
+          console.warn('系统消息通知异常：', e);
         }
       }
 
-      loadData()
+      loadData();
 
       function onNoticeClick(record) {
         try {
-          editCementSend(record.id)
-          loadData()
+          editCementSend(record.id);
+          loadData();
         } catch (e) {
-          console.error(e)
+          console.error(e);
         }
         if (record.openType === 'component') {
-          dynamicNoticeProps.path = record.openPage
-          dynamicNoticeProps.formData = { id: record.busId }
-          instance.refs.dynamicNoticeRef?.detail(record.openPage)
+          dynamicNoticeProps.path = record.openPage;
+          dynamicNoticeProps.formData = { id: record.busId };
+          instance.refs.dynamicNoticeRef?.detail(record.openPage);
         } else {
           detailModal.openModal(true, {
             record,
             isUpdate: true,
-          })
+          });
         }
-        popoverVisible.value = false
+        popoverVisible.value = false;
       }
 
       // 初始化 WebSocket
       function initWebSocket() {
-        let userId = unref(userStore.getUserInfo).id
-        let token=getToken();
+        let userId = unref(userStore.getUserInfo).id;
+        let token = getToken();
         // WebSocket与普通的请求所用协议有所不同，ws等同于http，wss等同于https
-        let url = glob.domainUrl?.replace('https://', 'wss://').replace('http://', 'ws://') + '/websocket/' + userId
-        connectWebSocket(url)
-        onWebSocket(onWebSocketMessage)
+        let url = glob.domainUrl?.replace('https://', 'wss://').replace('http://', 'ws://') + '/websocket/' + userId;
+        connectWebSocket(url);
+        onWebSocket(onWebSocketMessage);
       }
 
       function onWebSocketMessage(data) {
         if (data.cmd === 'topic' || data.cmd === 'user') {
-          loadData()
+          loadData();
         }
       }
 
       // 清空消息
       function onEmptyNotify() {
-        popoverVisible.value = false
-        readAllMsg({}, loadData)
+        popoverVisible.value = false;
+        readAllMsg({}, loadData);
       }
 
       return {

@@ -25,7 +25,7 @@ export function configHtmlPlugin(env: ViteEnv, isBuild: boolean) {
       },
       // Embed the generated app.config.js file
       tags: isBuild
-          ? [
+        ? [
             {
               tag: 'script',
               attrs: {
@@ -33,7 +33,7 @@ export function configHtmlPlugin(env: ViteEnv, isBuild: boolean) {
               },
             },
           ]
-          : [],
+        : [],
     },
   });
   return htmlPlugin;

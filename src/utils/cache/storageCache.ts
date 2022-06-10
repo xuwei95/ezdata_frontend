@@ -12,14 +12,7 @@ export interface CreateStorageParams extends EncryptionParams {
   hasEncrypt: boolean;
   timeout?: Nullable<number>;
 }
-export const createStorage = ({
-  prefixKey = '',
-  storage = sessionStorage,
-  key = cacheCipher.key,
-  iv = cacheCipher.iv,
-  timeout = null,
-  hasEncrypt = true,
-}: Partial<CreateStorageParams> = {}) => {
+export const createStorage = ({ prefixKey = '', storage = sessionStorage, key = cacheCipher.key, iv = cacheCipher.iv, timeout = null, hasEncrypt = true }: Partial<CreateStorageParams> = {}) => {
   if (hasEncrypt && [key.length, iv.length].some((item) => item !== 16)) {
     throw new Error('When hasEncrypt is true, the key or iv must be 16 bits!');
   }
@@ -66,9 +59,7 @@ export const createStorage = ({
         time: Date.now(),
         expire: !isNullOrUnDef(expire) ? new Date().getTime() + expire * 1000 : null,
       });
-      const stringifyValue = this.hasEncrypt
-        ? this.encryption.encryptByAES(stringData)
-        : stringData;
+      const stringifyValue = this.hasEncrypt ? this.encryption.encryptByAES(stringData) : stringData;
       this.storage.setItem(this.getKey(key), stringifyValue);
     }
 

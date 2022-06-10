@@ -46,7 +46,7 @@ export interface UserInfo {
 export interface LoginInfo {
   multi_depart?: string | number;
   userInfo?: object;
-  departs?:[];
+  departs?: [];
   tenantList?: [];
 }
 

@@ -1,4 +1,4 @@
-import type {Ref} from 'vue'
+import type { Ref } from 'vue';
 import { inject, reactive, ref, computed, unref, watch, nextTick } from 'vue';
 import { TreeActionType } from '/@/components/Tree';
 import { listToTree } from '/@/utils/common/compUtils';
@@ -9,7 +9,7 @@ export function useTreeBiz(treeRef, getList, props) {
   //接收已选择的值
   const selectValues = <object>inject('selectValues', reactive({}));
   // 是否正在加载回显
-  const loadingEcho = inject<Ref<boolean>>('loadingEcho', ref(false))
+  const loadingEcho = inject<Ref<boolean>>('loadingEcho', ref(false));
   //数据集
   const treeData = ref<Array<object>>([]);
   //已选择的值
@@ -19,23 +19,26 @@ export function useTreeBiz(treeRef, getList, props) {
   //是否是打开弹框模式
   const openModal = ref(false);
   // 是否开启父子关联，如果不可以多选，就始终取消父子关联
-  const getCheckStrictly = computed(() => props.multiple ? props.checkStrictly : true)
+  const getCheckStrictly = computed(() => (props.multiple ? props.checkStrictly : true));
   // 是否是首次加载回显，只有首次加载，才会显示 loading
-  let isFirstLoadEcho = true
+  let isFirstLoadEcho = true;
 
   /**
    * 监听selectValues变化
    */
-  watch(selectValues, ({value: values}: Recordable) => {
-    if (openModal.value == false && values.length > 0) {
-      loadingEcho.value = isFirstLoadEcho
-      isFirstLoadEcho = false
-      onLoadData(null, values.join(',')).finally(() => {
-        loadingEcho.value = false
-      })
-    }
-  }, {immediate: true});
-
+  watch(
+    selectValues,
+    ({ value: values }: Recordable) => {
+      if (openModal.value == false && values.length > 0) {
+        loadingEcho.value = isFirstLoadEcho;
+        isFirstLoadEcho = false;
+        onLoadData(null, values.join(',')).finally(() => {
+          loadingEcho.value = false;
+        });
+      }
+    },
+    { immediate: true }
+  );
 
   /**
    * 获取树实例
@@ -65,9 +68,8 @@ export function useTreeBiz(treeRef, getList, props) {
    * 树节点选择
    */
   function onSelect(keys, info) {
-    if(props.checkable==false)
-    {
-      checkedKeys.value = props.checkStrictly?keys.checked:keys;
+    if (props.checkable == false) {
+      checkedKeys.value = props.checkStrictly ? keys.checked : keys;
       const { selectedNodes } = info;
       let rows = <any[]>[];
       selectedNodes.forEach((item) => {
@@ -77,27 +79,26 @@ export function useTreeBiz(treeRef, getList, props) {
     }
   }
 
-
   /**
    * 树节点选择
    */
   function onCheck(keys, info) {
-    if(props.checkable==true) {
+    if (props.checkable == true) {
       // 如果不能多选，就只保留最后一个选中的
       if (!props.multiple) {
         if (info.checked) {
           //update-begin-author:taoyan date:20220408 for: 单选模式下，设定rowKey，无法选中数据-
-          checkedKeys.value = [info.node.eventKey]
-          let temp = info.checkedNodes.find(n => n.key === info.node.eventKey)
-          selectRows.value = [temp.props.node]
+          checkedKeys.value = [info.node.eventKey];
+          let temp = info.checkedNodes.find((n) => n.key === info.node.eventKey);
+          selectRows.value = [temp.props.node];
           //update-end-author:taoyan date:20220408 for: 单选模式下，设定rowKey，无法选中数据-
         } else {
-          checkedKeys.value = []
-          selectRows.value = []
+          checkedKeys.value = [];
+          selectRows.value = [];
         }
-        return
+        return;
       }
-      checkedKeys.value = props.checkStrictly?keys.checked:keys;
+      checkedKeys.value = props.checkStrictly ? keys.checked : keys;
       const { checkedNodes } = info;
       let rows = <any[]>[];
       checkedNodes.forEach((item) => {
@@ -110,41 +111,40 @@ export function useTreeBiz(treeRef, getList, props) {
   /**
    * 勾选全部
    */
-  function checkALL(checkAll){
+  function checkALL(checkAll) {
     getTree().checkAll(checkAll);
   }
 
   /**
    * 展开全部
    */
-  function expandAll(expandAll){
+  function expandAll(expandAll) {
     getTree().expandAll(expandAll);
   }
-
 
   /**
    * 加载树数据
    */
   async function onLoadData(treeNode, ids) {
     let params = {};
-    let startPid=''
+    let startPid = '';
     if (treeNode) {
-      startPid=treeNode.eventKey;
+      startPid = treeNode.eventKey;
       //update-begin---author:wangshuai ---date:20220407  for：rowkey不设置成id，sync开启异步的时候，点击上级下级不显示------------
       params['pid'] = treeNode.value;
       //update-end---author:wangshuai ---date:20220407  for：rowkey不设置成id，sync开启异步的时候，点击上级下级不显示------------
     }
     if (ids) {
-      startPid='';
+      startPid = '';
       params['ids'] = ids;
     }
     let record = await getList(params);
-    let optionData=record;
+    let optionData = record;
     if (!props.serverTreeData) {
       //前端处理数据为tree结构
-      record = listToTree(record, props,startPid);
-      if(record.length==0&&treeNode){
-        checkHasChild(startPid,treeData.value);
+      record = listToTree(record, props, startPid);
+      if (record.length == 0 && treeNode) {
+        checkHasChild(startPid, treeData.value);
       }
     }
 
@@ -161,10 +161,7 @@ export function useTreeBiz(treeRef, getList, props) {
           const asyncTreeAction: TreeActionType | null = unref(treeRef);
           if (asyncTreeAction) {
             asyncTreeAction.updateNodeByKey(treeNode.eventKey, { children: record });
-            asyncTreeAction.setExpandedKeys([
-              treeNode.eventKey,
-              ...asyncTreeAction.getExpandedKeys(),
-            ]);
+            asyncTreeAction.setExpandedKeys([treeNode.eventKey, ...asyncTreeAction.getExpandedKeys()]);
           }
           resolve();
           return;
@@ -192,9 +189,9 @@ export function useTreeBiz(treeRef, getList, props) {
           if (!item.child) {
             item.isLeaf = true;
           }
-          break
+          break;
         } else {
-          checkHasChild(pid, item.children)
+          checkHasChild(pid, item.children);
         }
       }
     }

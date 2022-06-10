@@ -1,6 +1,6 @@
 <template>
   <div class="p-4">
-    <a-card :bordered="false" style="height: 100%;">
+    <a-card :bordered="false" style="height: 100%">
       <a-tabs v-model:activeKey="activeKey" @change="tabChange">
         <a-tab-pane key="JeecgComponents" tab="下拉选择组件"></a-tab-pane>
         <a-tab-pane key="JCodeEditDemo" tab="代码编辑器" force-render></a-tab-pane>
@@ -24,28 +24,31 @@
   import JeecgPdfView from './JeecgPdfView.vue';
   import JUploadDemo from './JUploadDemo.vue';
   export default defineComponent({
-    name:"comp-jeecg-basic",
+    name: 'comp-jeecg-basic',
     setup() {
       const activeKey = ref('JeecgComponents');
       const currentComponent = computed(() => {
         const componentType = {
-          'JeecgComponents': JeecgComponents,
-          'JEditorDemo': JEditorDemo,
-          'JCodeEditDemo': JCodeEditDemo,
-          'ImgDragSort': ImgDragSort,
-          'ImgTurnPage': ImgTurnPage,
-          'JeecgPdfView': JeecgPdfView,
-          'JUploadDemo': JUploadDemo,
+          JeecgComponents: JeecgComponents,
+          JEditorDemo: JEditorDemo,
+          JCodeEditDemo: JCodeEditDemo,
+          ImgDragSort: ImgDragSort,
+          ImgTurnPage: ImgTurnPage,
+          JeecgPdfView: JeecgPdfView,
+          JUploadDemo: JUploadDemo,
         };
         return componentType[activeKey.value];
       });
 
       //使用component动态切换tab
       function tabChange(key) {
-        activeKey.value=key
+        activeKey.value = key;
       }
       return {
-        activeKey, currentComponent, tabChange,activeKey
+        activeKey,
+        currentComponent,
+        tabChange,
+        activeKey,
       };
     },
   });

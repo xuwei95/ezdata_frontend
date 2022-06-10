@@ -1,9 +1,9 @@
 <template>
   <div :class="prefixCls">
-<!--    <a-button type="primary" block @click="handleCopy">-->
-<!--      <CopyOutlined class="mr-2" />-->
-<!--      {{ t('layout.setting.copyBtn') }}-->
-<!--    </a-button>-->
+    <!--    <a-button type="primary" block @click="handleCopy">-->
+    <!--      <CopyOutlined class="mr-2" />-->
+    <!--      {{ t('layout.setting.copyBtn') }}-->
+    <!--    </a-button>-->
 
     <a-button color="warning" block @click="handleResetSetting" class="my-3">
       <RedoOutlined class="mr-2" />
@@ -48,9 +48,7 @@
       const appStore = useAppStore();
 
       function handleCopy() {
-        const { isSuccessRef } = useCopyToClipboard(
-          JSON.stringify(unref(appStore.getProjectConfig), null, 2)
-        );
+        const { isSuccessRef } = useCopyToClipboard(JSON.stringify(unref(appStore.getProjectConfig), null, 2));
         unref(isSuccessRef) &&
           createSuccessModal({
             title: t('layout.setting.operatingTitle'),

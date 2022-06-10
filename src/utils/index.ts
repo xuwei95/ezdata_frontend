@@ -5,7 +5,7 @@ import { unref } from 'vue';
 import { isObject } from '/@/utils/is';
 
 // update-begin--author:sunjianlei---date:20220408---for: 【VUEN-656】配置外部网址打不开，原因是带了#号，需要替换一下
-export const URL_HASH_TAB = `__AGWE4H__HASH__TAG__PWHRG__`
+export const URL_HASH_TAB = `__AGWE4H__HASH__TAG__PWHRG__`;
 // update-end--author:sunjianlei---date:20220408---for: 【VUEN-656】配置外部网址打不开，原因是带了#号，需要替换一下
 
 export const noop = () => {};
@@ -44,10 +44,7 @@ export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
   return src;
 }
 
-export function openWindow(
-  url: string,
-  opt?: { target?: TargetContext | string; noopener?: boolean; noreferrer?: boolean }
-) {
+export function openWindow(url: string, opt?: { target?: TargetContext | string; noopener?: boolean; noreferrer?: boolean }) {
   const { target = '__blank', noopener = true, noreferrer = true } = opt || {};
   const feature: string[] = [];
 
@@ -74,12 +71,12 @@ export function getDynamicProps<T, U>(props: T): Partial<U> {
  * @param field
  * @updateBy:zyf
  */
-export function getValueType(props,field){
-  let formSchema = unref(unref(props)?.schemas)
-  let valueType = "string";
+export function getValueType(props, field) {
+  let formSchema = unref(unref(props)?.schemas);
+  let valueType = 'string';
   if (formSchema) {
     let schema = formSchema.filter((item) => item.field === field)[0];
-    valueType = schema.componentProps&&schema.componentProps.valueType ? schema.componentProps.valueType : valueType;
+    valueType = schema.componentProps && schema.componentProps.valueType ? schema.componentProps.valueType : valueType;
   }
   return valueType;
 }
@@ -103,7 +100,7 @@ export function getRawRoute(route: RouteLocationNormalized): RouteLocationNormal
  * @return 克隆后的对象
  */
 export function cloneObject(obj) {
-    return JSON.parse(JSON.stringify(obj))
+  return JSON.parse(JSON.stringify(obj));
 }
 
 export const withInstall = <T>(component: T, alias?: string) => {
@@ -123,23 +120,22 @@ export const withInstall = <T>(component: T, alias?: string) => {
  */
 export function getUrlParam(paraName) {
   let url = document.location.toString();
-  let arrObj = url.split("?");
+  let arrObj = url.split('?');
 
   if (arrObj.length > 1) {
-    let arrPara = arrObj[1].split("&");
+    let arrPara = arrObj[1].split('&');
     let arr;
 
     for (let i = 0; i < arrPara.length; i++) {
-      arr = arrPara[i].split("=");
+      arr = arrPara[i].split('=');
 
       if (arr != null && arr[0] == paraName) {
         return arr[1];
       }
     }
-    return "";
-  }
-  else {
-    return "";
+    return '';
+  } else {
+    return '';
   }
 }
 
@@ -150,10 +146,12 @@ export function getUrlParam(paraName) {
  * @return Promise
  */
 export function sleep(ms: number, fn?: Fn) {
-  return new Promise<void>(resolve => setTimeout(() => {
-    fn && fn()
-    resolve()
-  }, ms))
+  return new Promise<void>((resolve) =>
+    setTimeout(() => {
+      fn && fn();
+      resolve();
+    }, ms)
+  );
 }
 
 /**
@@ -164,10 +162,10 @@ export function sleep(ms: number, fn?: Fn) {
  * @returns {String} 替换后的字符串
  */
 export function replaceAll(text, checker, replacer) {
-  let lastText = text
-  text = text.replace(checker, replacer)
+  let lastText = text;
+  text = text.replace(checker, replacer);
   if (lastText !== text) {
-    return replaceAll(text, checker, replacer)
+    return replaceAll(text, checker, replacer);
   }
-  return text
+  return text;
 }

@@ -19,7 +19,7 @@ export { default as JCategorySelect } from './src/jeecg/components/JCategorySele
 export { default as JSelectMultiple } from './src/jeecg/components/JSelectMultiple.vue';
 export { default as JPopup } from './src/jeecg/components/JPopup.vue';
 export { default as JAreaSelect } from './src/jeecg/components/JAreaSelect.vue';
-export { JEasyCron, JEasyCronInner, JEasyCronModal } from '/@/components/Form/src/jeecg/components/JEasyCron'
+export { JEasyCron, JEasyCronInner, JEasyCronModal } from '/@/components/Form/src/jeecg/components/JEasyCron';
 export { default as JCheckbox } from './src/jeecg/components/JCheckbox.vue';
 export { default as JInput } from './src/jeecg/components/JInput.vue';
 export { default as JEllipsis } from './src/jeecg/components/JEllipsis.vue';
@@ -30,6 +30,6 @@ export { default as JSelectUserByDept } from './src/jeecg/components/JSelectUser
 export { default as JEditor } from './src/jeecg/components/JEditor.vue';
 export { default as JImageUpload } from './src/jeecg/components/JImageUpload.vue';
 // Jeecg自定义校验
-export { JCronValidator } from '/@/components/Form/src/jeecg/components/JEasyCron'
+export { JCronValidator } from '/@/components/Form/src/jeecg/components/JEasyCron';
 
 export { BasicForm };

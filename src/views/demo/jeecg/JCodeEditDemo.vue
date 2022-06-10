@@ -1,9 +1,9 @@
 <template>
-    <BasicForm :labelWidth="200" :schemas="schemas" :showResetButton="false" :showSubmitButton="false"  :actionColOptions="{ span: 24 }" @submit="handleSubmit" @reset="handleReset" style="height: 800px">
-        <template #jCodeEdit="{model, field }">
-            <JCodeEditor v-model:value="model[field]" mode="js" height="300px" :fullScreen="true"/>
-        </template>
-    </BasicForm>
+  <BasicForm :labelWidth="200" :schemas="schemas" :showResetButton="false" :showSubmitButton="false" :actionColOptions="{ span: 24 }" @submit="handleSubmit" @reset="handleReset" style="height: 800px">
+    <template #jCodeEdit="{ model, field }">
+      <JCodeEditor v-model:value="model[field]" mode="js" height="300px" :fullScreen="true" />
+    </template>
+  </BasicForm>
 </template>
 <script lang="ts">
   import { computed, defineComponent, unref, ref } from 'vue';
@@ -22,7 +22,7 @@
       colProps: {
         span: 15,
       },
-      defaultValue: 'Hello JeecgBoot'
+      defaultValue: 'Hello JeecgBoot',
     },
   ];
 

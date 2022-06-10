@@ -1,5 +1,5 @@
 <template>
-    <Description @register="register" class="mt-4"/>
+  <Description @register="register" class="mt-4" />
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';

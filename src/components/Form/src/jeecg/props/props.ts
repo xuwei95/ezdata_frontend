@@ -13,10 +13,9 @@ export const selectProps = {
     default: 'name',
   },
   //查询参数
-  params:{
-    type:Object,
-    default: () => {
-    }
+  params: {
+    type: Object,
+    default: () => {},
   },
   //是否显示选择按钮
   showButton: propTypes.bool.def(true),
@@ -48,7 +47,7 @@ export const treeProps = {
   },
   //根pid值
   startPid: {
-    type: [Number,String],
+    type: [Number, String],
     default: '',
   },
   //主键字段

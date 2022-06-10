@@ -1,154 +1,155 @@
-import type {Ref, ComponentInternalInstance} from 'vue'
-import {unref, isRef} from 'vue'
-import { useDefaultEnhanced } from '../hooks/useJVxeComponent'
-import { isFunction, isObject, isString } from '/@/utils/is'
-import { JVxeTypes } from '../types'
-import { JVxeComponent } from '../types/JVxeComponent'
-import { componentMap } from '../componentMap'
+import type { Ref, ComponentInternalInstance } from 'vue';
+import { unref, isRef } from 'vue';
+import { useDefaultEnhanced } from '../hooks/useJVxeComponent';
+import { isFunction, isObject, isString } from '/@/utils/is';
+import { JVxeTypes } from '../types';
+import { JVxeComponent } from '../types/JVxeComponent';
+import { componentMap } from '../componentMap';
 
 // 已注册的组件增强
-const enhancedMap = new Map<JVxeTypes, JVxeComponent.Enhanced>()
+const enhancedMap = new Map<JVxeTypes, JVxeComponent.Enhanced>();
 
 /**
  * 获取某个组件的增强
  * @param type JVxeTypes
  */
 export function getEnhanced(type: JVxeTypes | string): JVxeComponent.Enhanced {
-  let $type: JVxeTypes = <JVxeTypes>type
+  let $type: JVxeTypes = <JVxeTypes>type;
   if (!enhancedMap.has($type)) {
-    let defaultEnhanced = useDefaultEnhanced()
+    let defaultEnhanced = useDefaultEnhanced();
     if (componentMap.has($type)) {
-      let enhanced = componentMap.get($type)?.enhanced ?? {}
+      let enhanced = componentMap.get($type)?.enhanced ?? {};
       if (isObject(enhanced)) {
-        Object.keys(defaultEnhanced).forEach(key => {
-          let def = defaultEnhanced[key]
+        Object.keys(defaultEnhanced).forEach((key) => {
+          let def = defaultEnhanced[key];
           if (enhanced.hasOwnProperty(key)) {
             // 方法如果存在就不覆盖
             if (!isFunction(def) && !isString(def)) {
-              enhanced[key] = Object.assign({}, def, enhanced[key])
+              enhanced[key] = Object.assign({}, def, enhanced[key]);
             }
           } else {
-            enhanced[key] = def
+            enhanced[key] = def;
           }
-        })
-        enhancedMap.set($type, <JVxeComponent.Enhanced>enhanced)
-        return <JVxeComponent.Enhanced>enhanced
+        });
+        enhancedMap.set($type, <JVxeComponent.Enhanced>enhanced);
+        return <JVxeComponent.Enhanced>enhanced;
       }
     } else {
-      throw new Error(`[JVxeTable] ${$type} 组件尚未注册，获取增强失败`)
+      throw new Error(`[JVxeTable] ${$type} 组件尚未注册，获取增强失败`);
     }
-    enhancedMap.set($type, <JVxeComponent.Enhanced>defaultEnhanced)
+    enhancedMap.set($type, <JVxeComponent.Enhanced>defaultEnhanced);
   }
-  return <JVxeComponent.Enhanced>enhancedMap.get($type)
+  return <JVxeComponent.Enhanced>enhancedMap.get($type);
 }
 
 /** 辅助方法：替换${...}变量 */
 export function replaceProps(col, value) {
   if (value && typeof value === 'string') {
-    let text = value
-    text = text.replace(/\${title}/g, col.title)
-    text = text.replace(/\${key}/g, col.key)
-    text = text.replace(/\${defaultValue}/g, col.defaultValue)
-    return text
+    let text = value;
+    text = text.replace(/\${title}/g, col.title);
+    text = text.replace(/\${key}/g, col.key);
+    text = text.replace(/\${defaultValue}/g, col.defaultValue);
+    return text;
   }
-  return value
+  return value;
 }
 
 type dispatchEventOptions = {
   // JVxeTable 的 props
-  props,
+  props;
   // 触发的 event 事件对象
-  $event,
+  $event;
   // 行、列
-  row?, column?,
+  row?;
+  column?;
   // JVxeTable的vue3实例
-  instance?: ComponentInternalInstance,
+  instance?: ComponentInternalInstance;
   // 要寻找的className
-  className: string,
+  className: string;
   // 重写找到dom后的处理方法
-  handler?: Fn,
+  handler?: Fn;
   // 是否直接执行click方法而不是模拟click事件
-  isClick?: boolean,
-}
+  isClick?: boolean;
+};
 
 /** 模拟触发事件 */
 export function dispatchEvent(options: dispatchEventOptions) {
-  const {props, $event, row, column, instance, className, handler, isClick} = options
+  const { props, $event, row, column, instance, className, handler, isClick } = options;
   if ((!$event || !$event.path) && !instance) {
-    return
+    return;
   }
   // alwaysEdit 下不模拟触发事件，否者会导致触发两次
   if (props && props.alwaysEdit) {
-    return
+    return;
   }
   let getCell = () => {
-    let paths: HTMLElement[] = [...($event?.path ?? [])]
+    let paths: HTMLElement[] = [...($event?.path ?? [])];
     // 通过 instance 获取 cell dom对象
     if (row && column) {
-      let selector = `table.vxe-table--body tbody tr[rowid='${row.id}'] td[colid='${column.id}']`
-      let cellDom = instance!.vnode?.el?.querySelector(selector)
+      let selector = `table.vxe-table--body tbody tr[rowid='${row.id}'] td[colid='${column.id}']`;
+      let cellDom = instance!.vnode?.el?.querySelector(selector);
       if (cellDom) {
-        paths.unshift(cellDom)
+        paths.unshift(cellDom);
       }
     }
     for (const el of paths) {
       if (el.classList?.contains('vxe-body--column')) {
-        return el
+        return el;
       }
     }
-    return null
-  }
-  let cell = getCell()
+    return null;
+  };
+  let cell = getCell();
   if (cell) {
     window.setTimeout(() => {
       let getElement = () => {
-        let classList = className.split(' ')
+        let classList = className.split(' ');
         if (classList.length > 0) {
           const getClassName = (cls: string) => {
             if (cls.startsWith('.')) {
-              return cls.substring(1, cls.length)
+              return cls.substring(1, cls.length);
             }
-            return cls
-          }
+            return cls;
+          };
           let get = (target, className, idx = 0) => {
-            let elements = target.getElementsByClassName(getClassName(className))
+            let elements = target.getElementsByClassName(getClassName(className));
             if (elements && elements.length > 0) {
-              return elements[idx]
+              return elements[idx];
             }
-            return null
-          }
-          let element: HTMLElement = get(cell, classList[0])
+            return null;
+          };
+          let element: HTMLElement = get(cell, classList[0]);
           for (let i = 1; i < classList.length; i++) {
             if (!element) {
-              break
+              break;
             }
-            element = get(element, classList[i])
+            element = get(element, classList[i]);
           }
-          return element
+          return element;
         }
-        return null
-      }
-      let element = getElement()
+        return null;
+      };
+      let element = getElement();
       if (element) {
         if (isFunction(handler)) {
-          handler(element)
+          handler(element);
         } else {
           // 模拟触发点击事件
           if (isClick) {
-            element.click()
+            element.click();
           } else {
-            element.dispatchEvent($event)
+            element.dispatchEvent($event);
           }
         }
       }
-    }, 10)
+    }, 10);
   } else {
-    console.warn('【JVxeTable】dispatchEvent 获取 cell 失败')
+    console.warn('【JVxeTable】dispatchEvent 获取 cell 失败');
   }
 }
 
 /** 绑定 VxeTable 数据 */
 export function vModel(value, row, column: Ref<any> | string) {
-  let property = isRef(column) ? column.value.property : column
-  unref(row)[property] = value
+  let property = isRef(column) ? column.value.property : column;
+  unref(row)[property] = value;
 }

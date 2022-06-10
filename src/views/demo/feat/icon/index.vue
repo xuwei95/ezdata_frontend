@@ -42,11 +42,7 @@
       </div>
     </CollapseContainer>
 
-    <Alert
-      show-icon
-      message="推荐使用Iconify组件"
-      description="Icon组件基本包含所有的图标,在下面网址内你可以查询到你想要的任何图标。并且打包只会打包所用到的图标。"
-    />
+    <Alert show-icon message="推荐使用Iconify组件" description="Icon组件基本包含所有的图标,在下面网址内你可以查询到你想要的任何图标。并且打包只会打包所用到的图标。" />
     <a-button type="link" @click="toIconify"> Iconify 图标大全 </a-button>
   </PageWrapper>
 </template>
@@ -54,15 +50,7 @@
   import { defineComponent } from 'vue';
   import { CollapseContainer } from '/@/components/Container/index';
   import { Alert } from 'ant-design-vue';
-  import {
-    QqCircleFilled,
-    GithubFilled,
-    WechatFilled,
-    AlipayCircleFilled,
-    IeCircleFilled,
-    TaobaoCircleFilled,
-    CodepenCircleFilled,
-  } from '@ant-design/icons-vue';
+  import { QqCircleFilled, GithubFilled, WechatFilled, AlipayCircleFilled, IeCircleFilled, TaobaoCircleFilled, CodepenCircleFilled } from '@ant-design/icons-vue';
 
   import { Icon, IconPicker, SvgIcon } from '/@/components/Icon/index';
 

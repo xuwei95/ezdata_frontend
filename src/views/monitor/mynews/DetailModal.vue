@@ -1,25 +1,23 @@
 <template>
   <BasicModal v-bind="$attrs" @register="registerModal" title="查看详情" :minHeight="600" :showCancelBtn="false" :showOkBtn="false" :height="88">
-
-    <a-card class="daily-article" >
-      <a-card-meta :title="content.titile" :description="'发布人：'+content.sender + ' 发布时间： ' + content.sendTime">
-      </a-card-meta>
+    <a-card class="daily-article">
+      <a-card-meta :title="content.titile" :description="'发布人：' + content.sender + ' 发布时间： ' + content.sendTime"> </a-card-meta>
       <a-divider />
       <span v-html="content.msgContent" class="article-content"></span>
     </a-card>
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import {BasicModal, useModalInner} from '/@/components/Modal';
-  import {propTypes} from '/@/utils/propTypes';
+  import { BasicModal, useModalInner } from '/@/components/Modal';
+  import { propTypes } from '/@/utils/propTypes';
   import { ref, unref } from 'vue';
   const isUpdate = ref(true);
   const content = ref({});
   //表单赋值
-  const [registerModal, {setModalProps, closeModal}] = useModalInner(async (data) => {
+  const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     isUpdate.value = !!data?.isUpdate;
     if (unref(isUpdate)) {
-      content.value=data.record
+      content.value = data.record;
     }
   });
 </script>

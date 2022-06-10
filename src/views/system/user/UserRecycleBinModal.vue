@@ -16,37 +16,38 @@
               </a-menu-item>
             </a-menu>
           </template>
-          <a-button>批量操作
+          <a-button
+            >批量操作
             <Icon icon="ant-design:down-outlined"></Icon>
           </a-button>
         </a-dropdown>
       </template>
       <!--操作栏-->
       <template #action="{ record }">
-        <TableAction :actions="getTableAction(record)"/>
+        <TableAction :actions="getTableAction(record)" />
       </template>
     </BasicTable>
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import {ref,toRaw,unref} from 'vue';
-  import {BasicModal, useModalInner} from '/@/components/Modal';
-  import {BasicTable, useTable, TableAction} from '/@/components/Table';
-  import {recycleColumns} from './user.data';
-  import {getRecycleBinList, putRecycleBin, deleteRecycleBin} from './user.api';
-  import {useMessage} from '/@/hooks/web/useMessage'
+  import { ref, toRaw, unref } from 'vue';
+  import { BasicModal, useModalInner } from '/@/components/Modal';
+  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { recycleColumns } from './user.data';
+  import { getRecycleBinList, putRecycleBin, deleteRecycleBin } from './user.api';
+  import { useMessage } from '/@/hooks/web/useMessage';
 
-  const {createConfirm} = useMessage()
+  const { createConfirm } = useMessage();
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
   const checkedKeys = ref<Array<string | number>>([]);
   const [registerModal] = useModalInner(() => {
-    checkedKeys.value = []
-  })
+    checkedKeys.value = [];
+  });
   //注册table数据
-  const [registerTable, {reload}] = useTable({
+  const [registerTable, { reload }] = useTable({
     api: getRecycleBinList,
-    columns:recycleColumns,
+    columns: recycleColumns,
     rowKey: 'id',
     striped: true,
     useSearchForm: false,
@@ -55,16 +56,16 @@
     bordered: true,
     showIndexColumn: false,
     pagination: true,
-    tableSetting: {fullScreen: true},
+    tableSetting: { fullScreen: true },
     canResize: false,
     actionColumn: {
       width: 150,
       title: '操作',
       dataIndex: 'action',
-      slots: {customRender: 'action'},
+      slots: { customRender: 'action' },
       fixed: undefined,
     },
-  })
+  });
   /**
    * 选择列配置
    */
@@ -72,8 +73,8 @@
     type: 'checkbox',
     columnWidth: 50,
     selectedRowKeys: checkedKeys,
-    onChange: onSelectChange
-  }
+    onChange: onSelectChange,
+  };
   /**
    * 选择事件
    */
@@ -84,20 +85,20 @@
    * 还原事件
    */
   async function handleRevert(record) {
-    await putRecycleBin({userIds: record.id},reload)
-    emit('success')
+    await putRecycleBin({ userIds: record.id }, reload);
+    emit('success');
   }
   /**
    * 批量还原事件
    */
   function batchHandleRevert() {
-    handleRevert({id:toRaw(unref(checkedKeys)).join(",")})
+    handleRevert({ id: toRaw(unref(checkedKeys)).join(',') });
   }
   /**
    * 删除事件
    */
   async function handleDelete(record) {
-    await deleteRecycleBin({userIds: record.id},reload)
+    await deleteRecycleBin({ userIds: record.id }, reload);
   }
   /**
    * 批量删除事件
@@ -107,31 +108,29 @@
       iconType: 'warning',
       title: '删除',
       content: '确定要永久删除吗？删除后将不可恢复！',
-      onOk: () => handleDelete({id: toRaw(unref(checkedKeys)).join(',')}),
-      onCancel() {
-      },
-    })
+      onOk: () => handleDelete({ id: toRaw(unref(checkedKeys)).join(',') }),
+      onCancel() {},
+    });
   }
   //获取操作栏事件
   function getTableAction(record) {
     return [
       {
-        label:"取回",
+        label: '取回',
         icon: 'ant-design:redo-outlined',
         popConfirm: {
           title: '是否确认还原',
           confirm: handleRevert.bind(null, record),
-        }
+        },
       },
       {
-        label:"彻底删除",
+        label: '彻底删除',
         icon: 'ant-design:scissor-outlined',
         popConfirm: {
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
         },
-      }
-    ]
+      },
+    ];
   }
-
 </script>

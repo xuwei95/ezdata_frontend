@@ -1,18 +1,18 @@
 <template>
-    <BasicModal v-bind="$attrs" @register="registerModal" :title="title" @ok="handleSubmit" width="40%">
-        <BasicForm @register="registerForm">
-            <template #pwd="{ model, field }">
-                <a-row :gutter="8">
-                    <a-col :sm="15" :md="16" :lg="17" :xl="19">
-                        <a-input-password v-model:value="model[field]" placeholder="请输入密码"/>
-                    </a-col>
-                    <a-col :sm="9" :md="7" :lg="7" :xl="5">
-                        <a-button type="primary" style="width: 100%" @click="handleTest">测试</a-button>
-                    </a-col>
-                </a-row>
-            </template>
-        </BasicForm>
-    </BasicModal>
+  <BasicModal v-bind="$attrs" @register="registerModal" :title="title" @ok="handleSubmit" width="40%">
+    <BasicForm @register="registerForm">
+      <template #pwd="{ model, field }">
+        <a-row :gutter="8">
+          <a-col :sm="15" :md="16" :lg="17" :xl="19">
+            <a-input-password v-model:value="model[field]" placeholder="请输入密码" />
+          </a-col>
+          <a-col :sm="9" :md="7" :lg="7" :xl="5">
+            <a-button type="primary" style="width: 100%" @click="handleTest">测试</a-button>
+          </a-col>
+        </a-row>
+      </template>
+    </BasicForm>
+  </BasicModal>
 </template>
 <script lang="ts" setup>
   import { ref, computed, unref } from 'vue';
@@ -55,18 +55,18 @@
     // 获取以上字段的值，并清除校验状态
     let fieldsValues = getFieldsValue(keys);
     let setFields = {};
-    keys.forEach(key => setFields[key] = { value: fieldsValues[key], errors: null });
+    keys.forEach((key) => (setFields[key] = { value: fieldsValues[key], errors: null }));
     await validateFields(keys).then((values) => {
       let loading = createMessage.loading('连接中....', 0);
-      testConnection(values).then((data) => {
-        if (data.success) {
-          createMessage.success('连接成功');
-        }
-      }).catch(error => {
-      }).finally(() => loading());
+      testConnection(values)
+        .then((data) => {
+          if (data.success) {
+            createMessage.success('连接成功');
+          }
+        })
+        .catch((error) => {})
+        .finally(() => loading());
     });
-
-
   }
 
   //表单提交事件

@@ -1,15 +1,6 @@
 <template>
   <div :class="getWrapClass">
-    <Tabs
-            type="editable-card"
-            size="small"
-            :animated="false"
-            :hideAdd="true"
-            :tabBarGutter="3"
-            :activeKey="activeKeyRef"
-            @change="handleChange"
-            @edit="handleEdit"
-    >
+    <Tabs type="editable-card" size="small" :animated="false" :hideAdd="true" :tabBarGutter="3" :activeKey="activeKeyRef" @change="handleChange" @edit="handleEdit">
       <template v-for="item in getTabsState" :key="item.query ? item.fullPath : item.path">
         <TabPane :closable="!(item && item.meta && item.meta.affix)">
           <template #tab>
@@ -103,9 +94,7 @@
         }
 
         if (isHide) {
-          const findParentRoute = router
-                  .getRoutes()
-                  .find((item) => item.path === currentActiveMenu);
+          const findParentRoute = router.getRoutes().find((item) => item.path === currentActiveMenu);
 
           findParentRoute && tabStore.addTab(findParentRoute as unknown as RouteLocationNormalized);
         } else {

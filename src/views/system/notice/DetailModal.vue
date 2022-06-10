@@ -1,11 +1,11 @@
 <template>
   <BasicModal v-bind="$attrs" @register="registerModal" title="查看详情" :showCancelBtn="false" :showOkBtn="false" :height="500">
-    <iframe :src="frameSrc" class="detail-iframe"/>
+    <iframe :src="frameSrc" class="detail-iframe" />
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import {BasicModal, useModalInner} from '/@/components/Modal';
-  import {propTypes} from '/@/utils/propTypes';
+  import { BasicModal, useModalInner } from '/@/components/Modal';
+  import { propTypes } from '/@/utils/propTypes';
   // 获取props
   defineProps({
     frameSrc: propTypes.string.def(''),

@@ -11,23 +11,23 @@
       <div class="item">
         <a-radio :value="TypeEnum.range" v-bind="beforeRadioAttrs">区间</a-radio>
         <span> 从 </span>
-        <InputNumber v-model:value="valueRange.start" v-bind="typeRangeAttrs"/>
+        <InputNumber v-model:value="valueRange.start" v-bind="typeRangeAttrs" />
         <span> 日 至 </span>
-        <InputNumber v-model:value="valueRange.end" v-bind="typeRangeAttrs"/>
+        <InputNumber v-model:value="valueRange.end" v-bind="typeRangeAttrs" />
         <span> 日 </span>
       </div>
       <div class="item">
         <a-radio :value="TypeEnum.loop" v-bind="beforeRadioAttrs">循环</a-radio>
         <span> 从 </span>
-        <InputNumber v-model:value="valueLoop.start" v-bind="typeLoopAttrs"/>
+        <InputNumber v-model:value="valueLoop.start" v-bind="typeLoopAttrs" />
         <span> 日开始，间隔 </span>
-        <InputNumber v-model:value="valueLoop.interval" v-bind="typeLoopAttrs"/>
+        <InputNumber v-model:value="valueLoop.interval" v-bind="typeLoopAttrs" />
         <span> 日 </span>
       </div>
       <div class="item">
         <a-radio :value="TypeEnum.work" v-bind="beforeRadioAttrs">工作日</a-radio>
         <span> 本月 </span>
-        <InputNumber v-model:value="valueWork" v-bind="typeWorkAttrs"/>
+        <InputNumber v-model:value="valueWork" v-bind="typeWorkAttrs" />
         <span> 日，最近的工作日 </span>
       </div>
       <div class="item">
@@ -48,43 +48,46 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, watch } from 'vue'
-import { InputNumber } from 'ant-design-vue'
-import { TypeEnum, useTabEmits, useTabProps, useTabSetup } from './useTabMixin'
+  import { computed, defineComponent, watch } from 'vue';
+  import { InputNumber } from 'ant-design-vue';
+  import { TypeEnum, useTabEmits, useTabProps, useTabSetup } from './useTabMixin';
 
-export default defineComponent({
-  name: 'DayUI',
-  components: { InputNumber },
-  props: useTabProps({
-    defaultValue: '*',
-    props: {
-      week: { type: String, default: '?' },
-    },
-  }),
-  emits: useTabEmits(),
-  setup(props, context) {
-    const disabledChoice = computed(() => {
-      return (props.week && props.week !== '?') || props.disabled
-    })
-    const setup = useTabSetup(props, context, {
+  export default defineComponent({
+    name: 'DayUI',
+    components: { InputNumber },
+    props: useTabProps({
       defaultValue: '*',
-      valueWork: 1,
-      minValue: 1,
-      maxValue: 31,
-      valueRange: { start: 1, end: 31 },
-      valueLoop: { start: 1, interval: 1 },
-      disabled: disabledChoice,
-    })
-    const typeWorkAttrs = computed(() => ({
-      disabled: setup.type.value !== TypeEnum.work || props.disabled || disabledChoice.value,
-      ...setup.inputNumberAttrs.value,
-    }))
+      props: {
+        week: { type: String, default: '?' },
+      },
+    }),
+    emits: useTabEmits(),
+    setup(props, context) {
+      const disabledChoice = computed(() => {
+        return (props.week && props.week !== '?') || props.disabled;
+      });
+      const setup = useTabSetup(props, context, {
+        defaultValue: '*',
+        valueWork: 1,
+        minValue: 1,
+        maxValue: 31,
+        valueRange: { start: 1, end: 31 },
+        valueLoop: { start: 1, interval: 1 },
+        disabled: disabledChoice,
+      });
+      const typeWorkAttrs = computed(() => ({
+        disabled: setup.type.value !== TypeEnum.work || props.disabled || disabledChoice.value,
+        ...setup.inputNumberAttrs.value,
+      }));
 
-    watch(() => props.week, () => {
-      setup.updateValue(disabledChoice.value ? '?' : setup.computeValue.value)
-    })
+      watch(
+        () => props.week,
+        () => {
+          setup.updateValue(disabledChoice.value ? '?' : setup.computeValue.value);
+        }
+      );
 
-    return { ...setup, typeWorkAttrs }
-  },
-})
+      return { ...setup, typeWorkAttrs };
+    },
+  });
 </script>

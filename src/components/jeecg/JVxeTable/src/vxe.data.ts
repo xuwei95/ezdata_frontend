@@ -1,4 +1,4 @@
-import { propTypes } from '/@/utils/propTypes'
+import { propTypes } from '/@/utils/propTypes';
 
 export const vxeProps = () => ({
   rowKey: propTypes.string.def('id'),
@@ -39,10 +39,7 @@ export const vxeProps = () => ({
   // 页面是否在加载中
   loading: propTypes.bool.def(false),
   // 表格高度
-  height: propTypes.oneOfType([
-    propTypes.number,
-    propTypes.string,
-  ]).def('auto'),
+  height: propTypes.oneOfType([propTypes.number, propTypes.string]).def('auto'),
   // 最大高度
   maxHeight: {
     type: Number,
@@ -91,6 +88,6 @@ export const vxeProps = () => ({
   addSetActive: propTypes.bool.def(true),
   // 是否开启键盘编辑
   keyboardEdit: propTypes.bool.def(false),
-})
+});
 
-export const vxeEmits = ['save', 'added', 'removed', 'inserted', 'dragged', 'selectRowChange', 'pageChange', 'valueChange']
+export const vxeEmits = ['save', 'added', 'removed', 'inserted', 'dragged', 'selectRowChange', 'pageChange', 'valueChange'];

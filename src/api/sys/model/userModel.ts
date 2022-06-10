@@ -52,6 +52,6 @@ export interface GetUserInfoModel {
 export interface GetResultModel {
   code: number;
   message: string;
-  result:object;
+  result: object;
   success: Boolean;
 }

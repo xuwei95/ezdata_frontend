@@ -7,17 +7,17 @@
       <div class="item">
         <a-radio :value="TypeEnum.range" v-bind="beforeRadioAttrs">区间</a-radio>
         <span> 从 </span>
-        <InputNumber v-model:value="valueRange.start" v-bind="typeRangeAttrs"/>
+        <InputNumber v-model:value="valueRange.start" v-bind="typeRangeAttrs" />
         <span> 时 至 </span>
-        <InputNumber v-model:value="valueRange.end" v-bind="typeRangeAttrs"/>
+        <InputNumber v-model:value="valueRange.end" v-bind="typeRangeAttrs" />
         <span> 时 </span>
       </div>
       <div class="item">
         <a-radio :value="TypeEnum.loop" v-bind="beforeRadioAttrs">循环</a-radio>
         <span> 从 </span>
-        <InputNumber v-model:value="valueLoop.start" v-bind="typeLoopAttrs"/>
+        <InputNumber v-model:value="valueLoop.start" v-bind="typeLoopAttrs" />
         <span> 时开始，间隔 </span>
-        <InputNumber v-model:value="valueLoop.interval" v-bind="typeLoopAttrs"/>
+        <InputNumber v-model:value="valueLoop.interval" v-bind="typeLoopAttrs" />
         <span> 时 </span>
       </div>
       <div class="item">
@@ -35,25 +35,25 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { InputNumber } from 'ant-design-vue'
-import { useTabProps, useTabEmits, useTabSetup } from './useTabMixin'
+  import { defineComponent } from 'vue';
+  import { InputNumber } from 'ant-design-vue';
+  import { useTabProps, useTabEmits, useTabSetup } from './useTabMixin';
 
-export default defineComponent({
-  name: 'HourUI',
-  components: { InputNumber },
-  props: useTabProps({
-    defaultValue: '*',
-  }),
-  emits: useTabEmits(),
-  setup(props, context) {
-    return useTabSetup(props, context, {
+  export default defineComponent({
+    name: 'HourUI',
+    components: { InputNumber },
+    props: useTabProps({
       defaultValue: '*',
-      minValue: 0,
-      maxValue: 23,
-      valueRange: { start: 0, end: 23 },
-      valueLoop: { start: 0, interval: 1 },
-    })
-  },
-})
+    }),
+    emits: useTabEmits(),
+    setup(props, context) {
+      return useTabSetup(props, context, {
+        defaultValue: '*',
+        minValue: 0,
+        maxValue: 23,
+        valueRange: { start: 0, end: 23 },
+        valueLoop: { start: 0, interval: 1 },
+      });
+    },
+  });
 </script>

@@ -94,7 +94,6 @@ const feat: AppRouteModule = {
       },
     },
 
-
     {
       path: 'copy',
       name: 'CopyDemo',
@@ -121,7 +120,6 @@ const feat: AppRouteModule = {
         title: t('routes.demo.feat.fullScreen'),
       },
     },
-
 
     {
       path: '/error-log',

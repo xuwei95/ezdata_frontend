@@ -1,14 +1,14 @@
 <!--部门选择组件-->
 <template>
-    <div>
-        <JSelectBiz @handleOpen="handleOpen" :loading="loadingEcho" v-bind="attrs"/>
-        <DeptSelectModal @register="regModal" @getSelectResult="setValue" v-bind="getBindValue" />
-    </div>
+  <div>
+    <JSelectBiz @handleOpen="handleOpen" :loading="loadingEcho" v-bind="attrs" />
+    <DeptSelectModal @register="regModal" @getSelectResult="setValue" v-bind="getBindValue" />
+  </div>
 </template>
 <script lang="ts">
   import DeptSelectModal from './modal/DeptSelectModal.vue';
   import JSelectBiz from './base/JSelectBiz.vue';
-  import { defineComponent, ref, reactive, watchEffect, watch, provide, unref ,toRaw} from 'vue';
+  import { defineComponent, ref, reactive, watchEffect, watch, provide, unref, toRaw } from 'vue';
   import { useModal } from '/@/components/Modal';
   import { propTypes } from '/@/utils/propTypes';
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
@@ -27,7 +27,7 @@
       // 是否允许多选，默认 true
       multiple: propTypes.bool.def(true),
     },
-    emits: ['options-change', 'change','select','update:value'],
+    emits: ['options-change', 'change', 'select', 'update:value'],
     setup(props, { emit, refs }) {
       const emitData = ref<object>();
       //注册model
@@ -38,10 +38,10 @@
       const selectOptions = ref<SelectTypes['options']>([]);
       //下拉框选中值
       let selectValues = reactive<object>({
-        value: []
+        value: [],
       });
       // 是否正在加载回显数据
-      const loadingEcho = ref<boolean>(false)
+      const loadingEcho = ref<boolean>(false);
       //下发 selectOptions,xxxBiz组件接收
       provide('selectOptions', selectOptions);
       //下发 selectValues,xxxBiz组件接收
@@ -58,9 +58,9 @@
       watchEffect(() => {
         props.value && initValue();
         // update-begin-author:taoyan date:20220401 for:调用表单的 resetFields不会清空当前部门信息，界面显示上一次的数据
-        if(props.value==='' || props.value===undefined){
-          state.value = []
-          selectValues.value = []
+        if (props.value === '' || props.value === undefined) {
+          state.value = [];
+          selectValues.value = [];
         }
         // update-end-author:taoyan date:20220401 for:调用表单的 resetFields不会清空当前部门信息，界面显示上一次的数据
       });
@@ -78,7 +78,7 @@
        */
       watch(selectOptions, () => {
         if (selectOptions) {
-          emit('select',toRaw(unref(selectOptions)),toRaw(unref(selectValues)))
+          emit('select', toRaw(unref(selectOptions)), toRaw(unref(selectValues)));
         }
       });
 
@@ -101,7 +101,6 @@
           state.value = value.split(',');
           selectValues.value = value.split(',');
         }
-     
       }
 
       /**
@@ -112,7 +111,7 @@
         //emitData.value = values.join(",");
         state.value = values;
         selectValues.value = values;
-        emit('update:value', values.join(','))
+        emit('update:value', values.join(','));
       }
       const getBindValue = Object.assign({}, unref(props), unref(attrs));
       return {
@@ -131,23 +130,23 @@
   });
 </script>
 <style lang="less" scoped>
-    .j-select-row {
-        @width: 82px;
+  .j-select-row {
+    @width: 82px;
 
-        .left {
-            width: calc(100% - @width - 8px);
-        }
-
-        .right {
-            width: @width;
-        }
-
-        .full {
-            width: 100%;
-        }
-
-        ::v-deep(.ant-select-search__field) {
-            display: none !important;
-        }
+    .left {
+      width: calc(100% - @width - 8px);
     }
+
+    .right {
+      width: @width;
+    }
+
+    .full {
+      width: 100%;
+    }
+
+    ::v-deep(.ant-select-search__field) {
+      display: none !important;
+    }
+  }
 </style>

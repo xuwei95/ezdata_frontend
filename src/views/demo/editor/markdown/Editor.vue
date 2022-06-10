@@ -1,12 +1,7 @@
 <template>
   <PageWrapper title="MarkDown组件嵌入Form示例">
     <CollapseContainer title="MarkDown表单">
-      <BasicForm
-        :labelWidth="100"
-        :schemas="schemas"
-        :actionColOptions="{ span: 24 }"
-        @submit="handleSubmit"
-      />
+      <BasicForm :labelWidth="100" :schemas="schemas" :actionColOptions="{ span: 24 }" @submit="handleSubmit" />
     </CollapseContainer>
   </PageWrapper>
 </template>

@@ -1,25 +1,20 @@
 <template>
   <BasicModal
-          width="800px"
-          :title="t('component.upload.upload')"
-          :okText="t('component.upload.save')"
-          v-bind="$attrs"
-          @register="register"
-          @ok="handleOk"
-          :closeFunc="handleCloseFunc"
-          :maskClosable="false"
-          :keyboard="false"
-          wrapClassName="upload-modal"
-          :okButtonProps="getOkButtonProps"
-          :cancelButtonProps="{ disabled: isUploadingRef }"
+    width="800px"
+    :title="t('component.upload.upload')"
+    :okText="t('component.upload.save')"
+    v-bind="$attrs"
+    @register="register"
+    @ok="handleOk"
+    :closeFunc="handleCloseFunc"
+    :maskClosable="false"
+    :keyboard="false"
+    wrapClassName="upload-modal"
+    :okButtonProps="getOkButtonProps"
+    :cancelButtonProps="{ disabled: isUploadingRef }"
   >
     <template #centerFooter>
-      <a-button
-              @click="handleStartUpload"
-              color="success"
-              :disabled="!getIsSelectFile"
-              :loading="isUploadingRef"
-      >
+      <a-button @click="handleStartUpload" color="success" :disabled="!getIsSelectFile" :loading="isUploadingRef">
         {{ getUploadBtnText }}
       </a-button>
     </template>
@@ -27,12 +22,7 @@
     <div class="upload-modal-toolbar">
       <Alert :message="getHelpText" type="info" banner class="upload-modal-toolbar__text" />
 
-      <Upload
-              :accept="getStringAccept"
-              :multiple="multiple"
-              :before-upload="beforeUpload"
-              class="upload-modal-toolbar__btn"
-      >
+      <Upload :accept="getStringAccept" :multiple="multiple" :before-upload="beforeUpload" class="upload-modal-toolbar__btn">
         <a-button type="primary">
           {{ t('component.upload.choose') }}
         </a-button>
@@ -94,30 +84,19 @@
       const { createMessage } = useMessage();
 
       const getIsSelectFile = computed(() => {
-        return (
-                fileListRef.value.length > 0 &&
-                !fileListRef.value.every((item) => item.status === UploadResultStatus.SUCCESS)
-        );
+        return fileListRef.value.length > 0 && !fileListRef.value.every((item) => item.status === UploadResultStatus.SUCCESS);
       });
 
       const getOkButtonProps = computed(() => {
-        const someSuccess = fileListRef.value.some(
-                (item) => item.status === UploadResultStatus.SUCCESS
-        );
+        const someSuccess = fileListRef.value.some((item) => item.status === UploadResultStatus.SUCCESS);
         return {
           disabled: isUploadingRef.value || fileListRef.value.length === 0 || !someSuccess,
         };
       });
 
       const getUploadBtnText = computed(() => {
-        const someError = fileListRef.value.some(
-                (item) => item.status === UploadResultStatus.ERROR
-        );
-        return isUploadingRef.value
-                ? t('component.upload.uploading')
-                : someError
-                        ? t('component.upload.reUploadFailed')
-                        : t('component.upload.startUpload');
+        const someError = fileListRef.value.some((item) => item.status === UploadResultStatus.ERROR);
+        return isUploadingRef.value ? t('component.upload.uploading') : someError ? t('component.upload.reUploadFailed') : t('component.upload.startUpload');
       });
 
       // 上传前校验
@@ -186,18 +165,18 @@
         try {
           item.status = UploadResultStatus.UPLOADING;
           const { data } = await props.api?.(
-                  {
-                    data: {
-                      ...(props.uploadParams || {}),
-                    },
-                    file: item.file,
-                    name: props.name,
-                    filename: props.filename,
-                  },
-                  function onUploadProgress(progressEvent: ProgressEvent) {
-                    const complete = ((progressEvent.loaded / progressEvent.total) * 100) | 0;
-                    item.percent = complete;
-                  }
+            {
+              data: {
+                ...(props.uploadParams || {}),
+              },
+              file: item.file,
+              name: props.name,
+              filename: props.filename,
+            },
+            function onUploadProgress(progressEvent: ProgressEvent) {
+              const complete = ((progressEvent.loaded / progressEvent.total) * 100) | 0;
+              item.percent = complete;
+            }
           );
           item.status = UploadResultStatus.SUCCESS;
           item.responseData = data;
@@ -224,12 +203,11 @@
         try {
           isUploadingRef.value = true;
           // 只上传不是成功状态的
-          const uploadFileList =
-                  fileListRef.value.filter((item) => item.status !== UploadResultStatus.SUCCESS) || [];
+          const uploadFileList = fileListRef.value.filter((item) => item.status !== UploadResultStatus.SUCCESS) || [];
           const data = await Promise.all(
-                  uploadFileList.map((item) => {
-                    return uploadApiByItem(item);
-                  })
+            uploadFileList.map((item) => {
+              return uploadApiByItem(item);
+            })
           );
           isUploadingRef.value = false;
           // 生产环境:抛出错误

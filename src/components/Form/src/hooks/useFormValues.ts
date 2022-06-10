@@ -12,12 +12,7 @@ interface UseFormValuesContext {
   getProps: ComputedRef<FormProps>;
   formModel: Recordable;
 }
-export function useFormValues({
-  defaultValueRef,
-  getSchema,
-  formModel,
-  getProps,
-}: UseFormValuesContext) {
+export function useFormValues({ defaultValueRef, getSchema, formModel, getProps }: UseFormValuesContext) {
   // Processing form values
   function handleFormValues(values: Recordable) {
     if (!isObject(values)) {
@@ -43,9 +38,8 @@ export function useFormValues({
       }
       set(res, key, value);
     }
-    return handleRangeValue(getProps,res);
+    return handleRangeValue(getProps, res);
   }
-
 
   function initDefault() {
     const schemas = unref(getSchema);

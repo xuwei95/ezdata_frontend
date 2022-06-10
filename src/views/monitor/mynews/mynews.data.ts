@@ -13,7 +13,14 @@ export const columns: BasicColumn[] = [
     dataIndex: 'msgCategory',
     width: 80,
     customRender: ({ text }) => {
-      return render.renderDictNative(text, [{ label: '通知公告', value: '1',color:'blue' }, { label: '系统消息', value: '2' }],true);
+      return render.renderDictNative(
+        text,
+        [
+          { label: '通知公告', value: '1', color: 'blue' },
+          { label: '系统消息', value: '2' },
+        ],
+        true
+      );
     },
   },
   {
@@ -31,8 +38,8 @@ export const columns: BasicColumn[] = [
     dataIndex: 'priority',
     width: 80,
     customRender: ({ text }) => {
-      const color = text=='L'?'blue':text=='M'?'yellow':'red';
-      return  render.renderTag(render.renderDict(text, 'priority'),color)
+      const color = text == 'L' ? 'blue' : text == 'M' ? 'yellow' : 'red';
+      return render.renderTag(render.renderDict(text, 'priority'), color);
     },
   },
   {
@@ -40,7 +47,14 @@ export const columns: BasicColumn[] = [
     dataIndex: 'readFlag',
     width: 80,
     customRender: ({ text }) => {
-      return render.renderDictNative(text, [{ label: '未读', value: '0',color:'red' }, { label: '已读', value: '1' }],true);
+      return render.renderDictNative(
+        text,
+        [
+          { label: '未读', value: '0', color: 'red' },
+          { label: '已读', value: '1' },
+        ],
+        true
+      );
     },
   },
 ];
@@ -58,5 +72,4 @@ export const searchFormSchema: FormSchema[] = [
     component: 'Input',
     colProps: { span: 8 },
   },
-
 ];

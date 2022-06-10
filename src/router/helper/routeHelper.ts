@@ -6,7 +6,7 @@ import { cloneDeep, omit } from 'lodash-es';
 import { warn } from '/@/utils/log';
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { getToken } from '/@/utils/auth';
-import {URL_HASH_TAB} from '/@/utils'
+import { URL_HASH_TAB } from '/@/utils';
 import { packageViews } from '/@/utils/monorepo/dynamicRouter';
 
 export type LayoutMapKey = 'LAYOUT';
@@ -34,36 +34,36 @@ function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
     // update-begin--author:sunjianlei---date:20210918---for:适配旧版路由选项 --------
     // @ts-ignore 适配隐藏路由
     if (item?.hidden) {
-      item.meta.hideMenu = true
+      item.meta.hideMenu = true;
       //是否隐藏面包屑
-      item.meta.hideBreadcrumb = true
+      item.meta.hideBreadcrumb = true;
     }
     // @ts-ignore 添加忽略路由配置
-    if (item?.route==0) {
-      item.meta.ignoreRoute = true
+    if (item?.route == 0) {
+      item.meta.ignoreRoute = true;
     }
     // @ts-ignore 添加是否缓存路由配置
-    item.meta.ignoreKeepAlive = !item?.meta.keepAlive
-    let token=getToken();
+    item.meta.ignoreKeepAlive = !item?.meta.keepAlive;
+    let token = getToken();
     // URL支持{{ window.xxx }}占位符变量
-    item.component = (item.component|| '').replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2)).replace('${token}',token);
+    item.component = (item.component || '').replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2)).replace('${token}', token);
 
     // 适配 iframe
     if (/^\/?http(s)?/.test(item.component as string)) {
-      item.component = item.component.substring(1, item.component.length)
+      item.component = item.component.substring(1, item.component.length);
     }
     if (/^http(s)?/.test(item.component as string)) {
       if (item.meta?.internalOrExternal) {
         // @ts-ignore 外部打开
-        item.path = item.component
+        item.path = item.component;
         // update-begin--author:sunjianlei---date:20220408---for: 【VUEN-656】配置外部网址打不开，原因是带了#号，需要替换一下
-        item.path = item.path.replace('#', URL_HASH_TAB)
+        item.path = item.path.replace('#', URL_HASH_TAB);
         // update-end--author:sunjianlei---date:20220408---for: 【VUEN-656】配置外部网址打不开，原因是带了#号，需要替换一下
       } else {
         // @ts-ignore 内部打开
-        item.meta.frameSrc = item.component
+        item.meta.frameSrc = item.component;
       }
-      delete item.component
+      delete item.component;
     }
     // update-end--author:sunjianlei---date:20210918---for:适配旧版路由选项 --------
     if (!item.component && item.meta?.frameSrc) {
@@ -76,12 +76,11 @@ function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
       if (layoutFound) {
         item.component = layoutFound;
       } else {
-
         // update-end--author:zyf---date:20220307--for:VUEN-219兼容后台返回动态首页,目的适配跟v2版本配置一致 --------
-        if(component.indexOf('dashboard/')>-1){
+        if (component.indexOf('dashboard/') > -1) {
           //当数据标sys_permission中component没有拼接index时前端需要拼接
-          if(component.indexOf('/index')<0) {
-            component = component + '/index'
+          if (component.indexOf('/index') < 0) {
+            component = component + '/index';
           }
         }
         // update-end--author:zyf---date:20220307---for:VUEN-219兼容后台返回动态首页,目的适配跟v2版本配置一致 --------
@@ -94,10 +93,7 @@ function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
   });
 }
 
-function dynamicImport(
-  dynamicViewsModules: Record<string, () => Promise<Recordable>>,
-  component: string
-) {
+function dynamicImport(dynamicViewsModules: Record<string, () => Promise<Recordable>>, component: string) {
   const keys = Object.keys(dynamicViewsModules);
   const matchKeys = keys.filter((key) => {
     const k = key.replace('../../views', '');
@@ -110,11 +106,8 @@ function dynamicImport(
   if (matchKeys?.length === 1) {
     const matchKey = matchKeys[0];
     return dynamicViewsModules[matchKey];
-  }
-  else if (matchKeys?.length > 1) {
-    warn(
-      'Please do not create `.vue` and `.TSX` files with the same file name in the same hierarchical directory under the views folder. This will cause dynamic introduction failure'
-    );
+  } else if (matchKeys?.length > 1) {
+    warn('Please do not create `.vue` and `.TSX` files with the same file name in the same hierarchical directory under the views folder. This will cause dynamic introduction failure');
     return;
   }
 }
@@ -136,8 +129,7 @@ export function transformObjToRoute<T = AppRouteModule>(routeList: AppRouteModul
         meta.affix = false;
         route.meta = meta;
       }
-    }
-    else {
+    } else {
       warn('请正确配置路由：' + route?.name + '的component属性');
     }
     route.children && asyncImportRoute(route.children);
@@ -176,11 +168,7 @@ function promoteRouteLevel(routeModule: AppRouteModule) {
 }
 
 // Add all sub-routes to the secondary route
-function addToChildren(
-  routes: RouteRecordNormalized[],
-  children: AppRouteRecordRaw[],
-  routeModule: AppRouteModule
-) {
+function addToChildren(routes: RouteRecordNormalized[], children: AppRouteRecordRaw[], routeModule: AppRouteModule) {
   for (let index = 0; index < children.length; index++) {
     const child = children[index];
     const route = routes.find((item) => item.name === child.name);
@@ -220,7 +208,7 @@ function isMultipleRoute(routeModule: AppRouteModule) {
  * @updateBy:lsq
  * @updateDate:2021-09-08
  */
-export function addSlashToRouteComponent(routeList: AppRouteRecordRaw[]){
+export function addSlashToRouteComponent(routeList: AppRouteRecordRaw[]) {
   routeList.forEach((route) => {
     let component = route.component as string;
     if (component) {

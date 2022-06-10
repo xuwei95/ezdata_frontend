@@ -5,30 +5,30 @@
         <a-button type="primary" @click="handleCreate"> 新增</a-button>
       </template>
       <template #action="{ record }">
-        <TableAction :actions="getTableAction(record)"/>
+        <TableAction :actions="getTableAction(record)" />
       </template>
     </BasicTable>
   </BasicDrawer>
-  <DataRuleModal @register="registerModal" @success="reload" :permissionId="permissionId"/>
+  <DataRuleModal @register="registerModal" @success="reload" :permissionId="permissionId" />
 </template>
 <script lang="ts" setup>
-  import {ref,unref} from 'vue';
-  import {BasicDrawer, useDrawerInner} from '/@/components/Drawer';
-  import {BasicTable, useTable, TableAction} from '/@/components/Table';
-  import {useModal} from '/@/components/Modal';
+  import { ref, unref } from 'vue';
+  import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
+  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { useModal } from '/@/components/Modal';
   import DataRuleModal from './DataRuleModal.vue';
-  import {dataRuleColumns, dataRuleSearchFormSchema} from './menu.data';
-  import {dataRuleList,deleteRule} from './menu.api';
+  import { dataRuleColumns, dataRuleSearchFormSchema } from './menu.data';
+  import { dataRuleList, deleteRule } from './menu.api';
   import { ColEx } from '/@/components/Form/src/types';
   import { useAdapt } from '/@/hooks/system/useAutoAdapt.ts';
   const permissionId = ref('');
-  const {width}= useAdapt({def:'650px',xl:'650px',lg:'650px'});
+  const { width } = useAdapt({ def: '650px', xl: '650px', lg: '650px' });
   //权限规则model
-  const [registerModal, {openModal}] = useModal();
+  const [registerModal, { openModal }] = useModal();
   const [registerDrawer] = useDrawerInner(async (data) => {
-    permissionId.value = data.id
-    setProps({searchInfo:{permissionId:unref(permissionId)}});
-    reload()
+    permissionId.value = data.id;
+    setProps({ searchInfo: { permissionId: unref(permissionId) } });
+    reload();
   });
   // 自适应列配置
   const adaptiveColProps: Partial<ColEx> = {
@@ -38,16 +38,16 @@
     lg: 12, // ≥992px
     xl: 8, // ≥1200px
     xxl: 8, // ≥1600px
-  }
-  const [registerTable, {reload,setProps}] = useTable({
+  };
+  const [registerTable, { reload, setProps }] = useTable({
     api: dataRuleList,
     columns: dataRuleColumns,
-    size:'small',
+    size: 'small',
     formConfig: {
       baseColProps: adaptiveColProps,
-      labelAlign:"right",
+      labelAlign: 'right',
       labelCol: {
-        offset:1,
+        offset: 1,
         xs: 24,
         sm: 24,
         md: 24,
@@ -57,7 +57,7 @@
       },
       wrapperCol: {},
       schemas: dataRuleSearchFormSchema,
-      autoSubmitOnEnter:true,
+      autoSubmitOnEnter: true,
     },
     striped: true,
     useSearchForm: true,
@@ -69,7 +69,7 @@
       width: 100,
       title: '操作',
       dataIndex: 'action',
-      slots: {customRender: 'action'},
+      slots: { customRender: 'action' },
       fixed: undefined,
     },
   });
@@ -97,7 +97,7 @@
    * 删除
    */
   async function handleDelete(record) {
-    await deleteRule({id: record.id}, reload);
+    await deleteRule({ id: record.id }, reload);
   }
 
   /**
@@ -115,7 +115,7 @@
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
         },
-      }
+      },
     ];
   }
 </script>

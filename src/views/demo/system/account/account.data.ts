@@ -64,10 +64,10 @@ export const accountFormSchema: FormSchema[] = [
         validator(_, value) {
           return new Promise((resolve, reject) => {
             isAccountExist(value)
-                .then(() => resolve())
-                .catch((err) => {
-                  reject(err.message || '验证失败');
-                });
+              .then(() => resolve())
+              .catch((err) => {
+                reject(err.message || '验证失败');
+              });
           });
         },
       },

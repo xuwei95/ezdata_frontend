@@ -1,20 +1,11 @@
 <template>
   <Modal v-bind="getBindValue" @cancel="handleCancel">
     <template #closeIcon v-if="!$slots.closeIcon">
-      <ModalClose
-              :canFullscreen="getProps.canFullscreen"
-              :fullScreen="fullScreenRef"
-              @cancel="handleCancel"
-              @fullscreen="handleFullScreen"
-      />
+      <ModalClose :canFullscreen="getProps.canFullscreen" :fullScreen="fullScreenRef" @cancel="handleCancel" @fullscreen="handleFullScreen" />
     </template>
 
     <template #title v-if="!$slots.title">
-      <ModalHeader
-              :helpMessage="getProps.helpMessage"
-              :title="getMergeProps.title"
-              @dblclick="handleTitleDbClick"
-      />
+      <ModalHeader :helpMessage="getProps.helpMessage" :title="getMergeProps.title" @dblclick="handleTitleDbClick" />
     </template>
 
     <template #footer v-if="!$slots.footer">
@@ -26,19 +17,19 @@
     </template>
 
     <ModalWrapper
-            :useWrapper="getProps.useWrapper"
-            :footerOffset="wrapperFooterOffset"
-            :fullScreen="fullScreenRef"
-            ref="modalWrapperRef"
-            :loading="getProps.loading"
-            :loading-tip="getProps.loadingTip"
-            :minHeight="getProps.minHeight"
-            :height="getWrapperHeight"
-            :visible="visibleRef"
-            :modalFooterHeight="footer !== undefined && !footer ? 0 : undefined"
-            v-bind="omit(getProps.wrapperProps, 'visible', 'height', 'modalFooterHeight')"
-            @ext-height="handleExtHeight"
-            @height-change="handleHeightChange"
+      :useWrapper="getProps.useWrapper"
+      :footerOffset="wrapperFooterOffset"
+      :fullScreen="fullScreenRef"
+      ref="modalWrapperRef"
+      :loading="getProps.loading"
+      :loading-tip="getProps.loadingTip"
+      :minHeight="getProps.minHeight"
+      :height="getWrapperHeight"
+      :visible="visibleRef"
+      :modalFooterHeight="footer !== undefined && !footer ? 0 : undefined"
+      v-bind="omit(getProps.wrapperProps, 'visible', 'height', 'modalFooterHeight')"
+      @ext-height="handleExtHeight"
+      @height-change="handleHeightChange"
     >
       <slot></slot>
     </ModalWrapper>
@@ -51,17 +42,7 @@
 <script lang="ts">
   import type { ModalProps, ModalMethods } from './typing';
 
-  import {
-    defineComponent,
-    computed,
-    ref,
-    watch,
-    unref,
-    watchEffect,
-    toRef,
-    getCurrentInstance,
-    nextTick,
-  } from 'vue';
+  import { defineComponent, computed, ref, watch, unref, watchEffect, toRef, getCurrentInstance, nextTick } from 'vue';
   import Modal from './components/Modal';
   import ModalWrapper from './components/ModalWrapper.vue';
   import ModalClose from './components/ModalClose.vue';
@@ -156,20 +137,20 @@
       });
 
       watch(
-              () => unref(visibleRef),
-              (v) => {
-                emit('visible-change', v);
-                emit('update:visible', v);
-                instance && modalMethods.emitVisible?.(v, instance.uid);
-                nextTick(() => {
-                  if (props.scrollTop && v && unref(modalWrapperRef)) {
-                    (unref(modalWrapperRef) as any).scrollTop();
-                  }
-                });
-              },
-              {
-                immediate: false,
-              }
+        () => unref(visibleRef),
+        (v) => {
+          emit('visible-change', v);
+          emit('update:visible', v);
+          instance && modalMethods.emitVisible?.(v, instance.uid);
+          nextTick(() => {
+            if (props.scrollTop && v && unref(modalWrapperRef)) {
+              (unref(modalWrapperRef) as any).scrollTop();
+            }
+          });
+        },
+        {
+          immediate: false,
+        }
       );
 
       // 取消事件

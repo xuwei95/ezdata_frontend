@@ -74,8 +74,7 @@ export const tabListData: TabItem[] = [
       {
         id: '000000005',
         avatar: 'https://gw.alipayobjects.com/zos/rmsportal/GvqBnKhFgObvnSGkDsje.png',
-        title:
-          '标题可以设置自动显示省略号，本例中标题行数已设为1行，如果内容超过1行将自动截断并支持tooltip显示完整标题。',
+        title: '标题可以设置自动显示省略号，本例中标题行数已设为1行，如果内容超过1行将自动截断并支持tooltip显示完整标题。',
         description: '',
         datetime: '2017-08-07',
         type: '1',
@@ -149,8 +148,7 @@ export const tabListData: TabItem[] = [
         id: '000000008',
         avatar: 'https://gw.alipayobjects.com/zos/rmsportal/fcHMVNCjPOsbUGdEduuv.jpeg',
         title: '标题',
-        description:
-          '请将鼠标移动到此处，以便测试超长的消息在此处将如何处理。本例中设置的描述最大行数为2，超过2行的描述内容将被省略并且可以通过tooltip查看完整内容',
+        description: '请将鼠标移动到此处，以便测试超长的消息在此处将如何处理。本例中设置的描述最大行数为2，超过2行的描述内容将被省略并且可以通过tooltip查看完整内容',
         datetime: '2017-08-07',
         type: '2',
         clickClose: true,
@@ -204,4 +202,4 @@ export const tabListData: TabItem[] = [
   //     },
   //   ],
   // },
-]
+];

@@ -18,11 +18,11 @@
       </template>
     </List>
   </CollapseContainer>
-  <UpdatePassword ref="updatePasswordRef"/>
+  <UpdatePassword ref="updatePasswordRef" />
 </template>
 <script lang="ts">
   import { List } from 'ant-design-vue';
-  import { defineComponent,ref } from 'vue';
+  import { defineComponent, ref } from 'vue';
   import { CollapseContainer } from '/@/components/Container/index';
 
   import { secureSettingList } from './data';
@@ -30,23 +30,26 @@
   import { useUserStore } from '/@/store/modules/user';
   import { useMessage } from '/@/hooks/web/useMessage';
   export default defineComponent({
-    components: { 
-        CollapseContainer, List, ListItem: List.Item, ListItemMeta: List.Item.Meta ,
-        UpdatePassword: createAsyncComponent(() => import('/@/layouts/default/header/components/user-dropdown/UpdatePassword.vue'))
+    components: {
+      CollapseContainer,
+      List,
+      ListItem: List.Item,
+      ListItemMeta: List.Item.Meta,
+      UpdatePassword: createAsyncComponent(() => import('/@/layouts/default/header/components/user-dropdown/UpdatePassword.vue')),
     },
     setup() {
       const { createMessage } = useMessage();
-      const userStore = useUserStore();  
-      const updatePasswordRef = ref();  
-      function extraClick(key){
-          if(key=='1') {
-              updatePasswordRef.value.show(userStore.getUserInfo.username) 
-          }else{
-              createMessage.warning("暂不支持")
-          }
+      const userStore = useUserStore();
+      const updatePasswordRef = ref();
+      function extraClick(key) {
+        if (key == '1') {
+          updatePasswordRef.value.show(userStore.getUserInfo.username);
+        } else {
+          createMessage.warning('暂不支持');
+        }
       }
       return {
-        updatePasswordRef,  
+        updatePasswordRef,
         extraClick,
         list: secureSettingList,
       };

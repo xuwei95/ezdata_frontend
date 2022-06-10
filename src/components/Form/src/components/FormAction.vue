@@ -2,10 +2,10 @@
   <a-col v-bind="actionColOpt" v-if="showActionButtonGroup">
     <div style="width: 100%" :style="{ textAlign: actionColOpt.style.textAlign }">
       <FormItem>
-       <!-- update-begin-author:zyf   Date:20211213  for：调换按钮前后位置-->
-        <slot name="submitBefore"></slot>  
+        <!-- update-begin-author:zyf   Date:20211213  for：调换按钮前后位置-->
+        <slot name="submitBefore"></slot>
         <Button type="primary" class="mr-2" v-bind="getSubmitBtnOptions" @click="submitAction" v-if="showSubmitButton">
-            <Icon icon="ant-design:search-outlined"></Icon>
+          <Icon icon="ant-design:search-outlined"></Icon>
           {{ getSubmitBtnOptions.text }}
         </Button>
 
@@ -14,7 +14,7 @@
           <Icon icon="ic:baseline-restart-alt"></Icon>
           {{ getResetBtnOptions.text }}
         </Button>
-       <!-- update-end-author:zyf    Date:20211213  for：调换按钮前后位置-->
+        <!-- update-end-author:zyf    Date:20211213  for：调换按钮前后位置-->
 
         <slot name="advanceBefore"></slot>
         <Button type="link" size="small" @click="toggleAdvanced" v-if="showAdvancedButton && !hideAdvanceBtn">
@@ -75,9 +75,7 @@
       const actionColOpt = computed(() => {
         const { showAdvancedButton, actionSpan: span, actionColOptions } = props;
         const actionSpan = 24 - span;
-        const advancedSpanObj = showAdvancedButton
-          ? { span: actionSpan < 6 ? 24 : actionSpan }
-          : {};
+        const advancedSpanObj = showAdvancedButton ? { span: actionSpan < 6 ? 24 : actionSpan } : {};
         const actionColOpt: Partial<ColEx> = {
           style: { textAlign: 'right' },
           span: showAdvancedButton ? 6 : 4,

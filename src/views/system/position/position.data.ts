@@ -1,32 +1,32 @@
 import { BasicColumn, FormSchema } from '/@/components/Table';
-import {rules} from '/@/utils/helper/validator'
+import { rules } from '/@/utils/helper/validator';
 
 export const columns: BasicColumn[] = [
-    {
-        title: '职务编码',
-        dataIndex: 'code',
-        width: 200,
-        align: 'left',
-    },
-    {
-        title: '职务名称',
-        dataIndex: 'name',
-        width: 200,
-    },
-    {
-        title: '职务等级',
-        dataIndex: 'postRank_dictText',
-        width: 100
-    }
+  {
+    title: '职务编码',
+    dataIndex: 'code',
+    width: 200,
+    align: 'left',
+  },
+  {
+    title: '职务名称',
+    dataIndex: 'name',
+    width: 200,
+  },
+  {
+    title: '职务等级',
+    dataIndex: 'postRank_dictText',
+    width: 100,
+  },
 ];
 
 export const searchFormSchema: FormSchema[] = [
-    {
-        field: 'name',
-        label: '职务名称',
-        component: 'Input',
-        colProps: {span: 8},
-    }
+  {
+    field: 'name',
+    label: '职务名称',
+    component: 'Input',
+    colProps: { span: 8 },
+  },
 ];
 
 export const formSchema: FormSchema[] = [
@@ -59,11 +59,11 @@ export const formSchema: FormSchema[] = [
     label: '职务编码',
     component: 'Input',
     required: true,
-    dynamicDisabled: ({values}) => {
+    dynamicDisabled: ({ values }) => {
       return !!values.id;
     },
-    dynamicRules: ({model, schema}) => {
-      return rules.duplicateCheckRule('sys_position', 'code', model, schema, true)
+    dynamicRules: ({ model, schema }) => {
+      return rules.duplicateCheckRule('sys_position', 'code', model, schema, true);
     },
-  }
+  },
 ];

@@ -8,11 +8,11 @@ import { VAxios } from './Axios';
 import { checkStatus } from './checkStatus';
 import { useGlobSetting } from '/@/hooks/setting';
 import { useMessage } from '/@/hooks/web/useMessage';
-import { RequestEnum, ResultEnum, ContentTypeEnum,ConfigEnum } from '/@/enums/httpEnum';
+import { RequestEnum, ResultEnum, ContentTypeEnum, ConfigEnum } from '/@/enums/httpEnum';
 import { isString } from '/@/utils/is';
-import { getToken,getTenantId } from '/@/utils/auth';
+import { getToken, getTenantId } from '/@/utils/auth';
 import { setObjToUrlParams, deepMerge } from '/@/utils';
-import signMd5Utils from '/@/utils/encryption/signMd5Utils'
+import signMd5Utils from '/@/utils/encryption/signMd5Utils';
 import { useErrorLogStoreWithOut } from '/@/store/modules/errorLog';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { joinTimestamp, formatRequestDate } from './helper';
@@ -48,13 +48,13 @@ const transform: AxiosTransform = {
       throw new Error(t('sys.api.apiRequestFailed'));
     }
     //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    const { code, result, message,success } = data;
+    const { code, result, message, success } = data;
     // 这里逻辑可以根据项目进行修改
-    const hasSuccess = data && Reflect.has(data, 'code') && (code === ResultEnum.SUCCESS||code === 200);
+    const hasSuccess = data && Reflect.has(data, 'code') && (code === ResultEnum.SUCCESS || code === 200);
     if (hasSuccess) {
-      if(success&&message&&options.successMessageMode==='success'){
-         //信息成功提示
-         createMessage.success(message);
+      if (success && message && options.successMessageMode === 'success') {
+        //信息成功提示
+        createMessage.success(message);
       }
       return result;
     }
@@ -88,7 +88,7 @@ const transform: AxiosTransform = {
 
   // 请求之前处理config
   beforeRequestHook: (config, options) => {
-    const { apiUrl, joinPrefix, joinParamsToUrl, formatDate, joinTime = true,urlPrefix } = options;
+    const { apiUrl, joinPrefix, joinParamsToUrl, formatDate, joinTime = true, urlPrefix } = options;
 
     if (joinPrefix) {
       config.url = `${urlPrefix}${config.url}`;
@@ -121,10 +121,7 @@ const transform: AxiosTransform = {
           config.params = undefined;
         }
         if (joinParamsToUrl) {
-          config.url = setObjToUrlParams(
-            config.url as string,
-            Object.assign({}, config.params, config.data)
-          );
+          config.url = setObjToUrlParams(config.url as string, Object.assign({}, config.params, config.data));
         }
       } else {
         // 兼容restful风格
@@ -138,32 +135,31 @@ const transform: AxiosTransform = {
   /**
    * @description: 请求拦截器处理
    */
-  requestInterceptors: (config:Recordable, options) => {
+  requestInterceptors: (config: Recordable, options) => {
     // 请求之前处理config
     const token = getToken();
     let tenantid = getTenantId();
     if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
       // jwt token
       config.headers.Authorization = options.authenticationScheme ? `${options.authenticationScheme} ${token}` : token;
-      config.headers[ConfigEnum.TOKEN] = token
+      config.headers[ConfigEnum.TOKEN] = token;
       //--update-begin--author:liusq---date:20210831---for:将签名和时间戳，添加在请求接口 Header
-      
+
       // update-begin--author:taoyan---date:20220421--for: VUEN-410【签名改造】 X-TIMESTAMP牵扯
       config.headers[ConfigEnum.TIMESTAMP] = signMd5Utils.getTimestamp();
       // update-end--author:taoyan---date:20220421--for: VUEN-410【签名改造】 X-TIMESTAMP牵扯
-      
+
       config.headers[ConfigEnum.Sign] = signMd5Utils.getSign(config.url, config.params);
       //--update-end--author:liusq---date:20210831---for:将签名和时间戳，添加在请求接口 Header
       //--update-begin--author:liusq---date:20211105---for: for:将多租户id，添加在请求接口 Header
       if (!tenantid) {
-         tenantid = 0;
+        tenantid = 0;
       }
-      config.headers[ConfigEnum.TENANT_ID ] = tenantid
+      config.headers[ConfigEnum.TENANT_ID] = tenantid;
       //--update-begin--author:liusq---date:20220325---for: 增加vue3标记
-       config.headers[ConfigEnum.VERSION] = "v3"
+      config.headers[ConfigEnum.VERSION] = 'v3';
       //--update-end--author:liusq---date:20220325---for:增加vue3标记
       //--update-end--author:liusq---date:20211105---for:将多租户id，添加在请求接口 Header
-
     }
     return config;
   },

@@ -1,4 +1,4 @@
-import { FormSchema } from '/@/components/Form'
+import { FormSchema } from '/@/components/Form';
 
 // 部门基础表单
 export function useBasicFormSchema() {
@@ -74,8 +74,8 @@ export function useBasicFormSchema() {
         placeholder: '请输入备注',
       },
     },
-  ]
-  return { basicFormSchema }
+  ];
+  return { basicFormSchema };
 }
 
 // 机构类型选项
@@ -83,5 +83,8 @@ export const orgCategoryOptions = {
   // 一级部门
   root: [{ value: '1', label: '公司' }],
   // 子级部门
-  child: [{ value: '2', label: '部门' }, { value: '3', label: '岗位' }],
-}
+  child: [
+    { value: '2', label: '部门' },
+    { value: '3', label: '岗位' },
+  ],
+};

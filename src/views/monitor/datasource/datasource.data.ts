@@ -125,7 +125,7 @@ export const formSchema: FormSchema[] = [
     label: '数据源编码',
     component: 'Input',
     required: true,
-    dynamicDisabled: ({values}) => {
+    dynamicDisabled: ({ values }) => {
       return !!values.id;
     },
   },
@@ -144,7 +144,7 @@ export const formSchema: FormSchema[] = [
       return {
         dictCode: 'database_type',
         onChange: (e: any) => {
-          formModel=Object.assign(formModel,dbDriverMap[e], dbUrlMap[e]);
+          formModel = Object.assign(formModel, dbDriverMap[e], dbUrlMap[e]);
         },
       };
     },
@@ -172,7 +172,7 @@ export const formSchema: FormSchema[] = [
     label: '密码',
     required: true,
     component: 'InputPassword',
-    slot:'pwd'
+    slot: 'pwd',
   },
   {
     field: 'remark',

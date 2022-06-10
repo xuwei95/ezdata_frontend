@@ -25,7 +25,6 @@ export const columns: BasicColumn[] = [
   },
 ];
 
-
 export const formSchema: FormSchema[] = [
   {
     field: 'name',

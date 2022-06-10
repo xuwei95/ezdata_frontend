@@ -46,11 +46,11 @@ export default {
     time: '相对时间',
     cropperImage: '图片裁剪',
     cardList: '卡片列表',
-    oneToMore:'一对多示例',
-    vexTable:'一对多示例'
+    oneToMore: '一对多示例',
+    vexTable: '一对多示例',
   },
-  basic:{
-    button:'按钮组件'
+  basic: {
+    button: '按钮组件',
   },
   editor: {
     editor: '编辑器',
@@ -115,7 +115,7 @@ export default {
     customerForm: '自定义组件',
     appendForm: '表单增删示例',
   },
-  modal:{
+  modal: {
     basic: '弹窗扩展',
     drawer: '抽屉扩展',
   },
@@ -201,7 +201,7 @@ export default {
     editRowTable: '可编辑行',
     authColumn: '权限列',
   },
-  jeecg:{
-    JAreaLinkage:'区域选择'
-  }
+  jeecg: {
+    JAreaLinkage: '区域选择',
+  },
 };

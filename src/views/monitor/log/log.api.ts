@@ -1,7 +1,7 @@
-import {defHttp} from '/@/utils/http/axios';
+import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-    list = "/sys/log/list"
+  list = '/sys/log/list',
 }
 
 /**
@@ -9,5 +9,5 @@ enum Api {
  * @param params
  */
 export const getLogList = (params) => {
-    return defHttp.get({url: Api.list, params});
-}
+  return defHttp.get({ url: Api.list, params });
+};

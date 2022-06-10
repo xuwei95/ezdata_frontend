@@ -1,28 +1,28 @@
 <template>
-  <BasicModal v-bind="$attrs" @register="registerModal" :title="getTitle" @ok="handleSubmit"  width="700px">
-    <BasicForm @register="registerForm"/>
+  <BasicModal v-bind="$attrs" @register="registerModal" :title="getTitle" @ok="handleSubmit" width="700px">
+    <BasicForm @register="registerForm" />
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import {defineProps,ref, computed, unref} from 'vue';
-  import {BasicModal, useModalInner} from '/@/components/Modal';
-  import {BasicForm, useForm} from '/@/components/Form/index';
-  import {dataRuleFormSchema} from './menu.data';
-  import {saveOrUpdateRule} from './menu.api';
+  import { defineProps, ref, computed, unref } from 'vue';
+  import { BasicModal, useModalInner } from '/@/components/Modal';
+  import { BasicForm, useForm } from '/@/components/Form/index';
+  import { dataRuleFormSchema } from './menu.data';
+  import { saveOrUpdateRule } from './menu.api';
   // 声明Emits
-  const emit = defineEmits(['success','register']);
-  const props = defineProps({permissionId: String})
+  const emit = defineEmits(['success', 'register']);
+  const props = defineProps({ permissionId: String });
   const isUpdate = ref(true);
   //表单配置
-  const [registerForm, {resetFields, setFieldsValue, validate}] = useForm({
+  const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     schemas: dataRuleFormSchema,
-    showActionButtonGroup: false
+    showActionButtonGroup: false,
   });
   //表单赋值
-  const [registerModal, {setModalProps, closeModal}] = useModalInner(async (data) => {
+  const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     //重置表单
     await resetFields();
-    setModalProps({confirmLoading: false});
+    setModalProps({ confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
     if (unref(isUpdate)) {
       //表单赋值
@@ -39,16 +39,16 @@
   async function handleSubmit() {
     try {
       const values = await validate();
-      values.permissionId = props.permissionId
-      setModalProps({confirmLoading: true});
+      values.permissionId = props.permissionId;
+      setModalProps({ confirmLoading: true });
       //提交表单
-      await saveOrUpdateRule(values,isUpdate.value);
+      await saveOrUpdateRule(values, isUpdate.value);
       //关闭弹窗
       closeModal();
       //刷新列表
       emit('success');
     } finally {
-      setModalProps({confirmLoading: false});
+      setModalProps({ confirmLoading: false });
     }
   }
 </script>

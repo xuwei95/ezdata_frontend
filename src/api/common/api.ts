@@ -18,7 +18,7 @@ enum Api {
 /**
  * 上传父路径
  */
-export const uploadUrl=`${baseUploadUrl}/sys/common/upload`;
+export const uploadUrl = `${baseUploadUrl}/sys/common/upload`;
 
 /**
  * 职务列表
@@ -47,52 +47,51 @@ export const getRoleList = (params) => {
 /**
  * 异步获取部门树列表
  */
-export const queryDepartTreeSync = (params?) =>{
+export const queryDepartTreeSync = (params?) => {
   return defHttp.get({ url: Api.queryDepartTreeSync, params });
-}
+};
 /**
  * 获取部门树列表
  */
-export const queryTreeList = (params?) =>{
+export const queryTreeList = (params?) => {
   return defHttp.get({ url: Api.queryTreeList, params });
-}
+};
 
 /**
  * 分类字典树控件 加载节点
  */
-export const loadTreeData = (params?) =>{
+export const loadTreeData = (params?) => {
   return defHttp.get({ url: Api.loadTreeData, params });
-}
-
+};
 
 /**
  * 根据字典code加载字典text
  */
-export const loadDictItem = (params?) =>{
+export const loadDictItem = (params?) => {
   return defHttp.get({ url: Api.loadDictItem, params });
-}
+};
 
 /**
  * 根据字典code加载字典text
  */
-export const getDictItems = (dictCode) =>{
-  return defHttp.get({ url: Api.getDictItems+dictCode},{joinTime:false});
-}
+export const getDictItems = (dictCode) => {
+  return defHttp.get({ url: Api.getDictItems + dictCode }, { joinTime: false });
+};
 /**
  * 部门用户modal选择列表加载list
  */
-export const getTableList = (params)=>{
-    return defHttp.get({url:Api.getTableList,params})
-}
+export const getTableList = (params) => {
+  return defHttp.get({ url: Api.getTableList, params });
+};
 /**
  * 加载全部分类字典数据
  */
-export const loadCategoryData = (params)=>{
-    return defHttp.get({url:Api.getCategoryData,params})
-}
+export const loadCategoryData = (params) => {
+  return defHttp.get({ url: Api.getCategoryData, params });
+};
 /**
  * 文件上传
  */
-export const uploadFile = (params,success)=>{
-    return defHttp.uploadFile({url:uploadUrl}, params,{success})
-}
+export const uploadFile = (params, success) => {
+  return defHttp.uploadFile({ url: uploadUrl }, params, { success });
+};

@@ -15,10 +15,7 @@ export function useMenuSetting() {
   const appStore = useAppStore();
 
   const getShowSidebar = computed(() => {
-    return (
-      unref(getSplit) ||
-      (unref(getShowMenu) && unref(getMenuMode) !== MenuModeEnum.HORIZONTAL && !unref(fullContent))
-    );
+    return unref(getSplit) || (unref(getShowMenu) && unref(getMenuMode) !== MenuModeEnum.HORIZONTAL && !unref(fullContent));
   });
 
   const getCollapsed = computed(() => appStore.getMenuSetting.collapsed);
@@ -53,9 +50,7 @@ export function useMenuSetting() {
 
   const getTopMenuAlign = computed(() => appStore.getMenuSetting.topMenuAlign);
 
-  const getCloseMixSidebarOnChange = computed(
-    () => appStore.getMenuSetting.closeMixSidebarOnChange
-  );
+  const getCloseMixSidebarOnChange = computed(() => appStore.getMenuSetting.closeMixSidebarOnChange);
 
   const getIsSidebarType = computed(() => unref(getMenuType) === MenuTypeEnum.SIDEBAR);
 
@@ -68,11 +63,7 @@ export function useMenuSetting() {
   });
 
   const getShowHeaderTrigger = computed(() => {
-    if (
-      unref(getMenuType) === MenuTypeEnum.TOP_MENU ||
-      !unref(getShowMenu) ||
-      unref(getMenuHidden)
-    ) {
+    if (unref(getMenuType) === MenuTypeEnum.TOP_MENU || !unref(getShowMenu) || unref(getMenuHidden)) {
       return false;
     }
 
@@ -93,9 +84,7 @@ export function useMenuSetting() {
 
   const getRealWidth = computed(() => {
     if (unref(getIsMixSidebar)) {
-      return unref(getCollapsed) && !unref(getMixSideFixed)
-        ? unref(getMiniWidthNumber)
-        : unref(getMenuWidth);
+      return unref(getCollapsed) && !unref(getMixSideFixed) ? unref(getMiniWidthNumber) : unref(getMenuWidth);
     }
     return unref(getCollapsed) ? unref(getMiniWidthNumber) : unref(getMenuWidth);
   });
@@ -110,8 +99,7 @@ export function useMenuSetting() {
       unref(getIsTopMenu) || !unref(getShowMenu) || (unref(getSplit) && unref(getMenuHidden))
         ? 0
         : unref(getIsMixSidebar)
-        ? (unref(getCollapsed) ? SIDE_BAR_MINI_WIDTH : SIDE_BAR_SHOW_TIT_MINI_WIDTH) +
-          (unref(getMixSideFixed) && unref(mixSideHasChildren) ? unref(getRealWidth) : 0)
+        ? (unref(getCollapsed) ? SIDE_BAR_MINI_WIDTH : SIDE_BAR_SHOW_TIT_MINI_WIDTH) + (unref(getMixSideFixed) && unref(mixSideHasChildren) ? unref(getRealWidth) : 0)
         : unref(getRealWidth);
 
     return `calc(100% - ${unref(width)}px)`;

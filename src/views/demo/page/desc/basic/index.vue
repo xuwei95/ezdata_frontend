@@ -1,22 +1,8 @@
 <template>
   <PageWrapper title="基础详情页" contentBackground>
-    <Description
-      size="middle"
-      title="退款申请"
-      :bordered="false"
-      :column="3"
-      :data="refundData"
-      :schema="refundSchema"
-    />
+    <Description size="middle" title="退款申请" :bordered="false" :column="3" :data="refundData" :schema="refundSchema" />
     <a-divider />
-    <Description
-      size="middle"
-      title="用户信息"
-      :bordered="false"
-      :column="3"
-      :data="personData"
-      :schema="personSchema"
-    />
+    <Description size="middle" title="用户信息" :bordered="false" :column="3" :data="personData" :schema="personSchema" />
     <a-divider />
 
     <BasicTable @register="registerRefundTable" />
@@ -31,16 +17,7 @@
   import { PageWrapper } from '/@/components/Page';
   import { Divider } from 'ant-design-vue';
 
-  import {
-    refundSchema,
-    refundData,
-    personSchema,
-    personData,
-    refundTableSchema,
-    refundTimeTableSchema,
-    refundTableData,
-    refundTimeTableData,
-  } from './data';
+  import { refundSchema, refundData, personSchema, personData, refundTableSchema, refundTimeTableSchema, refundTableData, refundTimeTableData } from './data';
   export default defineComponent({
     components: { Description, BasicTable, PageWrapper, [Divider.name]: Divider },
     setup() {

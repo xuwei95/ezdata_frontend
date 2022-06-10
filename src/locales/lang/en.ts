@@ -8,6 +8,6 @@ export default {
     ...genMessage(modules, 'en'),
     antdLocale,
   },
-  momentLocale:null,
+  momentLocale: null,
   momentLocaleName: 'en',
 };

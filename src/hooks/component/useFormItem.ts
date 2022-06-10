@@ -1,28 +1,14 @@
 import type { UnwrapRef, Ref, WritableComputedRef, DeepReadonly } from 'vue';
-import {
-  reactive,
-  readonly,
-  computed,
-  getCurrentInstance,
-  watchEffect,
-  unref,
-  nextTick,
-  toRaw,
-} from 'vue';
+import { reactive, readonly, computed, getCurrentInstance, watchEffect, unref, nextTick, toRaw } from 'vue';
 
 import { isEqual } from 'lodash-es';
 export function useRuleFormItem<T extends Recordable, K extends keyof T, V = UnwrapRef<T[K]>>(
   props: T,
   key?: K,
   changeEvent?,
-  emitData?: Ref<any[]>,
-): [WritableComputedRef<V>, (val: V) => void, DeepReadonly<V>];
-export function useRuleFormItem<T extends Recordable>(
-  props: T,
-  key: keyof T = 'value',
-  changeEvent = 'change',
   emitData?: Ref<any[]>
-) {
+): [WritableComputedRef<V>, (val: V) => void, DeepReadonly<V>];
+export function useRuleFormItem<T extends Recordable>(props: T, key: keyof T = 'value', changeEvent = 'change', emitData?: Ref<any[]>) {
   const instance = getCurrentInstance();
   const emit = instance?.emit;
 
@@ -43,7 +29,7 @@ export function useRuleFormItem<T extends Recordable>(
   const state: any = computed({
     get() {
       //修复多选时空值显示问题
-      return innerState.value===''?[]:innerState.value;
+      return innerState.value === '' ? [] : innerState.value;
     },
     set(value) {
       if (isEqual(value, defaultState.value)) return;

@@ -1,19 +1,19 @@
 <template>
-    <div class="p-4">
-        <BasicTable @register="registerTable" :indexColumnProps="indexColumnProps">
-            <template #tableTitle>
-                <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd" style="margin-right: 5px">新增</a-button>
-            </template>
-            <template #status="{ record,text }">
-                <a-tag color="pink" v-if="text==0">禁用</a-tag>
-                <a-tag color="#87d068" v-if="text==1" >正常</a-tag>
-            </template>
-            <template #action="{ record }">
-                <TableAction :actions="getActions(record)"/>
-            </template>
-        </BasicTable>
-        <RouteModal @register="registerDrawer" @success="reload"/>
-    </div>
+  <div class="p-4">
+    <BasicTable @register="registerTable" :indexColumnProps="indexColumnProps">
+      <template #tableTitle>
+        <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd" style="margin-right: 5px">新增</a-button>
+      </template>
+      <template #status="{ record, text }">
+        <a-tag color="pink" v-if="text == 0">禁用</a-tag>
+        <a-tag color="#87d068" v-if="text == 1">正常</a-tag>
+      </template>
+      <template #action="{ record }">
+        <TableAction :actions="getActions(record)" />
+      </template>
+    </BasicTable>
+    <RouteModal @register="registerDrawer" @success="reload" />
+  </div>
 </template>
 <script lang="ts" name="monitor-route" setup>
   import { ref } from 'vue';
@@ -24,7 +24,7 @@
   import RouteModal from './RouteModal.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useDrawer } from '/@/components/Drawer';
-  import { useListPage } from '/@/hooks/system/useListPage'
+  import { useListPage } from '/@/hooks/system/useListPage';
   const { createMessage } = useMessage();
   const [registerDrawer, { openDrawer }] = useDrawer();
   const checkedKeys = ref<Array<string | number>>([]);
@@ -35,13 +35,12 @@
     tableProps: {
       title: '路由列表',
       api: getRouteList,
-      useSearchForm:false,
+      useSearchForm: false,
       columns: columns,
-    }
-  })
+    },
+  });
 
-
-  const [registerTable, { reload },{ rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
   /**
    * 序号列配置
    */

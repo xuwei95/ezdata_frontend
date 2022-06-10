@@ -1,12 +1,12 @@
-import { ref, reactive, provide, resolveComponent } from 'vue'
-import { useDesign } from '/@/hooks/web/useDesign'
-import { JVxeDataProps, JVxeRefs, JVxeTableProps } from '../types'
-import { VxeGridInstance } from 'vxe-table'
-import { randomString } from '/@/utils/common/compUtils'
+import { ref, reactive, provide, resolveComponent } from 'vue';
+import { useDesign } from '/@/hooks/web/useDesign';
+import { JVxeDataProps, JVxeRefs, JVxeTableProps } from '../types';
+import { VxeGridInstance } from 'vxe-table';
+import { randomString } from '/@/utils/common/compUtils';
 
 export function useData(props: JVxeTableProps): JVxeDataProps {
-  const { prefixCls } = useDesign('j-vxe-table')
-  provide('prefixCls', prefixCls)
+  const { prefixCls } = useDesign('j-vxe-table');
+  provide('prefixCls', prefixCls);
   return {
     prefixCls: prefixCls,
     caseId: `j-vxe-${randomString(8)}`,
@@ -41,7 +41,7 @@ export function useData(props: JVxeTableProps): JVxeDataProps {
       // },
       radioConfig: { highlight: true },
       checkboxConfig: { highlight: true },
-      mouseConfig: {selected: false},
+      mouseConfig: { selected: false },
       keyboardConfig: {
         // 删除键功能
         isDel: false,
@@ -71,7 +71,7 @@ export function useData(props: JVxeTableProps): JVxeDataProps {
     innerEditRules: {},
     innerLinkageConfig: new Map<string, any>(),
     reloadEffectRowKeysMap: reactive({}),
-  }
+  };
 }
 
 export function useRefs(): JVxeRefs {
@@ -79,10 +79,10 @@ export function useRefs(): JVxeRefs {
     gridRef: ref<VxeGridInstance>(),
     subPopoverRef: ref<any>(),
     detailsModalRef: ref<any>(),
-  }
+  };
 }
 
 export function useResolveComponent(...t: any[]): any {
   // @ts-ignore
-  return resolveComponent(...t)
+  return resolveComponent(...t);
 }

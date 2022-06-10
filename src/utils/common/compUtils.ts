@@ -1,7 +1,7 @@
-import { useGlobSetting } from '/@/hooks/setting'
-import { merge, random } from 'lodash-es'
-import {isArray} from "/@/utils/is";
-import { FormSchema } from '/@/components/Form'
+import { useGlobSetting } from '/@/hooks/setting';
+import { merge, random } from 'lodash-es';
+import { isArray } from '/@/utils/is';
+import { FormSchema } from '/@/components/Form';
 
 const globSetting = useGlobSetting();
 const baseApiUrl = globSetting.domainUrl;
@@ -10,22 +10,21 @@ const baseApiUrl = globSetting.domainUrl;
  * @param fileUrl 文件路径
  * @param prefix(默认http)  文件路径前缀 http/https
  */
-export const getFileAccessHttpUrl = (fileUrl, prefix='http') => {
+export const getFileAccessHttpUrl = (fileUrl, prefix = 'http') => {
   let result = fileUrl;
   try {
     if (fileUrl && fileUrl.length > 0 && !fileUrl.startsWith(prefix)) {
       //判断是否是数组格式
       let isArray = fileUrl.indexOf('[') != -1;
       if (!isArray) {
-        let prefix = `${baseApiUrl}/sys/common/static/`
+        let prefix = `${baseApiUrl}/sys/common/static/`;
         // 判断是否已包含前缀
         if (!fileUrl.startsWith(prefix)) {
-          result = `${prefix}${fileUrl}`
+          result = `${prefix}${fileUrl}`;
         }
       }
     }
-  } catch (err) {
-  }
+  } catch (err) {}
   return result;
 };
 
@@ -33,17 +32,17 @@ export const getFileAccessHttpUrl = (fileUrl, prefix='http') => {
  * 触发 window.resize
  */
 export function triggerWindowResizeEvent() {
-  let event: any = document.createEvent('HTMLEvents')
-  event.initEvent('resize', true, true)
-  event.eventType = 'message'
-  window.dispatchEvent(event)
+  let event: any = document.createEvent('HTMLEvents');
+  event.initEvent('resize', true, true);
+  event.eventType = 'message';
+  window.dispatchEvent(event);
 }
 
 /**
  * 获取随机数
  *  @param length 数字位数
  */
-export const getRandom = (length:number=1) => {
+export const getRandom = (length: number = 1) => {
   return '-' + parseInt(String(Math.random() * 10000 + 1), length);
 };
 
@@ -54,17 +53,17 @@ export const getRandom = (length:number=1) => {
  * @return string 生成的字符串
  */
 export function randomString(length: number, chats?: string) {
-  if (!length) length = 1
+  if (!length) length = 1;
   if (!chats) {
     // noinspection SpellCheckingInspection
-    chats = '0123456789qwertyuioplkjhgfdsazxcvbnm'
+    chats = '0123456789qwertyuioplkjhgfdsazxcvbnm';
   }
-  let str = ''
+  let str = '';
   for (let i = 0; i < length; i++) {
-    let num = random(0, chats.length - 1)
-    str += chats[num]
+    let num = random(0, chats.length - 1);
+    str += chats[num];
   }
-  return str
+  return str;
 }
 
 /**
@@ -73,7 +72,7 @@ export function randomString(length: number, chats?: string) {
  * @param opt  配置参数
  * @param startPid 父节点
  */
-export const listToTree = (array, opt,startPid) => {
+export const listToTree = (array, opt, startPid) => {
   const obj = {
     primaryKey: opt.primaryKey || 'key',
     parentKey: opt.parentKey || 'parentId',
@@ -81,13 +80,13 @@ export const listToTree = (array, opt,startPid) => {
     startPid: opt.startPid || '',
     currentDept: opt.currentDept || 0,
     maxDept: opt.maxDept || 100,
-    childKey: opt.childKey || 'children'
+    childKey: opt.childKey || 'children',
+  };
+  if (startPid) {
+    obj.startPid = startPid;
   }
-  if(startPid){
-    obj.startPid=startPid;
-  }
-  return toTree(array, obj.startPid, obj.currentDept, obj)
-}
+  return toTree(array, obj.startPid, obj.currentDept, obj);
+};
 /**
  *  递归构建tree
  * @param list
@@ -98,35 +97,36 @@ export const listToTree = (array, opt,startPid) => {
  */
 export const toTree = (array, startPid, currentDept, opt) => {
   if (opt.maxDept < currentDept) {
-    return []
+    return [];
   }
-  let child = []
+  let child = [];
   if (array && array.length > 0) {
-    child = array.map(item => {
-      // 筛查符合条件的数据（主键 = startPid）
-      if (typeof item[opt.parentKey] !== 'undefined' && item[opt.parentKey] === startPid) {
-
-        // 满足条件则递归
-        const nextChild = toTree(array, item[opt.primaryKey], currentDept + 1, opt)
-        // 节点信息保存
-        if (nextChild.length > 0) {
-          item['isLeaf'] = false
-          item[opt.childKey] = nextChild
-        } else {
-          item['isLeaf'] = true
+    child = array
+      .map((item) => {
+        // 筛查符合条件的数据（主键 = startPid）
+        if (typeof item[opt.parentKey] !== 'undefined' && item[opt.parentKey] === startPid) {
+          // 满足条件则递归
+          const nextChild = toTree(array, item[opt.primaryKey], currentDept + 1, opt);
+          // 节点信息保存
+          if (nextChild.length > 0) {
+            item['isLeaf'] = false;
+            item[opt.childKey] = nextChild;
+          } else {
+            item['isLeaf'] = true;
+          }
+          item['title'] = item[opt.titleKey];
+          item['label'] = item[opt.titleKey];
+          item['key'] = item[opt.primaryKey];
+          item['value'] = item[opt.primaryKey];
+          return item;
         }
-        item['title'] = item[opt.titleKey]
-        item['label'] = item[opt.titleKey]
-        item['key'] = item[opt.primaryKey]
-        item['value'] = item[opt.primaryKey]
-        return item
-      }
-    }).filter(item => {
-      return item !== undefined
-    })
+      })
+      .filter((item) => {
+        return item !== undefined;
+      });
   }
-  return child
-}
+  return child;
+};
 
 /**
  * 表格底部合计工具方法
@@ -134,14 +134,14 @@ export const toTree = (array, startPid, currentDept, opt) => {
  * @param fieldKeys 要计算合计的列字段
  */
 export function mapTableTotalSummary(tableData: Recordable[], fieldKeys: string[]) {
-  let totals: any = { _row: '合计', _index: '合计' }
-  fieldKeys.forEach(key => {
+  let totals: any = { _row: '合计', _index: '合计' };
+  fieldKeys.forEach((key) => {
     totals[key] = tableData.reduce((prev, next) => {
-      prev += next[key]
-      return prev
-    }, 0)
-  })
-  return totals
+      prev += next[key];
+      return prev;
+    }, 0);
+  });
+  return totals;
 }
 
 /**
@@ -156,17 +156,17 @@ export function mapTableTotalSummary(tableData: Recordable[], fieldKeys: string[
  * @returns {Function}
  */
 export function simpleDebounce(fn, delay = 100) {
-  let timer: any | null = null
+  let timer: any | null = null;
   return function () {
-    let args = arguments
+    let args = arguments;
     if (timer) {
-      clearTimeout(timer)
+      clearTimeout(timer);
     }
     timer = setTimeout(() => {
       // @ts-ignore
-      fn.apply(this, args)
-    }, delay)
-  }
+      fn.apply(this, args);
+    }, delay);
+  };
 }
 
 /**
@@ -176,10 +176,10 @@ export function simpleDebounce(fn, delay = 100) {
  */
 export function dateFormat(date, block) {
   if (!date) {
-    return ''
+    return '';
   }
-  let format = block || 'yyyy-MM-dd'
-  date = new Date(date)
+  let format = block || 'yyyy-MM-dd';
+  date = new Date(date);
   const map = {
     M: date.getMonth() + 1, // 月份
     d: date.getDate(), // 日
@@ -188,21 +188,24 @@ export function dateFormat(date, block) {
     s: date.getSeconds(), // 秒
     q: Math.floor((date.getMonth() + 3) / 3), // 季度
     S: date.getMilliseconds(), // 毫秒
-  }
+  };
   format = format.replace(/([yMdhmsqS])+/g, (all, t) => {
-    let v = map[t]
+    let v = map[t];
     if (v !== undefined) {
       if (all.length > 1) {
-        v = `0${v}`
-        v = v.substr(v.length - 2)
+        v = `0${v}`;
+        v = v.substr(v.length - 2);
       }
-      return v
+      return v;
     } else if (t === 'y') {
-      return (date.getFullYear().toString()).substr(4 - all.length)
+      return date
+        .getFullYear()
+        .toString()
+        .substr(4 - all.length);
     }
-    return all
-  })
-  return format
+    return all;
+  });
+  return format;
 }
 
 /**
@@ -210,27 +213,27 @@ export function dateFormat(date, block) {
  * 目前使用的地方：JVxeTable Span模式
  */
 export function getEventPath(event) {
-  let target = event.target
-  let path = (event.composedPath && event.composedPath()) || event.path
+  let target = event.target;
+  let path = (event.composedPath && event.composedPath()) || event.path;
 
   if (path != null) {
-    return (path.indexOf(window) < 0) ? path.concat(window) : path
+    return path.indexOf(window) < 0 ? path.concat(window) : path;
   }
 
   if (target === window) {
-    return [window]
+    return [window];
   }
 
   let getParents = (node, memo) => {
-    const parentNode = node.parentNode
+    const parentNode = node.parentNode;
 
     if (!parentNode) {
-      return memo
+      return memo;
     } else {
-      return getParents(parentNode, memo.concat(parentNode))
+      return getParents(parentNode, memo.concat(parentNode));
     }
-  }
-  return [target].concat(getParents(target, []), window)
+  };
+  return [target].concat(getParents(target, []), window);
 }
 
 /**
@@ -242,14 +245,14 @@ export function getEventPath(event) {
  */
 export function pushIfNotExist(array, value, key?) {
   for (let item of array) {
-    if (key && (item[key] === value[key])) {
-      return false
+    if (key && item[key] === value[key]) {
+      return false;
     } else if (item === value) {
-      return false
+      return false;
     }
   }
-  array.push(value)
-  return true
+  array.push(value);
+  return true;
 }
 /**
  * 过滤对象中为空的属性
@@ -261,9 +264,8 @@ export function filterObj(obj) {
     return;
   }
 
-  for ( let key in obj) {
-    if (obj.hasOwnProperty(key)
-      && (obj[key] == null || obj[key] == undefined || obj[key] === '')) {
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key) && (obj[key] == null || obj[key] == undefined || obj[key] === '')) {
       delete obj[key];
     }
   }
@@ -275,7 +277,7 @@ export function filterObj(obj) {
  * @param string
  */
 export function underLine2CamelCase(string: string) {
-  return string.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase())
+  return string.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
 }
 
 /**
@@ -290,22 +292,26 @@ export function findTree(treeList: any[], fn: Fn, childrenKey = 'children') {
     if (fn(item, i, treeList)) {
       return item;
     }
-    let children = item[childrenKey]
+    let children = item[childrenKey];
     if (isArray(children)) {
       let findResult = findTree(children, fn, childrenKey);
       if (findResult) {
-        return findResult
+        return findResult;
       }
     }
   }
-  return null
+  return null;
 }
 
 /** 获取 mapFormSchema 方法 */
 export function bindMapFormSchema<T>(spanMap, spanTypeDef: T) {
   return function (s: FormSchema, spanType: T = spanTypeDef) {
-    return merge({
-      disabledLabelWidth: true,
-    } as FormSchema, spanMap[spanType], s)
-  }
+    return merge(
+      {
+        disabledLabelWidth: true,
+      } as FormSchema,
+      spanMap[spanType],
+      s
+    );
+  };
 }

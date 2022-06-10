@@ -1,79 +1,79 @@
-import { VxeTablePropTypes } from 'vxe-table'
-import { isArray } from '/@/utils/is'
-import { HandleArgs } from './useColumns'
-import { replaceProps } from '../utils/enhancedUtils'
+import { VxeTablePropTypes } from 'vxe-table';
+import { isArray } from '/@/utils/is';
+import { HandleArgs } from './useColumns';
+import { replaceProps } from '../utils/enhancedUtils';
 
 export function useValidateRules(args: HandleArgs) {
-  const { data } = args
-  const col = args.col!
-  let rules: VxeTablePropTypes.EditRules[] = []
+  const { data } = args;
+  const col = args.col!;
+  let rules: VxeTablePropTypes.EditRules[] = [];
   if (isArray(col.validateRules)) {
     for (let rule of col.validateRules) {
       let replace = {
         message: replaceProps(col, rule.message),
-      }
+      };
       if (rule.unique || rule.pattern === 'only') {
         // 唯一校验器
-        rule.validator = uniqueValidator(args)
+        rule.validator = uniqueValidator(args);
       } else if (rule.pattern) {
         // 非空
         if (rule.pattern === fooPatterns[0].value) {
-          rule.required = true
-          delete rule.pattern
+          rule.required = true;
+          delete rule.pattern;
         } else {
           // 兼容Online表单的特殊规则
           for (let foo of fooPatterns) {
             if (foo.value === rule.pattern) {
-              rule.pattern = foo.pattern
-              break
+              rule.pattern = foo.pattern;
+              break;
             }
           }
         }
       } else if (typeof rule.handler === 'function') {
         // 自定义函数校验
-        rule.validator = handlerConvertToValidator
+        rule.validator = handlerConvertToValidator;
       }
-      rules.push(Object.assign({}, rule, replace))
+      rules.push(Object.assign({}, rule, replace));
     }
   }
-  data.innerEditRules[col.key] = rules
+  data.innerEditRules[col.key] = rules;
 }
 
 /** 唯一校验器 */
 function uniqueValidator({ methods }: HandleArgs) {
   return function (event) {
-    const { cellValue, column, rule } = event
-    let tableData = methods.getTableData()
-    let findCount = 0
+    const { cellValue, column, rule } = event;
+    let tableData = methods.getTableData();
+    let findCount = 0;
     for (let rowData of tableData) {
       if (rowData[column.params.key] === cellValue) {
         if (++findCount >= 2) {
-          return Promise.reject(new Error(rule.message))
+          return Promise.reject(new Error(rule.message));
         }
       }
     }
-    return Promise.resolve()
-  }
+    return Promise.resolve();
+  };
 }
 
 /** 旧版handler转为新版Validator */
 function handlerConvertToValidator(event) {
-  const { column, rule } = event
+  const { column, rule } = event;
   return new Promise((resolve, reject) => {
     rule.handler(event, (flag, msg) => {
-      let message = rule.message
+      let message = rule.message;
       if (typeof msg === 'string') {
-        message = replaceProps(column.params, msg)
+        message = replaceProps(column.params, msg);
       }
       if (flag == null) {
-        resolve(message)
+        resolve(message);
       } else if (!!flag) {
-        resolve(message)
+        resolve(message);
       } else {
-        reject(new Error(message))
+        reject(new Error(message));
       }
-    })
-  })
+    });
+  });
 }
 
 // 兼容 online 的规则
@@ -90,4 +90,4 @@ const fooPatterns = [
   { title: '数字', value: 'n', pattern: /^-?\d+(\.?\d+|\d?)$/ },
   { title: '整数', value: 'z', pattern: /^-?\d+$/ },
   { title: '金额', value: 'money', pattern: /^(([1-9][0-9]*)|([0]\.\d{0,2}|[1-9][0-9]*\.\d{0,2}))$/ },
-]
+];

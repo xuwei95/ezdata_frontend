@@ -8,16 +8,13 @@ export const plugins = [
 ];
 
 export const toolbar =
-    'fullscreen code preview | undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent lineheight|subscript superscript blockquote| numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons   | insertfile image media pageembed  link anchor  codesample insertdatetime hr| a11ycheck ltr rtl'
-;
+  'fullscreen code preview | undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent lineheight|subscript superscript blockquote| numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons   | insertfile image media pageembed  link anchor  codesample insertdatetime hr| a11ycheck ltr rtl';
 
-export const simplePlugins = [
-  'lists image link media table textcolor wordcount contextmenu fullscreen',
-];
+export const simplePlugins = ['lists image link media table textcolor wordcount contextmenu fullscreen'];
 
 export const simpleToolbar = [
   'undo redo  formatselect bold italic alignleft aligncenter alignright alignjustify bullist numlist outdent indent',
-  'lists link unlink image media table removeformat fullscreen'
+  'lists link unlink image media table removeformat fullscreen',
 ];
 
 export const menubar = 'file edit insert view format table';

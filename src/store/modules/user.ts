@@ -1,13 +1,13 @@
-import type { UserInfo,LoginInfo } from '/#/store';
+import type { UserInfo, LoginInfo } from '/#/store';
 import type { ErrorMessageMode } from '/#/axios';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
 import { RoleEnum } from '/@/enums/roleEnum';
 import { PageEnum } from '/@/enums/pageEnum';
-import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY,LOGIN_INFO_KEY,DB_DICT_DATA_KEY,TENANT_ID } from '/@/enums/cacheEnum';
+import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY, LOGIN_INFO_KEY, DB_DICT_DATA_KEY, TENANT_ID } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
-import { GetUserInfoModel, LoginParams,ThirdLoginParams } from '/@/api/sys/model/userModel';
-import { doLogout, getUserInfo, loginApi,phoneLoginApi,thirdLogin } from '/@/api/sys/user';
+import { GetUserInfoModel, LoginParams, ThirdLoginParams } from '/@/api/sys/model/userModel';
+import { doLogout, getUserInfo, loginApi, phoneLoginApi, thirdLogin } from '/@/api/sys/user';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { router } from '/@/router';
@@ -16,7 +16,7 @@ import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
 import { isArray } from '/@/utils/is';
 import { useGlobSetting } from '/@/hooks/setting';
-import {useSso} from '/@/hooks/web/useSso';
+import { useSso } from '/@/hooks/web/useSso';
 interface UserState {
   userInfo: Nullable<UserInfo>;
   token?: string;
@@ -24,7 +24,7 @@ interface UserState {
   dictItems?: [];
   sessionTimeout?: boolean;
   lastUpdateTime: number;
-  tenantid?: string|number;
+  tenantid?: string | number;
   loginInfo?: Nullable<LoginInfo>;
 }
 
@@ -58,7 +58,7 @@ export const useUserStore = defineStore({
     getToken(): string {
       return this.token || getAuthCache<string>(TOKEN_KEY);
     },
-    getAllDictItems(): []{
+    getAllDictItems(): [] {
       return this.dictItems || getAuthCache(DB_DICT_DATA_KEY);
     },
     getRoleList(): RoleEnum[] {
@@ -70,9 +70,9 @@ export const useUserStore = defineStore({
     getLastUpdateTime(): number {
       return this.lastUpdateTime;
     },
-    getTenant(): string|number{
-      return this.tenantid || getAuthCache<string|number>(TENANT_ID);
-    },  
+    getTenant(): string | number {
+      return this.tenantid || getAuthCache<string | number>(TENANT_ID);
+    },
   },
   actions: {
     setToken(info: string | undefined) {
@@ -89,14 +89,14 @@ export const useUserStore = defineStore({
       setAuthCache(USER_INFO_KEY, info);
     },
     setLoginInfo(info: LoginInfo | null) {
-      this.loginInfo = info; 
+      this.loginInfo = info;
       setAuthCache(LOGIN_INFO_KEY, info);
-    },  
+    },
     setAllDictItems(dictItems) {
       this.dictItems = dictItems;
       setAuthCache(DB_DICT_DATA_KEY, dictItems);
     },
-    setTenant(id){
+    setTenant(id) {
       this.tenantid = id;
       setAuthCache(TENANT_ID, id);
       //update-begin---author:liusq  Date:20220102  for：保存用户租户id----
@@ -121,7 +121,7 @@ export const useUserStore = defineStore({
       params: LoginParams & {
         goHome?: boolean;
         mode?: ErrorMessageMode;
-      },
+      }
     ): Promise<GetUserInfoModel | null> {
       try {
         const { goHome = true, mode, ...loginParams } = params;
@@ -129,7 +129,7 @@ export const useUserStore = defineStore({
         const { token } = data;
         // save token
         this.setToken(token);
-        return this.afterLoginAction(goHome,data);
+        return this.afterLoginAction(goHome, data);
       } catch (error) {
         return Promise.reject(error);
       }
@@ -141,7 +141,7 @@ export const useUserStore = defineStore({
       try {
         // save token
         this.setToken(token);
-        return this.afterLoginAction(true,{});
+        return this.afterLoginAction(true, {});
       } catch (error) {
         return Promise.reject(error);
       }
@@ -150,7 +150,7 @@ export const useUserStore = defineStore({
      * 登录完成处理
      * @param goHome
      */
-    async afterLoginAction(goHome?: boolean,data?:any): Promise<any | null> {
+    async afterLoginAction(goHome?: boolean, data?: any): Promise<any | null> {
       if (!this.getToken) return null;
       //获取用户信息
       const userInfo = await this.getUserInfoAction();
@@ -168,7 +168,7 @@ export const useUserStore = defineStore({
           permissionStore.setDynamicAddedRoute(true);
         }
         await this.setLoginInfo(data);
-        goHome && (await router.replace(userInfo && userInfo.homePath || PageEnum.BASE_HOME));
+        goHome && (await router.replace((userInfo && userInfo.homePath) || PageEnum.BASE_HOME));
       }
       return data;
     },
@@ -180,7 +180,7 @@ export const useUserStore = defineStore({
       params: LoginParams & {
         goHome?: boolean;
         mode?: ErrorMessageMode;
-      },
+      }
     ): Promise<GetUserInfoModel | null> {
       try {
         const { goHome = true, mode, ...loginParams } = params;
@@ -188,7 +188,7 @@ export const useUserStore = defineStore({
         const { token } = data;
         // save token
         this.setToken(token);
-        return this.afterLoginAction(goHome,data);
+        return this.afterLoginAction(goHome, data);
       } catch (error) {
         return Promise.reject(error);
       }
@@ -200,8 +200,8 @@ export const useUserStore = defineStore({
       if (!this.getToken) {
         return null;
       }
-      const {userInfo,sysAllDictItems} = await getUserInfo();
-      if(userInfo) {
+      const { userInfo, sysAllDictItems } = await getUserInfo();
+      if (userInfo) {
         const { roles = [] } = userInfo;
         if (isArray(roles)) {
           const roleList = roles.map((item) => item.value) as RoleEnum[];
@@ -217,7 +217,7 @@ export const useUserStore = defineStore({
        * @updateBy:lsq
        * @updateDate:2021-09-08
        */
-      if(sysAllDictItems) {
+      if (sysAllDictItems) {
         this.setAllDictItems(sysAllDictItems);
       }
       return userInfo;
@@ -241,32 +241,32 @@ export const useUserStore = defineStore({
 
       //如果开启单点登录,则跳转到单点统一登录中心
       const openSso = useGlobSetting().openSso;
-      if(openSso=='true'){
+      if (openSso == 'true') {
         await useSso().ssoLoginOut();
       }
 
-      goLogin && await router.push(PageEnum.BASE_LOGIN);
+      goLogin && (await router.push(PageEnum.BASE_LOGIN));
     },
-  /**
-   * 登录事件
-   */
-   async ThirdLogin(
-       params: ThirdLoginParams & {
-           goHome?: boolean;
-           mode?: ErrorMessageMode;
-       },
-      ): Promise<any | null> {
-      try {
-          const { goHome = true, mode, ...ThirdLoginParams } = params;
-          const data = await thirdLogin(ThirdLoginParams, mode);
-          const { token } = data;
-          // save token
-          this.setToken(token);
-          return this.afterLoginAction(goHome,data);
-      } catch (error) {
-          return Promise.reject(error);
+    /**
+     * 登录事件
+     */
+    async ThirdLogin(
+      params: ThirdLoginParams & {
+        goHome?: boolean;
+        mode?: ErrorMessageMode;
       }
-   },
+    ): Promise<any | null> {
+      try {
+        const { goHome = true, mode, ...ThirdLoginParams } = params;
+        const data = await thirdLogin(ThirdLoginParams, mode);
+        const { token } = data;
+        // save token
+        this.setToken(token);
+        return this.afterLoginAction(goHome, data);
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
     /**
      * 退出询问
      */

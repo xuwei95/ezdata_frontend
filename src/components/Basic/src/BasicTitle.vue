@@ -33,11 +33,7 @@
 
   const { prefixCls } = useDesign('basic-title');
   const slots = useSlots();
-  const getClass = computed(() => [
-    prefixCls,
-    { [`${prefixCls}-show-span`]: props.span && slots.default },
-    { [`${prefixCls}-normal`]: props.normal },
-  ]);
+  const getClass = computed(() => [prefixCls, { [`${prefixCls}-show-span`]: props.span && slots.default }, { [`${prefixCls}-normal`]: props.normal }]);
 </script>
 <style lang="less" scoped>
   @prefix-cls: ~'@{namespace}-basic-title';

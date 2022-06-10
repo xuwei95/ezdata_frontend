@@ -1,7 +1,7 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
-import {dictItemCheck} from "./dict.api";
-import { rules} from '/@/utils/helper/validator';
+import { dictItemCheck } from './dict.api';
+import { rules } from '/@/utils/helper/validator';
 export const columns: BasicColumn[] = [
   {
     title: '字典名称',
@@ -17,7 +17,8 @@ export const columns: BasicColumn[] = [
     title: '描述',
     dataIndex: 'description',
     // width: 120
-  }];
+  },
+];
 
 export const recycleBincolumns: BasicColumn[] = [
   {
@@ -33,22 +34,23 @@ export const recycleBincolumns: BasicColumn[] = [
   {
     title: '描述',
     dataIndex: 'description',
-    width: 120
-  }];
+    width: 120,
+  },
+];
 
 export const searchFormSchema: FormSchema[] = [
   {
     label: '字典名称',
     field: 'dictName',
     component: 'Input',
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
   {
     label: '字典编码',
     field: 'dictCode',
     component: 'Input',
-    colProps: {span: 6},
-  }
+    colProps: { span: 6 },
+  },
 ];
 
 export const formSchema: FormSchema[] = [
@@ -56,7 +58,7 @@ export const formSchema: FormSchema[] = [
     label: '',
     field: 'id',
     component: 'Input',
-    show:false
+    show: false,
   },
   {
     label: '字典名称',
@@ -68,47 +70,46 @@ export const formSchema: FormSchema[] = [
     label: '字典编码',
     field: 'dictCode',
     component: 'Input',
-    dynamicDisabled: ({values}) => {
+    dynamicDisabled: ({ values }) => {
       return !!values.id;
     },
-    dynamicRules:({model,schema}) =>rules.duplicateCheckRule("sys_dict", "dict_code",model,schema,true),
+    dynamicRules: ({ model, schema }) => rules.duplicateCheckRule('sys_dict', 'dict_code', model, schema, true),
   },
   {
     label: '描述',
     field: 'description',
-    component: 'Input'
-  }
+    component: 'Input',
+  },
 ];
 
 export const dictItemColumns: BasicColumn[] = [
   {
     title: '名称',
     dataIndex: 'itemText',
-    width: 80
+    width: 80,
   },
   {
     title: '数据值',
     dataIndex: 'itemValue',
-    width: 80
-  }];
+    width: 80,
+  },
+];
 
 export const dictItemSearchFormSchema: FormSchema[] = [
   {
     label: '名称',
     field: 'itemText',
     component: 'Input',
-
   },
   {
     label: '状态',
     field: 'status',
     component: 'JDictSelectTag',
     componentProps: {
-      dictCode:'dict_item_status',
-      stringToNumber:true
+      dictCode: 'dict_item_status',
+      stringToNumber: true,
     },
-
-  }
+  },
 ];
 
 export const itemFormSchema: FormSchema[] = [
@@ -116,7 +117,7 @@ export const itemFormSchema: FormSchema[] = [
     label: '',
     field: 'id',
     component: 'Input',
-    show:false
+    show: false,
   },
   {
     label: '名称',
@@ -128,7 +129,7 @@ export const itemFormSchema: FormSchema[] = [
     label: '数据值',
     field: 'itemValue',
     component: 'Input',
-    dynamicRules: ({values, model}) => {
+    dynamicRules: ({ values, model }) => {
       return [
         {
           required: true,
@@ -143,14 +144,15 @@ export const itemFormSchema: FormSchema[] = [
               let params = {
                 dictId: values.dictId,
                 id: model.id,
-                itemValue: value
+                itemValue: value,
               };
               dictItemCheck(params)
                 .then((res) => {
                   res.success ? resolve() : reject(res.message || '校验失败');
-                }).catch((err) => {
-                reject(err.message || '验证失败');
-              });
+                })
+                .catch((err) => {
+                  reject(err.message || '验证失败');
+                });
             });
           },
         },
@@ -160,7 +162,7 @@ export const itemFormSchema: FormSchema[] = [
   {
     label: '描述',
     field: 'description',
-    component: 'Input'
+    component: 'Input',
   },
   {
     field: 'sortOrder',
@@ -174,9 +176,9 @@ export const itemFormSchema: FormSchema[] = [
     defaultValue: 1,
     component: 'JDictSelectTag',
     componentProps: {
-        type:'radioButton',
-        dictCode:'dict_item_status',
-        stringToNumber:true
+      type: 'radioButton',
+      dictCode: 'dict_item_status',
+      stringToNumber: true,
     },
-  }
+  },
 ];

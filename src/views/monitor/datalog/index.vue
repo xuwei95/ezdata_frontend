@@ -5,7 +5,7 @@
         <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleCompare" style="margin-right: 5px">数据比较</a-button>
       </template>
     </BasicTable>
-    <DataLogCompareModal @register="registerModal" @success="reload"/>
+    <DataLogCompareModal @register="registerModal" @success="reload" />
   </div>
 </template>
 <script lang="ts" name="monitor-datalog" setup>
@@ -17,7 +17,7 @@
   import { columns, searchFormSchema } from './datalog.data';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useModal } from '/@/components/Modal';
-  import { useListPage } from '/@/hooks/system/useListPage'
+  import { useListPage } from '/@/hooks/system/useListPage';
   const { createMessage } = useMessage();
   const checkedRows = ref<Array<object | number>>([]);
 
@@ -32,16 +32,15 @@
         labelWidth: 120,
         schemas: searchFormSchema,
       },
-      actionColumn:false
-    }
-  })
+      actionColumn: false,
+    },
+  });
 
-  const [registerTable, { reload },{ rowSelection, selectedRowKeys,selectedRows}] = tableContext;
-
+  const [registerTable, { reload }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
 
   function handleCompare() {
     let obj = selectedRows.value;
-    console.info("sfsfsf",obj)
+    console.info('sfsfsf', obj);
     if (!obj || obj.length != 2) {
       createMessage.warning('请选择两条数据!');
       return false;
@@ -55,5 +54,4 @@
       isUpdate: true,
     });
   }
-
 </script>

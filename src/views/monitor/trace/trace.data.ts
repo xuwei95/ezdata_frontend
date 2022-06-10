@@ -1,5 +1,5 @@
 import { BasicColumn } from '/@/components/Table';
-import moment from 'moment'
+import moment from 'moment';
 export const columns: BasicColumn[] = [
   {
     title: '请求时间',
@@ -13,23 +13,23 @@ export const columns: BasicColumn[] = [
     title: '请求方法',
     dataIndex: 'request.method',
     width: 20,
-    slots: { customRender: 'requestMethod' }
+    slots: { customRender: 'requestMethod' },
   },
   {
     title: '请求URL',
     dataIndex: 'request.uri',
-    width: 200
+    width: 200,
   },
   {
     title: '响应状态',
     dataIndex: 'response.status',
     width: 50,
-    slots: { customRender: 'responseStatus' }
+    slots: { customRender: 'responseStatus' },
   },
   {
     title: '请求耗时',
     dataIndex: 'timeTaken',
     width: 50,
-    slots: { customRender: 'timeTaken' }
+    slots: { customRender: 'timeTaken' },
   },
 ];

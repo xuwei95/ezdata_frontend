@@ -4,13 +4,7 @@
       <div :class="getClass" @click.stop v-if="visible">
         <div :class="`${prefixCls}-content`" v-click-outside="handleClose">
           <div :class="`${prefixCls}-input__wrapper`">
-            <a-input
-                    :class="`${prefixCls}-input`"
-                    :placeholder="t('common.searchText')"
-                    ref="inputRef"
-                    allow-clear
-                    @change="handleSearch"
-            >
+            <a-input :class="`${prefixCls}-input`" :placeholder="t('common.searchText')" ref="inputRef" allow-clear @change="handleSearch">
               <template #prefix>
                 <SearchOutlined />
               </template>
@@ -26,13 +20,13 @@
 
           <ul :class="`${prefixCls}-list`" v-show="!getIsNotData" ref="scrollWrap">
             <li
-                    :ref="setRefs(index)"
-                    v-for="(item, index) in searchResult"
-                    :key="item.path"
-                    :data-index="index"
-                    @mouseenter="handleMouseenter"
-                    @click="handleEnter"
-                    :class="[
+              :ref="setRefs(index)"
+              v-for="(item, index) in searchResult"
+              :key="item.path"
+              :data-index="index"
+              @mouseenter="handleMouseenter"
+              @click="handleEnter"
+              :class="[
                 `${prefixCls}-list__item`,
                 {
                   [`${prefixCls}-list__item--active`]: activeIndex === index,
@@ -84,8 +78,7 @@
   const [refs, setRefs] = useRefs();
   const { getIsMobile } = useAppInject();
 
-  const { handleSearch, searchResult, keyword, activeIndex, handleEnter, handleMouseenter } =
-          useMenuSearch(refs, scrollWrap, emit);
+  const { handleSearch, searchResult, keyword, activeIndex, handleEnter, handleMouseenter } = useMenuSearch(refs, scrollWrap, emit);
 
   const getIsNotData = computed(() => !keyword || unref(searchResult).length === 0);
 
@@ -99,13 +92,13 @@
   });
 
   watch(
-          () => props.visible,
-          (visible: boolean) => {
-            visible &&
-            nextTick(() => {
-              unref(inputRef)?.focus();
-            });
-          }
+    () => props.visible,
+    (visible: boolean) => {
+      visible &&
+        nextTick(() => {
+          unref(inputRef)?.focus();
+        });
+    }
   );
 
   function handleClose() {

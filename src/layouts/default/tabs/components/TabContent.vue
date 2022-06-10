@@ -22,7 +22,7 @@
 
   import { TabContentProps } from '../types';
 
-  import { TabsThemeEnum } from '/@/enums/appEnum'
+  import { TabsThemeEnum } from '/@/enums/appEnum';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useTabDropdown } from '../useTabDropdown';
@@ -49,34 +49,29 @@
 
       const getIsTabs = computed(() => !props.isExtra);
 
-     // updateBy:sunjianlei---updateDate:2021-09-03---修改tab切换栏样式：前缀图标类型
+      // updateBy:sunjianlei---updateDate:2021-09-03---修改tab切换栏样式：前缀图标类型
       const prefixIconType = computed(() => {
         if (props.tabItem.meta.icon) {
-          return props.tabItem.meta.icon
+          return props.tabItem.meta.icon;
         } else if (props.tabItem.path === '/dashboard/analysis') {
           // 当是首页时返回 home 图标 TODO 此处可能需要动态判断首页路径
-          return 'ant-design:home-outlined'
+          return 'ant-design:home-outlined';
         } else {
-          return 'ant-design:code'
+          return 'ant-design:code';
         }
       });
 
-      const getTrigger = computed((): ('contextmenu' | 'click' | 'hover')[] =>
-        unref(getIsTabs) ? ['contextmenu'] : ['click']
-      );
+      const getTrigger = computed((): ('contextmenu' | 'click' | 'hover')[] => (unref(getIsTabs) ? ['contextmenu'] : ['click']));
 
-      const { getDropMenuList, handleMenuEvent, handleContextMenu } = useTabDropdown(
-        props as TabContentProps,
-        getIsTabs
-      );
+      const { getDropMenuList, handleMenuEvent, handleContextMenu } = useTabDropdown(props as TabContentProps, getIsTabs);
 
       function handleContext(e) {
         props.tabItem && handleContextMenu(props.tabItem)(e);
       }
 
-      const { getTabsTheme } = useMultipleTabSetting()
+      const { getTabsTheme } = useMultipleTabSetting();
       // 是否显示图标
-      const showPrefixIcon = computed(() => unref(getTabsTheme) === TabsThemeEnum.SMOOTH)
+      const showPrefixIcon = computed(() => unref(getTabsTheme) === TabsThemeEnum.SMOOTH);
 
       return {
         prefixCls,

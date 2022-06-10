@@ -1,13 +1,7 @@
 <template>
   <div :class="prefixCls">
     <span> {{ title }}</span>
-    <Switch
-      v-bind="getBindValue"
-      @change="handleChange"
-      :disabled="disabled"
-      :checkedChildren="t('layout.setting.on')"
-      :unCheckedChildren="t('layout.setting.off')"
-    />
+    <Switch v-bind="getBindValue" @change="handleChange" :disabled="disabled" :checkedChildren="t('layout.setting.on')" :unCheckedChildren="t('layout.setting.off')" />
   </div>
 </template>
 <script lang="ts">

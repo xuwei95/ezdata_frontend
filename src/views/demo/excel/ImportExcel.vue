@@ -3,13 +3,7 @@
     <ImpExcel @success="loadDataSuccess" dateFormat="YYYY-MM-DD">
       <a-button class="m-3"> 导入Excel </a-button>
     </ImpExcel>
-    <BasicTable
-            v-for="(table, index) in tableListRef"
-            :key="index"
-            :title="table.title"
-            :columns="table.columns"
-            :dataSource="table.dataSource"
-    />
+    <BasicTable v-for="(table, index) in tableListRef" :key="index" :title="table.title" :columns="table.columns" :dataSource="table.dataSource" />
   </PageWrapper>
 </template>
 <script lang="ts">
@@ -29,7 +23,7 @@
           columns?: any[];
           dataSource?: any[];
         }[]
-        >([]);
+      >([]);
 
       function loadDataSuccess(excelDataList: ExcelData[]) {
         tableListRef.value = [];

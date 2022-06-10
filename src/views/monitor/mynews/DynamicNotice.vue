@@ -2,31 +2,31 @@
   <component :is="comp" :formData="formData" ref="compModel" v-if="comp"></component>
 </template>
 <script>
-  const modules = import.meta.glob('/@/views/monitor/mynews/*.vue')
+  const modules = import.meta.glob('/@/views/monitor/mynews/*.vue');
   export default {
     name: 'DynamicNotice',
-    data () {
+    data() {
       return {
-        compName: this.path
-      }
+        compName: this.path,
+      };
     },
     computed: {
       comp: function () {
-        if(!this.path){
+        if (!this.path) {
           return null;
         }
-        return () => modules[`/@/views/monitor/mynews/${this.path}`]
-      }
+        return () => modules[`/@/views/monitor/mynews/${this.path}`];
+      },
     },
-    props: ['path','formData'],
+    props: ['path', 'formData'],
     methods: {
-      detail () {
+      detail() {
         setTimeout(() => {
-          if(this.path){
+          if (this.path) {
             this.$refs.compModel.view(this.formData);
           }
-        }, 200)
+        }, 200);
       },
-    }
-  }
+    },
+  };
 </script>

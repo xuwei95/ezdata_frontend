@@ -27,16 +27,16 @@
       const { t } = useI18n();
 
       const getBindProps = computed(() => {
-        let obj = {}
-        if (props.isMobile){
-          obj['visible'] = false
+        let obj = {};
+        if (props.isMobile) {
+          obj['visible'] = false;
         }
-        return obj
-      })
+        return obj;
+      });
 
       function redo() {
         table.reload();
-        table.emit!('table-redo')
+        table.emit!('table-redo');
       }
 
       return { getBindProps, redo, t };

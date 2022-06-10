@@ -1,12 +1,12 @@
-import {BasicColumn} from '/@/components/Table';
-import {FormSchema} from '/@/components/Table';
-import {h} from 'vue';
-import {Icon} from '/@/components/Icon';
-import {duplicateCheck} from "../user/user.api";
-import {ajaxGetDictItems} from "./menu.api";
-import {render} from "/@/utils/common/renderUtils";
+import { BasicColumn } from '/@/components/Table';
+import { FormSchema } from '/@/components/Table';
+import { h } from 'vue';
+import { Icon } from '/@/components/Icon';
+import { duplicateCheck } from '../user/user.api';
+import { ajaxGetDictItems } from './menu.api';
+import { render } from '/@/utils/common/renderUtils';
 import { Select } from 'ant-design-vue';
-import {rules} from '/@/utils/helper/validator'
+import { rules } from '/@/utils/helper/validator';
 
 const isDir = (type) => type === 0;
 const isMenu = (type) => type === 1;
@@ -29,16 +29,16 @@ export const columns: BasicColumn[] = [
     title: '菜单类型',
     dataIndex: 'menuType',
     width: 150,
-    customRender: ({text}) => {
-      return  render.renderDict(text, 'menu_type')
-    }
+    customRender: ({ text }) => {
+      return render.renderDict(text, 'menu_type');
+    },
   },
   {
     title: '图标',
     dataIndex: 'icon',
     width: 50,
-    customRender: ({record}) => {
-      return h(Icon, {icon: record.icon});
+    customRender: ({ record }) => {
+      return h(Icon, { icon: record.icon });
     },
   },
   {
@@ -57,7 +57,7 @@ export const columns: BasicColumn[] = [
     title: '排序',
     dataIndex: 'sortNo',
     width: 50,
-  }
+  },
 ];
 
 export const searchFormSchema: FormSchema[] = [
@@ -65,8 +65,8 @@ export const searchFormSchema: FormSchema[] = [
     field: 'name',
     label: '菜单名称',
     component: 'Input',
-    colProps: {span: 8},
-  }
+    colProps: { span: 8 },
+  },
 ];
 
 export const formSchema: FormSchema[] = [
@@ -74,35 +74,38 @@ export const formSchema: FormSchema[] = [
     label: 'id',
     field: 'id',
     component: 'Input',
-    show: false
+    show: false,
   },
   {
     field: 'menuType',
     label: '菜单类型',
     component: 'RadioButtonGroup',
     defaultValue: 0,
-    componentProps: ({formActionType}) => {
+    componentProps: ({ formActionType }) => {
       return {
         options: [
-          {label: '一级菜单', value: 0},
-          {label: '子菜单', value: 1},
-          {label: '按钮/权限', value: 2},
+          { label: '一级菜单', value: 0 },
+          { label: '子菜单', value: 1 },
+          { label: '按钮/权限', value: 2 },
         ],
-        onChange: e => {
-          const {updateSchema,clearValidate} = formActionType
+        onChange: (e) => {
+          const { updateSchema, clearValidate } = formActionType;
           const label = isButton(e) ? '按钮/权限' : '菜单名称';
           //清除校验
           clearValidate();
-          updateSchema([{
-            field: 'name',
-            label: label
-          },{
-            field: 'url',
-            required: !isButton(e)
-          }]);
-        }
-      }
-    }
+          updateSchema([
+            {
+              field: 'name',
+              label: label,
+            },
+            {
+              field: 'url',
+              required: !isButton(e),
+            },
+          ]);
+        },
+      };
+    },
   },
   {
     field: 'name',
@@ -121,12 +124,12 @@ export const formSchema: FormSchema[] = [
         key: 'id',
         value: 'id',
       },
-      dropdownStyle:{
-        maxHeight:'50vh'
+      dropdownStyle: {
+        maxHeight: '50vh',
       },
-      getPopupContainer: (node) => node.parentNode
+      getPopupContainer: (node) => node.parentNode,
     },
-    ifShow: ({values}) => !isDir(values.menuType),
+    ifShow: ({ values }) => !isDir(values.menuType),
   },
   {
     field: 'url',
@@ -134,8 +137,8 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
     required: true,
     ifShow: ({ values }) => !(values.component === ComponentTypes.IFrame && values.internalOrExternal) && values.menuType !== 2,
-    dynamicRules: ({model, schema}) => {
-      return rules.duplicateCheckRule('sys_permission', 'url', model, schema, true)
+    dynamicRules: ({ model, schema }) => {
+      return rules.duplicateCheckRule('sys_permission', 'url', model, schema, true);
     },
   },
   {
@@ -143,10 +146,10 @@ export const formSchema: FormSchema[] = [
     label: '前端组件',
     component: 'Input',
     componentProps: {
-      placeholder:'请输入前端组件'
+      placeholder: '请输入前端组件',
     },
     required: true,
-    ifShow: ({values}) => !isButton(values.menuType),
+    ifShow: ({ values }) => !isButton(values.menuType),
   },
   {
     field: 'frameSrc',
@@ -162,36 +165,37 @@ export const formSchema: FormSchema[] = [
     field: 'redirect',
     label: '默认跳转地址',
     component: 'Input',
-    ifShow: ({values}) => isDir(values.menuType),
+    ifShow: ({ values }) => isDir(values.menuType),
   },
   {
     field: 'perms',
     label: '授权标识',
     component: 'Input',
-    ifShow: ({values}) => isButton(values.menuType),
-    dynamicRules: ({model}) => {
+    ifShow: ({ values }) => isButton(values.menuType),
+    dynamicRules: ({ model }) => {
       return [
         {
           required: false,
           validator: (_, value) => {
             return new Promise((resolve, reject) => {
               let params = {
-                tableName: "sys_permission",
-                fieldName: "perms",
+                tableName: 'sys_permission',
+                fieldName: 'perms',
                 fieldVal: value,
                 dataId: model.id,
               };
               duplicateCheck(params)
                 .then((res) => {
                   res.success ? resolve() : reject(res.message || '校验失败');
-                }).catch((err) => {
-                reject(err.message || '校验失败');
-              });
+                })
+                .catch((err) => {
+                  reject(err.message || '校验失败');
+                });
             });
           },
         },
       ];
-    }
+    },
   },
   {
     field: 'permsType',
@@ -201,11 +205,11 @@ export const formSchema: FormSchema[] = [
     helpMessage: ['可见/可访问(授权后可见/可访问)', '可编辑(未授权时禁用)'],
     componentProps: {
       options: [
-        {label: '可见/可访问', value: '1'},
-        {label: '可编辑', value: '2'},
+        { label: '可见/可访问', value: '1' },
+        { label: '可编辑', value: '2' },
       ],
     },
-    ifShow: ({values}) => isButton(values.menuType),
+    ifShow: ({ values }) => isButton(values.menuType),
   },
   {
     field: 'status',
@@ -214,24 +218,24 @@ export const formSchema: FormSchema[] = [
     defaultValue: '1',
     componentProps: {
       options: [
-        {label: '有效', value: '1'},
-        {label: '无效', value: '0'},
+        { label: '有效', value: '1' },
+        { label: '无效', value: '0' },
       ],
     },
-    ifShow: ({values}) => isButton(values.menuType),
+    ifShow: ({ values }) => isButton(values.menuType),
   },
   {
     field: 'icon',
     label: '菜单图标',
     component: 'IconPicker',
-    ifShow: ({values}) => !isButton(values.menuType),
+    ifShow: ({ values }) => !isButton(values.menuType),
   },
   {
     field: 'sortNo',
     label: '排序',
     component: 'InputNumber',
     defaultValue: 1,
-    ifShow: ({values}) => !isButton(values.menuType),
+    ifShow: ({ values }) => !isButton(values.menuType),
   },
   {
     field: 'route',
@@ -239,10 +243,10 @@ export const formSchema: FormSchema[] = [
     component: 'Switch',
     defaultValue: true,
     componentProps: {
-      checkedChildren: "是",
-      unCheckedChildren: "否"
+      checkedChildren: '是',
+      unCheckedChildren: '否',
     },
-    ifShow: ({values}) => !isButton(values.menuType),
+    ifShow: ({ values }) => !isButton(values.menuType),
   },
   {
     field: 'hidden',
@@ -250,10 +254,10 @@ export const formSchema: FormSchema[] = [
     component: 'Switch',
     defaultValue: 0,
     componentProps: {
-      checkedChildren: "是",
-      unCheckedChildren: "否"
+      checkedChildren: '是',
+      unCheckedChildren: '否',
     },
-    ifShow: ({values}) => !isButton(values.menuType),
+    ifShow: ({ values }) => !isButton(values.menuType),
   },
   {
     field: 'hideTab',
@@ -272,10 +276,10 @@ export const formSchema: FormSchema[] = [
     component: 'Switch',
     defaultValue: false,
     componentProps: {
-      checkedChildren: "是",
-      unCheckedChildren: "否"
+      checkedChildren: '是',
+      unCheckedChildren: '否',
     },
-    ifShow: ({values}) => !isButton(values.menuType),
+    ifShow: ({ values }) => !isButton(values.menuType),
   },
   {
     field: 'alwaysShow',
@@ -283,10 +287,10 @@ export const formSchema: FormSchema[] = [
     component: 'Switch',
     defaultValue: false,
     componentProps: {
-      checkedChildren: "是",
-      unCheckedChildren: "否"
+      checkedChildren: '是',
+      unCheckedChildren: '否',
     },
-    ifShow: ({values}) => !isButton(values.menuType),
+    ifShow: ({ values }) => !isButton(values.menuType),
   },
   {
     field: 'internalOrExternal',
@@ -294,11 +298,11 @@ export const formSchema: FormSchema[] = [
     component: 'Switch',
     defaultValue: false,
     componentProps: {
-      checkedChildren: "外部",
-      unCheckedChildren: "内部"
+      checkedChildren: '外部',
+      unCheckedChildren: '内部',
     },
-    ifShow: ({values}) => !isButton(values.menuType),
-  }
+    ifShow: ({ values }) => !isButton(values.menuType),
+  },
 ];
 
 export const dataRuleColumns: BasicColumn[] = [
@@ -316,7 +320,7 @@ export const dataRuleColumns: BasicColumn[] = [
     title: '规则值',
     dataIndex: 'ruleValue',
     width: 100,
-  }
+  },
 ];
 
 export const dataRuleSearchFormSchema: FormSchema[] = [
@@ -324,14 +328,14 @@ export const dataRuleSearchFormSchema: FormSchema[] = [
     field: 'ruleName',
     label: '规则名称',
     component: 'Input',
-    colProps: {span: 6},
+    colProps: { span: 6 },
   },
   {
     field: 'ruleValue',
     label: '规则值',
     component: 'Input',
-    colProps: {span: 6},
-  }
+    colProps: { span: 6 },
+  },
 ];
 
 export const dataRuleFormSchema: FormSchema[] = [
@@ -339,7 +343,7 @@ export const dataRuleFormSchema: FormSchema[] = [
     label: 'id',
     field: 'id',
     component: 'Input',
-    show: false
+    show: false,
   },
   {
     field: 'ruleName',
@@ -351,8 +355,8 @@ export const dataRuleFormSchema: FormSchema[] = [
     field: 'ruleColumn',
     label: '规则字段',
     component: 'Input',
-    ifShow: ({values}) => {
-      return values.ruleConditions !== 'USE_SQL_RULES'
+    ifShow: ({ values }) => {
+      return values.ruleConditions !== 'USE_SQL_RULES';
     },
   },
   {
@@ -362,7 +366,7 @@ export const dataRuleFormSchema: FormSchema[] = [
     component: 'ApiSelect',
     componentProps: {
       api: ajaxGetDictItems,
-      params:{code:'rule_conditions'},
+      params: { code: 'rule_conditions' },
       labelField: 'text',
       valueField: 'value',
       getPopupContainer: (node) => document.body,
@@ -381,9 +385,9 @@ export const dataRuleFormSchema: FormSchema[] = [
     defaultValue: '1',
     componentProps: {
       options: [
-        {label: '无效', value: '0'},
-        {label: '有效', value: '1'},
+        { label: '无效', value: '0' },
+        { label: '有效', value: '1' },
       ],
-    }
-  }
+    },
+  },
 ];

@@ -23,12 +23,11 @@ enum Api {
   jvmGcLiveDataSize = '/actuator/metrics/jvm.gc.live.data.size',
   jvmGcPause = '/actuator/metrics/jvm.gc.pause',
 
-
   tomcatSessionsCreated = '/actuator/metrics/tomcat.sessions.created',
   tomcatSessionsExpired = '/actuator/metrics/tomcat.sessions.expired',
   tomcatSessionsActiveCurrent = '/actuator/metrics/tomcat.sessions.active.current',
   tomcatSessionsActiveMax = '/actuator/metrics/tomcat.sessions.active.max',
-  tomcatSessionsRejected = '/actuator/metrics/tomcat.sessions.rejected'
+  tomcatSessionsRejected = '/actuator/metrics/tomcat.sessions.rejected',
 }
 
 /**
@@ -51,7 +50,6 @@ export const getCpuUsage = () => {
 export const getProcessStartTime = () => {
   return defHttp.get({ url: Api.processStartTime }, { isTransformResponse: false });
 };
-
 
 /**
  * 查询应用已运行时间
@@ -81,7 +79,6 @@ export const getJvmMemoryCommitted = () => {
   return defHttp.get({ url: Api.jvmMemoryCommitted }, { isTransformResponse: false });
 };
 
-
 /**
  * JVM 已用内存
  */
@@ -89,14 +86,12 @@ export const getJvmMemoryUsed = () => {
   return defHttp.get({ url: Api.jvmMemoryUsed }, { isTransformResponse: false });
 };
 
-
 /**
  * JVM 缓冲区已用内存
  */
 export const getJvmBufferMemoryUsed = () => {
   return defHttp.get({ url: Api.jvmBufferMemoryUsed }, { isTransformResponse: false });
 };
-
 
 /**
  *JVM 当前缓冲区数量
@@ -112,14 +107,12 @@ export const getJvmThreadsDaemon = () => {
   return defHttp.get({ url: Api.jvmThreadsDaemon }, { isTransformResponse: false });
 };
 
-
 /**
  *JVM 当前活跃线程数量
  */
 export const getJvmThreadsLive = () => {
   return defHttp.get({ url: Api.jvmThreadsLive }, { isTransformResponse: false });
 };
-
 
 /**
  *JVM 峰值线程数量
@@ -135,14 +128,12 @@ export const getJvmClassesLoaded = () => {
   return defHttp.get({ url: Api.jvmClassesLoaded }, { isTransformResponse: false });
 };
 
-
 /**
  *JVM 未加载 Class 数量
  */
 export const getJvmClassesUnloaded = () => {
   return defHttp.get({ url: Api.jvmClassesUnloaded }, { isTransformResponse: false });
 };
-
 
 /**
  **GC 时, 年轻代分配的内存空间
@@ -151,7 +142,6 @@ export const getJvmGcMemoryAllocated = () => {
   return defHttp.get({ url: Api.jvmGcMemoryAllocated }, { isTransformResponse: false });
 };
 
-
 /**
  *GC 时, 老年代分配的内存空间
  */
@@ -159,14 +149,12 @@ export const getJvmGcMemoryPromoted = () => {
   return defHttp.get({ url: Api.jvmGcMemoryPromoted }, { isTransformResponse: false });
 };
 
-
 /**
  *GC 时, 老年代的最大内存空间
  */
 export const getJvmGcMaxDataSize = () => {
   return defHttp.get({ url: Api.jvmGcMaxDataSize }, { isTransformResponse: false });
 };
-
 
 /**
  *FullGC 时, 老年代的内存空间
@@ -182,14 +170,12 @@ export const getJvmGcPause = () => {
   return defHttp.get({ url: Api.jvmGcPause }, { isTransformResponse: false });
 };
 
-
 /**
  *tomcat 已创建 session 数
  */
 export const getTomcatSessionsCreated = () => {
   return defHttp.get({ url: Api.tomcatSessionsCreated }, { isTransformResponse: false });
 };
-
 
 /**
  *tomcat 已过期 session 数
@@ -198,14 +184,12 @@ export const getTomcatSessionsExpired = () => {
   return defHttp.get({ url: Api.tomcatSessionsExpired }, { isTransformResponse: false });
 };
 
-
 /**
  *tomcat 当前活跃 session 数
  */
 export const getTomcatSessionsActiveCurrent = () => {
   return defHttp.get({ url: Api.tomcatSessionsActiveCurrent }, { isTransformResponse: false });
 };
-
 
 /**
  *tomcat 活跃 session 数峰值
@@ -221,7 +205,6 @@ export const getTomcatSessionsRejected = () => {
   return defHttp.get({ url: Api.tomcatSessionsRejected }, { isTransformResponse: false });
 };
 
-
 export const getMoreInfo = (infoType) => {
   if (infoType == '1') {
     return {};
@@ -236,7 +219,6 @@ export const getMoreInfo = (infoType) => {
     };
   }
 };
-
 
 export const getTextInfo = (infoType) => {
   if (infoType == '1') {
@@ -288,20 +270,13 @@ export const getTextInfo = (infoType) => {
   }
 };
 
-
 /**
  * 查询cpu数量
  * @param params
  */
 export const getServerInfo = (infoType) => {
   if (infoType == '1') {
-    return Promise.all([
-      getCpuCount(),
-      getCpuUsage(),
-      getProcessStartTime(),
-      getProcessUptime(),
-      getProcessCpuUsage(),
-    ]);
+    return Promise.all([getCpuCount(), getCpuUsage(), getProcessStartTime(), getProcessUptime(), getProcessCpuUsage()]);
   }
   if (infoType == '2') {
     return Promise.all([
@@ -323,14 +298,6 @@ export const getServerInfo = (infoType) => {
     ]);
   }
   if (infoType == '3') {
-    return Promise.all([
-      getTomcatSessionsActiveCurrent(),
-      getTomcatSessionsActiveMax(),
-      getTomcatSessionsCreated(),
-      getTomcatSessionsExpired(),
-      getTomcatSessionsRejected(),
-    ]);
+    return Promise.all([getTomcatSessionsActiveCurrent(), getTomcatSessionsActiveMax(), getTomcatSessionsCreated(), getTomcatSessionsExpired(), getTomcatSessionsRejected()]);
   }
-
 };
-

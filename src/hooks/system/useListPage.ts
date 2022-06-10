@@ -1,46 +1,46 @@
-import { reactive, ref, Ref } from 'vue'
-import { merge } from 'lodash-es'
-import { DynamicProps } from '/#/utils'
-import { BasicTableProps, TableActionType, useTable } from '/@/components/Table'
-import { ColEx } from '/@/components/Form/src/types'
-import { FormActionType } from '/@/components/Form'
-import { useMessage } from '/@/hooks/web/useMessage'
-import { useMethods } from '/@/hooks/system/useMethods'
-import { useDesign } from '/@/hooks/web/useDesign'
-import { filterObj } from '/@/utils/common/compUtils'
-const { handleExportXls, handleImportXls } = useMethods()
+import { reactive, ref, Ref } from 'vue';
+import { merge } from 'lodash-es';
+import { DynamicProps } from '/#/utils';
+import { BasicTableProps, TableActionType, useTable } from '/@/components/Table';
+import { ColEx } from '/@/components/Form/src/types';
+import { FormActionType } from '/@/components/Form';
+import { useMessage } from '/@/hooks/web/useMessage';
+import { useMethods } from '/@/hooks/system/useMethods';
+import { useDesign } from '/@/hooks/web/useDesign';
+import { filterObj } from '/@/utils/common/compUtils';
+const { handleExportXls, handleImportXls } = useMethods();
 
 // 定义 useListPage 方法所需参数
 interface ListPageOptions {
   // 样式作用域范围
-  designScope?: string,
+  designScope?: string;
   // 【必填】表格参数配置
-  tableProps: TableProps,
+  tableProps: TableProps;
   // 分页
-  pagination?: boolean,
+  pagination?: boolean;
   // 导出配置
   exportConfig?: {
-    url: string,
+    url: string;
     // 导出文件名
-    name?: string | (() => string),
+    name?: string | (() => string);
     //导出参数
-    params?: object,
-  }
+    params?: object;
+  };
   // 导入配置
   importConfig?: {
-    url: string,
+    url: string;
     // 导出成功后的回调
-    success?: (fileInfo?: any) => void
-  }
+    success?: (fileInfo?: any) => void;
+  };
 }
 
 interface IDoRequestOptions {
   // 是否显示确认对话框，默认 true
-  confirm?: boolean,
+  confirm?: boolean;
   // 是否自动刷新表格，默认 true
-  reload?: boolean,
+  reload?: boolean;
   // 是否自动清空选择，默认 true
-  clearSelection?: boolean,
+  clearSelection?: boolean;
 }
 
 /**
@@ -49,46 +49,46 @@ interface IDoRequestOptions {
  * @param options
  */
 export function useListPage(options: ListPageOptions) {
-  const $message = useMessage()
-  let $design = {} as ReturnType<typeof useDesign>
+  const $message = useMessage();
+  let $design = {} as ReturnType<typeof useDesign>;
   if (options.designScope) {
-    $design = useDesign(options.designScope)
+    $design = useDesign(options.designScope);
   }
 
-  const tableContext = useListTable(options.tableProps)
+  const tableContext = useListTable(options.tableProps);
 
-  const [, { getForm, reload, setLoading }, { selectedRowKeys }] = tableContext
+  const [, { getForm, reload, setLoading }, { selectedRowKeys }] = tableContext;
 
   // 导出 excel
   async function onExportXls() {
     //update-begin---author:wangshuai ---date:20220411  for：导出新增自定义参数------------
-    let { url, name,params } = options?.exportConfig ?? {}
+    let { url, name, params } = options?.exportConfig ?? {};
     if (url) {
-      let title = typeof name === 'function' ? name() : name
-      let paramsForm = await getForm().validate()
+      let title = typeof name === 'function' ? name() : name;
+      let paramsForm = await getForm().validate();
       //如果参数不为空，则整合到一起
-      if(params){
-        paramsForm = Object.assign({},paramsForm,params);
+      if (params) {
+        paramsForm = Object.assign({}, paramsForm, params);
       }
-      if(selectedRowKeys.value && selectedRowKeys.value.length>0){
-        paramsForm['selections'] = selectedRowKeys.value.join(",")
+      if (selectedRowKeys.value && selectedRowKeys.value.length > 0) {
+        paramsForm['selections'] = selectedRowKeys.value.join(',');
       }
-      return handleExportXls(title as string, url,filterObj(paramsForm))
-     //update-end---author:wangshuai ---date:20220411  for：导出新增自定义参数--------------
+      return handleExportXls(title as string, url, filterObj(paramsForm));
+      //update-end---author:wangshuai ---date:20220411  for：导出新增自定义参数--------------
     } else {
-      $message.createMessage.warn('没有传递 exportConfig.url 参数')
-      return Promise.reject()
+      $message.createMessage.warn('没有传递 exportConfig.url 参数');
+      return Promise.reject();
     }
   }
 
   // 导入 excel
   function onImportXls(file) {
-    let { url,success } = options?.importConfig ?? {}
+    let { url, success } = options?.importConfig ?? {};
     if (url) {
-      return handleImportXls(file, url, success||reload)
+      return handleImportXls(file, url, success || reload);
     } else {
-      $message.createMessage.warn('没有传递 importConfig.url 参数')
-      return Promise.reject()
+      $message.createMessage.warn('没有传递 importConfig.url 参数');
+      return Promise.reject();
     }
   }
 
@@ -101,21 +101,21 @@ export function useListPage(options: ListPageOptions) {
     return new Promise((resolve, reject) => {
       const execute = async () => {
         try {
-          setLoading(true)
-          const res = await api()
+          setLoading(true);
+          const res = await api();
           if (options?.reload ?? true) {
-            reload()
+            reload();
           }
           if (options?.clearSelection ?? true) {
-            selectedRowKeys.value = []
+            selectedRowKeys.value = [];
           }
-          resolve(res)
+          resolve(res);
         } catch (e) {
-          reject(e)
+          reject(e);
         } finally {
-          setLoading(false)
+          setLoading(false);
         }
-      }
+      };
       if (options?.confirm ?? true) {
         $message.createConfirm({
           iconType: 'warning',
@@ -123,16 +123,16 @@ export function useListPage(options: ListPageOptions) {
           content: '确定要删除吗？',
           onOk: () => execute(),
           onCancel: () => reject(),
-        })
+        });
       } else {
-        execute()
+        execute();
       }
-    })
+    });
   }
 
   /** 执行单个删除操作 */
   function doDeleteRecord(api: () => Promise<any>) {
-    return doRequest(api, { confirm: false, clearSelection: false })
+    return doRequest(api, { confirm: false, clearSelection: false });
   }
 
   return {
@@ -143,7 +143,7 @@ export function useListPage(options: ListPageOptions) {
     doRequest,
     doDeleteRecord,
     tableContext,
-  }
+  };
 }
 
 // 定义表格所需参数
@@ -159,13 +159,13 @@ type UseTableMethod = TableActionType & {
  */
 export function useListTable(tableProps: TableProps): [
   (instance: TableActionType, formInstance: UseTableMethod) => void,
-    TableActionType & {
+  TableActionType & {
     getForm: () => FormActionType;
   },
   {
-    rowSelection: any,
-    selectedRows: Ref<Recordable[]>
-    selectedRowKeys: Ref<any[]>
+    rowSelection: any;
+    selectedRows: Ref<Recordable[]>;
+    selectedRowKeys: Ref<any[]>;
   }
 ] {
   // 自适应列配置
@@ -176,7 +176,7 @@ export function useListTable(tableProps: TableProps): [
     lg: 8, // ≥992px
     xl: 8, // ≥1200px
     xxl: 6, // ≥1600px
-  }
+  };
   const defaultTableProps: TableProps = {
     rowKey: 'id',
     // 使用查询条件区域
@@ -243,37 +243,37 @@ export function useListTable(tableProps: TableProps): [
       dataIndex: 'action',
       slots: { customRender: 'action' },
     },
-  }
+  };
   // 合并用户个性化配置
   if (tableProps) {
     // merge 方法可深度合并对象
-    merge(defaultTableProps, tableProps)
+    merge(defaultTableProps, tableProps);
   }
 
   // 发送请求之前调用的方法
   function beforeFetch(params) {
     // 默认以 createTime 降序排序
-    return Object.assign({ column: 'createTime', order: 'desc' }, params)
+    return Object.assign({ column: 'createTime', order: 'desc' }, params);
   }
 
   // 合并方法
-  Object.assign(defaultTableProps, { beforeFetch })
+  Object.assign(defaultTableProps, { beforeFetch });
   if (typeof tableProps.beforeFetch === 'function') {
     defaultTableProps.beforeFetch = function (params) {
-      params = beforeFetch(params)
+      params = beforeFetch(params);
       // @ts-ignore
-      tableProps.beforeFetch(params)
-      return params
-    }
+      tableProps.beforeFetch(params);
+      return params;
+    };
   }
 
   // 当前选择的行
-  const selectedRowKeys = ref<any[]>([])
+  const selectedRowKeys = ref<any[]>([]);
   // 选择的行记录
-  const selectedRows = ref<Recordable[]>([])
+  const selectedRows = ref<Recordable[]>([]);
 
   // 表格选择列配置
-  const rowSelection: any = tableProps?.rowSelection ?? {}
+  const rowSelection: any = tableProps?.rowSelection ?? {};
   const defaultRowSelection = reactive({
     ...rowSelection,
     type: rowSelection.type ?? 'checkbox',
@@ -282,14 +282,14 @@ export function useListTable(tableProps: TableProps): [
     selectedRows: selectedRows,
     selectedRowKeys: selectedRowKeys,
     onChange(...args) {
-      selectedRowKeys.value = args[0]
-      selectedRows.value = args[1]
+      selectedRowKeys.value = args[0];
+      selectedRows.value = args[1];
       if (typeof rowSelection.onChange === 'function') {
-        rowSelection.onChange(...args)
+        rowSelection.onChange(...args);
       }
     },
-  })
-  delete defaultTableProps.rowSelection
+  });
+  delete defaultTableProps.rowSelection;
 
   return [
     ...useTable(defaultTableProps),
@@ -298,5 +298,5 @@ export function useListTable(tableProps: TableProps): [
       selectedRowKeys,
       rowSelection: defaultRowSelection,
     },
-  ]
+  ];
 }

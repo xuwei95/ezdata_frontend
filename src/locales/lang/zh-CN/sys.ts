@@ -21,7 +21,7 @@ export default {
     errMsg504: '网络超时!',
     errMsg505: 'http版本不支持该请求!',
 
-    registerMsg:'注册成功',
+    registerMsg: '注册成功',
   },
   app: { logoutTip: '温馨提醒', logoutMessage: '是否确认退出系统?', menuLoading: '菜单加载中...' },
   errorLog: {
@@ -100,6 +100,6 @@ export default {
     smsCode: '短信验证码',
     mobile: '手机号码',
 
-    subTitleText:'{0}秒后返回登录页面',
+    subTitleText: '{0}秒后返回登录页面',
   },
 };

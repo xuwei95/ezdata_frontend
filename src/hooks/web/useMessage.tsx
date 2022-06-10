@@ -45,7 +45,7 @@ function getIcon(iconType: string) {
     } else {
       return <CloseCircleFilled class="modal-icon-error" />;
     }
-  } catch(e) {
+  } catch (e) {
     console.log(e);
   }
 }
@@ -57,7 +57,7 @@ function renderContent({ content }: Pick<ModalOptionsEx, 'content'>) {
     } else {
       return content;
     }
-  } catch(e) {
+  } catch (e) {
     console.log(e);
     return content;
   }
@@ -75,7 +75,7 @@ function createConfirm(options: ModalOptionsEx): ReturnType<ModalFunc> {
     ...options,
     content: renderContent(options),
   };
-  return Modal.confirm(opt)
+  return Modal.confirm(opt);
 }
 
 const getBaseOptions = () => {

@@ -1,8 +1,8 @@
-import { Ref } from 'vue'
-import { duplicateCheck } from '/@/views/system/user/user.api'
-import { BasicColumn, FormSchema } from '/@/components/Table'
-import {DescItem} from "/@/components/Description";
-import {findTree} from "/@/utils/common/compUtils";
+import { Ref } from 'vue';
+import { duplicateCheck } from '/@/views/system/user/user.api';
+import { BasicColumn, FormSchema } from '/@/components/Table';
+import { DescItem } from '/@/components/Description';
+import { findTree } from '/@/utils/common/compUtils';
 
 // 用户信息 columns
 export const userInfoColumns: BasicColumn[] = [
@@ -19,7 +19,7 @@ export const userInfoColumns: BasicColumn[] = [
   {
     title: '部门',
     dataIndex: 'orgCode',
-     width: 200,
+    width: 200,
   },
   {
     title: '性别',
@@ -31,7 +31,7 @@ export const userInfoColumns: BasicColumn[] = [
     dataIndex: 'phone',
     width: 120,
   },
-]
+];
 
 // 用户信息查询条件表单
 export const userInfoSearchFormSchema: FormSchema[] = [
@@ -40,7 +40,7 @@ export const userInfoSearchFormSchema: FormSchema[] = [
     label: '用户账号',
     component: 'Input',
   },
-]
+];
 
 // 部门角色 columns
 export const departRoleColumns: BasicColumn[] = [
@@ -64,7 +64,7 @@ export const departRoleColumns: BasicColumn[] = [
     dataIndex: 'description',
     width: 100,
   },
-]
+];
 
 // 部门角色查询条件表单
 export const departRoleSearchFormSchema: FormSchema[] = [
@@ -73,7 +73,7 @@ export const departRoleSearchFormSchema: FormSchema[] = [
     label: '部门角色名称',
     component: 'Input',
   },
-]
+];
 
 // 部门角色弹窗form表单
 export const departRoleModalFormSchema: FormSchema[] = [
@@ -96,7 +96,7 @@ export const departRoleModalFormSchema: FormSchema[] = [
     field: 'roleCode',
     label: '部门角色编码',
     component: 'Input',
-    dynamicDisabled: ({values}) => {
+    dynamicDisabled: ({ values }) => {
       return !!values.id;
     },
     dynamicRules: ({ model }) => {
@@ -106,7 +106,7 @@ export const departRoleModalFormSchema: FormSchema[] = [
         {
           validator: (_, value) => {
             if (/[\u4E00-\u9FA5]/g.test(value)) {
-              return Promise.reject('部门角色编码不可输入汉字！')
+              return Promise.reject('部门角色编码不可输入汉字！');
             }
             return new Promise((resolve, reject) => {
               let params = {
@@ -114,27 +114,27 @@ export const departRoleModalFormSchema: FormSchema[] = [
                 fieldName: 'role_code',
                 fieldVal: value,
                 dataId: model.id,
-              }
-              duplicateCheck(params).then((res) => {
-                res.success ? resolve() : reject(res.message || '校验失败')
-              }).catch((err) => {
-                reject(err.message || '验证失败')
-              })
-            })
+              };
+              duplicateCheck(params)
+                .then((res) => {
+                  res.success ? resolve() : reject(res.message || '校验失败');
+                })
+                .catch((err) => {
+                  reject(err.message || '验证失败');
+                });
+            });
           },
         },
-      ]
+      ];
     },
   },
   {
     field: 'description',
     label: '描述',
     component: 'Input',
-    rules: [
-      { min: 0, max: 126, message: '长度不能超过 126 个字符', trigger: 'blur' },
-    ],
+    rules: [{ min: 0, max: 126, message: '长度不能超过 126 个字符', trigger: 'blur' }],
   },
-]
+];
 
 // 基本信息form
 export function useBaseInfoForm(treeData: Ref<any[]>) {
@@ -148,10 +148,10 @@ export function useBaseInfoForm(treeData: Ref<any[]>) {
       label: '上级部门',
       render(val) {
         if (val) {
-          let data = findTree(treeData.value, (item) => item.key == val)
-          return data?.title ?? val
+          let data = findTree(treeData.value, (item) => item.key == val);
+          return data?.title ?? val;
         }
-        return val
+        return val;
       },
     },
     {
@@ -163,13 +163,13 @@ export function useBaseInfoForm(treeData: Ref<any[]>) {
       label: '机构类型',
       render(val) {
         if (val === '1') {
-          return '公司'
+          return '公司';
         } else if (val === '2') {
-          return '部门'
+          return '部门';
         } else if (val === '3') {
-          return '岗位'
+          return '岗位';
         }
-        return val
+        return val;
       },
     },
     {
@@ -189,7 +189,7 @@ export function useBaseInfoForm(treeData: Ref<any[]>) {
       field: 'memo',
       label: '备注',
     },
-  ]
+  ];
 
-  return {descItems}
+  return { descItems };
 }

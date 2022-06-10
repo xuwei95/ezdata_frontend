@@ -2,7 +2,7 @@ import componentSetting from '/@/settings/componentSetting';
 
 const { table } = componentSetting;
 
-const { pageSizeOptions, defaultPageSize,  defaultSize, fetchSetting, defaultSortFn, defaultFilterFn } = table;
+const { pageSizeOptions, defaultPageSize, defaultSize, fetchSetting, defaultSortFn, defaultFilterFn } = table;
 
 export const ROW_KEY = 'key';
 

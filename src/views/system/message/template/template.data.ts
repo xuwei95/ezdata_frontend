@@ -1,5 +1,5 @@
-import { BasicColumn, FormSchema } from '/@/components/Table'
-import { rules } from '/@/utils/helper/validator'
+import { BasicColumn, FormSchema } from '/@/components/Table';
+import { rules } from '/@/utils/helper/validator';
 
 export const columns: BasicColumn[] = [
   {
@@ -23,21 +23,21 @@ export const columns: BasicColumn[] = [
     width: 100,
     customRender: function ({ text }) {
       if (text == '1') {
-        return '短信'
+        return '短信';
       }
       if (text == '2') {
-        return '邮件'
+        return '邮件';
       }
       if (text == '3') {
-        return '微信'
+        return '微信';
       }
       if (text == '4') {
-        return '系统'
+        return '系统';
       }
-      return text
+      return text;
     },
   },
-]
+];
 
 export const searchFormSchema: FormSchema[] = [
   {
@@ -58,7 +58,7 @@ export const searchFormSchema: FormSchema[] = [
       dictCode: 'msgType',
     },
   },
-]
+];
 
 export const formSchemas: FormSchema[] = [
   {
@@ -78,15 +78,11 @@ export const formSchemas: FormSchema[] = [
     field: 'templateCode',
     component: 'Input',
     dynamicRules: ({ model, schema }) => {
-      return [
-        { required: true, message: '请输入模板编码！' },
-        ...rules.duplicateCheckRule('sys_sms_template', 'template_code', model, schema, true),
-      ]
+      return [{ required: true, message: '请输入模板编码！' }, ...rules.duplicateCheckRule('sys_sms_template', 'template_code', model, schema, true)];
     },
     // 编辑模式下不可修改编码
     dynamicDisabled: (params) => !!params.values.id,
-  }
-  ,
+  },
   {
     label: '模板类型',
     field: 'templateType',
@@ -108,7 +104,7 @@ export const formSchemas: FormSchema[] = [
       },
     },
     ifShow: ({ values }) => {
-      return !['2', '4'].includes(values.templateType)
+      return !['2', '4'].includes(values.templateType);
     },
   },
 
@@ -117,10 +113,10 @@ export const formSchemas: FormSchema[] = [
     field: 'templateContent',
     component: 'JEditor',
     ifShow: ({ values }) => {
-      return ['2', '4'].includes(values.templateType)
+      return ['2', '4'].includes(values.templateType);
     },
   },
-]
+];
 
 export const sendTestFormSchemas: FormSchema[] = [
   {
@@ -165,4 +161,4 @@ export const sendTestFormSchemas: FormSchema[] = [
     component: 'Input',
     required: true,
   },
-]
+];

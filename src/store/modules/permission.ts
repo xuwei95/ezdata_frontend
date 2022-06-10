@@ -6,7 +6,7 @@ import { useI18n } from '/@/hooks/web/useI18n';
 import { useUserStore } from './user';
 import { useAppStoreWithOut } from './app';
 import { toRaw } from 'vue';
-import {transformObjToRoute, flatMultiLevelRoutes, addSlashToRouteComponent} from '/@/router/helper/routeHelper';
+import { transformObjToRoute, flatMultiLevelRoutes, addSlashToRouteComponent } from '/@/router/helper/routeHelper';
 import { transformRouteToMenu } from '/@/router/helper/menuHelper';
 
 import projectSetting from '/@/settings/projectSetting';
@@ -27,14 +27,14 @@ import { PageEnum } from '/@/enums/pageEnum';
 // 系统权限
 interface AuthItem {
   // 菜单权限编码，例如：“sys:schedule:list,sys:schedule:info”,多个逗号隔开
-  action: string,
+  action: string;
   // 权限策略1显示2禁用
-  type: string | number,
+  type: string | number;
   // 权限状态(0无效1有效)
-  status: string | number,
+  status: string | number;
   // 权限名称
-  describe?: string,
-  isAuth?: boolean,
+  describe?: string;
+  isAuth?: boolean;
 }
 
 interface PermissionState {
@@ -48,11 +48,11 @@ interface PermissionState {
   backMenuList: Menu[];
   frontMenuList: Menu[];
   // 用户所拥有的权限
-  authList: AuthItem[],
+  authList: AuthItem[];
   // 全部权限配置
-  allAuthList: AuthItem[],
+  allAuthList: AuthItem[];
   // 系统安全模式
-  sysSafeMode: boolean,
+  sysSafeMode: boolean;
 }
 export const usePermissionStore = defineStore({
   id: 'app-permission',
@@ -116,9 +116,9 @@ export const usePermissionStore = defineStore({
     },
     async changePermissionCode() {
       const systemPermission = await getPermCode();
-      const codeList = systemPermission.codeList
+      const codeList = systemPermission.codeList;
       this.setPermCodeList(codeList);
-      this.setAuthData(systemPermission)
+      this.setAuthData(systemPermission);
     },
     async buildRoutesAction(): Promise<AppRouteRecordRaw[]> {
       const { t } = useI18n();
@@ -211,30 +211,35 @@ export const usePermissionStore = defineStore({
             this.changePermissionCode();
             routeList = (await getMenuList()) as AppRouteRecordRaw[];
             // update-begin----author:sunjianlei---date:20220315------for: 判断是否是 vue3 版本的菜单 ---
-            let hasIndex: boolean = false
-            let hasIcon: boolean = false
+            let hasIndex: boolean = false;
+            let hasIcon: boolean = false;
             for (let menuItem of routeList) {
               // 条件1：判断组件是否是 layouts/default/index
               if (!hasIndex) {
-                hasIndex = menuItem.component === 'layouts/default/index'
+                hasIndex = menuItem.component === 'layouts/default/index';
               }
               // 条件2：判断图标是否带有 冒号
               if (!hasIcon) {
-                hasIcon = !!menuItem.meta?.icon?.includes(':')
+                hasIcon = !!menuItem.meta?.icon?.includes(':');
               }
               // 满足任何一个条件都直接跳出循环
               if (hasIcon || hasIndex) {
-                break
+                break;
               }
             }
             // 两个条件都不满足，就弹出提示框
             if (!hasIcon && !hasIndex) {
               // 延迟1.5秒之后再出现提示，否则提示框出不来
-              setTimeout(() => createWarningModal({
-                title: '提示',
-                content: '检测到你可能使用了<b>非vue3版本</b>的数据库表，这将会导致菜单或其他功能出现异常，请更换成vue3版本的数据库表后刷新。'
-                  + '<br>文档地址：<a href="http://vue3.jeecg.com/2671576" target="_blank">http://vue3.jeecg.com/2671576</a>',
-              }), 1500)
+              setTimeout(
+                () =>
+                  createWarningModal({
+                    title: '提示',
+                    content:
+                      '检测到你可能使用了<b>非vue3版本</b>的数据库表，这将会导致菜单或其他功能出现异常，请更换成vue3版本的数据库表后刷新。' +
+                      '<br>文档地址：<a href="http://vue3.jeecg.com/2671576" target="_blank">http://vue3.jeecg.com/2671576</a>',
+                  }),
+                1500
+              );
             }
             // update-end----author:sunjianlei---date:20220315------for: 判断是否是 vue3 版本的菜单 ---
           } catch (error) {
@@ -263,15 +268,15 @@ export const usePermissionStore = defineStore({
       return routes;
     },
     setAuthData(systemPermission) {
-      this.authList = systemPermission.auth
-      this.allAuthList = systemPermission.allAuth
-      this.sysSafeMode = systemPermission.sysSafeMode
+      this.authList = systemPermission.auth;
+      this.allAuthList = systemPermission.allAuth;
+      this.sysSafeMode = systemPermission.sysSafeMode;
     },
     setAuthList(authList: AuthItem[]) {
-      this.authList = authList
+      this.authList = authList;
     },
     setAllAuthList(authList: AuthItem[]) {
-      this.allAuthList = authList
+      this.allAuthList = authList;
     },
   },
 });

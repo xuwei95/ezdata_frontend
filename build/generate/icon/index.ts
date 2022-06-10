@@ -51,21 +51,14 @@ async function generateIcon() {
         if (data) {
           const { prefix } = data;
           const isLocal = useType === 'local';
-          const icons = Object.keys(data.icons).map(
-            (item) => `${isLocal ? prefix + ':' : ''}${item}`
-          );
+          const icons = Object.keys(data.icons).map((item) => `${isLocal ? prefix + ':' : ''}${item}`);
 
-          await fs.writeFileSync(
-            path.join(output, `icons.data.ts`),
-            `export default ${isLocal ? JSON.stringify(icons) : JSON.stringify({ prefix, icons })}`
-          );
+          await fs.writeFileSync(path.join(output, `icons.data.ts`), `export default ${isLocal ? JSON.stringify(icons) : JSON.stringify({ prefix, icons })}`);
           prefixSet.push(prefix);
         }
       }
       fs.emptyDir(path.join(process.cwd(), 'node_modules/.vite'));
-      console.log(
-        `✨ ${chalk.cyan(`[${pkg.name}]`)}` + ' - Icon generated successfully:' + `[${prefixSet}]`
-      );
+      console.log(`✨ ${chalk.cyan(`[${pkg.name}]`)}` + ' - Icon generated successfully:' + `[${prefixSet}]`);
     });
 }
 

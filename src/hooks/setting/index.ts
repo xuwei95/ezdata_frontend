@@ -27,13 +27,13 @@ export const useGlobSetting = (): Readonly<GlobConfig> => {
     domainUrl: VITE_GLOB_DOMAIN_URL,
     apiUrl: VITE_GLOB_API_URL,
     shortName: VITE_GLOB_APP_SHORT_NAME,
-    openSso:VITE_GLOB_APP_OPEN_SSO,
-    openQianKun:VITE_GLOB_APP_OPEN_QIANKUN,
-    casBaseUrl:VITE_GLOB_APP_CAS_BASE_URL,
+    openSso: VITE_GLOB_APP_OPEN_SSO,
+    openQianKun: VITE_GLOB_APP_OPEN_QIANKUN,
+    casBaseUrl: VITE_GLOB_APP_CAS_BASE_URL,
     urlPrefix: VITE_GLOB_API_URL_PREFIX,
     uploadUrl: VITE_GLOB_DOMAIN_URL,
     viewUrl: VITE_GLOB_ONLINE_VIEW_URL,
   };
-  window._CONFIG['domianURL'] = VITE_GLOB_DOMAIN_URL
+  window._CONFIG['domianURL'] = VITE_GLOB_DOMAIN_URL;
   return glob as Readonly<GlobConfig>;
 };

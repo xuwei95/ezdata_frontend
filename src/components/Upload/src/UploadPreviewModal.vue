@@ -1,12 +1,5 @@
 <template>
-  <BasicModal
-          width="800px"
-          :title="t('component.upload.preview')"
-          wrapClassName="upload-preview-modal"
-          v-bind="$attrs"
-          @register="register"
-          :showOkBtn="false"
-  >
+  <BasicModal width="800px" :title="t('component.upload.preview')" wrapClassName="upload-preview-modal" v-bind="$attrs" @register="register" :showOkBtn="false">
     <FileList :dataSource="fileListRef" :columns="columns" :actionColumn="actionColumn" />
   </BasicModal>
 </template>
@@ -32,20 +25,20 @@
 
       const fileListRef = ref<PreviewFileItem[]>([]);
       watch(
-              () => props.value,
-              (value) => {
-                if (!isArray(value)) value = [];
-                fileListRef.value = value
-                        .filter((item) => !!item)
-                        .map((item) => {
-                          return {
-                            url: item,
-                            type: item.split('.').pop() || '',
-                            name: item.split('/').pop() || '',
-                          };
-                        });
-              },
-              { immediate: true }
+        () => props.value,
+        (value) => {
+          if (!isArray(value)) value = [];
+          fileListRef.value = value
+            .filter((item) => !!item)
+            .map((item) => {
+              return {
+                url: item,
+                type: item.split('.').pop() || '',
+                name: item.split('/').pop() || '',
+              };
+            });
+        },
+        { immediate: true }
       );
 
       // 删除
@@ -55,8 +48,8 @@
           const removed = fileListRef.value.splice(index, 1);
           emit('delete', removed[0].url);
           emit(
-                  'list-change',
-                  fileListRef.value.map((item) => item.url)
+            'list-change',
+            fileListRef.value.map((item) => item.url)
           );
         }
       }

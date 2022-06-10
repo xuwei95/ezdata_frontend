@@ -16,7 +16,7 @@ export const columns: BasicColumn[] = [
     title: '创建时间',
     dataIndex: 'createTime',
     width: 180,
-  }
+  },
 ];
 
 export const searchFormSchema: FormSchema[] = [
@@ -25,7 +25,7 @@ export const searchFormSchema: FormSchema[] = [
     label: '名称',
     component: 'Input',
     colProps: { span: 8 },
-  }
+  },
 ];
 
 export const formSchema: FormSchema[] = [

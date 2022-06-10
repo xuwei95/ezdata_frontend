@@ -6,14 +6,14 @@ import { dateUtil } from '/@/utils/dateUtil';
  * @param props
  * @param values
  */
-export function handleRangeValue(props, values){
-    //判断是否配置并处理fieldMapToTime
-    const fieldMapToTime = unref(props)?.fieldMapToTime;
-    fieldMapToTime && (values = handleRangeTimeValue(props, values));
-    //判断是否配置并处理fieldMapToNumber
-    const fieldMapToNumber = unref(props)?.fieldMapToNumber;
-    fieldMapToNumber && (values =handleRangeNumberValue(props, values));
-    return values;
+export function handleRangeValue(props, values) {
+  //判断是否配置并处理fieldMapToTime
+  const fieldMapToTime = unref(props)?.fieldMapToTime;
+  fieldMapToTime && (values = handleRangeTimeValue(props, values));
+  //判断是否配置并处理fieldMapToNumber
+  const fieldMapToNumber = unref(props)?.fieldMapToNumber;
+  fieldMapToNumber && (values = handleRangeNumberValue(props, values));
+  return values;
 }
 /**
  * 处理时间转换成2个字段
@@ -31,9 +31,9 @@ export function handleRangeTimeValue(props, values) {
     }
 
     // 【issues/I53G9Y】 日期区间组件有可能是字符串
-    let timeValue = values[field]
+    let timeValue = values[field];
     if (!Array.isArray(timeValue)) {
-      timeValue = timeValue.split(',')
+      timeValue = timeValue.split(',');
     }
     const [startTime, endTime]: string[] = timeValue;
     values[startTimeKey] = dateUtil(startTime).format(format);
@@ -50,18 +50,18 @@ export function handleRangeTimeValue(props, values) {
  * @updateDate:2021-09-16
  */
 export function handleRangeNumberValue(props, values) {
-    const fieldMapToNumber = unref(props).fieldMapToNumber;
-    if (!fieldMapToNumber || !Array.isArray(fieldMapToNumber)) {
-        return values;
-    }
-    for (const [field, [startNumberKey, endNumberKey]] of fieldMapToNumber) {
-        if (!field || !startNumberKey || !endNumberKey || !values[field]) {
-            continue;
-        }
-        const [startNumber, endNumber]: number[] = values[field];
-        values[startNumberKey] = startNumber;
-        values[endNumberKey] = endNumber;
-        Reflect.deleteProperty(values, field);
-    }
+  const fieldMapToNumber = unref(props).fieldMapToNumber;
+  if (!fieldMapToNumber || !Array.isArray(fieldMapToNumber)) {
     return values;
+  }
+  for (const [field, [startNumberKey, endNumberKey]] of fieldMapToNumber) {
+    if (!field || !startNumberKey || !endNumberKey || !values[field]) {
+      continue;
+    }
+    const [startNumber, endNumber]: number[] = values[field];
+    values[startNumberKey] = startNumber;
+    values[endNumberKey] = endNumber;
+    Reflect.deleteProperty(values, field);
+  }
+  return values;
 }

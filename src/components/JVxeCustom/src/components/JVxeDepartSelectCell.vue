@@ -23,180 +23,172 @@
   <!--      <a-icon style="margin-left:5px;vertical-align: middle" type="close-circle" @click="handleEmpty" title="清空"/>-->
   <!--    </span>-->
   <!--  </div>-->
-  <JSelectDept
-      :value="selectedValue"
-      :showButton="false"
-      v-bind="cellProps"
-      @change="handleChange"
-  />
+  <JSelectDept :value="selectedValue" :showButton="false" v-bind="cellProps" @change="handleChange" />
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
-import { JSelectDept } from '/@/components/Form'
-import { JVxeComponent } from '/@/components/jeecg/JVxeTable/types'
-import { useJVxeComponent, useJVxeCompProps } from '/@/components/jeecg/JVxeTable/hooks'
+  import { computed, defineComponent } from 'vue';
+  import { JSelectDept } from '/@/components/Form';
+  import { JVxeComponent } from '/@/components/jeecg/JVxeTable/types';
+  import { useJVxeComponent, useJVxeCompProps } from '/@/components/jeecg/JVxeTable/hooks';
 
-// import { isArray, isEmpty, isString } from '/@/utils/is'
+  // import { isArray, isEmpty, isString } from '/@/utils/is'
 
-// import JSelectDepartModal from '@/components/jeecgbiz/modal/JSelectDepartModal'
-import { dispatchEvent } from '/@/components/jeecg/JVxeTable/utils'
-import { isArray, isEmpty, isString } from '/@/utils/is'
+  // import JSelectDepartModal from '@/components/jeecgbiz/modal/JSelectDepartModal'
+  import { dispatchEvent } from '/@/components/jeecg/JVxeTable/utils';
+  import { isArray, isEmpty, isString } from '/@/utils/is';
 
+  export default defineComponent({
+    name: 'JVxeDepartSelectCell',
+    components: { JSelectDept },
+    props: useJVxeCompProps(),
+    setup(props: JVxeComponent.Props) {
+      const { innerValue, cellProps, handleChangeCommon } = useJVxeComponent(props);
 
-export default defineComponent({
-  name: 'JVxeDepartSelectCell',
-  components: { JSelectDept },
-  props: useJVxeCompProps(),
-  setup(props: JVxeComponent.Props) {
-    const { innerValue, cellProps, handleChangeCommon } = useJVxeComponent(props)
+      // const selectedValue = computed(() => {
+      //   let val: any = innerValue.value
+      //   if (isEmpty(val)) {
+      //     return []
+      //   }
+      //   if (isArray(val)) {
+      //     return val
+      //   }
+      //   if (isString(val)) {
+      //     // @ts-ignore
+      //     return val.split(',')
+      //   }
+      //   return [val]
+      // })
 
-    // const selectedValue = computed(() => {
-    //   let val: any = innerValue.value
-    //   if (isEmpty(val)) {
-    //     return []
-    //   }
-    //   if (isArray(val)) {
-    //     return val
-    //   }
-    //   if (isString(val)) {
-    //     // @ts-ignore
-    //     return val.split(',')
-    //   }
-    //   return [val]
-    // })
+      const selectedValue = computed(() => {
+        let val = innerValue.value;
+        if (isEmpty(val)) {
+          return '';
+        }
+        if (isArray(val)) {
+          return (<any>val).join(',');
+        }
+        return val;
+      });
 
-    const selectedValue = computed(() => {
-      let val = innerValue.value
-      if (isEmpty(val)) {
-        return ''
+      const multiple = computed(() => cellProps.value['multi'] != false);
+
+      function handleChange(values) {
+        handleChangeCommon(values.join(','));
       }
-      if (isArray(val)) {
-        return (<any>val).join(',')
-      }
-      return val
-    })
 
-
-    const multiple = computed(() => cellProps.value['multi'] != false)
-
-    function handleChange(values) {
-      handleChangeCommon(values.join(','))
-    }
-
-    return {
-      selectedValue,
-      multiple,
-      cellProps,
-      handleChange,
-    }
-  },
-
-  data() {
-    return {
-      // departNames: '',
-      // departIds: '',
-      // selectedOptions: [],
-      // customReturnField: 'id',
-    }
-  },
-  computed: {
-    // custProps() {
-    //   const { departIds, originColumn: col, caseId, cellProps } = this
-    //   return {
-    //     ...cellProps,
-    //     value: departIds,
-    //     field: col.field || col.key,
-    //     groupId: caseId,
-    //     class: 'jvxe-select',
-    //   }
-    // },
-    // componentDisabled() {
-    //   if (this.cellProps.disabled == true) {
-    //     return true
-    //   }
-    //   return false
-    // },
-    // modalWidth() {
-    //   if (this.cellProps.modalWidth) {
-    //     return this.cellProps.modalWidth
-    //   } else {
-    //     return 500
-    //   }
-    // },
-    // multi() {
-    //   if (this.cellProps.multi == false) {
-    //     return false
-    //   } else {
-    //     return true
-    //   }
-    // },
-    // rootOpened() {
-    //   if (this.cellProps.open == false) {
-    //     return false
-    //   } else {
-    //     return true
-    //   }
-    // },
-  },
-  watch: {
-    // innerValue: {
-    //   immediate: true,
-    //   handler(val) {
-    //     if (val == null || val === '') {
-    //       this.departIds = ''
-    //     } else {
-    //       this.departIds = val
-    //     }
-    //   },
-    // },
-  },
-  methods: {
-    // openSelect() {
-    //   this.$refs.innerDepartSelectModal.show()
-    // },
-    // handleEmpty() {
-    //   this.handleOK('')
-    // },
-    // handleOK(rows, idstr) {
-    //   let value = ''
-    //   if (!rows && rows.length <= 0) {
-    //     this.departNames = ''
-    //     this.departIds = ''
-    //   } else {
-    //     value = rows.map(row => row[this.customReturnField]).join(',')
-    //     this.departNames = rows.map(row => row['departName']).join(',')
-    //     this.departIds = idstr
-    //   }
-    //   this.handleChangeCommon(this.departIds)
-    // },
-    // initComp(departNames) {
-    //   this.departNames = departNames
-    // },
-    // handleChange(value) {
-    //   this.handleChangeCommon(value)
-    // },
-  },
-  enhanced: {
-    switches: {
-      visible: true,
+      return {
+        selectedValue,
+        multiple,
+        cellProps,
+        handleChange,
+      };
     },
-    translate: {
-      enabled: false,
+
+    data() {
+      return {
+        // departNames: '',
+        // departIds: '',
+        // selectedOptions: [],
+        // customReturnField: 'id',
+      };
     },
-    aopEvents: {
-      editActived({ $event }) {
-        dispatchEvent({
-          $event,
-          props: this.props,
-          className: '.ant-select .ant-select-selection-search-input',
-          isClick: true,
-        })
+    computed: {
+      // custProps() {
+      //   const { departIds, originColumn: col, caseId, cellProps } = this
+      //   return {
+      //     ...cellProps,
+      //     value: departIds,
+      //     field: col.field || col.key,
+      //     groupId: caseId,
+      //     class: 'jvxe-select',
+      //   }
+      // },
+      // componentDisabled() {
+      //   if (this.cellProps.disabled == true) {
+      //     return true
+      //   }
+      //   return false
+      // },
+      // modalWidth() {
+      //   if (this.cellProps.modalWidth) {
+      //     return this.cellProps.modalWidth
+      //   } else {
+      //     return 500
+      //   }
+      // },
+      // multi() {
+      //   if (this.cellProps.multi == false) {
+      //     return false
+      //   } else {
+      //     return true
+      //   }
+      // },
+      // rootOpened() {
+      //   if (this.cellProps.open == false) {
+      //     return false
+      //   } else {
+      //     return true
+      //   }
+      // },
+    },
+    watch: {
+      // innerValue: {
+      //   immediate: true,
+      //   handler(val) {
+      //     if (val == null || val === '') {
+      //       this.departIds = ''
+      //     } else {
+      //       this.departIds = val
+      //     }
+      //   },
+      // },
+    },
+    methods: {
+      // openSelect() {
+      //   this.$refs.innerDepartSelectModal.show()
+      // },
+      // handleEmpty() {
+      //   this.handleOK('')
+      // },
+      // handleOK(rows, idstr) {
+      //   let value = ''
+      //   if (!rows && rows.length <= 0) {
+      //     this.departNames = ''
+      //     this.departIds = ''
+      //   } else {
+      //     value = rows.map(row => row[this.customReturnField]).join(',')
+      //     this.departNames = rows.map(row => row['departName']).join(',')
+      //     this.departIds = idstr
+      //   }
+      //   this.handleChangeCommon(this.departIds)
+      // },
+      // initComp(departNames) {
+      //   this.departNames = departNames
+      // },
+      // handleChange(value) {
+      //   this.handleChangeCommon(value)
+      // },
+    },
+    enhanced: {
+      switches: {
+        visible: true,
       },
-    },
-  } as JVxeComponent.EnhancedPartial,
-})
+      translate: {
+        enabled: false,
+      },
+      aopEvents: {
+        editActived({ $event }) {
+          dispatchEvent({
+            $event,
+            props: this.props,
+            className: '.ant-select .ant-select-selection-search-input',
+            isClick: true,
+          });
+        },
+      },
+    } as JVxeComponent.EnhancedPartial,
+  });
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

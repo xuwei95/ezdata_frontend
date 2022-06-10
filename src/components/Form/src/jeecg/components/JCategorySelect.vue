@@ -1,18 +1,19 @@
 <!--下拉树-->
 <template>
-    <a-tree-select
-            allowClear
-            labelInValue
-            style="width: 100%"
-            :disabled="disabled"
-            :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
-            :placeholder="placeholder"
-            :loadData="asyncLoadTreeData"
-            :value="treeValue"
-            :treeData="treeData"
-            :multiple="multiple"
-            @change="onChange">
-    </a-tree-select>
+  <a-tree-select
+    allowClear
+    labelInValue
+    style="width: 100%"
+    :disabled="disabled"
+    :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
+    :placeholder="placeholder"
+    :loadData="asyncLoadTreeData"
+    :value="treeValue"
+    :treeData="treeData"
+    :multiple="multiple"
+    @change="onChange"
+  >
+  </a-tree-select>
 </template>
 <script lang="ts">
   import { defineComponent, ref, unref, watch } from 'vue';
@@ -28,10 +29,7 @@
     components: {},
     inheritAttrs: false,
     props: {
-      value: propTypes.oneOfType([
-        propTypes.string,
-        propTypes.array,
-      ]),
+      value: propTypes.oneOfType([propTypes.string, propTypes.array]),
       placeholder: {
         type: String,
         default: '请选择',
@@ -49,7 +47,7 @@
       },
       // 是否支持多选
       multiple: {
-        type: [Boolean,String],
+        type: [Boolean, String],
         default: false,
       },
       loadTriggleChange: {
@@ -86,14 +84,14 @@
         () => {
           loadItemByCode();
         },
-        { deep: true },
+        { deep: true }
       );
       watch(
         () => props.pcode,
         () => {
           loadRoot();
         },
-        { deep: true, immediate: true },
+        { deep: true, immediate: true }
       );
 
       function loadRoot() {
@@ -103,7 +101,7 @@
           condition: props.condition,
         };
         console.info(param);
-        loadTreeData(param).then(res => {
+        loadTreeData(param).then((res) => {
           for (let i of res) {
             i.value = i.key;
             if (i.leaf == false) {
@@ -114,15 +112,13 @@
           }
           treeData.value = res;
         });
-
       }
-
 
       function loadItemByCode() {
         if (!props.value || props.value == '0') {
           treeValue.value = [];
         } else {
-          loadDictItem({ ids: props.value }).then(res => {
+          loadDictItem({ ids: props.value }).then((res) => {
             let values = props.value.split(',');
             treeValue.value = res.map((item, index) => ({
               key: values[index],
@@ -139,7 +135,6 @@
         if (!props.multiple && props.loadTriggleChange) {
           backValue(props.value, text);
         }
-
       }
 
       function backValue(value, label) {
@@ -163,7 +158,7 @@
             pid: pid,
             condition: props.condition,
           };
-          loadTreeData(param).then(res => {
+          loadTreeData(param).then((res) => {
             if (res) {
               for (let i of res) {
                 i.value = i.key;
@@ -204,7 +199,7 @@
           treeValue.value = '';
         } else if (Array.isArray(value)) {
           let labels = [];
-          let values = value.map(item => {
+          let values = value.map((item) => {
             labels.push(item.label);
             return item.value;
           });
@@ -251,6 +246,5 @@
         asyncLoadTreeData,
       };
     },
-  })
-  ;
+  });
 </script>

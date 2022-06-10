@@ -1,21 +1,21 @@
-import { isRef, unref, watch, Ref, ComputedRef } from 'vue'
-import Clipboard from 'clipboard'
-import { ModalOptionsEx, useMessage } from '/@/hooks/web/useMessage'
+import { isRef, unref, watch, Ref, ComputedRef } from 'vue';
+import Clipboard from 'clipboard';
+import { ModalOptionsEx, useMessage } from '/@/hooks/web/useMessage';
 
 /** 带复制按钮的弹窗 */
 interface IOptions extends ModalOptionsEx {
   // 要复制的文本，可以是一个 ref 对象，动态更新
-  copyText: string | Ref<string> | ComputedRef<string>,
+  copyText: string | Ref<string> | ComputedRef<string>;
 }
 
-const COPY_CLASS = 'copy-this-text'
-const CLIPBOARD_TEXT = 'data-clipboard-text'
+const COPY_CLASS = 'copy-this-text';
+const CLIPBOARD_TEXT = 'data-clipboard-text';
 
 export function useCopyModal() {
-  return { createCopyModal }
+  return { createCopyModal };
 }
 
-const { createMessage, createConfirm } = useMessage()
+const { createMessage, createConfirm } = useMessage();
 
 /** 创建复制弹窗 */
 function createCopyModal(options: Partial<IOptions>) {
@@ -33,20 +33,20 @@ function createCopyModal(options: Partial<IOptions>) {
     } as any,
     onOk() {
       return new Promise((resolve: any) => {
-        const clipboard = new Clipboard('.' + COPY_CLASS)
+        const clipboard = new Clipboard('.' + COPY_CLASS);
         clipboard.on('success', () => {
-          clipboard.destroy()
-          createMessage.success('复制成功')
-          resolve()
-        })
+          clipboard.destroy();
+          createMessage.success('复制成功');
+          resolve();
+        });
         clipboard.on('error', () => {
-          createMessage.error('该浏览器不支持自动复制')
-          clipboard.destroy()
-          resolve()
-        })
-      })
+          createMessage.error('该浏览器不支持自动复制');
+          clipboard.destroy();
+          resolve();
+        });
+      });
     },
-  })
+  });
 
   // 动态更新 copyText
   if (isRef(options.copyText)) {
@@ -57,8 +57,8 @@ function createCopyModal(options: Partial<IOptions>) {
           class: COPY_CLASS,
           [CLIPBOARD_TEXT]: copyText,
         } as any,
-      })
-    })
+      });
+    });
   }
-  return modal
+  return modal;
 }

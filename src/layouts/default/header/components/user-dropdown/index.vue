@@ -11,56 +11,31 @@
 
     <template #overlay>
       <Menu @click="handleMenuClick">
-        <MenuItem
-          key="doc"
-          :text="t('layout.header.dropdownItemDoc')"
-          icon="ion:document-text-outline"
-          v-if="getShowDoc"
-        />
+        <MenuItem key="doc" :text="t('layout.header.dropdownItemDoc')" icon="ion:document-text-outline" v-if="getShowDoc" />
         <MenuDivider v-if="getShowDoc" />
-        <MenuItem
-          key="account"
-          :text="t('layout.header.dropdownItemSwitchAccount')"
-          icon="ant-design:setting-outlined"
-        />
-        <MenuItem
-          key="password"
-          :text="t('layout.header.dropdownItemSwitchPassword')"
-          icon="ant-design:edit-outlined"
-        />
-        <MenuItem
-          key="depart"
-          :text="t('layout.header.dropdownItemSwitchDepart')"
-          icon="ant-design:cluster-outlined"
-        />
-        <MenuItem
-          key="cache"
-          :text="t('layout.header.dropdownItemRefreshCache')"
-          icon="ion:sync-outline"
-        />
-       <!-- <MenuItem
+        <MenuItem key="account" :text="t('layout.header.dropdownItemSwitchAccount')" icon="ant-design:setting-outlined" />
+        <MenuItem key="password" :text="t('layout.header.dropdownItemSwitchPassword')" icon="ant-design:edit-outlined" />
+        <MenuItem key="depart" :text="t('layout.header.dropdownItemSwitchDepart')" icon="ant-design:cluster-outlined" />
+        <MenuItem key="cache" :text="t('layout.header.dropdownItemRefreshCache')" icon="ion:sync-outline" />
+        <!-- <MenuItem
             v-if="getUseLockPage"
             key="lock"
             :text="t('layout.header.tooltipLock')"
             icon="ion:lock-closed-outline"
         />-->
-        <MenuItem
-                key="logout"
-                :text="t('layout.header.dropdownItemLoginOut')"
-                icon="ion:power-outline"
-        />
+        <MenuItem key="logout" :text="t('layout.header.dropdownItemLoginOut')" icon="ion:power-outline" />
       </Menu>
     </template>
   </Dropdown>
   <LockAction @register="register" />
-  <DepartSelect ref="loginSelectRef"/>
-  <UpdatePassword ref="updatePasswordRef"/>
+  <DepartSelect ref="loginSelectRef" />
+  <UpdatePassword ref="updatePasswordRef" />
 </template>
 <script lang="ts">
   // components
   import { Dropdown, Menu } from 'ant-design-vue';
 
-  import { defineComponent, computed,ref } from 'vue';
+  import { defineComponent, computed, ref } from 'vue';
 
   import { SITE_URL } from '/@/settings/siteSetting';
 
@@ -69,7 +44,7 @@
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useModal } from '/@/components/Modal';
-  import {useMessage} from '/src/hooks/web/useMessage';
+  import { useMessage } from '/src/hooks/web/useMessage';
   import { useGo } from '/@/hooks/web/usePage';
   import headerImg from '/@/assets/images/header.jpg';
   import { propTypes } from '/@/utils/propTypes';
@@ -77,13 +52,13 @@
 
   import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
 
-  import {refreshCache,queryAllDictItems} from '/@/views/system/dict/dict.api';
+  import { refreshCache, queryAllDictItems } from '/@/views/system/dict/dict.api';
   import { DB_DICT_DATA_KEY } from '/src/enums/cacheEnum';
-  import { removeAuthCache,setAuthCache } from '/src/utils/auth';
-  import {getFileAccessHttpUrl} from '/@/utils/common/compUtils'
+  import { removeAuthCache, setAuthCache } from '/src/utils/auth';
+  import { getFileAccessHttpUrl } from '/@/utils/common/compUtils';
 
-  type MenuEvent = 'logout' | 'doc' | 'lock'|'cache' | 'depart';
-  const {createMessage} = useMessage();
+  type MenuEvent = 'logout' | 'doc' | 'lock' | 'cache' | 'depart';
+  const { createMessage } = useMessage();
   export default defineComponent({
     name: 'UserDropdown',
     components: {
@@ -104,16 +79,16 @@
       const { getShowDoc, getUseLockPage } = useHeaderSetting();
       const userStore = useUserStore();
       const go = useGo();
-      
+
       const getUserInfo = computed(() => {
         const { realname = '', avatar, desc } = userStore.getUserInfo || {};
         return { realname, avatar: avatar || headerImg, desc };
       });
 
-      const getAvatarUrl = computed(() => getFileAccessHttpUrl(getUserInfo.value?.avatar))
-      
+      const getAvatarUrl = computed(() => getFileAccessHttpUrl(getUserInfo.value?.avatar));
+
       const [register, { openModal }] = useModal();
-       /**
+      /**
        * 多部门弹窗逻辑
        */
       const loginSelectRef = ref();
@@ -133,24 +108,24 @@
 
       // 清除缓存
       async function clearCache() {
-          const result = await refreshCache();
-          if(result.success){
-              const res = await queryAllDictItems();
-              removeAuthCache(DB_DICT_DATA_KEY)
-              setAuthCache(DB_DICT_DATA_KEY, res.result)
-              createMessage.success("刷新缓存完成！");
-          }else{
-              createMessage.error("刷新缓存失败！");
-          }
+        const result = await refreshCache();
+        if (result.success) {
+          const res = await queryAllDictItems();
+          removeAuthCache(DB_DICT_DATA_KEY);
+          setAuthCache(DB_DICT_DATA_KEY, res.result);
+          createMessage.success('刷新缓存完成！');
+        } else {
+          createMessage.error('刷新缓存失败！');
+        }
       }
       // 切换部门
-       function updateCurrentDepart() {
-           loginSelectRef.value.show()
+      function updateCurrentDepart() {
+        loginSelectRef.value.show();
       }
       // 修改密码
-       const updatePasswordRef = ref();
-       function updatePassword() {
-           updatePasswordRef.value.show(userStore.getUserInfo.username)
+      const updatePasswordRef = ref();
+      function updatePassword() {
+        updatePasswordRef.value.show(userStore.getUserInfo.username);
       }
 
       function handleMenuClick(e: { key: MenuEvent }) {

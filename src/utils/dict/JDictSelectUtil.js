@@ -4,7 +4,7 @@
  * date: 20190109
  */
 
-import {ajaxGetDictItems,getDictItemsByCode} from './index'
+import { ajaxGetDictItems, getDictItemsByCode } from './index';
 
 /**
  * 获取字典数组
@@ -16,8 +16,8 @@ export async function initDictOptions(dictCode) {
     return '字典Code不能为空!';
   }
   //优先从缓存中读取字典配置
-  if(getDictItemsByCode(dictCode)){
-    let res = {}
+  if (getDictItemsByCode(dictCode)) {
+    let res = {};
     res.result = getDictItemsByCode(dictCode);
     res.success = true;
     return res;
@@ -36,27 +36,27 @@ export async function initDictOptions(dictCode) {
 export function filterDictText(dictOptions, text) {
   // --update-begin----author:sunjianlei---date:20200323------for: 字典翻译 text 允许逗号分隔 ---
   if (text != null && Array.isArray(dictOptions)) {
-    let result = []
+    let result = [];
     // 允许多个逗号分隔，允许传数组对象
-    let splitText
+    let splitText;
     if (Array.isArray(text)) {
-      splitText = text
+      splitText = text;
     } else {
-      splitText = text.toString().trim().split(',')
+      splitText = text.toString().trim().split(',');
     }
     for (let txt of splitText) {
-      let dictText = txt
+      let dictText = txt;
       for (let dictItem of dictOptions) {
         if (txt.toString() === dictItem.value.toString()) {
-          dictText = (dictItem.text || dictItem.title || dictItem.label)
-          break
+          dictText = dictItem.text || dictItem.title || dictItem.label;
+          break;
         }
       }
-      result.push(dictText)
+      result.push(dictText);
     }
-    return result.join(',')
+    return result.join(',');
   }
-  return text
+  return text;
   // --update-end----author:sunjianlei---date:20200323------for: 字典翻译 text 允许逗号分隔 ---
 }
 
@@ -68,36 +68,36 @@ export function filterDictText(dictOptions, text) {
  */
 export function filterMultiDictText(dictOptions, text) {
   //js “!text” 认为0为空，所以做提前处理
-  if(text === 0 || text === '0'){
-    if(dictOptions){
+  if (text === 0 || text === '0') {
+    if (dictOptions) {
       for (let dictItem of dictOptions) {
         if (text == dictItem.value) {
-          return dictItem.text
+          return dictItem.text;
         }
       }
     }
   }
 
-  if(!text || text=='undefined' || text=='null' || !dictOptions || dictOptions.length==0){
-    return ""
+  if (!text || text == 'undefined' || text == 'null' || !dictOptions || dictOptions.length == 0) {
+    return '';
   }
-  let re = "";
-  text = text.toString()
-  let arr = text.split(",")
+  let re = '';
+  text = text.toString();
+  let arr = text.split(',');
   dictOptions.forEach(function (option) {
-    if(option){
-      for(let i=0;i<arr.length;i++){
+    if (option) {
+      for (let i = 0; i < arr.length; i++) {
         if (arr[i] === option.value) {
-          re += option.text+",";
+          re += option.text + ',';
           break;
         }
       }
     }
   });
-  if(re==""){
+  if (re == '') {
     return text;
   }
-  return re.substring(0,re.length-1);
+  return re.substring(0, re.length - 1);
 }
 
 /**
@@ -106,41 +106,43 @@ export function filterMultiDictText(dictOptions, text) {
  * @returns string
  */
 export function filterDictTextByCache(dictCode, key) {
-  if(key==null ||key.length==0){
+  if (key == null || key.length == 0) {
     return;
   }
   if (!dictCode) {
     return '字典Code不能为空!';
   }
-   //优先从缓存中读取字典配置
-  if(getDictItemsByCode(dictCode)){
-    let item = getDictItemsByCode(dictCode).filter(t => t["value"] == key)
-    if(item && item.length>0){
-      return item[0]["text"]
+  //优先从缓存中读取字典配置
+  if (getDictItemsByCode(dictCode)) {
+    let item = getDictItemsByCode(dictCode).filter((t) => t['value'] == key);
+    if (item && item.length > 0) {
+      return item[0]['text'];
     }
   }
 }
 
 /** 通过code获取字典数组 */
 export async function getDictItems(dictCode, params) {
-    //优先从缓存中读取字典配置
-    if(getDictItemsByCode(dictCode)){
-      let desformDictItems = getDictItemsByCode(dictCode).map(item => ({...item, label: item.text}))
-      return desformDictItems;
-    }
+  //优先从缓存中读取字典配置
+  if (getDictItemsByCode(dictCode)) {
+    let desformDictItems = getDictItemsByCode(dictCode).map((item) => ({ ...item, label: item.text }));
+    return desformDictItems;
+  }
 
-    //缓存中没有，就请求后台
-    return await ajaxGetDictItems(dictCode, params).then(({success, result}) => {
+  //缓存中没有，就请求后台
+  return await ajaxGetDictItems(dictCode, params)
+    .then(({ success, result }) => {
       if (success) {
-        let res = result.map(item => ({...item, label: item.text}))
-        console.log('------- 从DB中获取到了字典-------dictCode : ', dictCode, res)
-        return Promise.resolve(res)
+        let res = result.map((item) => ({ ...item, label: item.text }));
+        console.log('------- 从DB中获取到了字典-------dictCode : ', dictCode, res);
+        return Promise.resolve(res);
       } else {
-        console.error('getDictItems error: : ', res)
-        return Promise.resolve([])
+        console.error('getDictItems error: : ', res);
+        return Promise.resolve([]);
       }
-    }).catch((res) => {
-      console.error('getDictItems error: ', res)
-      return Promise.resolve([])
     })
+    .catch((res) => {
+      console.error('getDictItems error: ', res);
+      return Promise.resolve([]);
+    });
 }

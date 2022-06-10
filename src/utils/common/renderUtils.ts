@@ -1,12 +1,12 @@
 import { h } from 'vue';
-import { Avatar,Tag, Tooltip } from 'ant-design-vue';
+import { Avatar, Tag, Tooltip } from 'ant-design-vue';
 import { getFileAccessHttpUrl } from '/@/utils/common/compUtils';
 import { Tinymce } from '/@/components/Tinymce';
 import Icon from '/@/components/Icon';
 import { getDictItemsByCode } from '/@/utils/dict/index';
 import { filterMultiDictText } from '/@/utils/dict/JDictSelectUtil.js';
 import { loadCategoryData } from '/@/api/common/api';
-import {isEmpty} from "/@/utils/is";
+import { isEmpty } from '/@/utils/is';
 
 const render = {
   /**
@@ -15,13 +15,20 @@ const render = {
   renderAvatar: ({ record }) => {
     if (record.avatar) {
       let avatarList = record.avatar.split(',');
-      return h('span', avatarList.map((item) => {
-        return h(Avatar, { src: getFileAccessHttpUrl(item), shape: 'square', size: 'default', style: { marginRight: '5px' } });
-      }));
+      return h(
+        'span',
+        avatarList.map((item) => {
+          return h(Avatar, { src: getFileAccessHttpUrl(item), shape: 'square', size: 'default', style: { marginRight: '5px' } });
+        })
+      );
     } else {
-      return h(Avatar, { shape: 'square', size: 'default' }, {
-        icon: () => h(Icon, { icon: 'ant-design:file-image-outlined', size: 30 }),
-      });
+      return h(
+        Avatar,
+        { shape: 'square', size: 'default' },
+        {
+          icon: () => h(Icon, { icon: 'ant-design:file-image-outlined', size: 30 }),
+        }
+      );
     }
   },
   /**
@@ -30,44 +37,51 @@ const render = {
    * @param code 字典编码
    * @param renderTag 是否使用tag渲染
    */
-  renderDict: (v, code,renderTag=false) => {
+  renderDict: (v, code, renderTag = false) => {
     let text = '';
     let array = getDictItemsByCode(code);
-    let obj = array.filter(item => {
+    let obj = array.filter((item) => {
       return item.value == v;
     });
     if (obj.length > 0) {
       text = obj[0].text;
     }
-    return isEmpty(text)||!renderTag?h('span',text):h(Tag,text)
+    return isEmpty(text) || !renderTag ? h('span', text) : h(Tag, text);
   },
   /**
    * 渲染图片
    * @param text
    */
-  renderImage: ({text}) => {
-    if(!text){
-      return h(Avatar, { shape: 'square', size: 'large' }, {
-        icon: () => h(Icon, { icon: 'ant-design:file-image-outlined', size: 30 }),
-      });
+  renderImage: ({ text }) => {
+    if (!text) {
+      return h(
+        Avatar,
+        { shape: 'square', size: 'large' },
+        {
+          icon: () => h(Icon, { icon: 'ant-design:file-image-outlined', size: 30 }),
+        }
+      );
     }
     let avatarList = text.split(',');
-    return h('span', avatarList.map((item) => {
+    return h(
+      'span',
+      avatarList.map((item) => {
         return h(Avatar, { src: getFileAccessHttpUrl(item), shape: 'square', size: 'large', style: { marginRight: '5px' } });
-    }));
+      })
+    );
   },
   /**
    * 渲染 Tooltip
    * @param text
    * @param len
    */
-  renderTip: (text, len=20) => {
-    if(text){
-      let showText = text+''
-      if(showText.length>len){
-          showText = showText.substr(0, len)+'...'
+  renderTip: (text, len = 20) => {
+    if (text) {
+      let showText = text + '';
+      if (showText.length > len) {
+        showText = showText.substr(0, len) + '...';
       }
-      return h(Tooltip, { title: text }, ()=>showText)
+      return h(Tooltip, { title: text }, () => showText);
     }
     return text;
   },
@@ -75,32 +89,32 @@ const render = {
    * 渲染a标签
    * @param text
    */
-  renderHref: ({text}) => {
-    if(!text){
-      return ''
+  renderHref: ({ text }) => {
+    if (!text) {
+      return '';
     }
-    const len = 20
-    if(text.length>len){
-      text = text.substr(0, len)
+    const len = 20;
+    if (text.length > len) {
+      text = text.substr(0, len);
     }
-    return h('a', { href: text, target: '_blank'}, text)
+    return h('a', { href: text, target: '_blank' }, text);
   },
   /**
    * 根据字典渲染
    * @param v
    * @param array
    */
-  renderDictNative: (v, array,renderTag=false) => {
+  renderDictNative: (v, array, renderTag = false) => {
     let text = '';
     let color = '';
-    let obj = array.filter(item => {
+    let obj = array.filter((item) => {
       return item.value == v;
     });
     if (obj.length > 0) {
       text = obj[0].label;
       color = obj[0].color;
     }
-    return isEmpty(text)||!renderTag?h('span',text):h(Tag, {color},()=>text)
+    return isEmpty(text) || !renderTag ? h('span', text) : h(Tag, { color }, () => text);
   },
   /**
    * 渲染富文本
@@ -117,15 +131,14 @@ const render = {
   },
 
   renderSwitch: (text, arr) => {
-      return text ? filterMultiDictText(arr, text) : '';
+    return text ? filterMultiDictText(arr, text) : '';
   },
   renderCategoryTree: (text, code) => {
-     let array = getDictItemsByCode(code);
-     return filterMultiDictText(array, text);
+    let array = getDictItemsByCode(code);
+    return filterMultiDictText(array, text);
   },
-  renderTag(text,color){
-      return isEmpty(text)?h('span', text):h(Tag, { color },()=>text)
-  }
-
+  renderTag(text, color) {
+    return isEmpty(text) ? h('span', text) : h(Tag, { color }, () => text);
+  },
 };
 export { render };

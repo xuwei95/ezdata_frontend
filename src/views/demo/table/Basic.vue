@@ -1,6 +1,18 @@
 <template>
   <div class="p-4">
-    <BasicTable title="基础示例" titleHelpMessage="温馨提醒" :columns="columns" :dataSource="data" :canResize="canResize" :loading="loading" :striped="striped" :bordered="border" showTableSetting :pagination="pagination" @columns-change="handleColumnChange">
+    <BasicTable
+      title="基础示例"
+      titleHelpMessage="温馨提醒"
+      :columns="columns"
+      :dataSource="data"
+      :canResize="canResize"
+      :loading="loading"
+      :striped="striped"
+      :bordered="border"
+      showTableSetting
+      :pagination="pagination"
+      @columns-change="handleColumnChange"
+    >
       <template #toolbar>
         <a-button type="primary" @click="toggleCanResize">
           {{ !canResize ? '自适应高度' : '取消自适应' }}

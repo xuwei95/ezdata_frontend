@@ -1,6 +1,6 @@
 import { BasicColumn, FormSchema } from '/@/components/Table';
 import { render } from '/@/utils/common/renderUtils';
-import { JCronValidator } from '/@/components/Form'
+import { JCronValidator } from '/@/components/Form';
 
 export const columns: BasicColumn[] = [
   {
@@ -29,8 +29,8 @@ export const columns: BasicColumn[] = [
     dataIndex: 'status',
     width: 100,
     customRender: ({ text }) => {
-      const color = text=='0'?'red':text=='-1'?'green':'gray';
-      return  render.renderTag(render.renderDict(text, 'quartz_status'),color)
+      const color = text == '0' ? 'red' : text == '-1' ? 'green' : 'gray';
+      return render.renderTag(render.renderDict(text, 'quartz_status'), color);
     },
   },
 ];
@@ -72,21 +72,18 @@ export const formSchema: FormSchema[] = [
     label: 'Cron表达式',
     component: 'JEasyCron',
     defaultValue: '* * * * * ? *',
-    rules: [
-      { required: true, message: '请输入Cron表达式' },
-      { validator: JCronValidator },
-    ],
+    rules: [{ required: true, message: '请输入Cron表达式' }, { validator: JCronValidator }],
   },
   {
     field: 'paramterType',
     label: '参数类型',
     component: 'Select',
-    defaultValue:'string',
+    defaultValue: 'string',
     componentProps: {
-        options: [
-            { label: '字符串', value: 'string' },
-            { label: 'JSON对象', value: 'json' },
-        ],
+      options: [
+        { label: '字符串', value: 'string' },
+        { label: 'JSON对象', value: 'json' },
+      ],
     },
   },
   {
@@ -94,16 +91,16 @@ export const formSchema: FormSchema[] = [
     label: '参数',
     component: 'InputTextArea',
     ifShow: ({ values }) => {
-        return values.paramterType == 'string';
+      return values.paramterType == 'string';
     },
   },
   {
     field: 'parameter',
     label: '参数',
     component: 'JAddInput',
-    helpMessage:'键值对形式填写',
+    helpMessage: '键值对形式填写',
     ifShow: ({ values }) => {
-        return values.paramterType == 'json';
+      return values.paramterType == 'json';
     },
   },
   {
@@ -124,5 +121,4 @@ export const formSchema: FormSchema[] = [
     label: '描述',
     component: 'InputTextArea',
   },
-
 ];

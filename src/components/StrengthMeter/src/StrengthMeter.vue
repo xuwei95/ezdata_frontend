@@ -1,13 +1,6 @@
 <template>
   <div :class="prefixCls" class="relative">
-    <InputPassword
-            v-if="showInput"
-            v-bind="$attrs"
-            allowClear
-            :value="innerValueRef"
-            @change="handleChange"
-            :disabled="disabled"
-    >
+    <InputPassword v-if="showInput" v-bind="$attrs" allowClear :value="innerValueRef" @change="handleChange" :disabled="disabled">
       <template #[item]="data" v-for="item in Object.keys($slots)">
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
@@ -56,10 +49,10 @@
       });
 
       watch(
-              () => unref(innerValueRef),
-              (val) => {
-                emit('change', val);
-              }
+        () => unref(innerValueRef),
+        (val) => {
+          emit('change', val);
+        }
       );
 
       return {

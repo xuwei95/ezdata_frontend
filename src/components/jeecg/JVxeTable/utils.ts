@@ -1,1 +1,1 @@
-export { dispatchEvent, vModel } from './src/utils/enhancedUtils'
+export { dispatchEvent, vModel } from './src/utils/enhancedUtils';

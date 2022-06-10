@@ -3,7 +3,7 @@ import { defHttp } from '/@/utils/http/axios';
 enum Api {
   keysSize = '/sys/actuator/redis/keysSize',
   memoryInfo = '/sys/actuator/redis/memoryInfo',
-  info = '/sys/actuator/redis/info'
+  info = '/sys/actuator/redis/info',
 }
 
 /**
@@ -28,8 +28,5 @@ export const getInfo = () => {
 };
 
 export const getRedisInfo = () => {
-  return Promise.all([
-    getKeysSize(),
-    getMemoryInfo(),
-  ]);
+  return Promise.all([getKeysSize(), getMemoryInfo()]);
 };

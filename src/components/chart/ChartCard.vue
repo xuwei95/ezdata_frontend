@@ -7,7 +7,9 @@
           <slot name="action"></slot>
         </span>
       </div>
-      <div class="total"><span>{{ total }}</span></div>
+      <div class="total"
+        ><span>{{ total }}</span></div
+      >
     </div>
     <div class="chart-card-content">
       <div class="content-fix">
@@ -23,20 +25,20 @@
 </template>
 
 <script lang="ts" setup>
-    defineProps({
-        title: {
-            type: String,
-            default: ''
-        },
-        total: {
-            type: [Number, String],
-            default: ''
-        },
-        loading: {
-            type: Boolean,
-            default: false
-        }
-    });
+  defineProps({
+    title: {
+      type: String,
+      default: '',
+    },
+    total: {
+      type: [Number, String],
+      default: '',
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  });
 </script>
 
 <style lang="less" scoped>
@@ -49,7 +51,7 @@
       position: relative;
       overflow: hidden;
       width: 100%;
-      color: rgba(0, 0, 0, .45);
+      color: rgba(0, 0, 0, 0.45);
       font-size: 14px;
       line-height: 22px;
     }

@@ -20,10 +20,7 @@ function use(app: App, pkg) {
 }
 
 // 模块里可使用的import
-const importGlobs = [
-  import.meta.glob('../../utils/**/*.{ts,js,tsx}'),
-  import.meta.glob('../../hooks/**/*.{ts,js,tsx}'),
-];
+const importGlobs = [import.meta.glob('../../utils/**/*.{ts,js,tsx}'), import.meta.glob('../../hooks/**/*.{ts,js,tsx}')];
 
 /**
  * 基础项目导包

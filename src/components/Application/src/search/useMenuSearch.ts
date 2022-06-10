@@ -57,7 +57,7 @@ export function useMenuSearch(refs: Ref<HTMLElement[]>, scrollWrap: Ref<ElRef>, 
     const filterMenu = filter(menuList, (item) => {
       // 【issues/33】包含子菜单时，不添加到搜索队列
       if (Array.isArray(item.children)) {
-        return false
+        return false;
       }
       return reg.test(item.name) && !item.hideMenu;
     });

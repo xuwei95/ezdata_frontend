@@ -1,11 +1,11 @@
 <template>
   <BasicModal v-bind="$attrs" @register="registerModal" title="工单授权" @ok="handleSubmit" width="1200px">
     <!--工单授权部分-->
-    <template v-for="(item,index) of processTypeDictOptions">
-      <a-card :title="item.text" :style="{ marginTop:(index==0?'0px':'12px'),height:'auto' }" :headStyle="{ backgroundColor:'#eaeaea' }">
+    <template v-for="(item, index) of processTypeDictOptions">
+      <a-card :title="item.text" :style="{ marginTop: index == 0 ? '0px' : '12px', height: 'auto' }" :headStyle="{ backgroundColor: '#eaeaea' }">
         <a-checkbox-group @change="designNameChange" v-model:value="designNameValue[index]" style="width: 100%">
           <a-row>
-            <template v-for="(des) in designNameOption">
+            <template v-for="des in designNameOption">
               <a-col :span="6" v-if="des.procType == item.value">
                 <a-checkbox :value="des.value">{{ des.text }}</a-checkbox>
               </a-col>
@@ -23,18 +23,16 @@
             <a-menu-item key="2" @click="cancelCheckALL">取消全选</a-menu-item>
           </a-menu>
         </template>
-        <a-button style="float: left;">
-          树操作 <Icon icon="ant-design:up-outlined" />
-        </a-button>
+        <a-button style="float: left"> 树操作 <Icon icon="ant-design:up-outlined" /> </a-button>
       </a-dropdown>
     </template>
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import {ref, computed, unref} from 'vue';
-  import {BasicModal, useModalInner} from '/src/components/Modal';
-  import {getParentDesignList, getRoleDegisnList,saveRoleDesign} from '../role.api';
-  import {initDictOptions} from '/@/utils/dict/index';
+  import { ref, computed, unref } from 'vue';
+  import { BasicModal, useModalInner } from '/src/components/Modal';
+  import { getParentDesignList, getRoleDegisnList, saveRoleDesign } from '../role.api';
+  import { initDictOptions } from '/@/utils/dict/index';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
   //角色id
@@ -54,11 +52,11 @@
   //工单数据集合
   const designNameValue = ref([]);
   //表单赋值
-  const [registerModal, {setModalProps, closeModal}] = useModalInner(async (data) => {
-    setModalProps({confirmLoading: false});
+  const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
+    setModalProps({ confirmLoading: false });
     roleId.value = data.roleId;
     //初始化数据
-    initData()
+    initData();
   });
 
   /**
@@ -75,20 +73,20 @@
     if (designList) {
       desformList.value = designList;
       //获取指定属性的数据集合
-      let procTypeArr = [...new Set(Array.from(unref(designList), ({procType}) => procType))];
+      let procTypeArr = [...new Set(Array.from(unref(designList), ({ procType }) => procType))];
       //工单类型字典项
-      processTypeDictOptions.value = processTypeDict.value.filter(item => procTypeArr.indexOf(item.value) != -1);
+      processTypeDictOptions.value = processTypeDict.value.filter((item) => procTypeArr.indexOf(item.value) != -1);
       //工单名称集合
       designNameOption.value = designList.map((design) => {
-        return {value: design.id, text: design.desformName, procType: design.procType};
-      })
+        return { value: design.id, text: design.desformName, procType: design.procType };
+      });
     }
     //获取角色表单信息
-    let roleDegisnList = await getRoleDegisnList({roleId: unref(roleId)})
+    let roleDegisnList = await getRoleDegisnList({ roleId: unref(roleId) });
     if (roleDegisnList.length > 0) {
-      let{designName,designValues}= selectedDesign(roleDegisnList);
-      oldDesignId.value = designName.join(",");
-      newDesignId.value = designName.join(",");
+      let { designName, designValues } = selectedDesign(roleDegisnList);
+      oldDesignId.value = designName.join(',');
+      newDesignId.value = designName.join(',');
       designNameValue.value = designValues;
     }
   }
@@ -96,55 +94,55 @@
    * 点击修改
    */
   function designNameChange(selectedValue) {
-    newDesignId.value = unref(designNameValue).join(",");
+    newDesignId.value = unref(designNameValue).join(',');
   }
   /**
    * 全选
    */
-  function checkALL(){
-    let{designName,designValues}= selectedDesign(unref(desformList));
+  function checkALL() {
+    let { designName, designValues } = selectedDesign(unref(desformList));
     designNameValue.value = designValues;
-    newDesignId.value = designName.join(",");
+    newDesignId.value = designName.join(',');
   }
   /**
    * 取消全选
    */
-  function cancelCheckALL(){
-    designNameValue.value=[];
-    newDesignId.value="";
+  function cancelCheckALL() {
+    designNameValue.value = [];
+    newDesignId.value = '';
   }
   /**
    * 选中工单信息
    */
-  function selectedDesign(selectedList){
-      let designName = [];
-      let designValues = [];
-      for(let option of unref(processTypeDictOptions)){
-          let values = [];
-          for (let value of selectedList) {
-              if(option.value == value.procType){
-                  designName.push(value.id);
-                  values.push(value.id);
-              }
-          }
-          designValues.push(values);
+  function selectedDesign(selectedList) {
+    let designName = [];
+    let designValues = [];
+    for (let option of unref(processTypeDictOptions)) {
+      let values = [];
+      for (let value of selectedList) {
+        if (option.value == value.procType) {
+          designName.push(value.id);
+          values.push(value.id);
+        }
       }
-      return {designName,designValues}
+      designValues.push(values);
+    }
+    return { designName, designValues };
   }
   /**
    * 提交事件
    */
   async function handleSubmit() {
     try {
-      setModalProps({confirmLoading: true});
+      setModalProps({ confirmLoading: true });
       //提交表单
-      await saveRoleDesign({roleId:unref(roleId),newDesignId:unref(newDesignId),oldDessignId:unref(oldDesignId)});
+      await saveRoleDesign({ roleId: unref(roleId), newDesignId: unref(newDesignId), oldDessignId: unref(oldDesignId) });
       //关闭弹窗
       closeModal();
       //刷新列表
       emit('success');
     } finally {
-      setModalProps({confirmLoading: false});
+      setModalProps({ confirmLoading: false });
     }
   }
 </script>

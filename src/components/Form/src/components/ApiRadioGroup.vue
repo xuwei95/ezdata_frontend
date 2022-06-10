@@ -90,7 +90,7 @@
         () => {
           !unref(isFirstLoad) && fetch();
         },
-        { deep: true },
+        { deep: true }
       );
 
       async function fetch() {

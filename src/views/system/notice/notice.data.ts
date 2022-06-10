@@ -12,8 +12,8 @@ export const columns: BasicColumn[] = [
     title: '消息类型',
     dataIndex: 'msgCategory',
     width: 100,
-    customRender: ({text}) => {
-        return  render.renderDict(text, 'msg_category')
+    customRender: ({ text }) => {
+      return render.renderDict(text, 'msg_category');
     },
   },
   {
@@ -25,27 +25,27 @@ export const columns: BasicColumn[] = [
     title: '优先级',
     dataIndex: 'priority',
     width: 70,
-    customRender: ({text}) => {
-        const color = text=='L'?'blue':text=='M'?'yellow':'red';
-        return  render.renderTag(render.renderDict(text, 'priority'),color)
+    customRender: ({ text }) => {
+      const color = text == 'L' ? 'blue' : text == 'M' ? 'yellow' : 'red';
+      return render.renderTag(render.renderDict(text, 'priority'), color);
     },
   },
   {
     title: '通告对象',
     dataIndex: 'msgType',
     width: 100,
-    customRender: ({text}) => {
-      return  render.renderDict(text, 'msg_type')
+    customRender: ({ text }) => {
+      return render.renderDict(text, 'msg_type');
     },
   },
   {
     title: '发布状态',
     dataIndex: 'sendStatus',
     width: 70,
-    customRender: ({text}) => {
-      const color = text=='0'?'red':text=='1'?'green':'gray';
-      return  render.renderTag(render.renderDict(text, 'send_status'),color)
-    }
+    customRender: ({ text }) => {
+      const color = text == '0' ? 'red' : text == '1' ? 'green' : 'gray';
+      return render.renderTag(render.renderDict(text, 'send_status'), color);
+    },
   },
   {
     title: '发布时间',
@@ -56,7 +56,7 @@ export const columns: BasicColumn[] = [
     title: '撤销时间',
     width: 100,
     dataIndex: 'cancelTime',
-  }
+  },
 ];
 
 export const searchFormSchema: FormSchema[] = [
@@ -64,8 +64,8 @@ export const searchFormSchema: FormSchema[] = [
     field: 'titile',
     label: '标题',
     component: 'JInput',
-    colProps: {span: 8},
-  }
+    colProps: { span: 8 },
+  },
 ];
 
 export const formSchema: FormSchema[] = [
@@ -73,18 +73,18 @@ export const formSchema: FormSchema[] = [
     field: 'id',
     label: 'id',
     component: 'Input',
-    show:false
+    show: false,
   },
   {
     field: 'msgCategory',
     label: '消息类型',
     required: true,
     component: 'JDictSelectTag',
-    defaultValue:'1',
+    defaultValue: '1',
     componentProps: {
-      type:'radio',
-      dictCode:'msg_category',
-      placeholder:'请选择类型',
+      type: 'radio',
+      dictCode: 'msg_category',
+      placeholder: '请选择类型',
     },
   },
   {
@@ -94,13 +94,13 @@ export const formSchema: FormSchema[] = [
     required: true,
     componentProps: {
       placeholder: '请输入标题',
-    }
+    },
   },
   {
     field: 'msgAbstract',
     label: '摘要',
     component: 'InputTextArea',
-    required: true
+    required: true,
   },
   {
     field: 'endTime',
@@ -111,18 +111,18 @@ export const formSchema: FormSchema[] = [
       valueFormat: 'YYYY-MM-DD HH:mm:ss',
       placeholder: '请选择截至日期',
     },
-    dynamicRules: ({model}) => rules.endTime(model.startTime,true),
+    dynamicRules: ({ model }) => rules.endTime(model.startTime, true),
   },
   {
     field: 'msgType',
     label: '接收用户',
-    defaultValue:'ALL',
+    defaultValue: 'ALL',
     component: 'JDictSelectTag',
     required: true,
     componentProps: {
-       type:'radio',
-       dictCode:'msg_type',
-       placeholder:'请选择发布范围'
+      type: 'radio',
+      dictCode: 'msg_type',
+      placeholder: '请选择发布范围',
     },
   },
   {
@@ -131,20 +131,20 @@ export const formSchema: FormSchema[] = [
     component: 'JSelectUser',
     required: true,
     componentProps: {
-      rowKey: "id",
-      labelKey: "username"
+      rowKey: 'id',
+      labelKey: 'username',
     },
-    ifShow: ({values}) => values.msgType=='USER',
+    ifShow: ({ values }) => values.msgType == 'USER',
   },
   {
     field: 'priority',
     label: '优先级',
-    defaultValue:'H',
+    defaultValue: 'H',
     component: 'JDictSelectTag',
     componentProps: {
-      dictCode:'priority',
-      type:'radio',
-      placeholder:'请选择优先级'
+      dictCode: 'priority',
+      type: 'radio',
+      placeholder: '请选择优先级',
     },
   },
   {
@@ -152,5 +152,5 @@ export const formSchema: FormSchema[] = [
     label: '内容',
     component: 'Input',
     render: render.renderTinymce,
-  }
+  },
 ];

@@ -37,11 +37,7 @@ function handleChildren(children: BasicColumn[] | undefined, ellipsis: boolean) 
   });
 }
 
-function handleIndexColumn(
-    propsRef: ComputedRef<BasicTableProps>,
-    getPaginationRef: ComputedRef<boolean | PaginationProps>,
-    columns: BasicColumn[]
-) {
+function handleIndexColumn(propsRef: ComputedRef<BasicTableProps>, getPaginationRef: ComputedRef<boolean | PaginationProps>, columns: BasicColumn[]) {
   const { t } = useI18n();
 
   const { showIndexColumn, indexColumnProps, isTreeTable } = unref(propsRef);
@@ -77,10 +73,10 @@ function handleIndexColumn(
       return ((current < 1 ? 1 : current) - 1) * pageSize + index + 1;
     },
     ...(isFixedLeft
-        ? {
+      ? {
           fixed: 'left',
         }
-        : {}),
+      : {}),
     ...indexColumnProps,
   });
 }
@@ -99,10 +95,7 @@ function handleActionColumn(propsRef: ComputedRef<BasicTableProps>, columns: Bas
   }
 }
 
-export function useColumns(
-    propsRef: ComputedRef<BasicTableProps>,
-    getPaginationRef: ComputedRef<boolean | PaginationProps>
-) {
+export function useColumns(propsRef: ComputedRef<BasicTableProps>, getPaginationRef: ComputedRef<boolean | PaginationProps>) {
   const columnsRef = ref(unref(propsRef).columns) as unknown as Ref<BasicColumn[]>;
   let cacheColumns = unref(propsRef).columns;
 
@@ -119,10 +112,7 @@ export function useColumns(
     columns.forEach((item) => {
       const { customRender, slots } = item;
 
-      handleItem(
-          item,
-          Reflect.has(item, 'ellipsis') ? !!item.ellipsis : !!ellipsis && !customRender && !slots
-      );
+      handleItem(item, Reflect.has(item, 'ellipsis') ? !!item.ellipsis : !!ellipsis && !customRender && !slots);
     });
     return columns;
   });
@@ -147,44 +137,44 @@ export function useColumns(
 
     const columns = cloneDeep(viewColumns);
     return columns
-        .filter((column) => {
-          return hasPermission(column.auth) && isIfShow(column);
-        })
-        .map((column) => {
-          const { slots, dataIndex, customRender, format, edit, editRow, flag, title:metaTitle } = column;
+      .filter((column) => {
+        return hasPermission(column.auth) && isIfShow(column);
+      })
+      .map((column) => {
+        const { slots, dataIndex, customRender, format, edit, editRow, flag, title: metaTitle } = column;
 
-          if (!slots || !slots?.title) {
-            column.slots = { title: `header-${dataIndex}`, ...(slots || {}) };
-            column.customTitle = column.title;
-            Reflect.deleteProperty(column, 'title');
-          }
-          //update-begin-author:taoyan date:20211203 for:【online报表】分组标题显示错误，都显示成了联系信息 LOWCOD-2343
-          if(column.children){
-            column.title = metaTitle;
-          }
-          //update-end-author:taoyan date:20211203 for:【online报表】分组标题显示错误，都显示成了联系信息 LOWCOD-2343
+        if (!slots || !slots?.title) {
+          column.slots = { title: `header-${dataIndex}`, ...(slots || {}) };
+          column.customTitle = column.title;
+          Reflect.deleteProperty(column, 'title');
+        }
+        //update-begin-author:taoyan date:20211203 for:【online报表】分组标题显示错误，都显示成了联系信息 LOWCOD-2343
+        if (column.children) {
+          column.title = metaTitle;
+        }
+        //update-end-author:taoyan date:20211203 for:【online报表】分组标题显示错误，都显示成了联系信息 LOWCOD-2343
 
-          const isDefaultAction = [INDEX_COLUMN_FLAG, ACTION_COLUMN_FLAG].includes(flag!);
-          if (!customRender && format && !edit && !isDefaultAction) {
-            column.customRender = ({ text, record, index }) => {
-              return formatCell(text, format, record, index);
-            };
-          }
+        const isDefaultAction = [INDEX_COLUMN_FLAG, ACTION_COLUMN_FLAG].includes(flag!);
+        if (!customRender && format && !edit && !isDefaultAction) {
+          column.customRender = ({ text, record, index }) => {
+            return formatCell(text, format, record, index);
+          };
+        }
 
-          // edit table
-          if ((edit || editRow) && !isDefaultAction) {
-            column.customRender = renderEditCell(column);
-          }
-          return column;
-        });
+        // edit table
+        if ((edit || editRow) && !isDefaultAction) {
+          column.customRender = renderEditCell(column);
+        }
+        return column;
+      });
   });
 
   watch(
-      () => unref(propsRef).columns,
-      (columns) => {
-        columnsRef.value = columns;
-        cacheColumns = columns?.filter((item) => !item.flag) ?? [];
-      }
+    () => unref(propsRef).columns,
+    (columns) => {
+      columnsRef.value = columns;
+      cacheColumns = columns?.filter((item) => !item.flag) ?? [];
+    }
   );
 
   function setCacheColumnsByField(dataIndex: string | undefined, value: Partial<BasicColumn>) {
@@ -237,10 +227,7 @@ export function useColumns(
       // Sort according to another array
       if (!isEqual(cacheKeys, columns)) {
         newColumns.sort((prev, next) => {
-          return (
-              cacheKeys.indexOf(prev.dataIndex as string) -
-              cacheKeys.indexOf(next.dataIndex as string)
-          );
+          return cacheKeys.indexOf(prev.dataIndex as string) - cacheKeys.indexOf(next.dataIndex as string);
         });
       }
       columnsRef.value = newColumns;
@@ -292,9 +279,7 @@ function sortFixedColumn(columns: BasicColumn[]) {
     }
     defColumns.push(column);
   }
-  return [...fixedLeftColumns, ...defColumns, ...fixedRightColumns].filter(
-      (item) => !item.defaultHidden
-  );
+  return [...fixedLeftColumns, ...defColumns, ...fixedRightColumns].filter((item) => !item.defaultHidden);
 }
 
 // format cell
