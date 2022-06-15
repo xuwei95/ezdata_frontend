@@ -9,17 +9,18 @@ JeecgBoot-Vue3采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术�
  
 > 强大的代码生成器让前后端代码一键生成! JeecgBoot引领低代码开发模式(OnlineCoding-> 代码生成-> 手工MERGE)， 帮助解决Java项目70%的重复工作，让开发更多关注业务。既能快速提高效率，节省成本，同时又不失灵活性
 
-##  源码下载
+##  项目说明
 
-####  Github
-- 前端：https://github.com/jeecgboot/jeecgboot-vue3
-- 后端：https://github.com/jeecgboot/jeecg-boot 
 
-#### Gitee
-- 前端：https://gitee.com/jeecg/jeecgboot-vue3
-- 后端：https://gitee.com/jeecg/jeecg-boot
+| 项目名                | 说明                     | 传送门                                                                                                                          |
+|--------------------|------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| `jeecgboot-vue3` | Vue3版前端代码 | [Github](https://github.com/jeecgboot/jeecgboot-vue3)   &nbsp;&nbsp;  [Gitee](https://gitee.com/jeecg/jeecgboot-vue3) |
+| `jeecg-boot`    | JAVA后台（支持微服务）        | [Github](https://github.com/jeecgboot/jeecg-boot) &nbsp;&nbsp;    [Gitee](https://gitee.com/jeecg/jeecg-boot)  |
+| `ant-design-vue-jeecg`  |Vue2版前端代码（默认与主项目一起）       |        |
 
-> 入门必看(切换Vue3路由) [http://vue3.jeecg.com/2671576](http://vue3.jeecg.com/2671576)
+
+
+> 入门必看>>[切换Vue3路由](http://vue3.jeecg.com/2671576)
 
 
 ## 技术文档
