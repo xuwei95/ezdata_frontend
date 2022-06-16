@@ -5,7 +5,7 @@ JEECG BOOT 低代码平台（Vue3前端）
 
 ## 简介
 JeecgBoot-Vue3采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术方案，包括二次封装组件、utils、hooks、动态菜单、权限校验、按钮级别权限控制等功能。
-是在 Vben-Admin 基础上研发的，适合于JeecgBoot低代码平台的VUE3版前端解决方案。
+是在 Vben-Admin 基础上研发的，适合于JeecgBoot低代码平台的VUE3版前端解决方案，目前已是稳定版本，可用于生产项目。
  
 > 强大的代码生成器让前后端代码一键生成! JeecgBoot引领低代码开发模式(OnlineCoding-> 代码生成-> 手工MERGE)， 帮助解决Java项目70%的重复工作，让开发更多关注业务。既能快速提高效率，节省成本，同时又不失灵活性
 
@@ -73,65 +73,8 @@ yarn build
 
 
 
-
-
-##   系统效果
-系统后台
-
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142327.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142354.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142339.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142409.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142401.png "在这里输入图片标题")
-![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_11.png "在这里输入图片标题")
-
-Online表单&Online报表&代码生成
-![](https://oscimg.oschina.net/oscnet/up-e8862f2c3c14eace9090c20a8fb928234a4.png)
-![](https://oscimg.oschina.net/oscnet/up-e3b3a736236bc66f255a9a32ab3f9b7196b.png)
-![](https://oscimg.oschina.net/oscnet/up-221b8cbdea3c17d31a1365023a73d3d439f.png)
-![](https://oscimg.oschina.net/oscnet/up-14092f6f213b26ab145cf70b2dc6dec5635.png)
-
-报表效果
-
-![](https://static.oschina.net/uploads/img/201904/14160828_pkFr.png "")
-![](https://static.oschina.net/uploads/img/201904/14160834_Lo23.png "")
-![](https://static.oschina.net/uploads/img/201904/14160842_QK7B.png "")
-![](https://static.oschina.net/uploads/img/201904/14160849_GBm5.png "")
-![](https://static.oschina.net/uploads/img/201904/14160858_6RAM.png "")
-
-接口文档
-
-![](https://oscimg.oschina.net/oscnet/up-e6ea09dbaa01b8458c2e23614077ba9507f.png)
-
-
-流程设计&表单设计
-
-![](https://oscimg.oschina.net/oscnet/up-fe98e9f766e5abb6759f6f13d5f9186f0cf.png)
-![](https://static.oschina.net/uploads/img/201904/14160917_9Ftz.png "")
-![](https://static.oschina.net/uploads/img/201904/14160633_u59G.png "")
-![](https://static.oschina.net/uploads/img/201907/05165142_yyQ7.png "")
-
-报表设计
-
-![](https://oscimg.oschina.net/oscnet/up-da89eb034b8583d57b3f61493fec313ed28.png)
-![](https://oscimg.oschina.net/oscnet/up-35deca9d020d61ad464accfdeb3bb90ba5c.png)
-![](https://oscimg.oschina.net/oscnet/up-d1695b4a53ebbc9e9651e309e5af1c8bd30.png)
-![](https://oscimg.oschina.net/oscnet/up-4cc634b612e97f08ab702ef34f2ede53f2a.png)
-
-
-大屏模板
-
-![](https://static.oschina.net/uploads/img/201912/25133248_Ag1C.jpg "")
-
-![](https://static.oschina.net/uploads/img/201912/25133301_k9Kc.jpg "")
-
-![](https://oscimg.oschina.net/oscnet/up-649cb79c01eb95d5c2217a5dad28515da82.png)
-
-
-
-
 ## 功能模块
-> vue3版本已经实现了系统管理、系统监控、报表、各种组件、前端权限、GUI代码生成、Online表单、Online报表等平台功能。
+> vue3版本已经实现了系统管理、系统监控、报表、各种组件、前端权限、GUI代码生成、Online表单、Online报表等平台功能，完全可以用于生产环境。
 
 ```
 ├─首页
@@ -207,7 +150,7 @@ Online表单&Online报表&代码生成
 │  └─图片翻页
 │  └─图片预览
 │  └─PDF预览
-│─封装通用组件	
+│─封装通用组件 
 │  ├─行编辑表格JVxeTable
 │  └─省略显示组件
 │  └─时间控件
@@ -265,6 +208,63 @@ Online表单&Online报表&代码生成
    └─更多功能开发中。。 
    
 ```
+
+
+
+
+##   系统效果
+系统后台
+
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142327.png "在这里输入图片标题")
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142354.png "在这里输入图片标题")
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142339.png "在这里输入图片标题")
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142409.png "在这里输入图片标题")
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_20220310142401.png "在这里输入图片标题")
+![输入图片说明](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/site/vue3_11.png "在这里输入图片标题")
+
+Online表单&Online报表&代码生成
+![](https://oscimg.oschina.net/oscnet/up-e8862f2c3c14eace9090c20a8fb928234a4.png)
+![](https://oscimg.oschina.net/oscnet/up-e3b3a736236bc66f255a9a32ab3f9b7196b.png)
+![](https://oscimg.oschina.net/oscnet/up-221b8cbdea3c17d31a1365023a73d3d439f.png)
+![](https://oscimg.oschina.net/oscnet/up-14092f6f213b26ab145cf70b2dc6dec5635.png)
+
+报表效果
+
+![](https://static.oschina.net/uploads/img/201904/14160828_pkFr.png "")
+![](https://static.oschina.net/uploads/img/201904/14160834_Lo23.png "")
+![](https://static.oschina.net/uploads/img/201904/14160842_QK7B.png "")
+![](https://static.oschina.net/uploads/img/201904/14160849_GBm5.png "")
+![](https://static.oschina.net/uploads/img/201904/14160858_6RAM.png "")
+
+接口文档
+
+![](https://oscimg.oschina.net/oscnet/up-e6ea09dbaa01b8458c2e23614077ba9507f.png)
+
+
+流程设计&表单设计
+
+![](https://oscimg.oschina.net/oscnet/up-fe98e9f766e5abb6759f6f13d5f9186f0cf.png)
+![](https://static.oschina.net/uploads/img/201904/14160917_9Ftz.png "")
+![](https://static.oschina.net/uploads/img/201904/14160633_u59G.png "")
+![](https://static.oschina.net/uploads/img/201907/05165142_yyQ7.png "")
+
+报表设计
+
+![](https://oscimg.oschina.net/oscnet/up-da89eb034b8583d57b3f61493fec313ed28.png)
+![](https://oscimg.oschina.net/oscnet/up-35deca9d020d61ad464accfdeb3bb90ba5c.png)
+![](https://oscimg.oschina.net/oscnet/up-d1695b4a53ebbc9e9651e309e5af1c8bd30.png)
+![](https://oscimg.oschina.net/oscnet/up-4cc634b612e97f08ab702ef34f2ede53f2a.png)
+
+
+大屏模板
+
+![](https://static.oschina.net/uploads/img/201912/25133248_Ag1C.jpg "")
+
+![](https://static.oschina.net/uploads/img/201912/25133301_k9Kc.jpg "")
+
+![](https://oscimg.oschina.net/oscnet/up-649cb79c01eb95d5c2217a5dad28515da82.png)
+
+
 
 ## 入门必备
 
