@@ -5,7 +5,7 @@ export function useSelectBiz(getList, props) {
   //接收下拉框选项
   const selectOptions = inject('selectOptions', ref<Array<object>>([]));
   //接收已选择的值
-  const selectValues = <object>inject('selectValues', reactive({}));
+  const selectValues = <object>inject('selectValues', reactive({ value: [], change: false }));
   // 是否正在加载回显
   const loadingEcho = inject<Ref<boolean>>('loadingEcho', ref(false));
   //数据集
@@ -62,7 +62,9 @@ export function useSelectBiz(getList, props) {
    * 选择列配置
    */
   const rowSelection = {
-    type: 'checkbox',
+    //update-begin-author:liusq---date:20220517--for: 动态设置rowSelection的type值,默认是'checkbox' ---
+    type: props.isRadioSelection ? 'radio' : 'checkbox',
+    //update-end-author:liusq---date:20220517--for: 动态设置rowSelection的type值,默认是'checkbox' ---
     columnWidth: 20,
     selectedRowKeys: checkedKeys,
     onChange: onSelectChange,
@@ -141,6 +143,20 @@ export function useSelectBiz(getList, props) {
     selectRows.value = [];
   }
   return [
-    { onSelectChange, getDataSource, visibleChange, selectOptions, selectValues, rowSelection, indexColumnProps, checkedKeys, selectRows, dataSource, getSelectResult, handleDeleteSelected, reset },
+    {
+      onSelectChange,
+      getDataSource,
+      visibleChange,
+      selectOptions,
+      selectValues,
+      rowSelection,
+      indexColumnProps,
+      checkedKeys,
+      selectRows,
+      dataSource,
+      getSelectResult,
+      handleDeleteSelected,
+      reset,
+    },
   ];
 }

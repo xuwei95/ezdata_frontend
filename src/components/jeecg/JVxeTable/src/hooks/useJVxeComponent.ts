@@ -1,5 +1,6 @@
 import { computed, nextTick, ref, unref, watch } from 'vue';
 import { propTypes } from '/@/utils/propTypes';
+import { useDesign } from '/@/hooks/web/useDesign';
 import { getEnhanced, replaceProps, vModel } from '../utils/enhancedUtils';
 import { JVxeRenderType } from '../types/JVxeTypes';
 import { isBoolean, isFunction, isObject, isPromise } from '/@/utils/is';
@@ -59,6 +60,19 @@ export function useJVxeComponent(props: JVxeComponent.Props) {
     if (renderOptions.disabled === true) {
       cellProps['disabled'] = true;
     }
+    //update-begin-author:taoyan date:2022-5-25 for: VUEN-1111 一对多子表 部门选择 不应该级联
+    if (col.checkStrictly === true) {
+      cellProps['checkStrictly'] = true;
+    }
+    //update-end-author:taoyan date:2022-5-25 for: VUEN-1111 一对多子表 部门选择 不应该级联
+
+    //update-begin-author:taoyan date:2022-5-27 for: 用户组件 控制单选多选新的参数配置
+    if (col.isRadioSelection === true) {
+      cellProps['isRadioSelection'] = true;
+    } else if (col.isRadioSelection === false) {
+      cellProps['isRadioSelection'] = false;
+    }
+    //update-end-author:taoyan date:2022-5-27 for: 用户组件 控制单选多选新的参数配置
 
     return cellProps;
   });
@@ -182,10 +196,19 @@ export function useJVxeComponent(props: JVxeComponent.Props) {
     return event;
   }
 
+  /**
+   * 防样式冲突类名生成器
+   * @param scope
+   */
+  function useCellDesign(scope: string) {
+    return useDesign(`vxe-cell-${scope}`);
+  }
+
   return {
     ...context,
     enhanced,
     trigger,
+    useCellDesign,
   };
 }
 

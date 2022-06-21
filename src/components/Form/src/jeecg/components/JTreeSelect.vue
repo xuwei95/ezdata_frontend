@@ -39,11 +39,14 @@
     dict: propTypes.string.def('id'),
     parentCode: propTypes.string.def(''),
     pidField: propTypes.string.def('pid'),
-    pidValue: propTypes.string.def('0'),
+    //update-begin---author:wangshuai ---date:20220620  for：JTreeSelect组件pidValue还原成空，否则会影响自定义组件树示例------------
+    pidValue: propTypes.string.def(''),
+    //update-end---author:wangshuai ---date:20220620  for：JTreeSelect组件pidValue还原成空，否则会影响自定义组件树示例--------------
     hasChildField: propTypes.string.def(''),
     condition: propTypes.string.def(''),
     multiple: propTypes.bool.def(false),
     loadTriggleChange: propTypes.bool.def(false),
+    reload: propTypes.number.def(1),
   });
   const attrs = useAttrs();
   const emit = defineEmits(['change', 'update:value']);
@@ -74,6 +77,19 @@
     },
     { deep: true, immediate: true }
   );
+
+  //update-begin-author:taoyan date:2022-5-25 for: VUEN-1056 15、严重——online树表单，添加的时候，父亲节点是空的
+  watch(
+    () => props.reload,
+    async () => {
+      treeData.value = [];
+      await loadRoot();
+    },
+    {
+      immediate: false,
+    }
+  );
+  //update-end-author:taoyan date:2022-5-25 for: VUEN-1056 15、严重——online树表单，添加的时候，父亲节点是空的
 
   /**
    * 根据code获取下拉数据并回显

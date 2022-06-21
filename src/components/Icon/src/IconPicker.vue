@@ -1,5 +1,5 @@
 <template>
-  <a-input disabled :style="{ width }" :placeholder="t('component.icon.placeholder')" :class="prefixCls" v-model:value="currentSelect">
+  <a-input :disabled="disabled" :style="{ width }" :placeholder="t('component.icon.placeholder')" :class="prefixCls" v-model:value="currentSelect">
     <template #addonAfter>
       <a-popover placement="bottomLeft" trigger="click" v-model="visible" :overlayClassName="`${prefixCls}-popover`">
         <template #title>
@@ -88,6 +88,7 @@
     pageSize: propTypes.number.def(140),
     copy: propTypes.bool.def(false),
     mode: propTypes.oneOf<('svg' | 'iconify')[]>(['svg', 'iconify']).def('iconify'),
+    disabled: propTypes.bool.def(true),
   });
 
   const emit = defineEmits(['change', 'update:value']);

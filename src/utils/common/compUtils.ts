@@ -315,3 +315,13 @@ export function bindMapFormSchema<T>(spanMap, spanTypeDef: T) {
     );
   };
 }
+
+/**
+ * 字符串是否为null或null字符串
+ * @param str
+ * @return {boolean}
+ */
+export function stringIsNull(str) {
+  // 两个 == 可以同时判断 null 和 undefined
+  return str == null || str === 'null' || str === 'undefined';
+}

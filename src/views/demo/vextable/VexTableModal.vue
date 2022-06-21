@@ -151,7 +151,20 @@
           });
       }
 
-      return { xTable, tableData, sexList, formRef, validatorRules, orderMainModel, registerModal, getTitle, labelCol, wrapperCol, insertEvent, handleSubmit };
+      return {
+        xTable,
+        tableData,
+        sexList,
+        formRef,
+        validatorRules,
+        orderMainModel,
+        registerModal,
+        getTitle,
+        labelCol,
+        wrapperCol,
+        insertEvent,
+        handleSubmit,
+      };
     },
   });
 </script>

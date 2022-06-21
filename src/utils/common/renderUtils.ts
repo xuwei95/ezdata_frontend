@@ -5,8 +5,9 @@ import { Tinymce } from '/@/components/Tinymce';
 import Icon from '/@/components/Icon';
 import { getDictItemsByCode } from '/@/utils/dict/index';
 import { filterMultiDictText } from '/@/utils/dict/JDictSelectUtil.js';
-import { loadCategoryData } from '/@/api/common/api';
 import { isEmpty } from '/@/utils/is';
+import { useMessage } from '/@/hooks/web/useMessage';
+const { createMessage } = useMessage();
 
 const render = {
   /**
@@ -18,7 +19,12 @@ const render = {
       return h(
         'span',
         avatarList.map((item) => {
-          return h(Avatar, { src: getFileAccessHttpUrl(item), shape: 'square', size: 'default', style: { marginRight: '5px' } });
+          return h(Avatar, {
+            src: getFileAccessHttpUrl(item),
+            shape: 'square',
+            size: 'default',
+            style: { marginRight: '5px' },
+          });
         })
       );
     } else {
@@ -39,7 +45,7 @@ const render = {
    */
   renderDict: (v, code, renderTag = false) => {
     let text = '';
-    let array = getDictItemsByCode(code);
+    let array = getDictItemsByCode(code) || [];
     let obj = array.filter((item) => {
       return item.value == v;
     });
@@ -54,11 +60,12 @@ const render = {
    */
   renderImage: ({ text }) => {
     if (!text) {
+      //update-begin-author:taoyan date:2022-5-24 for:  VUEN-1084 【vue3】online表单测试发现的新问题 41、生成的代码，树默认图大小未改
       return h(
         Avatar,
-        { shape: 'square', size: 'large' },
+        { shape: 'square', size: 25 },
         {
-          icon: () => h(Icon, { icon: 'ant-design:file-image-outlined', size: 30 }),
+          icon: () => h(Icon, { icon: 'ant-design:file-image-outlined', size: 25 }),
         }
       );
     }
@@ -66,9 +73,15 @@ const render = {
     return h(
       'span',
       avatarList.map((item) => {
-        return h(Avatar, { src: getFileAccessHttpUrl(item), shape: 'square', size: 'large', style: { marginRight: '5px' } });
+        return h(Avatar, {
+          src: getFileAccessHttpUrl(item),
+          shape: 'square',
+          size: 25,
+          style: { marginRight: '5px' },
+        });
       })
     );
+    //update-end-author:taoyan date:2022-5-24 for:  VUEN-1084 【vue3】online表单测试发现的新问题 41、生成的代码，树默认图大小未改
   },
   /**
    * 渲染 Tooltip
@@ -141,4 +154,22 @@ const render = {
     return isEmpty(text) ? h('span', text) : h(Tag, { color }, () => text);
   },
 };
-export { render };
+
+/**
+ * 文件下载
+ */
+function downloadFile(url) {
+  if (!url) {
+    createMessage.warning('未知的文件');
+    return;
+  }
+  if (url.indexOf(',') > 0) {
+    url = url.substring(0, url.indexOf(','));
+  }
+  url = getFileAccessHttpUrl(url.split(',')[0]);
+  if (url) {
+    window.open(url);
+  }
+}
+
+export { render, downloadFile };

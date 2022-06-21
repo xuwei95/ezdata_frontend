@@ -13,12 +13,14 @@ const lsLocaleSetting = (ls.get(LOCALE_KEY) || localeSetting) as LocaleSetting;
 
 interface LocaleState {
   localInfo: LocaleSetting;
+  pathTitleMap: object;
 }
 
 export const useLocaleStore = defineStore({
   id: 'app-locale',
   state: (): LocaleState => ({
     localInfo: lsLocaleSetting,
+    pathTitleMap: {},
   }),
   getters: {
     getShowPicker(): boolean {
@@ -27,6 +29,11 @@ export const useLocaleStore = defineStore({
     getLocale(): LocaleType {
       return this.localInfo?.locale ?? 'zh_CN';
     },
+    //update-begin-author:taoyan date:2022-6-1 for: VUEN-1144 online 配置成菜单后，打开菜单，显示名称未展示为菜单名称
+    getPathTitle: (state) => {
+      return (path) => state.pathTitleMap[path];
+    },
+    //update-end-author:taoyan date:2022-6-1 for: VUEN-1144 online 配置成菜单后，打开菜单，显示名称未展示为菜单名称
   },
   actions: {
     /**
@@ -46,6 +53,11 @@ export const useLocaleStore = defineStore({
         ...this.localInfo,
       });
     },
+    //update-begin-author:taoyan date:2022-6-1 for: VUEN-1144 online 配置成菜单后，打开菜单，显示名称未展示为菜单名称
+    setPathTitle(path, title) {
+      this.pathTitleMap[path] = title;
+    },
+    //update-end-author:taoyan date:2022-6-1 for: VUEN-1144 online 配置成菜单后，打开菜单，显示名称未展示为菜单名称
   },
 });
 

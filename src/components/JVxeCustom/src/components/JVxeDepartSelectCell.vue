@@ -23,7 +23,9 @@
   <!--      <a-icon style="margin-left:5px;vertical-align: middle" type="close-circle" @click="handleEmpty" title="清空"/>-->
   <!--    </span>-->
   <!--  </div>-->
-  <JSelectDept :value="selectedValue" :showButton="false" v-bind="cellProps" @change="handleChange" />
+  <div :class="[prefixCls]">
+    <JSelectDept :value="selectedValue" :maxTagCount="1" :showButton="false" v-bind="cellProps" @change="handleChange" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -31,8 +33,6 @@
   import { JSelectDept } from '/@/components/Form';
   import { JVxeComponent } from '/@/components/jeecg/JVxeTable/types';
   import { useJVxeComponent, useJVxeCompProps } from '/@/components/jeecg/JVxeTable/hooks';
-
-  // import { isArray, isEmpty, isString } from '/@/utils/is'
 
   // import JSelectDepartModal from '@/components/jeecgbiz/modal/JSelectDepartModal'
   import { dispatchEvent } from '/@/components/jeecg/JVxeTable/utils';
@@ -43,32 +43,24 @@
     components: { JSelectDept },
     props: useJVxeCompProps(),
     setup(props: JVxeComponent.Props) {
-      const { innerValue, cellProps, handleChangeCommon } = useJVxeComponent(props);
-
-      // const selectedValue = computed(() => {
-      //   let val: any = innerValue.value
-      //   if (isEmpty(val)) {
-      //     return []
-      //   }
-      //   if (isArray(val)) {
-      //     return val
-      //   }
-      //   if (isString(val)) {
-      //     // @ts-ignore
-      //     return val.split(',')
-      //   }
-      //   return [val]
-      // })
+      const { innerValue, cellProps, handleChangeCommon, useCellDesign } = useJVxeComponent(props);
+      const { prefixCls } = useCellDesign('depart-select');
 
       const selectedValue = computed(() => {
-        let val = innerValue.value;
+        let val: any = innerValue.value;
+        if (val == null) {
+          return val;
+        }
         if (isEmpty(val)) {
-          return '';
+          return [];
         }
         if (isArray(val)) {
-          return (<any>val).join(',');
+          return val;
         }
-        return val;
+        if (isString(val)) {
+          return (<string>val).split(',');
+        }
+        return [val];
       });
 
       const multiple = computed(() => cellProps.value['multi'] != false);
@@ -78,6 +70,7 @@
       }
 
       return {
+        prefixCls,
         selectedValue,
         multiple,
         cellProps,
@@ -191,4 +184,14 @@
   });
 </script>
 
-<style scoped></style>
+<style lang="less">
+  // noinspection LessUnresolvedVariable
+  @prefix-cls: ~'@{namespace}-vxe-cell-depart-select';
+
+  .@{prefix-cls} {
+    // 限制tag最大长度为100px，防止选中文字过多的选项时换行
+    .ant-select .ant-select-selection-overflow-item {
+      max-width: 100px;
+    }
+  }
+</style>

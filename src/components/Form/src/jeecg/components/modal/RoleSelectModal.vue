@@ -1,7 +1,7 @@
 <!--角色选择框-->
 <template>
   <div>
-    <BasicModal v-bind="$attrs" @register="register" title="角色选择" width="800px" @ok="handleOk" destroyOnClose @visible-change="visibleChange">
+    <BasicModal v-bind="$attrs" @register="register" :title="modalTitle" width="800px" @ok="handleOk" destroyOnClose @visible-change="visibleChange">
       <BasicTable
         :columns="columns"
         v-bind="config"
@@ -29,10 +29,17 @@
     components: {
       //此处需要异步加载BasicTable
       BasicModal,
-      BasicTable: createAsyncComponent(() => import('/@/components/Table/src/BasicTable.vue'), { loading: true }),
+      BasicTable: createAsyncComponent(() => import('/@/components/Table/src/BasicTable.vue'), {
+        loading: true,
+      }),
     },
     props: {
       ...selectProps,
+      //选择框标题
+      modalTitle: {
+        type: String,
+        default: '角色选择',
+      },
     },
     emits: ['register', 'getSelectResult'],
     setup(props, { emit, refs }) {
@@ -44,7 +51,7 @@
         canResize: false,
         bordered: true,
         size: 'small',
-        rowKey: 'id',
+        rowKey: unref(props).rowKey,
       };
       const getBindValue = Object.assign({}, unref(props), unref(attrs), config);
       const [{ rowSelection, indexColumnProps, visibleChange, getSelectResult }] = useSelectBiz(getRoleList, getBindValue);

@@ -17,13 +17,15 @@
           :open="false"
           :disabled="disabled"
           :options="options"
+          :maxTagCount="maxTagCount"
           @change="handleChange"
           style="width: 100%"
           @click="!disabled && openModal(false)"
         ></a-select>
       </a-col>
       <a-col v-if="showButton" class="right">
-        <a-button type="primary" @click="openModal(true)" :disabled="disabled">选择</a-button>
+        <a-button v-if="buttonIcon" :preIcon="buttonIcon" type="primary" @click="openModal(true)" :disabled="disabled">选择</a-button>
+        <a-button v-else type="primary" @click="openModal(true)" :disabled="disabled">选择</a-button>
       </a-col>
     </a-row>
   </div>
@@ -52,6 +54,10 @@
       },
       // 是否正在加载
       loading: propTypes.bool.def(false),
+      // 最多显示多少个 tag
+      maxTagCount: propTypes.number,
+      // buttonIcon
+      buttonIcon: propTypes.string.def(''),
     },
     emits: ['handleOpen', 'change'],
     setup(props, { emit, refs }) {

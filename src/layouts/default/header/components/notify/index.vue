@@ -50,7 +50,16 @@
   import { readAllMsg } from '/@/views/monitor/mynews/mynews.api';
   import { getToken } from '/@/utils/auth';
   export default defineComponent({
-    components: { Popover, BellOutlined, Tabs, TabPane: Tabs.TabPane, Badge, NoticeList, DetailModal, DynamicNotice },
+    components: {
+      Popover,
+      BellOutlined,
+      Tabs,
+      TabPane: Tabs.TabPane,
+      Badge,
+      NoticeList,
+      DetailModal,
+      DynamicNotice,
+    },
     setup() {
       const { prefixCls } = useDesign('header-notify');
       const instance: any = getCurrentInstance();
@@ -89,7 +98,9 @@
       // 获取系统消息
       async function loadData() {
         try {
-          let { anntMsgList, sysMsgList, anntMsgTotal, sysMsgTotal } = await listCementByUser({ pageSize: 5 });
+          let { anntMsgList, sysMsgList, anntMsgTotal, sysMsgTotal } = await listCementByUser({
+            pageSize: 5,
+          });
           listData.value[0].list = anntMsgList.map(mapAnnouncement);
           listData.value[1].list = sysMsgList.map(mapAnnouncement);
           listData.value[0].count = anntMsgTotal;

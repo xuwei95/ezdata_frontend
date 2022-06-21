@@ -34,6 +34,18 @@ export const columns: BasicColumn[] = [
     width: 80,
   },
   {
+    title: '日志类型',
+    dataIndex: 'logType_dictText',
+    width: 60,
+  },
+];
+
+/**
+ * 操作日志需要操作类型
+ */
+export const operationLogColumn: BasicColumn[] = [
+  ...columns,
+  {
     title: '操作类型',
     dataIndex: 'operateType_dictText',
     width: 40,

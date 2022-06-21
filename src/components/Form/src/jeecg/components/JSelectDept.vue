@@ -37,7 +37,7 @@
       //下拉框选项值
       const selectOptions = ref<SelectTypes['options']>([]);
       //下拉框选中值
-      let selectValues = reactive<object>({
+      let selectValues = reactive<Recordable>({
         value: [],
       });
       // 是否正在加载回显数据
@@ -57,14 +57,16 @@
        */
       watchEffect(() => {
         props.value && initValue();
-        // update-begin-author:taoyan date:20220401 for:调用表单的 resetFields不会清空当前部门信息，界面显示上一次的数据
-        if (props.value === '' || props.value === undefined) {
-          state.value = [];
-          selectValues.value = [];
-        }
-        // update-end-author:taoyan date:20220401 for:调用表单的 resetFields不会清空当前部门信息，界面显示上一次的数据
       });
 
+      //update-begin-author:liusq---date:20220609--for: 为了解决弹窗form初始化赋值问题 ---
+      watch(
+        () => props.value,
+        () => {
+          initValue();
+        }
+      );
+      //update-end-author:liusq---date:20220609--for: 为了解决弹窗form初始化赋值问题 ---
       /**
        * 监听selectValues变化
        */
@@ -100,6 +102,9 @@
         if (value && typeof value === 'string') {
           state.value = value.split(',');
           selectValues.value = value.split(',');
+        } else {
+          // 【VUEN-857】兼容数组（行编辑的用法问题）
+          selectValues.value = value;
         }
       }
 

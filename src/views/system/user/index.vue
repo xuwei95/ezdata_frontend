@@ -167,12 +167,8 @@
   /**
    * 成功回调
    */
-  function handleSuccess({ isUpdate, values }) {
-    if (isUpdate) {
-      updateTableDataRecord(values.id, values);
-    } else {
-      reload();
-    }
+  function handleSuccess() {
+    reload();
   }
 
   /**

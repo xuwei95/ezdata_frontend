@@ -118,7 +118,9 @@
         console.log(tableRef.value);
         await nextTick();
         // 默认添加五行数据
-        tableRef.value!.addRows([{ input: 'input_1' }, { input: 'input_2' }, { input: 'input_3' }, { input: 'input_4' }, { input: 'input_5' }], { setActive: false });
+        tableRef.value!.addRows([{ input: 'input_1' }, { input: 'input_2' }, { input: 'input_3' }, { input: 'input_4' }, { input: 'input_5' }], {
+          setActive: false,
+        });
       });
 
       return { tableRef, columns, dataSource, handleView, handleDelete };

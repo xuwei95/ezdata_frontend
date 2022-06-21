@@ -53,6 +53,8 @@ interface PermissionState {
   allAuthList: AuthItem[];
   // 系统安全模式
   sysSafeMode: boolean;
+  // online子表按钮权限
+  onlineSubTableAuthMap: object;
 }
 export const usePermissionStore = defineStore({
   id: 'app-permission',
@@ -69,6 +71,7 @@ export const usePermissionStore = defineStore({
     authList: [],
     allAuthList: [],
     sysSafeMode: false,
+    onlineSubTableAuthMap: {},
   }),
   getters: {
     getPermCodeList(): string[] | number[] {
@@ -86,6 +89,12 @@ export const usePermissionStore = defineStore({
     getIsDynamicAddedRoute(): boolean {
       return this.isDynamicAddedRoute;
     },
+
+    //update-begin-author:taoyan date:2022-6-1 for: VUEN-1162 子表按钮没控制
+    getOnlineSubTableAuth: (state) => {
+      return (code) => state.onlineSubTableAuthMap[code];
+    },
+    //update-end-author:taoyan date:2022-6-1 for: VUEN-1162 子表按钮没控制
   },
   actions: {
     setPermCodeList(codeList: string[]) {
@@ -278,6 +287,12 @@ export const usePermissionStore = defineStore({
     setAllAuthList(authList: AuthItem[]) {
       this.allAuthList = authList;
     },
+
+    //update-begin-author:taoyan date:2022-6-1 for: VUEN-1162 子表按钮没控制
+    setOnlineSubTableAuth(code, hideBtnList) {
+      this.onlineSubTableAuthMap[code] = hideBtnList;
+    },
+    //update-end-author:taoyan date:2022-6-1 for: VUEN-1162 子表按钮没控制
   },
 });
 

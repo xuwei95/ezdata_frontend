@@ -1,6 +1,6 @@
 <!--通过部门选择用户-->
 <template>
-  <BasicModal v-bind="$attrs" @register="register" title="用户选择" width="1200px" @ok="handleOk" destroyOnClose @visible-change="visibleChange">
+  <BasicModal v-bind="$attrs" @register="register" :title="modalTitle" width="1200px" @ok="handleOk" destroyOnClose @visible-change="visibleChange">
     <a-row :gutter="10">
       <a-col :md="7" :sm="24">
         <a-card :style="{ minHeight: '613px', overflow: 'auto' }">
@@ -43,10 +43,17 @@
       //此处需要异步加载BasicTable
       BasicModal,
       BasicTree,
-      BasicTable: createAsyncComponent(() => import('/@/components/Table/src/BasicTable.vue'), { loading: true }),
+      BasicTable: createAsyncComponent(() => import('/@/components/Table/src/BasicTable.vue'), {
+        loading: true,
+      }),
     },
     props: {
       ...selectProps,
+      //选择框标题
+      modalTitle: {
+        type: String,
+        default: '部门用户选择',
+      },
     },
     emits: ['register', 'getSelectResult'],
     setup(props, { emit, refs }) {

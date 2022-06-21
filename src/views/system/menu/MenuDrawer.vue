@@ -1,5 +1,5 @@
 <template>
-  <BasicDrawer v-bind="$attrs" @register="registerDrawer" showFooter :width="width" :title="getTitle" @ok="handleSubmit">
+  <BasicDrawer v-bind="$attrs" @register="registerDrawer" showFooter :width="adaptiveWidth" :title="getTitle" @ok="handleSubmit">
     <BasicForm @register="registerForm" class="menuForm" />
   </BasicDrawer>
 </template>
@@ -9,10 +9,10 @@
   import { formSchema, ComponentTypes } from './menu.data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { list, saveOrUpdateMenu } from './menu.api';
-  import { useAdapt } from '/@/hooks/system/useAutoAdapt.ts';
+  import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
-  const { width } = useAdapt();
+  const { adaptiveWidth } = useDrawerAdaptiveWidth();
   const attrs = useAttrs();
   const isUpdate = ref(true);
   const menuType = ref(0);

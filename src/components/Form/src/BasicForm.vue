@@ -233,6 +233,7 @@
         updateSchema,
         resetSchema,
         setProps,
+        getProps,
         removeSchemaByFiled,
         appendSchemaByField,
         clearValidate,

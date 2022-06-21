@@ -1,16 +1,22 @@
 <template>
   <div :class="[prefixCls, getAlign]" @click="onCellClick">
     <template v-for="(action, index) in getActions" :key="`${index}-${action.label}`">
-      <Tooltip v-if="action.tooltip" v-bind="getTooltip(action.tooltip)">
-        <PopConfirmButton v-bind="action">
+      <template v-if="action.slot">
+        <slot name="customButton"></slot>
+      </template>
+      <template v-else>
+        <Tooltip v-if="action.tooltip" v-bind="getTooltip(action.tooltip)">
+          <PopConfirmButton v-bind="action">
+            <Icon :icon="action.icon" :class="{ 'mr-1': !!action.label }" v-if="action.icon" />
+            <template v-if="action.label">{{ action.label }}</template>
+          </PopConfirmButton>
+        </Tooltip>
+        <PopConfirmButton v-else v-bind="action">
           <Icon :icon="action.icon" :class="{ 'mr-1': !!action.label }" v-if="action.icon" />
           <template v-if="action.label">{{ action.label }}</template>
         </PopConfirmButton>
-      </Tooltip>
-      <PopConfirmButton v-else v-bind="action">
-        <Icon :icon="action.icon" :class="{ 'mr-1': !!action.label }" v-if="action.icon" />
-        <template v-if="action.label">{{ action.label }}</template>
-      </PopConfirmButton>
+      </template>
+
       <Divider type="vertical" class="action-divider" v-if="divider && index < getActions.length - 1" />
     </template>
     <Dropdown :trigger="['hover']" :dropMenuList="getDropdownList" popconfirm v-if="dropDownActions && getDropdownList.length > 0">
@@ -93,21 +99,21 @@
       });
 
       const getDropdownList = computed((): any[] => {
-        return (toRaw(props.dropDownActions) || [])
-          .filter((action) => {
-            return hasPermission(action.auth) && isIfShow(action);
-          })
-          .map((action, index) => {
-            const { label, popConfirm } = action;
-            return {
-              ...action,
-              ...popConfirm,
-              onConfirm: popConfirm?.confirm,
-              onCancel: popConfirm?.cancel,
-              text: label,
-              divider: index < props.dropDownActions.length - 1 ? props.divider : false,
-            };
-          });
+        //过滤掉隐藏的dropdown,避免出现多余的分割线
+        const list = (toRaw(props.dropDownActions) || []).filter((action) => {
+          return hasPermission(action.auth) && isIfShow(action);
+        });
+        return list.map((action, index) => {
+          const { label, popConfirm } = action;
+          return {
+            ...action,
+            ...popConfirm,
+            onConfirm: popConfirm?.confirm,
+            onCancel: popConfirm?.cancel,
+            text: label,
+            divider: index < list.length - 1 ? props.divider : false,
+          };
+        });
       });
 
       const getAlign = computed(() => {

@@ -48,7 +48,8 @@ export function useTableHeader(propsRef: ComputedRef<BasicTableProps>, slots: Sl
                       tableTop: () => getSlot(slots, 'tableTop'),
                     }
                   : {}),
-                //添加tableTop插槽
+                // 添加alertAfter插槽
+                ...(slots.alertAfter ? { alertAfter: () => getSlot(slots, 'alertAfter') } : {}),
               }
             ),
     };

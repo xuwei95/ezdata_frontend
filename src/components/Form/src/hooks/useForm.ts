@@ -110,17 +110,18 @@ export function useForm(props?: Props): UseFormReturnType {
      */
     validate: async (nameList?: NamePath[]): Promise<Recordable> => {
       const form = await getForm();
+      let getProps = props || form.getProps;
       let values = form.validate(nameList).then((values) => {
         for (let key in values) {
           if (values[key] instanceof Array) {
-            let valueType = getValueType(props, key);
+            let valueType = getValueType(getProps, key);
             if (valueType === 'string') {
               values[key] = values[key].join(',');
             }
           }
         }
         //--@updateBy-begin----author:liusq---date:20210916------for:处理区域事件字典信息------
-        return handleRangeValue(props, values);
+        return handleRangeValue(getProps, values);
         //--@updateBy-end----author:liusq---date:20210916------for:处理区域事件字典信息------
       });
       return values;

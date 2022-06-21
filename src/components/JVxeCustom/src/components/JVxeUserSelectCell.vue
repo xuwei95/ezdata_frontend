@@ -1,5 +1,7 @@
 <template>
-  <JSelectUser :value="selectedValue" :showButton="false" v-bind="cellProps" @change="handleChange" />
+  <div :class="[prefixCls]">
+    <JSelectUser :value="selectedValue" :maxTagCount="1" :showButton="false" v-bind="cellProps" @change="handleChange" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -15,10 +17,14 @@
     components: { JSelectUser },
     props: useJVxeCompProps(),
     setup(props: JVxeComponent.Props) {
-      const { innerValue, cellProps, handleChangeCommon } = useJVxeComponent(props);
+      const { innerValue, cellProps, handleChangeCommon, useCellDesign } = useJVxeComponent(props);
+      const { prefixCls } = useCellDesign('user-select');
 
       const selectedValue = computed(() => {
         let val: any = innerValue.value;
+        if (val == null) {
+          return val;
+        }
         if (isEmpty(val)) {
           return [];
         }
@@ -39,6 +45,7 @@
       }
 
       return {
+        prefixCls,
         selectedValue,
         multiple,
         cellProps,
@@ -66,4 +73,14 @@
   });
 </script>
 
-<style scoped></style>
+<style lang="less">
+  // noinspection LessUnresolvedVariable
+  @prefix-cls: ~'@{namespace}-vxe-cell-user-select';
+
+  .@{prefix-cls} {
+    // 限制tag最大长度为100px，防止选中文字过多的选项时换行
+    .ant-select .ant-select-selection-overflow-item {
+      max-width: 100px;
+    }
+  }
+</style>

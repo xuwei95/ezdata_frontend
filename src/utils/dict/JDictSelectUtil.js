@@ -9,9 +9,10 @@ import { ajaxGetDictItems, getDictItemsByCode } from './index';
 /**
  * 获取字典数组
  * @param dictCode 字典Code
+ * @param isTransformResponse 是否转换返回结果
  * @return List<Map>
  */
-export async function initDictOptions(dictCode) {
+export async function initDictOptions(dictCode, isTransformResponse = true) {
   if (!dictCode) {
     return '字典Code不能为空!';
   }
@@ -20,11 +21,14 @@ export async function initDictOptions(dictCode) {
     let res = {};
     res.result = getDictItemsByCode(dictCode);
     res.success = true;
-    return res;
+    if (isTransformResponse) {
+      return res.result;
+    } else {
+      return res;
+    }
   }
   //获取字典数组
-  let res = await ajaxGetDictItems(dictCode);
-  return res;
+  return await ajaxGetDictItems(dictCode, {}, { isTransformResponse });
 }
 
 /**
@@ -125,7 +129,10 @@ export function filterDictTextByCache(dictCode, key) {
 export async function getDictItems(dictCode, params) {
   //优先从缓存中读取字典配置
   if (getDictItemsByCode(dictCode)) {
-    let desformDictItems = getDictItemsByCode(dictCode).map((item) => ({ ...item, label: item.text }));
+    let desformDictItems = getDictItemsByCode(dictCode).map((item) => ({
+      ...item,
+      label: item.text,
+    }));
     return desformDictItems;
   }
 

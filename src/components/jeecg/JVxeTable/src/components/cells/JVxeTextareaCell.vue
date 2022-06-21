@@ -1,5 +1,5 @@
 <template>
-  <JInputPop :value="innerValue" :width="300" :height="210" v-bind="cellProps" style="width: 100%" @blur="handleBlurCommon" @change="handleChangeCommon" />
+  <JInputPop :value="innerValue" :width="300" :height="210" :pop-container="getPopupContainer" v-bind="cellProps" style="width: 100%" @blur="handleBlurCommon" @change="handleChangeCommon" />
 </template>
 
 <script lang="ts">
@@ -15,7 +15,12 @@
     props: useJVxeCompProps(),
     setup(props: JVxeComponent.Props) {
       const { innerValue, cellProps, handleChangeCommon, handleBlurCommon } = useJVxeComponent(props);
-      return { innerValue, cellProps, handleChangeCommon, handleBlurCommon };
+
+      function getPopupContainer() {
+        return document.body;
+      }
+
+      return { innerValue, cellProps, handleChangeCommon, handleBlurCommon, getPopupContainer };
     },
     // 【组件增强】注释详见：JVxeComponent.Enhanced
     enhanced: {

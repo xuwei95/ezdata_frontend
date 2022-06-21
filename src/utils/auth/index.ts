@@ -10,7 +10,7 @@ const isLocal = permissionCacheType === CacheTypeEnum.LOCAL;
  * 获取token
  */
 export function getToken() {
-  return getAuthCache(TOKEN_KEY);
+  return getAuthCache<string>(TOKEN_KEY);
 }
 /**
  * 获取登录信息
@@ -22,13 +22,7 @@ export function getLoginBackInfo() {
  * 获取租户id
  */
 export function getTenantId() {
-  return getAuthCache(TENANT_ID);
-}
-/**
- * 获取用户租户id
- */
-export function getUserTenantId(username) {
-  return getAuthCache(username);
+  return getAuthCache<string>(TENANT_ID);
 }
 
 export function getAuthCache<T>(key: BasicKeys) {
@@ -39,6 +33,25 @@ export function getAuthCache<T>(key: BasicKeys) {
 export function setAuthCache(key: BasicKeys, value) {
   const fn = isLocal ? Persistent.setLocal : Persistent.setSession;
   return fn(key, value, true);
+}
+
+/**
+ * 设置动态key
+ * @param key
+ * @param value
+ */
+export function setCacheByDynKey(key, value) {
+  const fn = isLocal ? Persistent.setLocal : Persistent.setSession;
+  return fn(key, value, true);
+}
+
+/**
+ * 获取动态key
+ * @param key
+ */
+export function getCacheByDynKey<T>(key) {
+  const fn = isLocal ? Persistent.getLocal : Persistent.getSession;
+  return fn(key) as T;
 }
 /**
  * 移除缓存中的某个属性

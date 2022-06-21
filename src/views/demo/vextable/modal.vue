@@ -222,7 +222,20 @@
           });
       }
 
-      return { formRef, validatorRules, orderMainModel, registerModal, getTitle, labelCol, wrapperCol, addRowCustom, delRowCustom, addRowTicket, delRowTicket, handleSubmit };
+      return {
+        formRef,
+        validatorRules,
+        orderMainModel,
+        registerModal,
+        getTitle,
+        labelCol,
+        wrapperCol,
+        addRowCustom,
+        delRowCustom,
+        addRowTicket,
+        delRowTicket,
+        handleSubmit,
+      };
     },
   });
 </script>

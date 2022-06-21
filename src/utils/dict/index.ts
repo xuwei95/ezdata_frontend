@@ -24,12 +24,19 @@ export const initDictOptions = (code) => {
     });
   }
   //2.获取字典数组
+  //update-begin-author:taoyan date:2022-6-21 for: 字典数据请求前将参数编码处理，但是不能直接编码，因为可能之前已经编码过了
+  if (code.indexOf(',') > 0 && code.indexOf(' ') > 0) {
+    // 编码后类似sys_user%20where%20username%20like%20xxx' 是不包含空格的,这里判断如果有空格和逗号说明需要编码处理
+    code = encodeURI(code);
+  }
+  //update-end-author:taoyan date:2022-6-21 for: 字典数据请求前将参数编码处理，但是不能直接编码，因为可能之前已经编码过了
   return defHttp.get({ url: `/sys/dict/getDictItems/${code}` });
 };
 /**
  * 获取字典数组
  * @param code 字典Code
  * @param params 查询参数
+ * @param options 查询配置
  * @return List<Map>
  */
-export const ajaxGetDictItems = (code, params) => defHttp.get({ url: `/sys/dict/getDictItems/${code}`, params });
+export const ajaxGetDictItems = (code, params, options?) => defHttp.get({ url: `/sys/dict/getDictItems/${code}`, params }, options);

@@ -117,15 +117,20 @@
         options.value = [];
         loading.value = true;
         // 字典code格式：table,text,code
-        defHttp.get({ url: `/sys/dict/loadDict/${props.dict}`, params: { keyword: value, pageSize: props.pageSize } }).then((res) => {
-          loading.value = false;
-          if (res && res.length > 0) {
-            if (currentLoad != unref(lastLoad)) {
-              return;
+        defHttp
+          .get({
+            url: `/sys/dict/loadDict/${props.dict}`,
+            params: { keyword: value, pageSize: props.pageSize },
+          })
+          .then((res) => {
+            loading.value = false;
+            if (res && res.length > 0) {
+              if (currentLoad != unref(lastLoad)) {
+                return;
+              }
+              options.value = res;
             }
-            options.value = res;
-          }
-        });
+          });
       }
       /**
        * 初始化value
@@ -186,12 +191,17 @@
           } else {
             //异步一开始也加载一点数据
             loading.value = true;
-            defHttp.get({ url: `/sys/dict/loadDict/${dict}`, params: { pageSize: pageSize, keyword: '' } }).then((res) => {
-              loading.value = false;
-              if (res && res.length > 0) {
-                options.value = res;
-              }
-            });
+            defHttp
+              .get({
+                url: `/sys/dict/loadDict/${dict}`,
+                params: { pageSize: pageSize, keyword: '' },
+              })
+              .then((res) => {
+                loading.value = false;
+                if (res && res.length > 0) {
+                  options.value = res;
+                }
+              });
           }
         }
       }

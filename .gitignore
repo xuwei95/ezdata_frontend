@@ -31,3 +31,4 @@ pnpm-debug.log*
 /os_del.cmd
 /.vscode/
 /.history/
+/svn clear.bat

@@ -127,9 +127,15 @@ export interface FetchSetting {
 }
 
 export interface TableSetting {
+  // 是否显示刷新按钮
   redo?: boolean;
+  // 是否显示尺寸调整按钮
   size?: boolean;
+  // 是否显示字段调整按钮
   setting?: boolean;
+  // 缓存“字段调整”配置的key，用于页面上有多个表格需要区分的情况
+  cacheKey?: string;
+  // 是否显示全屏按钮
   fullScreen?: boolean;
 }
 

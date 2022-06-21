@@ -1,19 +1,19 @@
 <template>
   <div class="area-select">
     <!--省份-->
-    <a-select v-model:value="province" @change="proChange" allowClear>
+    <a-select v-model:value="province" @change="proChange" allowClear :disabled="disabled">
       <template v-for="item in provinceOptions" :key="`${item.value}`">
         <a-select-option :value="item.value">{{ item.label }}</a-select-option>
       </template>
     </a-select>
     <!--城市-->
-    <a-select v-if="level >= 2" v-model:value="city" @change="cityChange">
+    <a-select v-if="level >= 2" v-model:value="city" @change="cityChange" :disabled="disabled">
       <template v-for="item in cityOptions" :key="`${item.value}`">
         <a-select-option :value="item.value">{{ item.label }}</a-select-option>
       </template>
     </a-select>
     <!--地区-->
-    <a-select v-if="level >= 3" v-model:value="area" @change="areaChange">
+    <a-select v-if="level >= 3" v-model:value="area" @change="areaChange" :disabled="disabled">
       <template v-for="item in areaOptions" :key="`${item.value}`">
         <a-select-option :value="item.value">{{ item.label }}</a-select-option>
       </template>
@@ -34,6 +34,7 @@
       city: [String],
       area: [String],
       level: propTypes.number.def(3),
+      disabled: propTypes.bool.def(false),
     },
     emits: ['change', 'update:value'],
     setup(props, { emit, refs }) {

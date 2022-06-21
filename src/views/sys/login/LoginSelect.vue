@@ -251,6 +251,9 @@
             visible.value = true;
           }
         }
+        //登录弹窗完成后，将登录的标识设置成false
+        loginResult.isLogin = false;
+        userStore.setLoginInfo(loginResult);
       }
 
       /**

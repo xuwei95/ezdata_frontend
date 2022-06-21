@@ -65,8 +65,6 @@
 
   import LoginSelect from '/@/views/sys/login/LoginSelect.vue';
   import { useUserStore } from '/@/store/modules/user';
-  import { getUserTenantId, setAuthCache } from '/@/utils/auth';
-  import { TENANT_ID } from '/@/enums/cacheEnum';
 
   export default defineComponent({
     name: 'LayoutHeader',
@@ -150,15 +148,10 @@
 
       function showLoginSelect() {
         //update-begin---author:liusq  Date:20220101  for：判断登录进来是否需要弹窗选择租户----
-        //判断当前用户的租户在缓存中是否存在
-        const userTenantId = getUserTenantId(userStore.getUserInfo.username);
-        if (!userTenantId && userTenantId != 0) {
-          //当前用户的租户不存在，弹窗选择
-          const loginInfo = toRaw(userStore.getLoginInfo) || {};
+        //判断是否是登陆进来
+        const loginInfo = toRaw(userStore.getLoginInfo) || {};
+        if (!!loginInfo.isLogin) {
           loginSelectRef.value.show(loginInfo);
-        } else {
-          //当前用户的租户存在，直接赋值
-          setAuthCache(TENANT_ID, userTenantId);
         }
         //update-end---author:liusq  Date:20220101  for：判断登录进来是否需要弹窗选择租户----
       }

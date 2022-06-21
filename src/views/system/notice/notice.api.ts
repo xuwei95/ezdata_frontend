@@ -1,5 +1,4 @@
 import { defHttp } from '/@/utils/http/axios';
-import { Modal } from 'ant-design-vue';
 
 enum Api {
   list = '/sys/annountCement/list',
@@ -49,22 +48,10 @@ export const deleteNotice = (params, handleSuccess) => {
 };
 
 /**
- * 批量删除租户
+ * 批量消息公告
  * @param params
  */
-export const batchDeleteNotice = (params, handleSuccess) => {
-  Modal.confirm({
-    title: '确认删除',
-    content: '是否删除选中数据',
-    okText: '确认',
-    cancelText: '取消',
-    onOk: () => {
-      return defHttp.delete({ url: Api.deleteBatch, data: params }, { joinParamsToUrl: true }).then(() => {
-        handleSuccess();
-      });
-    },
-  });
-};
+export const batchDeleteNotice = (params) => defHttp.delete({ url: Api.deleteBatch, data: params }, { joinParamsToUrl: true });
 
 /**
  * 发布

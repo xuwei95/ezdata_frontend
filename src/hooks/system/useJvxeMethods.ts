@@ -44,7 +44,7 @@ export function useJvxeMethod(requestAddOrEdit, classifyIntoFormData, tableRefs,
     getAllTable()
       .then((tables) => {
         let values = formRef.value.getFieldsValue();
-        return validateFormModelAndTables(formRef.value.validate, values, tables);
+        return validateFormModelAndTables(formRef.value.validate, values, tables, formRef.value.getProps);
       })
       .then((allValues) => {
         /** 一次性验证一对一的所有子表 */
@@ -86,3 +86,95 @@ export function useJvxeMethod(requestAddOrEdit, classifyIntoFormData, tableRefs,
   }
   return [handleChangeTabs, handleSubmit, requestSubTableData, formRef];
 }
+
+//update-begin-author:taoyan date:2022-6-16 for: 代码生成-原生表单用
+/**
+ * 校验多个表单和子表table，用于原生的antd-vue的表单
+ * @param activeKey 子表表单/vxe-table 所在tabs的 activeKey
+ * @param refMap 子表表单/vxe-table对应的ref对象 map结构
+ * 示例：
+ * useValidateAntFormAndTable(activeKey, {
+ *   'tableA': tableARef,
+ *   'formB': formBRef
+ * })
+ */
+export function useValidateAntFormAndTable(activeKey, refMap) {
+  /**
+   * 获取所有子表数据
+   */
+  async function getSubFormAndTableData() {
+    let formData = {};
+    let all = Object.keys(refMap);
+    let key = '';
+    for (let i = 0; i < all.length; i++) {
+      key = all[i];
+      let instance = refMap[key].value;
+      if (instance.isForm) {
+        let subFormData = await validateFormAndGetData(instance, key);
+        if (subFormData) {
+          formData[key + 'List'] = [subFormData];
+        }
+      } else {
+        let arr = await validateTableAndGetData(instance, key);
+        if (arr && arr.length > 0) {
+          formData[key + 'List'] = arr;
+        }
+      }
+    }
+    return formData;
+  }
+
+  /**
+   * 转换数据用 如果有数组转成逗号分割的格式
+   * @param data
+   */
+  function transformData(data) {
+    if (data) {
+      Object.keys(data).map((k) => {
+        if (data[k] instanceof Array) {
+          data[k] = data[k].join(',');
+        }
+      });
+    }
+    return data;
+  }
+
+  /**
+   * 子表table
+   * @param instance
+   * @param key
+   */
+  async function validateTableAndGetData(instance, key) {
+    const errors = await instance.validateTable();
+    if (!errors) {
+      return instance.getTableData();
+    } else {
+      activeKey.value = key;
+      // 自动重置scrollTop状态，防止出现白屏
+      instance.resetScrollTop(0);
+      return Promise.reject(1);
+    }
+  }
+
+  /**
+   * 子表表单
+   * @param instance
+   * @param key
+   */
+  async function validateFormAndGetData(instance, key) {
+    try {
+      let data = await instance.getFormData();
+      transformData(data);
+      return data;
+    } catch (e) {
+      activeKey.value = key;
+      return Promise.reject(e);
+    }
+  }
+
+  return {
+    getSubFormAndTableData,
+    transformData,
+  };
+}
+//update-end-author:taoyan date:2022-6-16 for: 代码生成-原生表单用

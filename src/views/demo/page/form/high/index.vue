@@ -64,4 +64,10 @@
   .high-form {
     padding-bottom: 48px;
   }
+
+  /** update-begin-author:taoyan date:2022-5-16 for:/issues/63 下拉框z-index问题 */
+  ::v-deep(.ant-select-dropdown) {
+    z-index: 98 !important;
+  }
+  /** update-end-author:taoyan date:2022-5-16 for:/issues/63 下拉框z-index问题 */
 </style>

@@ -98,6 +98,11 @@ const jeecgAreaData = new Area();
 
 // 根据code找文本
 const getAreaTextByCode = function (code) {
+  //update-begin-author:liusq---date:20220531--for: 判断code是否是多code逗号分割的字符串，是的话，获取最后一位的code ---
+  if (code && code.includes(',')) {
+    code = code.substr(code.lastIndexOf(',') + 1);
+  }
+  //update-end-author:liusq---date:20220531--for: 判断code是否是多code逗号分割的字符串，是的话，获取最后一位的code ---
   return jeecgAreaData.getText(code);
 };
 

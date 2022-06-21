@@ -116,3 +116,11 @@
     exit && closeDrawer();
   }
 </script>
+
+<style lang="less" scoped>
+  /** 固定操作按钮 */
+  .jeecg-basic-tree {
+    position: absolute;
+    width: 618px;
+  }
+</style>

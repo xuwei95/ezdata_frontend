@@ -153,6 +153,8 @@
         orderMainModel.content = '';
         orderMainModel.jeecgOrderCustomerList = [];
         orderMainModel.jeecgOrderTicketList = [];
+        table1.dataSource = [];
+        table2.dataSource = [];
       }
       async function requestAddOrEdit(values) {
         setModalProps({ confirmLoading: true });
@@ -163,7 +165,22 @@
         //刷新列表
         emit('success');
       }
-      return { formRef, activeKey, table1, table2, tableRef1, tableRef2, getTitle, labelCol, wrapperCol, validatorRules, orderMainModel, registerModal, handleChangeTabs, handleSubmit };
+      return {
+        formRef,
+        activeKey,
+        table1,
+        table2,
+        tableRef1,
+        tableRef2,
+        getTitle,
+        labelCol,
+        wrapperCol,
+        validatorRules,
+        orderMainModel,
+        registerModal,
+        handleChangeTabs,
+        handleSubmit,
+      };
     },
   });
 </script>

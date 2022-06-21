@@ -1,3 +1,4 @@
+import { watch } from 'vue';
 import XEUtils from 'xe-utils';
 import { simpleDebounce } from '/@/utils/common/compUtils';
 import { JVxeDataProps, JVxeRefs, JVxeTableProps, JVxeTypes } from '../types';
@@ -241,6 +242,12 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
     });
     xTable.updateData();
   }
+
+  // 监听 disabledRows，更改时重新计算禁用行
+  watch(
+    () => props.disabledRows,
+    () => recalcDisableRows()
+  );
 
   // 返回值决定是否允许展开、收起行
   function handleExpandToggleMethod({ expanded }) {

@@ -1,4 +1,4 @@
-import { reactive, ref, Ref } from 'vue';
+import { reactive, ref, Ref, unref } from 'vue';
 import { merge } from 'lodash-es';
 import { DynamicProps } from '/#/utils';
 import { BasicTableProps, TableActionType, useTable } from '/@/components/Table';
@@ -20,7 +20,7 @@ interface ListPageOptions {
   pagination?: boolean;
   // 导出配置
   exportConfig?: {
-    url: string;
+    url: string | (() => string);
     // 导出文件名
     name?: string | (() => string);
     //导出参数
@@ -28,7 +28,9 @@ interface ListPageOptions {
   };
   // 导入配置
   importConfig?: {
-    url: string;
+    //update-begin-author:taoyan date:20220507 for: erp代码生成 子表 导入地址是动态的
+    url: string | (() => string);
+    //update-end-author:taoyan date:20220507 for: erp代码生成 子表 导入地址是动态的
     // 导出成功后的回调
     success?: (fileInfo?: any) => void;
   };
@@ -63,17 +65,32 @@ export function useListPage(options: ListPageOptions) {
   async function onExportXls() {
     //update-begin---author:wangshuai ---date:20220411  for：导出新增自定义参数------------
     let { url, name, params } = options?.exportConfig ?? {};
-    if (url) {
+    let realUrl = typeof url === 'function' ? url() : url;
+    if (realUrl) {
       let title = typeof name === 'function' ? name() : name;
-      let paramsForm = await getForm().validate();
-      //如果参数不为空，则整合到一起
-      if (params) {
-        paramsForm = Object.assign({}, paramsForm, params);
+      //update-begin-author:taoyan date:20220507 for: erp代码生成 子表 导出报错，原因未知-
+      let paramsForm = {};
+      try {
+        paramsForm = await getForm().validate();
+      } catch (e) {
+        console.error(e);
       }
+      //update-end-author:taoyan date:20220507 for: erp代码生成 子表 导出报错，原因未知-
+      //如果参数不为空，则整合到一起
+      //update-begin-author:taoyan date:20220507 for: erp代码生成 子表 导出动态设置mainId
+      if (params) {
+        Object.keys(params).map((k) => {
+          let temp = (params as object)[k];
+          if (temp) {
+            paramsForm[k] = unref(temp);
+          }
+        });
+      }
+      //update-end-author:taoyan date:20220507 for: erp代码生成 子表 导出动态设置mainId
       if (selectedRowKeys.value && selectedRowKeys.value.length > 0) {
         paramsForm['selections'] = selectedRowKeys.value.join(',');
       }
-      return handleExportXls(title as string, url, filterObj(paramsForm));
+      return handleExportXls(title as string, realUrl, filterObj(paramsForm));
       //update-end---author:wangshuai ---date:20220411  for：导出新增自定义参数--------------
     } else {
       $message.createMessage.warn('没有传递 exportConfig.url 参数');
@@ -84,8 +101,11 @@ export function useListPage(options: ListPageOptions) {
   // 导入 excel
   function onImportXls(file) {
     let { url, success } = options?.importConfig ?? {};
-    if (url) {
-      return handleImportXls(file, url, success || reload);
+    //update-begin-author:taoyan date:20220507 for: erp代码生成 子表 导入地址是动态的
+    let realUrl = typeof url === 'function' ? url() : url;
+    if (realUrl) {
+      return handleImportXls(file, realUrl, success || reload);
+      //update-end-author:taoyan date:20220507 for: erp代码生成 子表 导入地址是动态的
     } else {
       $message.createMessage.warn('没有传递 importConfig.url 参数');
       return Promise.reject();

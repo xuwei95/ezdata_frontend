@@ -1,3 +1,5 @@
+import { getValueType } from '/@/utils';
+
 export const VALIDATE_FAILED = Symbol();
 /**
  * 一次性验证主表单和所有的次表单(新版本)
@@ -5,7 +7,7 @@ export const VALIDATE_FAILED = Symbol();
  * @param cases 接收一个数组，每项都是一个JEditableTable实例
  * @returns {Promise<any>}
  */
-export async function validateFormModelAndTables(validate, formData, cases, autoJumpTab?) {
+export async function validateFormModelAndTables(validate, formData, cases, props, autoJumpTab?) {
   if (!(validate && typeof validate === 'function')) {
     throw `validate 参数需要的是一个方法，而传入的却是${typeof validate}`;
   }
@@ -14,6 +16,18 @@ export async function validateFormModelAndTables(validate, formData, cases, auto
     // 验证主表表单
     validate()
       .then(() => {
+        //update-begin---author:wangshuai ---date:20220507  for：[VUEN-912]一对多用户组件（所有风格，单表和树没问题）保存报错------------
+        for (let data in formData) {
+          //如果该数据是数组
+          if (formData[data] instanceof Array) {
+            let valueType = getValueType(props, data);
+            //如果是字符串类型的需要变成以逗号分割的字符串
+            if (valueType === 'string') {
+              formData[data] = formData[data].join(',');
+            }
+          }
+        }
+        //update-end---author:wangshuai ---date:20220507  for：[VUEN-912]一对多用户组件（所有风格，单表和树没问题）保存报错--------------
         resolve(formData);
       })
       .catch(() => {

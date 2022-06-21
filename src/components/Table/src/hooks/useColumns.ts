@@ -188,11 +188,13 @@ export function useColumns(propsRef: ComputedRef<BasicTableProps>, getPagination
       }
     });
   }
+
+  // update-begin--author:sunjianlei---date:20220523---for: 【VUEN-1089】合并vben最新版代码，解决表格字段排序问题
   /**
    * set columns
    * @param columnList key｜column
    */
-  function setColumns(columnList: Partial<BasicColumn>[] | string[]) {
+  function setColumns(columnList: Partial<BasicColumn>[] | (string | string[])[]) {
     const columns = cloneDeep(columnList);
     if (!isArray(columns)) return;
 
@@ -205,34 +207,27 @@ export function useColumns(propsRef: ComputedRef<BasicTableProps>, getPagination
 
     const cacheKeys = cacheColumns.map((item) => item.dataIndex);
 
-    if (!isString(firstColumn)) {
+    if (!isString(firstColumn) && !isArray(firstColumn)) {
       columnsRef.value = columns as BasicColumn[];
     } else {
-      const columnKeys = columns as string[];
+      const columnKeys = (columns as (string | string[])[]).map((m) => m.toString());
       const newColumns: BasicColumn[] = [];
       cacheColumns.forEach((item) => {
-        if (columnKeys.includes(item.dataIndex! || (item.key as string))) {
-          newColumns.push({
-            ...item,
-            defaultHidden: false,
-          });
-        } else {
-          newColumns.push({
-            ...item,
-            defaultHidden: true,
-          });
-        }
+        newColumns.push({
+          ...item,
+          defaultHidden: !columnKeys.includes(item.dataIndex?.toString() || (item.key as string)),
+        });
       });
-
       // Sort according to another array
       if (!isEqual(cacheKeys, columns)) {
         newColumns.sort((prev, next) => {
-          return cacheKeys.indexOf(prev.dataIndex as string) - cacheKeys.indexOf(next.dataIndex as string);
+          return columnKeys.indexOf(prev.dataIndex?.toString() as string) - columnKeys.indexOf(next.dataIndex?.toString() as string);
         });
       }
       columnsRef.value = newColumns;
     }
   }
+  // update-end--author:sunjianlei---date:20220523---for: 【VUEN-1089】合并vben最新版代码，解决表格字段排序问题
 
   function getColumns(opt?: GetColumnsParams) {
     const { ignoreIndex, ignoreAction, sort } = opt || {};

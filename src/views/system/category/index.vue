@@ -122,7 +122,9 @@
    * 导入
    */
   function importSuccess() {
-    reload() && (expandedRowKeys.value = []);
+    //update-begin---author:wangshuai ---date:20220530  for：[issues/54]树字典，勾选，然后批量删除，系统错误------------
+    (selectedRowKeys.value = []) && reload();
+    //update-end---author:wangshuai ---date:20220530  for：[issues/54]树字典，勾选，然后批量删除，系统错误--------------
   }
   /**
    * 添加下级

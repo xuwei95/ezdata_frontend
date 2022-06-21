@@ -47,7 +47,7 @@
       //下拉框选项值
       const selectOptions = ref<SelectTypes['options']>([]);
       //下拉框选中值
-      let selectValues = reactive<object>({
+      let selectValues = reactive<Recordable>({
         value: [],
         change: false,
       });
@@ -68,6 +68,10 @@
        */
       watchEffect(() => {
         props.value && initValue();
+        // 查询条件重置的时候，清空界面显示
+        if (!props.value) {
+          selectValues.value = [];
+        }
       });
 
       /**
@@ -97,6 +101,8 @@
         if (value && typeof value === 'string' && value != 'null' && value != 'undefined') {
           state.value = value.split(',');
           selectValues.value = value.split(',');
+        } else {
+          selectValues.value = value;
         }
       }
 

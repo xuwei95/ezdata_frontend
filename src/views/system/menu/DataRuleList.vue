@@ -1,5 +1,5 @@
 <template>
-  <BasicDrawer v-bind="$attrs" @register="registerDrawer" title="数据权限规则" :width="width">
+  <BasicDrawer v-bind="$attrs" @register="registerDrawer" title="数据权限规则" :width="adaptiveWidth">
     <BasicTable @register="registerTable">
       <template #tableTitle>
         <a-button type="primary" @click="handleCreate"> 新增</a-button>
@@ -20,9 +20,9 @@
   import { dataRuleColumns, dataRuleSearchFormSchema } from './menu.data';
   import { dataRuleList, deleteRule } from './menu.api';
   import { ColEx } from '/@/components/Form/src/types';
-  import { useAdapt } from '/@/hooks/system/useAutoAdapt.ts';
+  import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
   const permissionId = ref('');
-  const { width } = useAdapt({ def: '650px', xl: '650px', lg: '650px' });
+  const { adaptiveWidth } = useDrawerAdaptiveWidth();
   //权限规则model
   const [registerModal, { openModal }] = useModal();
   const [registerDrawer] = useDrawerInner(async (data) => {
@@ -63,6 +63,7 @@
     useSearchForm: true,
     bordered: true,
     showIndexColumn: false,
+    showTableSetting: false,
     canResize: false,
     immediate: false,
     actionColumn: {

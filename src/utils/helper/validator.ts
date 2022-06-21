@@ -97,12 +97,11 @@ export const rules = {
       },
     ];
   },
-  duplicateCheckRule(tableName, fieldName, model, schema, required) {
+  duplicateCheckRule(tableName, fieldName, model, schema, required?) {
     return [
       {
-        required: required,
         validator: (_, value) => {
-          if (!value) {
+          if (!value && required) {
             return Promise.reject(`请输入${schema.label}`);
           }
           return new Promise<void>((resolve, reject) => {
@@ -124,3 +123,31 @@ export const rules = {
     ] as ArrayRule;
   },
 };
+
+//update-begin-author:taoyan date:2022-6-16 for: 代码生成-原生表单用
+/**
+ * 唯一校验函数，给原生<a-form>使用，vben的表单校验建议使用上述rules
+ * @param tableName 表名
+ * @param fieldName 字段名
+ * @param fieldVal 字段值
+ * @param dataId 数据ID
+ */
+export async function duplicateValidate(tableName, fieldName, fieldVal, dataId) {
+  try {
+    let params = {
+      tableName,
+      fieldName,
+      fieldVal,
+      dataId: dataId,
+    };
+    const res = await duplicateCheck(params);
+    if (res.success) {
+      return Promise.resolve();
+    } else {
+      return Promise.reject(res.message || '校验失败');
+    }
+  } catch (e) {
+    return Promise.reject('校验失败,可能是断网等问题导致的校验失败');
+  }
+}
+//update-end-author:taoyan date:2022-6-16 for: 代码生成-原生表单用

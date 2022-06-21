@@ -48,6 +48,7 @@ export interface LoginInfo {
   userInfo?: object;
   departs?: [];
   tenantList?: [];
+  isLogin?: boolean;
 }
 
 export interface BeforeMiniState {

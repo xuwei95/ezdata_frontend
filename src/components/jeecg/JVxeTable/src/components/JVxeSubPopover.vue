@@ -76,6 +76,12 @@
         let className = target.className || '';
         className = isString(className) ? className : className.toString();
 
+        // 获取 td 父级
+        let td = getParentNodeByTagName(target, 'td');
+        // 点击的是拖拽排序列，不做处理
+        if (td && td.querySelector('.j-vxe-drag-box')) {
+          return;
+        }
         // 点击的是expand，不做处理
         if (className.includes('vxe-table--expand-btn')) {
           return;
@@ -119,7 +125,11 @@
           });
         } else {
           let num = ++level;
-          console.warn('【JVxeSubPopover】table or tr 获取失败，正在进行第 ' + num + '次重试', { event, table: parentElem, tr });
+          console.warn('【JVxeSubPopover】table or tr 获取失败，正在进行第 ' + num + '次重试', {
+            event,
+            table: parentElem,
+            tr,
+          });
           window.setTimeout(() => open(event, num), 100);
         }
       }

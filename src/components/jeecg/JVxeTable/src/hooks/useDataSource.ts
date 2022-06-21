@@ -4,7 +4,7 @@ import { cloneDeep } from 'lodash-es';
 
 export function useDataSource(props, data: JVxeDataProps, methods: JVxeTableMethods, refs: JVxeRefs) {
   watch(
-    () => [props.dataSource, props.disabledRows],
+    () => props.dataSource,
     async () => {
       data.disabledRowIds = [];
       data.vxeDataSource.value = cloneDeep(props.dataSource);

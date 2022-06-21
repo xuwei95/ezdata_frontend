@@ -66,7 +66,7 @@
     },
 
     toolbar: {
-      type: Array as PropType<string[]>,
+      type: [Array as PropType<string[]>, String],
       default: toolbar,
     },
     plugins: {
@@ -74,7 +74,7 @@
       default: plugins,
     },
     menubar: {
-      type: Object,
+      type: [Object, String],
       default: menubar,
     },
     modelValue: {

@@ -239,7 +239,16 @@
           'max-width': labelTextMaxWidth,
         },
       };
-      return { labelTextMaxWidth, labelCol, single_mode, getDictOptionKey, getDictCode, getSqlByDictCode, DateTypeEnum, CompTypeEnum };
+      return {
+        labelTextMaxWidth,
+        labelCol,
+        single_mode,
+        getDictOptionKey,
+        getDictCode,
+        getSqlByDictCode,
+        DateTypeEnum,
+        CompTypeEnum,
+      };
     },
   });
 </script>

@@ -18,7 +18,7 @@
           <template #content>
             <TableSetting mode="mobile" :setting="tableSetting" v-if="showTableSetting" @columns-change="handleColumnChange" />
           </template>
-          <a-button :class="`${prefixCls}__toolbar-mobile`" type="text" preIcon="ant-design:menu" shape="circle" />
+          <a-button :class="`${prefixCls}__toolbar-mobile`" v-if="showTableSetting" type="text" preIcon="ant-design:menu" shape="circle" />
         </a-popover>
       </div>
     </div>

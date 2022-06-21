@@ -35,7 +35,7 @@
     height: propTypes.number.def(150),
     disabled: propTypes.bool.def(false),
     // 弹出框挂载的元素ID
-    popContainer: propTypes.string.def(''),
+    popContainer: propTypes.oneOfType([propTypes.string, propTypes.func]).def(''),
   });
   const attrs = useAttrs();
   const emit = defineEmits(['change', 'update:value']);
@@ -75,6 +75,8 @@
   function getPopupContainer(node) {
     if (!props.popContainer) {
       return node.parentNode;
+    } else if (typeof props.popContainer === 'function') {
+      return props.popContainer(node);
     } else {
       return document.getElementById(props.popContainer);
     }

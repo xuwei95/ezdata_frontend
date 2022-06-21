@@ -68,7 +68,9 @@
     name: 'JPopupOnlReport',
     components: {
       SearchFormItem: createAsyncComponent(() => import('/@/components/jeecg/OnLine/SearchFormItem.vue'), { loading: true }),
-      BasicTable: createAsyncComponent(() => import('/@/components/Table/src/BasicTable.vue'), { loading: true }),
+      BasicTable: createAsyncComponent(() => import('/@/components/Table/src/BasicTable.vue'), {
+        loading: true,
+      }),
     },
     props: ['multi', 'code', 'id', 'sorter', 'groupId', 'param', 'clickToRowSelect'],
     emits: ['ok', 'register'],

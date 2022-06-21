@@ -1,7 +1,7 @@
 import type { App } from 'vue';
 import { Icon } from './Icon';
 import AIcon from '/@/components/jeecg/AIcon.vue';
-import { Button, UploadButton } from './Button';
+import { Button, JUploadButton } from './Button';
 import {
   // Need
   Button as AntButton,
@@ -47,9 +47,12 @@ import {
   InputNumber,
   Carousel,
   Popconfirm,
+  Skeleton,
+  Cascader,
+  Rate,
 } from 'ant-design-vue';
 
-const compList = [AntButton.Group, Icon, AIcon, UploadButton];
+const compList = [AntButton.Group, Icon, AIcon, JUploadButton];
 
 export function registerGlobComp(app: App) {
   compList.forEach((comp) => {
@@ -99,5 +102,8 @@ export function registerGlobComp(app: App) {
     .use(Slider)
     .use(InputNumber)
     .use(Carousel)
-    .use(Popconfirm);
+    .use(Popconfirm)
+    .use(Skeleton)
+    .use(Cascader)
+    .use(Rate);
 }

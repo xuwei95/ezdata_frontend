@@ -48,7 +48,7 @@
       //下拉框选项值
       const selectOptions = ref<SelectTypes['options']>([]);
       //下拉框选中值
-      let selectValues = reactive<object>({
+      let selectValues = reactive<Recordable>({
         value: [],
         change: false,
       });
@@ -102,6 +102,9 @@
         if (value && typeof value === 'string' && value != 'null' && value != 'undefined') {
           state.value = value.split(',');
           selectValues.value = value.split(',');
+        } else {
+          // 【VUEN-857】兼容数组（行编辑的用法问题）
+          selectValues.value = value;
         }
       }
 

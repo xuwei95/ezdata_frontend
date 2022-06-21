@@ -15,7 +15,9 @@
 
   export default defineComponent({
     components: {
-      BasicModal: createAsyncComponent(() => import('/@/components/Modal/src/BasicModal.vue'), { loading: true }),
+      BasicModal: createAsyncComponent(() => import('/@/components/Modal/src/BasicModal.vue'), {
+        loading: true,
+      }),
     },
     props: {
       trigger: {

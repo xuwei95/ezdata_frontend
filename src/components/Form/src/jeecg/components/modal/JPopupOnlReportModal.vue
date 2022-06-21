@@ -78,7 +78,9 @@
       //此处需要异步加载BasicTable
       BasicModal,
       SearchFormItem: createAsyncComponent(() => import('/@/components/jeecg/OnLine/SearchFormItem.vue'), { loading: false }),
-      BasicTable: createAsyncComponent(() => import('/@/components/Table/src/BasicTable.vue'), { loading: true }),
+      BasicTable: createAsyncComponent(() => import('/@/components/Table/src/BasicTable.vue'), {
+        loading: true,
+      }),
     },
     props: ['multi', 'code', 'sorter', 'groupId', 'param'],
     emits: ['ok', 'register'],
@@ -101,7 +103,7 @@
       const tableScroll = ref({ x: true });
       const getBindValue = Object.assign({}, unref(props), unref(attrs));
       const [
-        { visibleChange, loadColumnsInfo, dynamicParamHandler, loadData, handleChangeInTable, combineRowKey, clickThenCheck, filterUnuseSelect },
+        { visibleChange, loadColumnsInfo, dynamicParamHandler, loadData, handleChangeInTable, combineRowKey, clickThenCheck, filterUnuseSelect, getOkSelectRows },
         { visible, rowSelection, checkedKeys, selectRows, pagination, dataSource, columns, loading, title, iSorter, queryInfo, queryParam, dictOptions },
       ] = usePopBiz(getBindValue);
 
@@ -149,6 +151,19 @@
         }
       });
 
+      //update-begin-author:taoyan date:2022-5-31 for: VUEN-1156 popup 多数据有分页时，选中其他页，关闭popup 再点开，分页仍然选中上一次点击的分页，但数据是第一页的数据 未刷新
+      watch(
+        () => pagination.current,
+        (current) => {
+          if (current) {
+            tableRef.value.setPagination({
+              current: current,
+            });
+          }
+        }
+      );
+      //update-end-author:taoyan date:2022-5-31 for: VUEN-1156 popup 多数据有分页时，选中其他页，关闭popup 再点开，分页仍然选中上一次点击的分页，但数据是第一页的数据 未刷新
+
       function handleToggleSearch() {
         toggleSearchStatus.value = !unref(toggleSearchStatus);
       }
@@ -174,7 +189,10 @@
           createMessage.warning('至少选择一条记录');
           return false;
         }
-        emit('ok', unref(selectRows));
+        //update-begin-author:taoyan date:2022-5-31 for: VUEN-1155 popup 选择数据时，会选择多条重复数据
+        let rows = getOkSelectRows!();
+        emit('ok', rows);
+        //update-end-author:taoyan date:2022-5-31 for: VUEN-1155 popup 选择数据时，会选择多条重复数据
         handleCancel();
       }
 

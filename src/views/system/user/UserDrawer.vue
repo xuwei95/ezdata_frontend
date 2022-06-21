@@ -36,8 +36,10 @@
       if (data.record.relTenantIds && !Array.isArray(data.record.relTenantIds)) {
         data.record.relTenantIds = data.record.relTenantIds.split(',');
       } else {
-        data.record.relTenantIds = [];
+        //【issues/I56C5I】用户管理中连续点两次编辑租户配置就丢失了
+        //data.record.relTenantIds = [];
       }
+
       //查角色/赋值/try catch 处理，不然编辑有问题
       try {
         const userRoles = await getUserRoles({ userid: data.record.id });
@@ -94,7 +96,9 @@
       });
     }
     // 隐藏底部时禁用整个表单
-    setProps({ disabled: !showFooter });
+    //update-begin-author:taoyan date:2022-5-24 for: VUEN-1117【issue】0523周开源问题
+    setProps({ disabled: !showFooter.value });
+    //update-end-author:taoyan date:2022-5-24 for: VUEN-1117【issue】0523周开源问题
   });
   //获取标题
   const getTitle = computed(() => (!unref(isUpdate) ? '新增用户' : '编辑用户'));
@@ -111,7 +115,7 @@
       //关闭弹窗
       closeDrawer();
       //刷新列表
-      emit('success', { isUpdate: unref(isUpdate), values: { ...values, id: rowId.value } });
+      emit('success');
     } finally {
       setDrawerProps({ confirmLoading: false });
     }

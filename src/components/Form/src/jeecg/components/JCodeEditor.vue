@@ -96,7 +96,8 @@
           },
         },
       });
-      let innerValue = '';
+      // 内部存储值，初始为 props.value
+      let innerValue = props.value ?? '';
       // 全屏状态
       const isFullScreen = ref(false);
       const fullScreenIcon = computed(() => (isFullScreen.value ? 'fullscreen-exit' : 'fullscreen'));
@@ -174,6 +175,17 @@
       function onToggleFullScreen() {
         isFullScreen.value = !isFullScreen.value;
       }
+
+      //update-begin-author:taoyan date:2022-5-9 for: codeEditor禁用功能
+      watch(
+        () => props.disabled,
+        (val) => {
+          if (coder) {
+            coder.setOption('readOnly', val);
+          }
+        }
+      );
+      //update-end-author:taoyan date:2022-5-9 for: codeEditor禁用功能
 
       const getBindValue = Object.assign({}, unref(props), unref(attrs));
       return {

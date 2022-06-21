@@ -141,5 +141,4 @@ export type ComponentType =
   | 'JSearchSelect'
   | 'JAddInput'
   | 'Time'
-  | 'JOnlineSelectCascade'
   | 'JRangeNumber';

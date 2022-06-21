@@ -105,5 +105,8 @@ export const formSchema: FormSchema[] = [
     label: '规则参数',
     colProps: { span: 24 },
     component: 'JAddInput',
+    componentProps: {
+      min: 0,
+    },
   },
 ];

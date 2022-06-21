@@ -1,6 +1,6 @@
 <!--字典下拉多选-->
 <template>
-  <a-select :value="arrayValue" @change="onChange" mode="multiple" :placeholder="placeholder" allowClear :getPopupContainer="getParentContainer">
+  <a-select :value="arrayValue" @change="onChange" mode="multiple" :filter-option="filterOption" :disabled="disabled" :placeholder="placeholder" allowClear :getPopupContainer="getParentContainer">
     <a-select-option v-for="(item, index) in dictOptions" :key="index" :getPopupContainer="getParentContainer" :value="item.value">
       {{ item.text || item.label }}
     </a-select-option>
@@ -39,7 +39,7 @@
       triggerChange: {
         type: Boolean,
         required: false,
-        default: false,
+        default: true,
       },
       spliter: {
         type: String,
@@ -54,6 +54,10 @@
       dictCode: {
         type: String,
         required: false,
+      },
+      disabled: {
+        type: Boolean,
+        default: false,
       },
     },
     emits: ['options-change', 'change', 'input', 'update:value'],
@@ -103,7 +107,14 @@
 
       // 根据字典code查询字典项
       function loadDictOptions() {
-        getDictItems(props.dictCode).then((res) => {
+        //update-begin-author:taoyan date:2022-6-21 for: 字典数据请求前将参数编码处理，但是不能直接编码，因为可能之前已经编码过了
+        let temp = props.dictCode || '';
+        if (temp.indexOf(',') > 0 && temp.indexOf(' ') > 0) {
+          // 编码后 是不包含空格的
+          temp = encodeURI(temp);
+        }
+        //update-end-author:taoyan date:2022-6-21 for: 字典数据请求前将参数编码处理，但是不能直接编码，因为可能之前已经编码过了
+        getDictItems(temp).then((res) => {
           if (res) {
             dictOptions.value = res.map((item) => ({ value: item.value, label: item.text }));
             //console.info('res', dictOptions.value);
@@ -114,6 +125,12 @@
         });
       }
 
+      //update-begin-author:taoyan date:2022-5-31 for: VUEN-1145 下拉多选，搜索时，查不到数据
+      function filterOption(input, option) {
+        return option.children[0].el.data.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      }
+      //update-end-author:taoyan date:2022-5-31 for: VUEN-1145 下拉多选，搜索时，查不到数据
+
       return {
         state,
         attrs,
@@ -121,6 +138,7 @@
         onChange,
         arrayValue,
         getParentContainer,
+        filterOption,
       };
     },
   });

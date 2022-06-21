@@ -1,6 +1,6 @@
 <template>
   <div :class="[prefixCls, { fullscreen }]">
-    <Upload name="file" multiple @change="handleChange" :action="uploadUrl" :showUploadList="false" accept=".jpg,.jpeg,.gif,.png,.webp">
+    <Upload name="file" multiple @change="handleChange" :action="uploadUrl" :showUploadList="false" :data="getBizData()" :headers="getheader()" accept=".jpg,.jpeg,.gif,.png,.webp">
       <a-button type="primary" v-bind="{ ...getButtonProps }">
         {{ t('component.upload.imgUpload') }}
       </a-button>
@@ -14,6 +14,8 @@
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useGlobSetting } from '/@/hooks/setting';
   import { useI18n } from '/@/hooks/web/useI18n';
+  import { getToken } from '/@/utils/auth';
+  import { getFileAccessHttpUrl } from '/@/utils/common/compUtils';
 
   export default defineComponent({
     name: 'TinymceImageUpload',
@@ -31,7 +33,20 @@
     setup(props, { emit }) {
       let uploading = false;
 
-      const { uploadUrl } = useGlobSetting();
+      //update-begin-author:taoyan date:2022-5-13 for: 富文本上传图片不支持
+      function getheader() {
+        return { 'X-Access-Token': getToken() };
+      }
+
+      function getBizData() {
+        return {
+          biz: 'jeditor',
+          jeditor: '1',
+        };
+      }
+      const { domainUrl } = useGlobSetting();
+      const uploadUrl = domainUrl + '/sys/common/upload';
+      //update-end-author:taoyan date:2022-5-13 for: 富文本上传图片不支持
       const { t } = useI18n();
       const { prefixCls } = useDesign('tinymce-img-upload');
 
@@ -45,7 +60,7 @@
       function handleChange(info: Recordable) {
         const file = info.file;
         const status = file?.status;
-        const url = file?.response?.url;
+        //const url = file?.response?.url;
         const name = file?.name;
 
         if (status === 'uploading') {
@@ -54,7 +69,10 @@
             uploading = true;
           }
         } else if (status === 'done') {
-          emit('done', name, url);
+          //update-begin-author:taoyan date:2022-5-13 for: 富文本上传图片不支持
+          let realUrl = getFileAccessHttpUrl(file.response.message);
+          emit('done', name, realUrl);
+          //update-end-author:taoyan date:2022-5-13 for: 富文本上传图片不支持
           uploading = false;
         } else if (status === 'error') {
           emit('error');
@@ -66,6 +84,8 @@
         prefixCls,
         handleChange,
         uploadUrl,
+        getheader,
+        getBizData,
         t,
         getButtonProps,
       };

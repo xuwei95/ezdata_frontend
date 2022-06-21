@@ -50,7 +50,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
 
   export default defineComponent({
-    name: 'UserSelectModal',
+    name: 'DataLogCompareModal',
     components: {
       //此处需要异步加载BasicTable
       BasicModal,

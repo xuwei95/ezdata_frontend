@@ -152,7 +152,11 @@ export function useThirdLogin() {
     if (!unref(thirdCaptcha)) {
       cmsFailed('请输入验证码');
     }
-    let params = { mobile: unref(thirdPhone), captcha: unref(thirdCaptcha), thirdUserUuid: unref(thirdUserUuid) };
+    let params = {
+      mobile: unref(thirdPhone),
+      captcha: unref(thirdCaptcha),
+      thirdUserUuid: unref(thirdUserUuid),
+    };
     defHttp.post({ url: '/sys/thirdLogin/bindingThirdPhone', params }, { isTransformResponse: false }).then((res) => {
       if (res.success) {
         bindingPhoneModal.value = false;

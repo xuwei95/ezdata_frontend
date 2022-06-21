@@ -141,7 +141,14 @@
         props.onTitleClick && props.onTitleClick(item);
       }
 
-      return { prefixCls, getPagination, getData, handleTitleClick, isTitleClickable, PriorityTypes };
+      return {
+        prefixCls,
+        getPagination,
+        getData,
+        handleTitleClick,
+        isTitleClickable,
+        PriorityTypes,
+      };
     },
   });
 </script>

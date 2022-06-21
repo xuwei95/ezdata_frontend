@@ -18,11 +18,28 @@ import { isArray } from '/@/utils/is';
 import { useMultipleTabStore } from '/@/store/modules/multipleTab';
 
 // User permissions related operations
-export function usePermission() {
+export function usePermission(formData?) {
   const userStore = useUserStore();
   const appStore = useAppStore();
   const permissionStore = usePermissionStore();
   const { closeAll } = useTabs(router);
+
+  //==================================工作流权限判断-begin=========================================
+  function hasBpmPermission(code, type) {
+    // 禁用-type=2
+    // 显示-type=1
+    let codeList: string[] = [];
+    let permissionList = formData.permissionList;
+    if (permissionList && permissionList.length > 0) {
+      for (let item of permissionList) {
+        if (item.type == type) {
+          codeList.push(item.action);
+        }
+      }
+    }
+    return codeList.indexOf(code) >= 0;
+  }
+  //==================================工作流权限判断-end=========================================
 
   /**
    * Change permission mode
@@ -71,6 +88,14 @@ export function usePermission() {
     if (PermissionModeEnum.BACK === permMode) {
       const allCodeList = permissionStore.getPermCodeList as string[];
       if (!isArray(value) && allCodeList && allCodeList.length > 0) {
+        //=============================工作流权限判断-显示-begin==============================================
+        if (formData) {
+          let code = value as string;
+          if (hasBpmPermission(code, '1') === true) {
+            return true;
+          }
+        }
+        //=============================工作流权限判断-显示-end==============================================
         return allCodeList.includes(value);
       }
       return (intersection(value, allCodeList) as string[]).length > 0;
@@ -81,6 +106,19 @@ export function usePermission() {
    * 是否禁用组件
    */
   function isDisabledAuth(value?: RoleEnum | RoleEnum[] | string | string[], def = true): boolean {
+    //=============================工作流权限判断-禁用-begin==============================================
+    if (formData) {
+      let code = value as string;
+      if (hasBpmPermission(code, '2') === true) {
+        return true;
+      }
+      //update-begin-author:taoyan date:2022-6-17 for: VUEN-1342【流程】编码方式 节点权限配置好后，未生效
+      if (isCodingButNoConfig(code) == true) {
+        return false;
+      }
+      //update-end-author:taoyan date:2022-6-17 for: VUEN-1342【流程】编码方式 节点权限配置好后，未生效
+    }
+    //=============================工作流权限判断-禁用-end==============================================
     return !hasPermission(value);
   }
 
@@ -106,6 +144,26 @@ export function usePermission() {
   async function refreshMenu() {
     resume();
   }
+
+  //update-begin-author:taoyan date:2022-6-17 for: VUEN-1342【流程】编码方式 节点权限配置好后，未生效
+  /**
+   * 判断是不是 代码里写了逻辑但是没有配置权限这种情况
+   */
+  function isCodingButNoConfig(code) {
+    let all = permissionStore.allAuthList;
+    if (all && all instanceof Array) {
+      let temp = all.filter((item) => item.action == code);
+      if (temp && temp.length > 0) {
+        if (temp[0].status == '0') {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    }
+    return false;
+  }
+  //update-end-author:taoyan date:2022-6-17 for: VUEN-1342【流程】编码方式 节点权限配置好后，未生效
 
   return { changeRole, hasPermission, togglePermissionMode, refreshMenu, isDisabledAuth };
 }

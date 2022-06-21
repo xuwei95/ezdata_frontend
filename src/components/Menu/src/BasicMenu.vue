@@ -109,13 +109,15 @@
           }
         );
 
-      async function handleMenuClick({ key }: { key: string; keyPath: string[] }) {
+      //update-begin-author:taoyan date:2022-6-1 for: VUEN-1144 online 配置成菜单后，打开菜单，显示名称未展示为菜单名称
+      async function handleMenuClick({ item, key }: { item: any; key: string; keyPath: string[] }) {
         const { beforeClickFn } = props;
         if (beforeClickFn && isFunction(beforeClickFn)) {
           const flag = await beforeClickFn(key);
           if (!flag) return;
         }
-        emit('menuClick', key);
+        emit('menuClick', key, item);
+        //update-end-author:taoyan date:2022-6-1 for: VUEN-1144 online 配置成菜单后，打开菜单，显示名称未展示为菜单名称
 
         isClickGo.value = true;
         // const parentPath = await getCurrentParentPath(key);

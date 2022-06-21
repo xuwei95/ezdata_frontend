@@ -21,8 +21,8 @@ export function isRegistered(type: JVxeTypes | string) {
  * 注册vxe自定义组件
  *
  * @param type
- * @param component
- * @param spanComponent
+ * @param component 编辑状态显示的组件
+ * @param spanComponent 非编辑状态显示的组件，可以为空
  */
 export function registerComponent(type: JVxeTypes, component: Component, spanComponent?: Component) {
   addComponent(type, component, spanComponent);

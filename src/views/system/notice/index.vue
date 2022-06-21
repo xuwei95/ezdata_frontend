@@ -46,7 +46,7 @@
   const iframeUrl = ref('');
 
   // 列表页面公共参数、方法
-  const { prefixCls, onExportXls, onImportXls, tableContext } = useListPage({
+  const { prefixCls, onExportXls, onImportXls, tableContext, doRequest } = useListPage({
     designScope: 'notice-template',
     tableProps: {
       title: '消息通知',
@@ -97,7 +97,7 @@
    * 批量删除事件
    */
   async function batchHandleDelete() {
-    await batchDeleteNotice({ ids: selectedRowKeys.value }, reload);
+    doRequest(() => batchDeleteNotice({ ids: selectedRowKeys.value }));
   }
   /**
    * 发布

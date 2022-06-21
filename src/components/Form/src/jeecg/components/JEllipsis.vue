@@ -11,7 +11,7 @@
   import { propTypes } from '/@/utils/propTypes';
 
   const props = defineProps({
-    value: propTypes.string.def(''),
+    value: propTypes.oneOfType([propTypes.string, propTypes.array]),
     length: propTypes.number.def(25),
   });
   //显示的文本

@@ -24,6 +24,8 @@
   import { useMenuItem } from './useMenu';
   import { Tooltip } from 'ant-design-vue';
   import { useSimpleRootMenuContext } from './useSimpleMenuContext';
+  import { useLocaleStore } from '/@/store/modules/locale';
+
   export default defineComponent({
     name: 'MenuItem',
     components: { Tooltip },
@@ -36,6 +38,7 @@
     },
     setup(props, { slots }) {
       const instance = getCurrentInstance();
+      const localeStore = useLocaleStore();
 
       const active = ref(false);
 
@@ -92,6 +95,8 @@
               }
             });
 
+            //存储路径和标题的关系
+            storePathTitle(props.name);
             rootMenuEmitter.emit('on-update-active-name:submenu', uidList);
           } else {
             active.value = false;
@@ -99,6 +104,22 @@
         },
         { immediate: true }
       );
+
+      //update-begin-author:taoyan date:2022-6-1 for: VUEN-1144 online 配置成菜单后，打开菜单，显示名称未展示为菜单名称
+      function storePathTitle(path) {
+        console.log('storePathTitle', path);
+        let title = '';
+        if (instance!.attrs) {
+          let item: any = instance!.attrs.item;
+          if (item) {
+            title = item.title;
+          }
+        }
+        if (localeStore) {
+          localeStore.setPathTitle(path, title);
+        }
+      }
+      //update-end-author:taoyan date:2022-6-1 for: VUEN-1144 online 配置成菜单后，打开菜单，显示名称未展示为菜单名称
 
       return { getClass, prefixCls, getItemStyle, getCollapse, handleClickItem, showTooptip };
     },

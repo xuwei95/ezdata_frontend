@@ -18,7 +18,7 @@
           <UploadOutlined v-else />
           <div class="ant-upload-text">{{ text }}</div>
         </div>
-        <a-button v-if="listType == 'picture'">
+        <a-button v-if="listType == 'picture'" :disabled="disabled">
           <UploadOutlined></UploadOutlined>
           {{ text }}
         </a-button>

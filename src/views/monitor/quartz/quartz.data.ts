@@ -29,7 +29,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'status',
     width: 100,
     customRender: ({ text }) => {
-      const color = text == '0' ? 'red' : text == '-1' ? 'green' : 'gray';
+      const color = text == '0' ? 'green' : text == '-1' ? 'red' : 'gray';
       return render.renderTag(render.renderDict(text, 'quartz_status'), color);
     },
   },

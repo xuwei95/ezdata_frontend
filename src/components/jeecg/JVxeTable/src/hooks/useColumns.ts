@@ -262,7 +262,13 @@ async function handleDict({ col, methods }: HandleArgs) {
       // 查询字典
       if (!isPromise(col.params.optionsPromise)) {
         col.params.optionsPromise = new Promise(async (resolve) => {
-          const dictOptions: any = await initDictOptions(col.params.dictCode);
+          //update-begin-author:taoyan date:2022-6-1 for: VUEN-1180 【代码生成】子表不支持带条件？
+          let dictCodeString = col.params.dictCode;
+          if (dictCodeString) {
+            dictCodeString = encodeURI(dictCodeString);
+          }
+          const dictOptions: any = await initDictOptions(dictCodeString);
+          //update-end-author:taoyan date:2022-6-1 for: VUEN-1180 【代码生成】子表不支持带条件？
           let options = col.params.options ?? [];
           dictOptions.forEach((dict) => {
             // 过滤重复数据

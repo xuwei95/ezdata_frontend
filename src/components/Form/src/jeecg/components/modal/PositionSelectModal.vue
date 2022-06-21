@@ -1,7 +1,7 @@
 <!--职务选择框-->
 <template>
   <div>
-    <BasicModal v-bind="$attrs" @register="register" title="职务选择" width="900px" wrapClassName="j-user-select-modal" @ok="handleOk" destroyOnClose @visible-change="visibleChange">
+    <BasicModal v-bind="$attrs" @register="register" :title="modalTitle" width="900px" wrapClassName="j-user-select-modal" @ok="handleOk" destroyOnClose @visible-change="visibleChange">
       <a-row>
         <a-col :span="showSelected ? 18 : 24">
           <BasicTable
@@ -42,10 +42,17 @@
     components: {
       //此处需要异步加载BasicTable
       BasicModal,
-      BasicTable: createAsyncComponent(() => import('/@/components/Table/src/BasicTable.vue'), { loading: true }),
+      BasicTable: createAsyncComponent(() => import('/@/components/Table/src/BasicTable.vue'), {
+        loading: true,
+      }),
     },
     props: {
       ...selectProps,
+      //选择框标题
+      modalTitle: {
+        type: String,
+        default: '职务选择',
+      },
     },
     emits: ['register', 'getSelectResult'],
     setup(props, { emit, refs }) {
@@ -118,7 +125,13 @@
             dataIndex: 'name',
             width: 40,
           },
-          { title: '操作', dataIndex: 'action', align: 'center', width: 40, slots: { customRender: 'action' } },
+          {
+            title: '操作',
+            dataIndex: 'action',
+            align: 'center',
+            width: 40,
+            slots: { customRender: 'action' },
+          },
         ],
       };
       /**

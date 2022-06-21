@@ -6,9 +6,11 @@
       <template #prefix>
         <Icon icon="ant-design:cluster-outlined"></Icon>
       </template>
-      <template #suffix>
-        <Icon icon="ant-design:close-circle-outlined" @click="handleEmpty" title="清空" v-if="showText"></Icon>
-      </template>
+      <!-- update-begin-author:taoyan date:2022-5-31 for: VUEN-1157 popup 选中后，有两个清除图标；后边这个清除，只是把输入框中数据清除，实际值并没有清除 -->
+      <!-- <template #suffix>
+                <Icon icon="ant-design:close-circle-outlined" @click="handleEmpty" title="清空" v-if="showText"></Icon>
+            </template>-->
+      <!-- update-begin-author:taoyan date:2022-5-31 for: VUEN-1157 popup 选中后，有两个清除图标；后边这个清除，只是把输入框中数据清除，实际值并没有清除 -->
     </a-input>
     <!--popup弹窗-->
     <JPopupOnlReportModal @register="regModal" :code="code" :multi="multi" :sorter="sorter" :groupId="uniqGroupId" :param="param" @ok="callBack"></JPopupOnlReportModal>

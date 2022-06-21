@@ -10,6 +10,8 @@
   import { useModalContext } from '../../Modal';
   import { useRootSetting } from '/@/hooks/setting/useRootSetting';
   import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActivated';
+  import { getToken } from '/@/utils/auth';
+  import { getFileAccessHttpUrl } from '/@/utils/common/compUtils';
 
   type Lang = 'zh_CN' | 'en_US' | 'ja_JP' | 'ko_KR' | undefined;
 
@@ -73,6 +75,34 @@
         }
         return lang;
       });
+      //update-begin-author:taoyan date:2022-5-24 for: VUEN-1090 markdown 无法上传
+      const uploadUrl = `${window._CONFIG['domianURL']}/sys/common/upload`;
+      const token = getToken();
+      function formatResult(files, responseText): string {
+        let data: any = JSON.parse(responseText);
+        // {"success":true,"message":"markdown/aa_1653391146501.png","code":0,"result":null,"timestamp":1653391146501}'
+        let filename = files[0].name as string;
+        let result = {
+          msg: '',
+          code: 0,
+          data: {
+            errFiles: [''],
+            succMap: {},
+          },
+        };
+        if (data.success) {
+          result.data.errFiles = [];
+          result.data.succMap = {
+            [data.message]: getFileAccessHttpUrl(data.message),
+          };
+        } else {
+          result.code = 1;
+          result.msg = data.message;
+          result.data.errFiles = [filename];
+        }
+        return JSON.stringify(result);
+      }
+      //update-end-author:taoyan date:2022-5-24 for: VUEN-1090 markdown 无法上传
       function init() {
         const wrapEl = unref(wrapRef) as HTMLElement;
         if (!wrapEl) return;
@@ -87,6 +117,22 @@
           preview: {
             actions: [],
           },
+          //update-begin-author:taoyan date:2022-5-24 for: VUEN-1090 markdown 无法上传
+          upload: {
+            accept: 'image/*',
+            url: uploadUrl,
+            fieldName: 'file',
+            extraData: { biz: 'markdown' },
+            setHeaders() {
+              return {
+                'X-Access-Token': token as string,
+              };
+            },
+            format(files, response) {
+              return formatResult(files, response);
+            },
+          },
+          //update-end-author:taoyan date:2022-5-24 for: VUEN-1090 markdown 无法上传
           input: (v) => {
             valueRef.value = v;
             emit('update:value', v);

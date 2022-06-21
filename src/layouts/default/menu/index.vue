@@ -19,6 +19,7 @@
   import { useRootSetting } from '/@/hooks/setting/useRootSetting';
   import { useAppInject } from '/@/hooks/web/useAppInject';
   import { useDesign } from '/@/hooks/web/useDesign';
+  import { useLocaleStore } from '/@/store/modules/locale';
 
   export default defineComponent({
     name: 'LayoutMenu',
@@ -92,10 +93,15 @@
        * click menu
        * @param menu
        */
-
-      function handleMenuClick(path: string) {
+      //update-begin-author:taoyan date:2022-6-1 for: VUEN-1144 online 配置成菜单后，打开菜单，显示名称未展示为菜单名称
+      const localeStore = useLocaleStore();
+      function handleMenuClick(path: string, item) {
+        if (item) {
+          localeStore.setPathTitle(path, item.title || '');
+        }
         go(path);
       }
+      //update-end-author:taoyan date:2022-6-1 for: VUEN-1144 online 配置成菜单后，打开菜单，显示名称未展示为菜单名称
 
       /**
        * before click menu

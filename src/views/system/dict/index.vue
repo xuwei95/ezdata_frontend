@@ -75,14 +75,16 @@
       actionColumn: {
         width: 240,
       },
-      exportConfig: {
-        name: '数据字典列表',
-        url: getExportUrl,
-      },
-      importConfig: {
-        url: getImportUrl,
-      },
     },
+    //update-begin---author:wangshuai ---date:20220616  for：[issues/I5AMDD]导入/导出功能，操作后提示没有传递 export.url/import.url 参数------------
+    exportConfig: {
+      name: '数据字典列表',
+      url: getExportUrl,
+    },
+    importConfig: {
+      url: getImportUrl,
+    },
+    //update-end---author:wangshuai ---date:20220616  for：[issues/I5AMDD]导入/导出功能，操作后提示没有传递 export.url/import.url 参数--------------
   });
 
   //注册table数据

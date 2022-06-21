@@ -122,7 +122,16 @@
   const month = ref('*');
   const week = ref('?');
   const year = ref('*');
-  const inputValues = reactive({ second: '', minute: '', hour: '', day: '', month: '', week: '', year: '', cron: '' });
+  const inputValues = reactive({
+    second: '',
+    minute: '',
+    hour: '',
+    day: '',
+    month: '',
+    week: '',
+    year: '',
+    cron: '',
+  });
   const preTimeList = ref('执行预览，会忽略年份参数。');
 
   // cron表达式

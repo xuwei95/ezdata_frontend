@@ -161,6 +161,10 @@
         duration: 3,
       });
       loading.value = false;
+
+      //update-begin-author:taoyan date:2022-5-3 for: issues/41 登录页面，当输入验证码错误时，验证码图片要刷新一下，而不是保持旧的验证码图片不变
+      handleChangeCheckCode();
+      //update-end-author:taoyan date:2022-5-3 for: issues/41 登录页面，当输入验证码错误时，验证码图片要刷新一下，而不是保持旧的验证码图片不变
     }
   }
   function handleChangeCheckCode() {

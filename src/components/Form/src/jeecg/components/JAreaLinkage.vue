@@ -1,5 +1,5 @@
 <template>
-  <Cascader v-bind="attrs" v-model:value="state" :options="getOptions" @change="handleChange" />
+  <Cascader v-bind="attrs" :value="state" :options="getOptions" @change="handleChange" />
 </template>
 <script lang="ts">
   import { defineComponent, PropType, ref, reactive, watchEffect, computed, unref, watch, onMounted } from 'vue';
@@ -40,6 +40,23 @@
           return provinceAndCityDataPlus;
         }
       });
+      /**
+       * 监听value变化
+       */
+      watchEffect(() => {
+        props.value && initValue();
+      });
+
+      /**
+       * 将字符串值转化为数组
+       */
+      function initValue() {
+        let value = props.value ? props.value : [];
+        if (value && typeof value === 'string' && value != 'null' && value != 'undefined') {
+          state.value = value.split(',');
+        }
+      }
+
       function handleChange(_, ...args) {
         emitData.value = args;
         console.info(emitData);

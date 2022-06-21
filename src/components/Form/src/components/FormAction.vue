@@ -5,13 +5,11 @@
         <!-- update-begin-author:zyf   Date:20211213  for：调换按钮前后位置-->
         <slot name="submitBefore"></slot>
         <Button type="primary" class="mr-2" v-bind="getSubmitBtnOptions" @click="submitAction" v-if="showSubmitButton">
-          <Icon icon="ant-design:search-outlined"></Icon>
           {{ getSubmitBtnOptions.text }}
         </Button>
 
         <slot name="resetBefore"></slot>
         <Button type="default" class="mr-2" v-bind="getResetBtnOptions" @click="resetAction" v-if="showResetButton">
-          <Icon icon="ic:baseline-restart-alt"></Icon>
           {{ getResetBtnOptions.text }}
         </Button>
         <!-- update-end-author:zyf    Date:20211213  for：调换按钮前后位置-->
@@ -89,6 +87,7 @@
         return Object.assign(
           {
             text: t('common.resetText'),
+            preIcon: 'ic:baseline-restart-alt',
           },
           props.resetButtonOptions
         );
@@ -96,8 +95,10 @@
 
       const getSubmitBtnOptions = computed(() => {
         return Object.assign(
+          {},
           {
             text: t('common.queryText'),
+            preIcon: 'ant-design:search-outlined',
           },
           props.submitButtonOptions
         );

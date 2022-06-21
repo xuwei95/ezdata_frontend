@@ -1,7 +1,7 @@
 <!--部门选择框-->
 <template>
   <div>
-    <BasicModal v-bind="$attrs" @register="register" title="部门选择" width="500px" @ok="handleOk" destroyOnClose @visible-change="visibleChange">
+    <BasicModal v-bind="$attrs" @register="register" :title="modalTitle" width="500px" @ok="handleOk" destroyOnClose @visible-change="visibleChange">
       <BasicTree
         ref="treeRef"
         :treeData="treeData"
@@ -47,6 +47,11 @@
     },
     props: {
       ...treeProps,
+      //选择框标题
+      modalTitle: {
+        type: String,
+        default: '部门选择',
+      },
     },
     emits: ['register', 'getSelectResult'],
     setup(props, { emit, refs }) {
@@ -55,7 +60,7 @@
       const attrs = useAttrs();
       const treeRef = ref<Nullable<TreeActionType>>(null);
       const getBindValue = Object.assign({}, unref(props), unref(attrs));
-      const queryUrl = props.sync ? queryDepartTreeSync : queryTreeList;
+      const queryUrl = getQueryUrl();
       const [{ visibleChange, checkedKeys, getCheckStrictly, getSelectTreeData, onCheck, onLoadData, treeData, checkALL, expandAll, onSelect }] = useTreeBiz(treeRef, queryUrl, getBindValue);
       const searchInfo = ref(props.params);
       const tree = ref([]);
@@ -73,6 +78,12 @@
           //关闭弹窗
           closeModal();
         });
+      }
+
+      /** 获取查询数据方法 */
+      function getQueryUrl() {
+        let queryFn = props.sync ? queryDepartTreeSync : queryTreeList;
+        return (params) => queryFn(Object.assign({}, params, { primaryKey: props.primaryKey }));
       }
 
       return {

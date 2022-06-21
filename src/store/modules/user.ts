@@ -5,7 +5,7 @@ import { store } from '/@/store';
 import { RoleEnum } from '/@/enums/roleEnum';
 import { PageEnum } from '/@/enums/pageEnum';
 import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY, LOGIN_INFO_KEY, DB_DICT_DATA_KEY, TENANT_ID } from '/@/enums/cacheEnum';
-import { getAuthCache, setAuthCache } from '/@/utils/auth';
+import { getAuthCache, setAuthCache, removeAuthCache } from '/@/utils/auth';
 import { GetUserInfoModel, LoginParams, ThirdLoginParams } from '/@/api/sys/model/userModel';
 import { doLogout, getUserInfo, loginApi, phoneLoginApi, thirdLogin } from '/@/api/sys/user';
 import { useI18n } from '/@/hooks/web/useI18n';
@@ -16,6 +16,7 @@ import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
 import { isArray } from '/@/utils/is';
 import { useGlobSetting } from '/@/hooks/setting';
+import { JDragConfigEnum } from '/@/enums/jeecgEnum';
 import { useSso } from '/@/hooks/web/useSso';
 interface UserState {
   userInfo: Nullable<UserInfo>;
@@ -99,10 +100,6 @@ export const useUserStore = defineStore({
     setTenant(id) {
       this.tenantid = id;
       setAuthCache(TENANT_ID, id);
-      //update-begin---author:liusq  Date:20220102  for：保存用户租户id----
-      // @ts-ignore
-      setAuthCache(this.userInfo.username, id);
-      //update-end---author:liusq  Date:20220102  for：保存用户租户id----
     },
     setSessionTimeout(flag: boolean) {
       this.sessionTimeout = flag;
@@ -167,7 +164,10 @@ export const useUserStore = defineStore({
           router.addRoute(PAGE_NOT_FOUND_ROUTE as unknown as RouteRecordRaw);
           permissionStore.setDynamicAddedRoute(true);
         }
-        await this.setLoginInfo(data);
+        await this.setLoginInfo({ ...data, isLogin: true });
+        //update-begin-author:liusq date:2022-5-5 for:登录成功后缓存拖拽模块的接口前缀
+        localStorage.setItem(JDragConfigEnum.DRAG_BASE_URL, useGlobSetting().domainUrl);
+        //update-end-author:liusq date:2022-5-5 for: 登录成功后缓存拖拽模块的接口前缀
         goHome && (await router.replace((userInfo && userInfo.homePath) || PageEnum.BASE_HOME));
       }
       return data;
@@ -233,11 +233,22 @@ export const useUserStore = defineStore({
           console.log('注销Token失败');
         }
       }
+
+      // //update-begin-author:taoyan date:2022-5-5 for: src/layouts/default/header/index.vue showLoginSelect方法 获取tenantId 退出登录后再次登录依然能获取到值，没有清空
+      // let username:any = this.userInfo && this.userInfo.username;
+      // if(username){
+      //   removeAuthCache(username)
+      // }
+      // //update-end-author:taoyan date:2022-5-5 for: src/layouts/default/header/index.vue showLoginSelect方法 获取tenantId 退出登录后再次登录依然能获取到值，没有清空
+
       this.setToken('');
       setAuthCache(TOKEN_KEY, null);
       this.setSessionTimeout(false);
       this.setUserInfo(null);
       this.setLoginInfo(null);
+      //update-begin-author:liusq date:2022-5-5 for:退出登录后清除拖拽模块的接口前缀
+      localStorage.removeItem(JDragConfigEnum.DRAG_BASE_URL);
+      //update-end-author:liusq date:2022-5-5 for: 退出登录后清除拖拽模块的接口前缀
 
       //如果开启单点登录,则跳转到单点统一登录中心
       const openSso = useGlobSetting().openSso;

@@ -182,7 +182,10 @@
       if (!unref(isMultiDepart)) {
         resolve();
       } else {
-        const result = await selectDepart({ username: userStore.getUserInfo.username, orgCode: unref(departSelected) });
+        const result = await selectDepart({
+          username: userStore.getUserInfo.username,
+          orgCode: unref(departSelected),
+        });
         if (result.userInfo) {
           const userInfo = result.userInfo;
           userStore.setUserInfo(userInfo);

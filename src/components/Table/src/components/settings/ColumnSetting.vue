@@ -3,7 +3,14 @@
     <template #title>
       <span>{{ t('component.table.settingColumn') }}</span>
     </template>
-    <Popover placement="bottomLeft" trigger="click" @visibleChange="handleVisibleChange" :overlayClassName="`${prefixCls}__cloumn-list`" :getPopupContainer="getPopupContainer">
+    <Popover
+      v-model:visible="popoverVisible"
+      placement="bottomLeft"
+      trigger="click"
+      @visibleChange="handleVisibleChange"
+      :overlayClassName="`${prefixCls}__cloumn-list`"
+      :getPopupContainer="getPopupContainer"
+    >
       <template #title>
         <div :class="`${prefixCls}__popover-title`">
           <Checkbox :indeterminate="indeterminate" v-model:checked="checkAll" @change="onCheckAllChange">
@@ -21,10 +28,6 @@
           <!--                    >-->
           <!--                        {{ t('component.table.settingSelectColumnShow') }}-->
           <!--                    </Checkbox>-->
-
-          <a-button size="small" type="link" @click="reset">
-            {{ t('common.resetText') }}
-          </a-button>
         </div>
       </template>
 
@@ -33,7 +36,7 @@
           <CheckboxGroup v-model:value="checkedList" @change="onChange" ref="columnListRef">
             <template v-for="item in plainOptions" :key="item.value">
               <div :class="`${prefixCls}__check-item`" v-if="!('ifShow' in item && !item.ifShow)">
-                <DragOutlined class="table-coulmn-drag-icon" />
+                <DragOutlined class="table-column-drag-icon" />
                 <Checkbox :value="item.value">
                   {{ item.label }}
                 </Checkbox>
@@ -75,6 +78,12 @@
             </template>
           </CheckboxGroup>
         </ScrollContainer>
+        <div :class="`${prefixCls}__popover-footer`">
+          <a-button size="small" @click="reset">
+            {{ t('common.resetText') }}
+          </a-button>
+          <a-button size="small" type="primary" @click="saveSetting"> 保存 </a-button>
+        </div>
       </template>
       <SettingOutlined />
     </Popover>
@@ -89,14 +98,18 @@
   import { ScrollContainer } from '/@/components/Container';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useTableContext } from '../../hooks/useTableContext';
+  import { useColumnsCache } from '../../hooks/useColumnsCache';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { useSortable } from '/@/hooks/web/useSortable';
+  // import { useSortable } from '/@/hooks/web/useSortable';
   import { isFunction, isNullAndUnDef } from '/@/utils/is';
   import { getPopupContainer as getParentContainer } from '/@/utils';
-  import { omit } from 'lodash-es';
+  import { cloneDeep, omit } from 'lodash-es';
+  import Sortablejs from 'sortablejs';
+  import type Sortable from 'sortablejs';
 
   interface State {
     checkAll: boolean;
+    isInit?: boolean;
     checkedList: string[];
     defaultCheckList: string[];
   }
@@ -128,12 +141,13 @@
     setup(props, { emit, attrs }) {
       const { t } = useI18n();
       const table = useTableContext();
+      const popoverVisible = ref(false);
 
       const defaultRowSelection = omit(table.getRowSelection(), 'selectedRowKeys');
       let inited = false;
 
       const cachePlainOptions = ref<Options[]>([]);
-      const plainOptions = ref<Options[]>([]);
+      const plainOptions = ref<Options[] | any>([]);
 
       const plainSortOptions = ref<Options[]>([]);
 
@@ -162,9 +176,26 @@
         return obj;
       });
 
+      let sortable: Sortable;
+      const sortableOrder = ref<string[]>();
+
+      // 列表字段配置缓存
+      const { saveSetting, resetSetting } = useColumnsCache(
+        {
+          state,
+          popoverVisible,
+          plainOptions,
+          plainSortOptions,
+          sortableOrder,
+          checkIndex,
+        },
+        setColumns,
+        handleColumnFixed
+      );
+
       watchEffect(() => {
         const columns = table.getColumns();
-        if (columns.length) {
+        if (columns.length && !state.isInit) {
           init();
         }
       });
@@ -217,6 +248,7 @@
             }
           });
         }
+        state.isInit = true;
         state.checkedList = checkList;
       }
 
@@ -234,16 +266,15 @@
 
       const indeterminate = computed(() => {
         const len = plainOptions.value.length;
-        let checkdedLen = state.checkedList.length;
-        unref(checkIndex) && checkdedLen--;
-        return checkdedLen > 0 && checkdedLen < len;
+        let checkedLen = state.checkedList.length;
+        unref(checkIndex) && checkedLen--;
+        return checkedLen > 0 && checkedLen < len;
       });
 
       // Trigger when check/uncheck a column
       function onChange(checkedList: string[]) {
-        const len = plainOptions.value.length;
+        const len = plainSortOptions.value.length;
         state.checkAll = checkedList.length === len;
-
         const sortList = unref(plainSortOptions).map((item) => item.value);
         checkedList.sort((prev, next) => {
           return sortList.indexOf(prev) - sortList.indexOf(next);
@@ -258,6 +289,10 @@
         plainOptions.value = unref(cachePlainOptions);
         plainSortOptions.value = unref(cachePlainOptions);
         setColumns(table.getCacheColumns());
+        if (sortableOrder.value) {
+          sortable.sort(sortableOrder.value);
+        }
+        resetSetting();
       }
 
       // Open the pop-up window for drag and drop initialization
@@ -269,15 +304,18 @@
           const el = columnListEl.$el as any;
           if (!el) return;
           // Drag and drop sort
-          const { initSortable } = useSortable(el, {
-            handle: '.table-coulmn-drag-icon ',
+          sortable = Sortablejs.create(unref(el), {
+            animation: 500,
+            delay: 400,
+            delayOnTouchOnly: true,
+            handle: '.table-column-drag-icon ',
             onEnd: (evt) => {
               const { oldIndex, newIndex } = evt;
               if (isNullAndUnDef(oldIndex) || isNullAndUnDef(newIndex) || oldIndex === newIndex) {
                 return;
               }
               // Sort column
-              const columns = getColumns();
+              const columns = cloneDeep(plainSortOptions.value);
 
               if (oldIndex > newIndex) {
                 columns.splice(newIndex, 0, columns[oldIndex]);
@@ -288,11 +326,13 @@
               }
 
               plainSortOptions.value = columns;
-              plainOptions.value = columns;
               setColumns(columns);
             },
           });
-          initSortable();
+          // 记录原始 order 序列
+          if (!sortableOrder.value) {
+            sortableOrder.value = sortable.toArray();
+          }
           inited = true;
         });
       }
@@ -325,13 +365,13 @@
         if (isFixed && !item.width) {
           item.width = 100;
         }
-        table.setCacheColumnsByField?.(item.dataIndex, { fixed: isFixed });
+        table.setCacheColumnsByField?.(item.dataIndex as string, { fixed: isFixed });
         setColumns(columns);
       }
 
       function setColumns(columns: BasicColumn[] | string[]) {
         table.setColumns(columns);
-        const data: ColumnChangeParam[] = unref(plainOptions).map((col) => {
+        const data: ColumnChangeParam[] = unref(plainSortOptions).map((col) => {
           const visible = columns.findIndex((c: BasicColumn | string) => c === col.value || (typeof c !== 'string' && c.dataIndex === col.value)) !== -1;
           return { dataIndex: col.value, fixed: col.fixed, visible };
         });
@@ -347,11 +387,13 @@
         getBindProps,
         t,
         ...toRefs(state),
+        popoverVisible,
         indeterminate,
         onCheckAllChange,
         onChange,
         plainOptions,
         reset,
+        saveSetting,
         prefixCls,
         columnListRef,
         handleVisibleChange,
@@ -369,7 +411,7 @@
 <style lang="less">
   @prefix-cls: ~'@{namespace}-basic-column-setting';
 
-  .table-coulmn-drag-icon {
+  .table-column-drag-icon {
     margin: 0 5px;
     cursor: move;
   }
@@ -380,6 +422,19 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+    }
+
+    /* 卡片底部样式 */
+    &__popover-footer {
+      position: relative;
+      top: 7px;
+      text-align: right;
+      padding: 4px 0 0;
+      border-top: 1px solid #f0f0f0;
+
+      .ant-btn {
+        margin-right: 6px;
+      }
     }
 
     &__check-item {

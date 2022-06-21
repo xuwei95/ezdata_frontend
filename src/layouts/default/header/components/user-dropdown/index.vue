@@ -85,7 +85,14 @@
         return { realname, avatar: avatar || headerImg, desc };
       });
 
-      const getAvatarUrl = computed(() => getFileAccessHttpUrl(getUserInfo.value?.avatar));
+      const getAvatarUrl = computed(() => {
+        let { avatar } = getUserInfo.value;
+        if (avatar == headerImg) {
+          return avatar;
+        } else {
+          return getFileAccessHttpUrl(avatar);
+        }
+      });
 
       const [register, { openModal }] = useModal();
       /**

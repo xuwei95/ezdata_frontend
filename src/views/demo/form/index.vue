@@ -551,7 +551,14 @@
   ];
 
   export default defineComponent({
-    components: { BasicForm, CollapseContainer, PageWrapper, ApiSelect, JAreaLinkage, ASelect: Select },
+    components: {
+      BasicForm,
+      CollapseContainer,
+      PageWrapper,
+      ApiSelect,
+      JAreaLinkage,
+      ASelect: Select,
+    },
     setup() {
       const check = ref(null);
       const { createMessage } = useMessage();

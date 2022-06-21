@@ -1,4 +1,4 @@
-import { reactive, ref, unref, defineAsyncComponent } from 'vue';
+import { reactive, ref, unref, defineAsyncComponent, toRaw, markRaw } from 'vue';
 import { httpGroupRequest } from '/@/components/Form/src/utils/GroupRequest';
 import { defHttp } from '/@/utils/http/axios';
 import { filterMultiDictText } from '/@/utils/dict/JDictSelectUtil.js';
@@ -7,6 +7,7 @@ import { OnlineColumn } from '/@/components/jeecg/OnLine/types/onlineConfig';
 import { h } from 'vue';
 import { useRouter } from 'vue-router';
 import { useMethods } from '/@/hooks/system/useMethods';
+import { importViewsFile } from '/@/utils';
 
 export function usePopBiz(props, tableRef?) {
   const { createMessage } = useMessage();
@@ -707,7 +708,12 @@ export function usePopBiz(props, tableRef?) {
       destroyOnClose: true,
       style: dialogStyle,
       // dialogStyle: dialogStyle,
-      bodyStyle: { padding: '8px', height: 'calc(100vh - 108px)', overflow: 'auto', overflowX: 'hidden' },
+      bodyStyle: {
+        padding: '8px',
+        height: 'calc(100vh - 108px)',
+        overflow: 'auto',
+        overflowX: 'hidden',
+      },
       // 隐藏掉取消按钮
       cancelButtonProps: { style: { display: 'none' } },
     },
@@ -739,11 +745,67 @@ export function usePopBiz(props, tableRef?) {
     }
     hrefComponent.value.model.visible = true;
     hrefComponent.value.model.title = '操作';
-    hrefComponent.value.is = defineAsyncComponent(() => import(/* @vite-ignore */ '/@/views/' + (path.startsWith('/') ? path.slice(1) : path)));
+    hrefComponent.value.is = markRaw(defineAsyncComponent(() => importViewsFile(path)));
   }
 
+  //update-begin-author:taoyan date:2022-5-31 for: VUEN-1155 popup 选择数据时，会选择多条重复数据
+  /**
+   * emit事件 获取选中的行数据
+   */
+  function getOkSelectRows(): any[] {
+    let arr = unref(selectRows);
+    let selectedRowKeys = checkedKeys.value;
+    console.log('arr', arr);
+    if (!selectedRowKeys || selectedRowKeys.length <= 0) {
+      return [];
+    }
+    if (!arr || arr.length <= 0) {
+      return [];
+    }
+    let rows: any = [];
+    for (let key of selectedRowKeys) {
+      for (let i = 0; i < arr.length; i++) {
+        let combineKey = combineRowKey(arr[i]);
+        if (key === combineKey) {
+          rows.push(toRaw(arr[i]));
+          break;
+        }
+      }
+    }
+    return rows;
+  }
+  //update-end-author:taoyan date:2022-5-31 for: VUEN-1155 popup 选择数据时，会选择多条重复数据
+
   return [
-    { visibleChange, loadColumnsInfo, loadColumnsAndData, dynamicParamHandler, loadData, handleChangeInTable, combineRowKey, clickThenCheck, filterUnuseSelect, handleExport },
-    { hrefComponent, visible, rowSelection, checkedKeys, selectRows, pagination, dataSource, columns, indexColumnProps, loading, title, iSorter, queryInfo, queryParam, dictOptions },
+    {
+      visibleChange,
+      loadColumnsInfo,
+      loadColumnsAndData,
+      dynamicParamHandler,
+      loadData,
+      handleChangeInTable,
+      combineRowKey,
+      clickThenCheck,
+      filterUnuseSelect,
+      handleExport,
+      getOkSelectRows,
+    },
+    {
+      hrefComponent,
+      visible,
+      rowSelection,
+      checkedKeys,
+      selectRows,
+      pagination,
+      dataSource,
+      columns,
+      indexColumnProps,
+      loading,
+      title,
+      iSorter,
+      queryInfo,
+      queryParam,
+      dictOptions,
+    },
   ];
 }

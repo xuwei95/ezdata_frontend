@@ -1,4 +1,5 @@
 import { defHttp } from '/@/utils/http/axios';
+import { message } from 'ant-design-vue';
 import { useGlobSetting } from '/@/hooks/setting';
 const globSetting = useGlobSetting();
 const baseUploadUrl = globSetting.uploadUrl;
@@ -94,4 +95,49 @@ export const loadCategoryData = (params) => {
  */
 export const uploadFile = (params, success) => {
   return defHttp.uploadFile({ url: uploadUrl }, params, { success });
+};
+/**
+ * 下载文件
+ * @param url 文件路径
+ * @param fileName 文件名
+ * @param parameter
+ * @returns {*}
+ */
+export const downloadFile = (url, fileName?, parameter?) => {
+  return getFileblob(url, parameter).then((data) => {
+    if (!data || data.size === 0) {
+      message.warning('文件下载失败');
+      return;
+    }
+    if (typeof window.navigator.msSaveBlob !== 'undefined') {
+      window.navigator.msSaveBlob(new Blob([data]), fileName);
+    } else {
+      let url = window.URL.createObjectURL(new Blob([data]));
+      let link = document.createElement('a');
+      link.style.display = 'none';
+      link.href = url;
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link); //下载完成移除元素
+      window.URL.revokeObjectURL(url); //释放掉blob对象
+    }
+  });
+};
+
+/**
+ * 下载文件 用于excel导出
+ * @param url
+ * @param parameter
+ * @returns {*}
+ */
+export const getFileblob = (url, parameter) => {
+  return defHttp.get(
+    {
+      url: url,
+      params: parameter,
+      responseType: 'blob',
+    },
+    { isTransformResponse: false }
+  );
 };
