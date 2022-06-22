@@ -13,7 +13,7 @@
   import { useRootSetting } from '/@/hooks/setting/useRootSetting';
   import { useTransitionSetting } from '/@/hooks/setting/useTransitionSetting';
   import { useContentViewHeight } from './useContentViewHeight';
-  import registerApps from '/@/qiankun';
+  // import registerApps from '/@/qiankun';
   import { useGlobSetting } from '/@/hooks/setting';
   export default defineComponent({
     name: 'LayoutContent',
@@ -26,13 +26,13 @@
       const openQianKun = globSetting.openQianKun;
       useContentViewHeight();
       onMounted(() => {
-        //注册openQianKun
-        if (openQianKun == 'true') {
-          if (!window.qiankunStarted) {
-            window.qiankunStarted = true;
-            registerApps();
-          }
-        }
+        // //注册openQianKun
+        // if (openQianKun == 'true') {
+        //   if (!window.qiankunStarted) {
+        //     window.qiankunStarted = true;
+        //     registerApps();
+        //   }
+        // }
       });
       return {
         prefixCls,
