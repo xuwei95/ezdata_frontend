@@ -467,14 +467,6 @@ const comp: AppRouteModule = {
           },
         },
         {
-          path: 'fullCalendar',
-          name: 'fullCalendarDemo',
-          component: () => import('/@/views/demo/fullcalendar/index.vue'),
-          meta: {
-            title: t('routes.demo.feat.fullCalendar'),
-          },
-        },
-        {
           path: 'codemirror',
           name: 'codemirrorDemo',
           component: () => import('/@/views/demo/codemirror/index.vue'),
