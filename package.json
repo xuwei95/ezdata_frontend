@@ -14,6 +14,7 @@
     "build": "cross-env NODE_ENV=production NODE_OPTIONS=--max-old-space-size=4096 vite build && esno ./build/script/postBuild.ts",
     "build:test": "cross-env vite build --mode test && esno ./build/script/postBuild.ts",
     "build:no-cache": "yarn clean:cache && npm run build",
+    "gen:icon": "esno ./build/generate/icon/index.ts",
     "report": "cross-env REPORT=true npm run build",
     "type:check": "vue-tsc --noEmit --skipLibCheck",
     "preview": "npm run build && vite preview",
@@ -30,8 +31,7 @@
     "test:gzip": "http-server dist --cors --gzip -c-1",
     "test:br": "http-server dist --cors --brotli -c-1",
     "reinstall": "rimraf yarn.lock && rimraf package.lock.json && rimraf node_modules && npm run bootstrap",
-    "prepare": "husky install",
-    "gen:icon": "esno ./build/generate/icon/index.ts"
+    "prepare": "husky install"
   },
   "dependencies": {
     "@jeecg/online": "1.0.1",
