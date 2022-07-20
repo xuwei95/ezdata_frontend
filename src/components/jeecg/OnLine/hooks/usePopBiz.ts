@@ -40,7 +40,7 @@ export function usePopBiz(props, tableRef?) {
     getColumns: '/online/cgreport/api/getRpColumns/',
     getData: '/online/cgreport/api/getData/',
     getQueryInfo: '/online/cgreport/api/getQueryInfo/',
-    export: '/online/cgreport/api/exportXls/',
+    export: '/online/cgreport/api/exportManySheetXls/',
   });
   //已选择的值
   const checkedKeys = ref<Array<string | number>>([]);
@@ -289,11 +289,12 @@ export function usePopBiz(props, tableRef?) {
     for (let column of columns) {
       if (column.isTotal === '1') {
         arr.push(column.dataIndex!);
-        if (column.children && column.children.length > 0) {
-          let subArray = getNeedSumColumns(column.children);
-          if (subArray.length > 0) {
-            arr.push(...subArray);
-          }
+      }
+      // 【VUEN-1569】【online报表】合计无效
+      if (column.children && column.children.length > 0) {
+        let subArray = getNeedSumColumns(column.children);
+        if (subArray.length > 0) {
+          arr.push(...subArray);
         }
       }
     }
@@ -445,6 +446,14 @@ export function usePopBiz(props, tableRef?) {
     const { handleExportXls } = useMethods();
     let url = `${configUrl.export}${cgRpConfigId.value}`;
     let params = getQueryParams(); //查询条件
+    // 【VUEN-1568】如果选中了某些行，就只导出选中的行
+    let keys = unref(checkedKeys);
+    if (keys.length > 0) {
+      params['force_id'] = keys
+        .map((i) => (getRowByKey(i) as any)?.id)
+        .filter((i) => i != null && i !== '')
+        .join(',');
+    }
     handleExportXls(title.value, url, params);
   }
 

@@ -15,7 +15,7 @@
   // 核心样式
   import 'codemirror/lib/codemirror.css';
   // 引入主题后还需要在 options 中指定主题才会生效
-  import 'codemirror/theme/cobalt.css';
+  import 'codemirror/theme/idea.css';
   // 需要引入具体的语法高亮库才会有对应的语法高亮效果
   import 'codemirror/mode/javascript/javascript.js';
   import 'codemirror/mode/css/css.js';
@@ -59,6 +59,8 @@
       fullScreen: propTypes.bool.def(false),
       // 全屏以后的z-index
       zIndex: propTypes.any.def(999),
+      theme: propTypes.string.def('idea'),
+      language: propTypes.string.def(''),
     },
     emits: ['change', 'update:value'],
     setup(props, { emit }) {
@@ -75,7 +77,7 @@
         // 缩进格式
         tabSize: 2,
         // 主题，对应主题库 JS 需要提前引入
-        theme: 'cobalt',
+        theme: props.theme,
         smartIndent: true, // 是否智能缩进
         // 显示行号
         lineNumbers: true,
@@ -186,6 +188,16 @@
         }
       );
       //update-end-author:taoyan date:2022-5-9 for: codeEditor禁用功能
+
+      // 支持动态设置语言
+      watch(
+        () => props.language,
+        (val) => {
+          if (val && coder) {
+            coder.setOption('mode', val);
+          }
+        }
+      );
 
       const getBindValue = Object.assign({}, unref(props), unref(attrs));
       return {

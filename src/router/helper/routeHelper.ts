@@ -5,7 +5,7 @@ import { getParentLayout, LAYOUT, EXCEPTION_COMPONENT } from '/@/router/constant
 import { cloneDeep, omit } from 'lodash-es';
 import { warn } from '/@/utils/log';
 import { createRouter, createWebHashHistory } from 'vue-router';
-import { getToken } from '/@/utils/auth';
+import { getTenantId, getToken } from '/@/utils/auth';
 import { URL_HASH_TAB } from '/@/utils';
 import { packageViews } from '/@/utils/monorepo/dynamicRouter';
 
@@ -45,9 +45,14 @@ function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
     // @ts-ignore 添加是否缓存路由配置
     item.meta.ignoreKeepAlive = !item?.meta.keepAlive;
     let token = getToken();
+    let tenantId = getTenantId();
     // URL支持{{ window.xxx }}占位符变量
-    item.component = (item.component || '').replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2)).replace('${token}', token);
-
+    //update-begin---author:wangshuai ---date:20220711  for：[VUEN-1638]菜单tenantId需要动态生成------------
+    item.component = (item.component || '')
+      .replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2))
+      .replace('${token}', token)
+      .replace('${tenantId}', tenantId);
+    //update-end---author:wangshuai ---date:20220711  for：[VUEN-1638]菜单tenantId需要动态生成------------
     // 适配 iframe
     if (/^\/?http(s)?/.test(item.component as string)) {
       item.component = item.component.substring(1, item.component.length);

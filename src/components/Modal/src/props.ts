@@ -80,4 +80,7 @@ export const basicProps = Object.assign({}, modalProps, {
   wrapClassName: { type: String },
 
   zIndex: { type: Number },
+
+  // 是否开启评论区域
+  enableComment: { type: Boolean, default: false },
 });

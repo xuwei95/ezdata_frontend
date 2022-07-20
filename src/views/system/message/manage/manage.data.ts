@@ -58,7 +58,7 @@ export const searchFormSchema: FormSchema[] = [
     field: 'esType',
     component: 'JDictSelectTag',
     componentProps: {
-      dictCode: 'msgType',
+      dictCode: 'messageType',
     },
   },
 ];
@@ -99,7 +99,7 @@ export const formSchemas: FormSchema[] = [
     label: '发送方式',
     field: 'esType',
     component: 'JDictSelectTag',
-    componentProps: { disabled: true, dictCode: 'msgType' },
+    componentProps: { disabled: true, dictCode: 'messageType' },
   },
   {
     label: '发送时间',

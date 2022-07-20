@@ -138,13 +138,14 @@ export function useJVxeComponent(props: JVxeComponent.Props) {
 
   /** 通用处理 change 事件 */
   function handleChangeCommon($value) {
-    let getValue = enhanced.getValue($value, ctx);
-    trigger('change', { value: getValue });
+    let newValue = enhanced.getValue($value, ctx);
+    let oldValue = value.value;
+    trigger('change', { value: newValue });
     // 触发valueChange事件
     parentTrigger('valueChange', {
       type: props.type,
-      value: getValue,
-      oldValue: value.value,
+      value: newValue,
+      oldValue: oldValue,
       col: originColumn.value,
       rowIndex: rowIndex.value,
       columnIndex: columnIndex.value,

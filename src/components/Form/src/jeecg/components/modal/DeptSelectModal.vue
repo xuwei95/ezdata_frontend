@@ -83,7 +83,9 @@
       /** 获取查询数据方法 */
       function getQueryUrl() {
         let queryFn = props.sync ? queryDepartTreeSync : queryTreeList;
-        return (params) => queryFn(Object.assign({}, params, { primaryKey: props.primaryKey }));
+        //update-begin-author:taoyan date:2022-7-4 for: issues/I5F3P4 online配置部门选择后编辑，查看数据应该显示部门名称，不是部门代码
+        return (params) => queryFn(Object.assign({}, params, { primaryKey: props.rowKey }));
+        //update-end-author:taoyan date:2022-7-4 for: issues/I5F3P4 online配置部门选择后编辑，查看数据应该显示部门名称，不是部门代码
       }
 
       return {

@@ -102,15 +102,17 @@
         };
         console.info(param);
         loadTreeData(param).then((res) => {
-          for (let i of res) {
-            i.value = i.key;
-            if (i.leaf == false) {
-              i.isLeaf = false;
-            } else if (i.leaf == true) {
-              i.isLeaf = true;
+          if (res && res.length > 0) {
+            for (let i of res) {
+              i.value = i.key;
+              if (i.leaf == false) {
+                i.isLeaf = false;
+              } else if (i.leaf == true) {
+                i.isLeaf = true;
+              }
             }
+            treeData.value = res;
           }
-          treeData.value = res;
         });
       }
 

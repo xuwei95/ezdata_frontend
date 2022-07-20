@@ -1,4 +1,4 @@
-import { useSlots, defineComponent, getCurrentInstance, h } from 'vue';
+import { defineComponent, h, ref, useSlots } from 'vue';
 import { vxeEmits, vxeProps } from './vxe.data';
 import { useData, useRefs, useResolveComponent as rc } from './hooks/useData';
 import { useColumns } from './hooks/useColumns';
@@ -16,11 +16,11 @@ export default defineComponent({
   props: vxeProps(),
   emits: [...vxeEmits],
   setup(props: JVxeTableProps, context) {
-    const instance = getCurrentInstance();
+    const instanceRef = ref();
     const refs = useRefs();
     const slots = useSlots();
     const data = useData(props);
-    const { methods, publicMethods, created } = useMethods(props, context, data, refs, instance);
+    const { methods, publicMethods, created } = useMethods(props, context, data, refs, instanceRef);
     created();
     useColumns(props, data, methods, slots);
     useDataSource(props, data, methods, refs);
@@ -30,6 +30,7 @@ export default defineComponent({
     // 渲染子组件
     const renderComponents = useRenderComponents(props, data, methods, slots);
     return {
+      instanceRef,
       ...refs,
       ...publicMethods,
       ...finallyProps,
@@ -68,5 +69,8 @@ export default defineComponent({
         }
       )
     );
+  },
+  created() {
+    this.instanceRef = this;
   },
 });

@@ -6,8 +6,10 @@
   import { omit } from 'lodash-es';
   import { useAttrs } from '/@/hooks/core/useAttrs';
   import { useI18n } from '/@/hooks/web/useI18n';
+  import { propTypes } from '/@/utils/propTypes';
 
   const props = {
+    class: propTypes.any,
     /**
      * Whether to enable the drop-down menu
      * @default: true

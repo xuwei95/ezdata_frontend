@@ -19,7 +19,7 @@
       :dataSource="dataSource"
       :pagination="pagination"
       @save="handleTableSave"
-      @remove="handleTableRemove"
+      @removed="handleTableRemove"
       @edit-closed="handleEditClosed"
       @pageChange="handlePageChange"
       @selectRowChange="handleSelectRowChange"
@@ -132,13 +132,13 @@
       // 校验通过
       if (!errMap) {
         // 获取所有数据
-        let tableData = target.ctx.getTableData();
+        let tableData = target.getTableData();
         console.log('当前保存的数据是：', tableData);
         // 获取新增的数据
-        let newData = target.ctx.getNewData();
+        let newData = target.getNewData();
         console.log('-- 新增的数据：', newData);
         // 获取删除的数据
-        let deleteData = target.ctx.getDeleteData();
+        let deleteData = target.getDeleteData();
         console.log('-- 删除的数据：', deleteData);
         // 【模拟保存】
         loading.value = true;

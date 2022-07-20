@@ -244,8 +244,8 @@ export const usePermissionStore = defineStore({
                   createWarningModal({
                     title: '提示',
                     content:
-                      '检测到你可能使用了<b>非vue3版本</b>的数据库表，这将会导致菜单或其他功能出现异常，请更换成vue3版本的数据库表后刷新。' +
-                      '<br>文档地址：<a href="http://vue3.jeecg.com/2671576" target="_blank">http://vue3.jeecg.com/2671576</a>',
+                      '检测到当前菜单表是 <b>Vue2版本</b> 的，这将导致菜单加载异常，请更换成vue3版本的表！' +
+                      '<br>切换文档：<a href="http://vue3.jeecg.com/2671576" target="_blank">http://vue3.jeecg.com/2671576</a>',
                   }),
                 1500
               );

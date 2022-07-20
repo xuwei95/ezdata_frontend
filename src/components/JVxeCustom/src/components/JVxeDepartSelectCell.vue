@@ -24,7 +24,7 @@
   <!--    </span>-->
   <!--  </div>-->
   <div :class="[prefixCls]">
-    <JSelectDept :value="selectedValue" :maxTagCount="1" :showButton="false" v-bind="cellProps" @change="handleChange" />
+    <JSelectDept v-bind="getProps" @change="handleChange" />
   </div>
 </template>
 
@@ -65,6 +65,20 @@
 
       const multiple = computed(() => cellProps.value['multi'] != false);
 
+      const getProps = computed(() => {
+        return {
+          ...cellProps.value,
+          value: selectedValue.value,
+          showButton: false,
+          // 不允许搜索
+          showSearch: false,
+          // 设置最大的显示个数
+          maxTagCount: 1,
+          // 显示提示重写，去掉省略号
+          maxTagPlaceholder: ({ length }) => '+' + length,
+        };
+      });
+
       function handleChange(values) {
         handleChangeCommon(values.join(','));
       }
@@ -74,6 +88,7 @@
         selectedValue,
         multiple,
         cellProps,
+        getProps,
         handleChange,
       };
     },
@@ -191,7 +206,7 @@
   .@{prefix-cls} {
     // 限制tag最大长度为100px，防止选中文字过多的选项时换行
     .ant-select .ant-select-selection-overflow-item {
-      max-width: 100px;
+      max-width: 80px;
     }
   }
 </style>

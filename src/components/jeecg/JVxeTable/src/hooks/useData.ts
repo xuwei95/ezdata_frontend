@@ -32,13 +32,13 @@ export function useData(props: JVxeTableProps): JVxeDataProps {
         iconClose: 'ant-table-row-expand-icon ant-table-row-collapsed',
         iconOpen: 'ant-table-row-expand-icon ant-table-row-expanded',
       },
-      // 虚拟滚动配置，y轴大于30条数据时启用虚拟滚动
-      // 'scroll-y': {
-      //   gt: 30
-      // },
-      // 'scroll-x': {
-      //   gt: 15
-      // },
+      // 虚拟滚动配置，y轴大于xx条数据时启用虚拟滚动
+      scrollY: {
+        gt: 30,
+      },
+      scrollX: {
+        gt: 20,
+      },
       radioConfig: { highlight: true },
       checkboxConfig: { highlight: true },
       mouseConfig: { selected: false },

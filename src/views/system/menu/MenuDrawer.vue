@@ -50,6 +50,9 @@
       {
         field: 'url',
         required: !isButton(unref(menuType)),
+        componentProps: {
+          onChange: (e) => onUrlChange(e.target.value),
+        },
       },
     ]);
 
@@ -57,6 +60,7 @@
     if (typeof data.record === 'object') {
       let values = { ...data.record };
       setFieldsValue(values);
+      onUrlChange(values.url);
     }
     //禁用表单
     setProps({ disabled: !attrs.showFooter });
@@ -79,5 +83,22 @@
     } finally {
       setDrawerProps({ confirmLoading: false });
     }
+  }
+
+  /** url 变化时，动态设置组件名称placeholder */
+  function onUrlChange(url) {
+    let placeholder = '';
+    if (url != null && url != '') {
+      if (url.startsWith('/')) {
+        url = url.substring(1);
+      }
+      url = url.replaceAll('/', '-');
+      // 特殊标记
+      url = url.replaceAll(':', '@');
+      placeholder = `${url}`;
+    } else {
+      placeholder = '请输入组件名称';
+    }
+    updateSchema([{ field: 'componentName', componentProps: { placeholder } }]);
   }
 </script>

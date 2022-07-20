@@ -621,4 +621,18 @@ export const schemas: FormSchema[] = [
     label: '选中值',
     colProps: { span: 12 },
   },
+  {
+    field: 'superQuery',
+    component: 'Input',
+    label: '高级查询',
+    helpMessage: ['插槽模式'],
+    slot: 'superQuery',
+    colProps: { span: 12 },
+  },
+  {
+    field: 'superQuery',
+    component: 'JEllipsis',
+    label: '选中值',
+    colProps: { span: 12 },
+  },
 ];

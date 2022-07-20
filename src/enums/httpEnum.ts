@@ -45,4 +45,6 @@ export enum ConfigEnum {
   TENANT_ID = 'tenant-id',
   // 版本
   VERSION = 'X-Version',
+  // 低代码应用ID
+  X_LOW_APP_ID = 'X-Low-App-ID',
 }

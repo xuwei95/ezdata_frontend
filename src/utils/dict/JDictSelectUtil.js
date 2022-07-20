@@ -8,6 +8,7 @@ import { ajaxGetDictItems, getDictItemsByCode } from './index';
 
 /**
  * 获取字典数组
+ * 【目前仅表单设计器页面使用该方法】
  * @param dictCode 字典Code
  * @param isTransformResponse 是否转换返回结果
  * @return List<Map>

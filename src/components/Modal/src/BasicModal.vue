@@ -1,7 +1,15 @@
 <template>
   <Modal v-bind="getBindValue" @cancel="handleCancel">
     <template #closeIcon v-if="!$slots.closeIcon">
-      <ModalClose :canFullscreen="getProps.canFullscreen" :fullScreen="fullScreenRef" @cancel="handleCancel" @fullscreen="handleFullScreen" />
+      <ModalClose
+        :canFullscreen="getProps.canFullscreen"
+        :fullScreen="fullScreenRef"
+        :commentSpan="commentSpan"
+        :enableComment="getProps.enableComment"
+        @comment="handleComment"
+        @cancel="handleCancel"
+        @fullscreen="handleFullScreen"
+      />
     </template>
 
     <template #title v-if="!$slots.title">
@@ -31,7 +39,16 @@
       @ext-height="handleExtHeight"
       @height-change="handleHeightChange"
     >
-      <slot></slot>
+      <!-- update-begin-author:taoyan date:2022-7-18 for:  modal弹窗 支持评论 slot -->
+      <a-row>
+        <a-col :span="24 - commentSpan">
+          <slot></slot>
+        </a-col>
+        <a-col :span="commentSpan">
+          <slot name="comment"></slot>
+        </a-col>
+      </a-row>
+      <!-- update-end-author:taoyan date:2022-7-18 for:  modal弹窗 支持评论 slot -->
     </ModalWrapper>
 
     <template #[item]="data" v-for="item in Object.keys(omit($slots, 'default'))">
@@ -200,6 +217,24 @@
         handleFullScreen(e);
       }
 
+      //update-begin-author:taoyan date:2022-7-18 for: modal支持评论 slot
+      const commentSpan = ref(0);
+      watch(
+        () => props.enableComment,
+        (flag) => {
+          handleComment(flag);
+        },
+        { immediate: true }
+      );
+      function handleComment(flag) {
+        if (flag === true) {
+          commentSpan.value = 6;
+        } else {
+          commentSpan.value = 0;
+        }
+      }
+      //update-end-author:taoyan date:2022-7-18 for: modal支持评论 slot
+
       return {
         handleCancel,
         getBindValue,
@@ -215,6 +250,8 @@
         handleHeightChange,
         handleTitleDbClick,
         getWrapperHeight,
+        commentSpan,
+        handleComment,
       };
     },
   });

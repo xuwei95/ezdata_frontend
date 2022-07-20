@@ -1,4 +1,4 @@
-import { JVxeTypes, JVxeColumn } from '/src/components/jeecg/JVxeTable/types';
+import { JVxeTypes, JVxeColumn } from '/@/components/jeecg/JVxeTable/types';
 
 export const columns: JVxeColumn[] = [
   {

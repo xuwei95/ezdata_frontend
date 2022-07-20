@@ -144,7 +144,12 @@
 
       function onWebSocketMessage(data) {
         if (data.cmd === 'topic' || data.cmd === 'user') {
-          loadData();
+          //update-begin-author:taoyan date:2022-7-13 for: VUEN-1674【严重bug】系统通知，为什么必须刷新右上角才提示
+          //后台保存数据太慢 前端延迟刷新消息
+          setTimeout(() => {
+            loadData();
+          }, 1000);
+          //update-end-author:taoyan date:2022-7-13 for: VUEN-1674【严重bug】系统通知，为什么必须刷新右上角才提示
         }
       }
 

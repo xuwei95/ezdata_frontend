@@ -13,7 +13,7 @@ export const columns: BasicColumn[] = [
     width: 100,
   },
   {
-    title: '模板内容',
+    title: '通知模板',
     dataIndex: 'templateContent',
     width: 150,
   },
@@ -23,18 +23,24 @@ export const columns: BasicColumn[] = [
     width: 100,
     customRender: function ({ text }) {
       if (text == '1') {
-        return '短信';
+        return '文本';
       }
       if (text == '2') {
-        return '邮件';
-      }
-      if (text == '3') {
-        return '微信';
-      }
-      if (text == '4') {
-        return '系统';
+        return '富文本';
       }
       return text;
+    },
+  },
+  {
+    title: '是否应用',
+    dataIndex: 'useStatus',
+    width: 90,
+    customRender: function ({ text }) {
+      if (text == '1') {
+        return '是';
+      } else {
+        return '否';
+      }
     },
   },
 ];
@@ -92,6 +98,14 @@ export const formSchemas: FormSchema[] = [
       placeholder: '请选择模板类型',
     },
     required: true,
+  },
+  {
+    label: '是否应用',
+    field: 'useStatus',
+    component: 'JSwitch',
+    componentProps: {
+      options: ['1', '0'],
+    },
   },
   {
     label: '模板内容',
@@ -153,7 +167,7 @@ export const sendTestFormSchemas: FormSchema[] = [
     field: 'msgType',
     component: 'JDictSelectTag',
     required: true,
-    componentProps: { dictCode: 'msgType' },
+    componentProps: { dictCode: 'messageType' },
   },
   {
     label: '消息接收方',

@@ -3,9 +3,9 @@ import { Modal } from 'ant-design-vue';
 
 enum Api {
   list = '/sys/sysAnnouncementSend/getMyAnnouncementSend',
-  editCementSend = 'sys/sysAnnouncementSend/editByAnntIdAndUserId',
-  readAllMsg = 'sys/sysAnnouncementSend/readAll',
-  syncNotic = 'sys/annountCement/syncNotic',
+  editCementSend = '/sys/sysAnnouncementSend/editByAnntIdAndUserId',
+  readAllMsg = '/sys/sysAnnouncementSend/readAll',
+  syncNotic = '/sys/annountCement/syncNotic',
 }
 
 /**

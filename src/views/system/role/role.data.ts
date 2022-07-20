@@ -144,6 +144,21 @@ export const roleIndexFormSchema: FormSchema[] = [
     required: true,
   },
   {
+    label: '组件地址',
+    field: 'component',
+    component: 'Input',
+    componentProps: {
+      placeholder: '请输入前端组件',
+    },
+    required: true,
+  },
+  {
+    field: 'route',
+    label: '是否路由菜单',
+    component: 'Switch',
+    defaultValue: true,
+  },
+  {
     label: '优先级',
     field: 'priority',
     component: 'InputNumber',

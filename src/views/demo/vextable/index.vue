@@ -56,7 +56,7 @@
   };
 
   const getDropDownActions = (record) => {
-    return [
+    let arr = [
       {
         label: '删除',
         popConfirm: {
@@ -65,6 +65,7 @@
         },
       },
     ];
+    return arr;
   };
 
   // 列表页面公共参数、方法

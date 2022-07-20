@@ -33,14 +33,16 @@
 </template>
 
 <script lang="ts" setup name="message-template">
-  import { unref, computed } from 'vue';
+  import { unref, computed, toRaw } from 'vue';
   import { ActionItem, BasicTable, TableAction } from '/@/components/Table';
   import { useModal } from '/@/components/Modal';
   import { useListPage } from '/@/hooks/system/useListPage';
   import TemplateModal from './TemplateModal.vue';
   import TemplateTestModal from './TemplateTestModal.vue';
-  import { Api, list, deleteBatch } from './template.api';
+  import { Api, saveOrUpdate, list, deleteBatch } from './template.api';
   import { columns, searchFormSchema } from './template.data';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  const { createMessage } = useMessage();
 
   // 列表页面公共参数、方法
   const { prefixCls, onExportXls, onImportXls, tableContext } = useListPage({
@@ -64,7 +66,7 @@
   });
 
   // 注册 ListTable
-  const [registerTable, { reload, setLoading }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload, setLoading }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
   const [registerModal, { openModal }] = useModal();
   const [registerTestModal, testModal] = useModal();
   const showBatchBtn = computed(() => selectedRowKeys.value.length > 0);
@@ -78,6 +80,10 @@
   }
 
   function onEdit(record) {
+    if (record.useStatus === '1') {
+      createMessage.warning('此模板已被应用，禁止编辑!');
+      return;
+    }
     openModal(true, {
       title: '修改消息模板',
       isUpdate: true,
@@ -87,6 +93,12 @@
 
   function onDelete(record) {
     if (record) {
+      //update-begin-author:taoyan date:2022-7-14 for: VUEN-1652【bug】应用状态下不允许删除
+      if (record.useStatus == '1') {
+        createMessage.warning('该模板已被应用禁止删除!');
+        return;
+      }
+      //update-end-author:taoyan date:2022-7-14 for: VUEN-1652【bug】应用状态下不允许删除
       doDeleteDepart([record.id], false);
     }
   }
@@ -111,6 +123,14 @@
 
   async function onDeleteBatch() {
     try {
+      //update-begin-author:taoyan date:2022-7-14 for: VUEN-1652【bug】应用状态下不允许删除
+      let arr = toRaw(selectedRows.value);
+      let temp = arr.filter((item) => item.useStatus == '1');
+      if (temp.length > 0) {
+        createMessage.warning('选中的模板已被应用禁止删除!');
+        return;
+      }
+      //update-end-author:taoyan date:2022-7-14 for: VUEN-1652【bug】应用状态下不允许删除
       await doDeleteDepart(selectedRowKeys);
       selectedRowKeys.value = [];
     } finally {
@@ -134,6 +154,8 @@
    */
   function getDropDownAction(record): ActionItem[] {
     return [
+      { label: '应用', onClick: handleUse.bind(null, record) },
+      { label: '停用', onClick: handleNotUse.bind(null, record) },
       { label: '发送测试', onClick: onSendTest.bind(null, record) },
       {
         label: '删除',
@@ -144,6 +166,24 @@
         },
       },
     ];
+  }
+
+  /**
+   * 应用
+   */
+  async function handleUse(record) {
+    let param = { id: record.id, useStatus: '1' };
+    await saveOrUpdate(param, true);
+    await reload();
+  }
+
+  /**
+   * 停用
+   */
+  async function handleNotUse(record) {
+    let param = { id: record.id, useStatus: '0' };
+    await saveOrUpdate(param, true);
+    await reload();
   }
 </script>
 

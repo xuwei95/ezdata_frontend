@@ -152,6 +152,22 @@ export const formSchema: FormSchema[] = [
     ifShow: ({ values }) => !isButton(values.menuType),
   },
   {
+    field: 'componentName',
+    label: '组件名称',
+    component: 'Input',
+    componentProps: {
+      placeholder: '请输入组件名称',
+    },
+    helpMessage: [
+      '此处名称应和vue组件的name属性保持一致。',
+      '组件名称不能重复，主要用于路由缓存功能。',
+      '如果组件名称和vue组件的name属性不一致，则会导致路由缓存失效。',
+      '非必填，留空则会根据访问路径自动生成。',
+    ],
+    defaultValue: '',
+    ifShow: ({ values }) => !isButton(values.menuType),
+  },
+  {
     field: 'frameSrc',
     label: 'Iframe地址',
     component: 'Input',

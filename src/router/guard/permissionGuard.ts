@@ -9,11 +9,17 @@ import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
 
 import { RootRoute } from '/@/router/routes';
 
+import { isOAuth2AppEnv } from '/@/views/sys/login/useLogin';
+
 const LOGIN_PATH = PageEnum.BASE_LOGIN;
+//auth2登录路由
+const OAUTH2_LOGIN_PAGE_PATH = PageEnum.OAUTH2_LOGIN_PAGE_PATH;
 
 const ROOT_PATH = RootRoute.path;
 
-const whitePathList: PageEnum[] = [LOGIN_PATH];
+//update-begin---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3不支持auth2登录------------
+const whitePathList: PageEnum[] = [LOGIN_PATH, OAUTH2_LOGIN_PAGE_PATH];
+//update-end---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3不支持auth2登录------------
 
 export function createPermissionGuard(router: Router) {
   const userStore = useUserStoreWithOut();
@@ -37,6 +43,13 @@ export function createPermissionGuard(router: Router) {
             return;
           }
         } catch {}
+        //update-begin---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3不支持auth2登录------------
+      } else if (to.path === LOGIN_PATH && isOAuth2AppEnv() && !token) {
+        //退出登录进入此逻辑
+        //如果进入的页面是login页面并且当前是OAuth2app环境，并且token为空，就进入OAuth2登录页面
+        next({ path: OAUTH2_LOGIN_PAGE_PATH });
+        return;
+        //update-end---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3不支持auth2登录------------
       }
       next();
       return;
@@ -50,9 +63,26 @@ export function createPermissionGuard(router: Router) {
         return;
       }
 
+      //update-begin---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3 Auth2未实现------------
+      let path = LOGIN_PATH;
+      if (whitePathList.includes(to.path as PageEnum)) {
+        // 在免登录白名单，如果进入的页面是login页面并且当前是OAuth2app环境，就进入OAuth2登录页面
+        if (to.path === LOGIN_PATH && isOAuth2AppEnv()) {
+          next({ path: OAUTH2_LOGIN_PAGE_PATH });
+        } else {
+          //在免登录白名单，直接进入
+          next();
+        }
+      } else {
+        // 如果当前是在OAuth2APP环境，就跳转到OAuth2登录页面，否则跳转到登录页面
+        path = isOAuth2AppEnv() ? OAUTH2_LOGIN_PAGE_PATH : LOGIN_PATH;
+      }
+      //update-end---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3 Auth2未实现------------
       // redirect login page
       const redirectData: { path: string; replace: boolean; query?: Recordable<string> } = {
-        path: LOGIN_PATH,
+        //update-begin---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3 Auth2未实现------------
+        path: path,
+        //update-end---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3 Auth2未实现------------
         replace: true,
       };
       if (to.path) {

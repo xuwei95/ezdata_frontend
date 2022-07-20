@@ -259,7 +259,7 @@
     dataSource1.value = tempSs1;
     dataSource2.value = tempSs2;
     dataSource3.value = tempSs1;
-    dataSource4.value = [];
+    dataSource4.value = tempSs2;
     ifNullDataSource(dataSource4, '.tytable4');
   }
 

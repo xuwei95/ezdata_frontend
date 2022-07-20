@@ -18,4 +18,6 @@ export enum JInputTypeEnum {
 export enum JDragConfigEnum {
   //baseURL
   DRAG_BASE_URL = 'drag-base-url',
+  //拖拽缓存前缀
+  DRAG_CACHE_PREFIX = 'drag-cache:',
 }

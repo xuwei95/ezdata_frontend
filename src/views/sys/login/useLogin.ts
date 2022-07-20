@@ -163,3 +163,22 @@ async function checkPhone(rule, value, callback) {
     });
   }
 }
+
+//update-begin---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3不支持auth2登录------------
+/**
+ * 判断是否是OAuth2APP环境
+ */
+export function isOAuth2AppEnv() {
+  return /wxwork|dingtalk/i.test(navigator.userAgent);
+}
+
+/**
+ * 后台构造oauth2登录地址
+ * @param source
+ */
+export function sysOAuth2Login(source) {
+  let url = `${window._CONFIG['domianURL']}/sys/thirdLogin/oauth2/${source}/login`;
+  url += `?state=${encodeURIComponent(window.location.origin)}`;
+  window.location.href = url;
+}
+//update-end---author:wangshuai ---date:20220629  for：[issues/I5BG1I]vue3不支持auth2登录------------

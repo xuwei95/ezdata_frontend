@@ -21,6 +21,7 @@
           @change="handleChange"
           style="width: 100%"
           @click="!disabled && openModal(false)"
+          v-bind="attrs"
         ></a-select>
       </a-col>
       <a-col v-if="showButton" class="right">

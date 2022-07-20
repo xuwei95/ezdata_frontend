@@ -6,6 +6,7 @@ import type { RequestOptions, Result } from '/#/axios';
 import type { AxiosTransform, CreateAxiosOptions } from './axiosTransform';
 import { VAxios } from './Axios';
 import { checkStatus } from './checkStatus';
+import { router } from '/@/router';
 import { useGlobSetting } from '/@/hooks/setting';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { RequestEnum, ResultEnum, ContentTypeEnum, ConfigEnum } from '/@/enums/httpEnum';
@@ -160,6 +161,20 @@ const transform: AxiosTransform = {
       config.headers[ConfigEnum.VERSION] = 'v3';
       //--update-end--author:liusq---date:20220325---for:增加vue3标记
       //--update-end--author:liusq---date:20211105---for:将多租户id，添加在请求接口 Header
+
+      // ========================================================================================
+      // update-begin--author:sunjianlei---date:20220624--for: 添加低代码应用ID
+      let routeParams = router.currentRoute.value.params;
+      if (routeParams.appId) {
+        config.headers[ConfigEnum.X_LOW_APP_ID] = routeParams.appId;
+        // lowApp自定义筛选条件
+        if (routeParams.lowAppFilter) {
+          config.params = { ...config.params, ...JSON.parse(routeParams.lowAppFilter as string) };
+          delete routeParams.lowAppFilter;
+        }
+      }
+      // update-end--author:sunjianlei---date:20220624--for: 添加低代码应用ID
+      // ========================================================================================
     }
     return config;
   },

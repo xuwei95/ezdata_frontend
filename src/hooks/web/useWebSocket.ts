@@ -28,7 +28,7 @@ export function connectWebSocket(url: string) {
       autoReconnect: true,
       // 心跳检测
       heartbeat: false,
-      //protocols: [token],
+      protocols: [token],
     });
     //update-end-author:taoyan date:2022-4-24 for: v2.4.6 的 websocket 服务端，存在性能和安全问题。 #3278
     result.value.open();

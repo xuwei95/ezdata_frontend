@@ -53,6 +53,15 @@ export function getCacheByDynKey<T>(key) {
   const fn = isLocal ? Persistent.getLocal : Persistent.getSession;
   return fn(key) as T;
 }
+
+/**
+ * 移除动态key
+ * @param key
+ */
+export function removeCacheByDynKey<T>(key) {
+  const fn = isLocal ? Persistent.removeLocal : Persistent.removeSession;
+  return fn(key) as T;
+}
 /**
  * 移除缓存中的某个属性
  * @param key

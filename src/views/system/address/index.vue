@@ -45,7 +45,9 @@
     tableProps: {
       api: list,
       columns,
-      rowKey: 'id',
+      //update-begin---author:wangshuai ---date:20220629  for：[VUEN-1485]进入系统管理--通讯录页面后，网页命令行报错------------
+      rowKey: 'userId',
+      //update-end---author:wangshuai ---date:20220629  for：[VUEN-1485]进入系统管理--通讯录页面后，网页命令行报错--------------
       showIndexColumn: true,
       formConfig: {
         labelWidth: 200,
