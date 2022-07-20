@@ -5,7 +5,7 @@ import { useMessage } from '/@/hooks/web/useMessage';
 import { Modal } from 'ant-design-vue';
 import { createLocalStorage } from '/@/utils/cache';
 import { useRoute } from 'vue-router';
-import FormSchemaFactory from '/@/views/super/online/cgform/auto/comp/factory/FormSchemaFactory';
+
 /**
  * 表单类型转换成查询类型
  * 普通查询和高级查询组件区别 ：高级查询不支持联动组件
@@ -180,7 +180,7 @@ export function useSuperQuery() {
       // 如果出现查询条件联动组件出来的场景，请跟踪此处
       prop.view = view2QueryViewMap[prop.view];
     }
-    let temp = FormSchemaFactory.createFormSchema(item.field, prop);
+    let temp;
     // temp.setFormRef(formRef)
     temp.noChange();
     // 查询条件中的 下拉框popContainer为parentNode

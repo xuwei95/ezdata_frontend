@@ -80,7 +80,6 @@
       </template>
     </BasicTable>
     <DemoModal @register="registerModal" @success="reload" />
-    <DemoDetailModal @register="registerDetailModal" />
     <JImportModal @register="registerModal1" :url="getImportUrl" online />
   </div>
 </template>
@@ -98,7 +97,6 @@
   import { useGo } from '/@/hooks/web/usePage';
   import { router } from '/@/router';
   import { filterObj } from '/@/utils/common/compUtils';
-  import DemoDetailModal from './DemoDetailModal.vue';
   import SuperQuery from '/@/components/jeecg/super/superquery/SuperQuery.vue';
 
   const go = useGo();

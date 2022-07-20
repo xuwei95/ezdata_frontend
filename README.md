@@ -77,8 +77,29 @@ yarn build
 ```
 
 
+## Docker镜像用法
+- 编译项目
 
+```bash
+git clone https://github.com/jeecgboot/jeecgboot-vue3.git
 
+cd jeecgboot-vue3
+
+yarn install
+
+yarn build
+
+```
+- 启动容器
+```bash
+docker build -t jeecgboot-vue3 .
+docker run --name jeecgboot-vue3-nginx -p 80:80 -d jeecgboot-vue3
+```
+
+- host设置(127.0.0.1不行，得设置具体IP)
+```bash
+192.168.5.100 jeecg-boot-system
+```
 
 
 ## 功能模块
