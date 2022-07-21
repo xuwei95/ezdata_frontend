@@ -95,7 +95,7 @@ git clone https://github.com/jeecgboot/jeecgboot-vue3.git
 cd jeecgboot-vue3
 
 ```
-### 修改后台域名
+- 修改后台域名
 .env.production
 
 ```bash
@@ -118,10 +118,11 @@ docker run --name jeecgboot-vue3-nginx -p 80:80 -d jeecgboot-vue3
 ```
 
 - 访问前台
+
 http://localhost
 
 ## Docker镜像启动前端(微服务模式)
-只写与单体的区别步骤
+> 这里只写与单体的区别步骤
 
 ### 区别1. 修改后台域名
 .env.production
@@ -132,8 +133,14 @@ VITE_GLOB_DOMAIN_URL=http://jeecg-boot-gateway:9999
 ```
 ### 区别2. 修改Dockerfile文件
 
-把`http://jeecg-boot-system:8080/jeecg-boot`替换成 `http://jeecg-boot-gateway:9999`
-把`jeecg-boot-system`替换成 `jeecg-boot-gateway`
+- 把`http://jeecg-boot-system:8080/jeecg-boot`替换成 `http://jeecg-boot-gateway:9999`
+- 把`jeecg-boot-system`替换成 `jeecg-boot-gateway`
+
+### 其他与单体模式一样
+
+镜像需要重现构建，最好把单体的镜像删掉，重新构建docker镜像。
+
+
 
 ## 功能模块
 > vue3版本已经实现了系统管理、系统监控、报表、各种组件、前端权限、GUI代码生成、Online表单、Online报表等平台功能，完全可以用于生产环境。
