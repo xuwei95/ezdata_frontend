@@ -124,19 +124,19 @@ http://localhost
 ## Docker镜像启动前端(微服务模式)
 > 这里只写与单体的区别步骤
 
-### 区别1. 修改后台域名
+-  区别1. 修改后台域名
 .env.production
 
 ```bash
 VITE_GLOB_API_URL=/jeecgboot
 VITE_GLOB_DOMAIN_URL=http://jeecg-boot-gateway:9999
 ```
-### 区别2. 修改Dockerfile文件
+- 区别2. 修改Dockerfile文件
 
 - 把`http://jeecg-boot-system:8080/jeecg-boot`替换成 `http://jeecg-boot-gateway:9999`
 - 把`jeecg-boot-system`替换成 `jeecg-boot-gateway`
 
-### 其他与单体模式一样
+-  其他与单体模式一样
 
 镜像需要重现构建，最好把单体的镜像删掉，重新构建docker镜像。
 
