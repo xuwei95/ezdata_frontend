@@ -136,13 +136,13 @@ VITE_GLOB_DOMAIN_URL=http://jeecg-boot-gateway:9999
 ```bash
 - 把`http://jeecg-boot-system:8080/jeecg-boot`替换成 `http://jeecg-boot-gateway:9999`
 - 把`jeecg-boot-system`替换成 `jeecg-boot-gateway`
-```bash
+```
 
 -  其他与单体模式一样
 
 ```bash
 镜像需要重现构建，最好把单体的镜像删掉，重新构建docker镜像。
-```bash
+```
 
 
 ## 功能模块
