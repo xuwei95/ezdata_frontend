@@ -12,10 +12,10 @@
     <!-- 是否开启评论区域 -->
     <template v-if="enableComment">
       <Tooltip title="关闭" placement="bottom" v-if="commentSpan > 0">
-        <RightSquareOutlined @click="handleCloseComment" />
+        <RightSquareOutlined @click="handleCloseComment" style="font-size: 16px" />
       </Tooltip>
       <Tooltip title="展开" placement="bottom" v-else>
-        <LeftSquareOutlined @click="handleOpenComment" />
+        <LeftSquareOutlined @click="handleOpenComment" style="font-size: 16px" />
       </Tooltip>
     </template>
 
@@ -62,7 +62,9 @@
       function handleFullScreen(e: Event) {
         e?.stopPropagation();
         e?.preventDefault();
-        emit('fullscreen');
+        if (props.commentSpan == 0 || props.enableComment == false) {
+          emit('fullscreen');
+        }
       }
 
       //update-begin-author:taoyan date:2022-7-18 for: 关闭按钮的区域宽度 取决于是否有其他图标
@@ -82,6 +84,9 @@
       function handleOpenComment(e: Event) {
         e?.stopPropagation();
         e?.preventDefault();
+        if (props.fullScreen == false) {
+          emit('fullscreen');
+        }
         emit('comment', true);
       }
 
