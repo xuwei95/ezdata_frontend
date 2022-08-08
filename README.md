@@ -42,6 +42,8 @@ JeecgBoot-Vue3采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术�
 ## 安装与使用
 
 
+ > 环境要求: Node.js版本要求12.x以上，且不能为13.x版本，这里推荐14.x及以上。
+
   
 - Get the project code
 
