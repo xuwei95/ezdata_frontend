@@ -1,6 +1,6 @@
 JEECG BOOT 低代码开发平台（Vue3前端）
 ===============
-当前最新版本： 3.3.0（发布时间：20220725）
+当前最新版本： 3.4.0（发布时间：20220725）
 > 变更大版本号与后台同步 3.3.X，后续单独发布版本会更新小版本号。
 
 
@@ -14,8 +14,8 @@ JeecgBoot-Vue3采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术�
 
 | 仓库 |前端源码Vue3版 | 前端源码Vue2版 | 后端源码 |
 |-|-|-|-|
-| Github | [jeecgboot-vue3](https://github.com/jeecgboot/jeecgboot-vue3)  | [ant-design-vue-jeecg](https://github.com/jeecgboot/jeecg-boot/tree/master/ant-design-vue-jeecg) | [jeecg-boot](https://github.com/jeecgboot/jeecg-boot) |
-| 码云 | [jeecgboot-vue3](https://gitee.com/jeecg/jeecgboot-vue3)  | [ant-design-vue-jeecg](https://gitee.com/jeecg/jeecg-boot/tree/master/ant-design-vue-jeecg)  | [jeecg-boot](https://gitee.com/jeecg/jeecg-boot) |
+| Github | [jeecgboot-vue3](https://github.com/jeecgboot/jeecgboot-vue3)  | [ant-design-vue-jeecg](https://github.com/jeecgboot/ant-design-vue-jeecg) | [jeecg-boot](https://github.com/jeecgboot/jeecg-boot) |
+| 码云 | [jeecgboot-vue3](https://gitee.com/jeecg/jeecgboot-vue3)  | [ant-design-vue-jeecg](https://gitee.com/jeecg/ant-design-vue-jeecg)  | [jeecg-boot](https://gitee.com/jeecg/jeecg-boot) |
 
 
 ##### 项目说明
@@ -24,7 +24,7 @@ JeecgBoot-Vue3采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术�
 |--------------------|------------------------|
 | `jeecgboot-vue3` | Vue3版前端代码 | 
 | `jeecg-boot`    | JAVA后台（支持微服务）        | 
-| `ant-design-vue-jeecg`  |Vue2版前端代码（默认与主项目一起）       |   
+| `ant-design-vue-jeecg`  |Vue2版前端代码   |   
 
 
 
