@@ -4,6 +4,15 @@ JEECG BOOT 低代码开发平台（Vue3前端）
 > 变更大版本号与后台同步 3.3.X，后续单独发布版本会更新小版本号。
 
 
+[![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)
+[![](https://img.shields.io/badge/Author-北京国炬软件-orange.svg)](http://www.jeecg.com)
+[![](https://img.shields.io/badge/Blog-官方博客-blue.svg)](https://my.oschina.net/jeecg)
+[![](https://img.shields.io/badge/version-3.4.1-brightgreen.svg)](https://github.com/zhangdaiscott/jeecg-boot)
+[![GitHub stars](https://img.shields.io/github/stars/zhangdaiscott/jeecg-boot.svg?style=social&label=Stars)](https://github.com/zhangdaiscott/jeecg-boot)
+[![GitHub forks](https://img.shields.io/github/forks/zhangdaiscott/jeecg-boot.svg?style=social&label=Fork)](https://github.com/zhangdaiscott/jeecg-boot)
+
+
+
 ## 简介
 JeecgBoot-Vue3采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术方案，包括二次封装组件、utils、hooks、动态菜单、权限校验、按钮级别权限控制等功能。
 是在 Vben-Admin 基础上研发的，适合于JeecgBoot低代码平台的VUE3版前端解决方案，目前已是稳定版本，可用于生产项目。
