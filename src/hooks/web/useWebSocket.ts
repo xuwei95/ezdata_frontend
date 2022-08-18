@@ -31,7 +31,9 @@ export function connectWebSocket(url: string) {
       protocols: [token],
     });
     //update-end-author:taoyan date:2022-4-24 for: v2.4.6 的 websocket 服务端，存在性能和安全问题。 #3278
-    result.value.open();
+    
+    //【jeecgboot-vue3/issues/I5KULW】Websocket 连接后自动给关闭
+    //result.value.open();
     const ws = unref(result.value.ws);
     if (ws) {
       ws.onopen = onOpen;
