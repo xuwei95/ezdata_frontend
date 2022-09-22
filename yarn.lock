@@ -11343,13 +11343,6 @@
   "resolved" "https://registry.npmmirror.com/vue-observe-visibility/-/vue-observe-visibility-0.4.6.tgz"
   "version" "0.4.6"
 
-"vue-print-nb-jeecg@^1.0.10":
-  "integrity" "sha512-jp/7tnKm8A+vYsUqMY+8ODOi8WayjEYkf/r1Z7enUfMe3Rk9ytGIJonAhnwLBWMoH7mWndgMayOPMki1dFUlGA=="
-  "resolved" "https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/vue-print-nb-jeecg/-/vue-print-nb-jeecg-1.0.11.tgz"
-  "version" "1.0.11"
-  dependencies:
-    "babel-plugin-transform-runtime" "^6.23.0"
-
 "vue-resize@^0.4.5":
   "integrity" "sha512-bhP7MlgJQ8TIkZJXAfDf78uJO+mEI3CaLABLjv0WNzr4CcGRGPIAItyWYnP6LsPA4Oq0WE+suidNs6dgpO4RHg=="
   "resolved" "https://registry.npmmirror.com/vue-resize/-/vue-resize-0.4.5.tgz"
