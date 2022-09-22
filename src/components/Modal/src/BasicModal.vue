@@ -17,7 +17,7 @@
     </template>
 
     <!-- update-begin-author:taoyan date:2022-7-18 for:  modal弹窗 支持评论 slot -->
-    <a-row class="jeecg-modal-wrapper">
+    <a-row v-if="getProps.enableComment" class="jeecg-modal-wrapper">
       <a-col :span="24-commentSpan" class="jeecg-modal-content">
         <ModalWrapper
           :useWrapper="getProps.useWrapper"
@@ -36,14 +36,31 @@
           <slot></slot>
         </ModalWrapper>
       </a-col>
-      
+
       <a-col :span="commentSpan" class="jeecg-comment-outer">
         <slot name="comment"></slot>
       </a-col>
-      
+
     </a-row>
+    <ModalWrapper
+      v-else
+      :useWrapper="getProps.useWrapper"
+      :footerOffset="wrapperFooterOffset"
+      :fullScreen="fullScreenRef"
+      ref="modalWrapperRef"
+      :loading="getProps.loading"
+      :loading-tip="getProps.loadingTip"
+      :minHeight="getProps.minHeight"
+      :height="getWrapperHeight"
+      :visible="visibleRef"
+      :modalFooterHeight="footer !== undefined && !footer ? 0 : undefined"
+      v-bind="omit(getProps.wrapperProps, 'visible', 'height', 'modalFooterHeight')"
+      @ext-height="handleExtHeight"
+      @height-change="handleHeightChange">
+      <slot></slot>
+    </ModalWrapper>
     <!-- update-end-author:taoyan date:2022-7-18 for:  modal弹窗 支持评论 slot -->
-    
+
     <template #[item]="data" v-for="item in Object.keys(omit($slots, 'default'))">
       <slot :name="item" v-bind="data || {}"></slot>
     </template>
