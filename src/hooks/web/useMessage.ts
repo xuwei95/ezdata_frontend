@@ -6,6 +6,7 @@ import { InfoCircleFilled, CheckCircleFilled, CloseCircleFilled } from '@ant-des
 import { NotificationArgsProps, ConfigProps } from 'ant-design-vue/lib/notification';
 import { useI18n } from './useI18n';
 import { isString } from '/@/utils/is';
+import { h } from 'vue';
 
 export interface NotifyApi {
   info(config: NotificationArgsProps): void;
@@ -37,13 +38,13 @@ interface ConfirmOptions {
 function getIcon(iconType: string) {
   try {
     if (iconType === 'warning') {
-      return InfoCircleFilled;
+      return  h(InfoCircleFilled,{"class":"modal-icon-warning"})
     } else if (iconType === 'success') {
-      return CheckCircleFilled;
+      return h(CheckCircleFilled,{"class": "modal-icon-success"});
     } else if (iconType === 'info') {
-      return InfoCircleFilled;
+      return h(InfoCircleFilled,{"class": "modal-icon-info"});
     } else {
-      return CloseCircleFilled;
+      return h(CloseCircleFilled,{"class":"modal-icon-error"});
     }
   } catch (e) {
     console.log(e);
@@ -53,7 +54,7 @@ function getIcon(iconType: string) {
 function renderContent({ content }: Pick<ModalOptionsEx, 'content'>) {
   try {
     if (isString(content)) {
-      return content;
+      return h('div', content as string);
     } else {
       return content;
     }
