@@ -1,19 +1,40 @@
 <template>
-  <div class="msg-clock" :class="prefixCls">
-    <Badge :count="count" :overflowCount="9" :offset="[-4, 2]" :numberStyle="numberStyle" @click="clickBadge">
-      <BellOutlined />
-    </Badge>
-    
+  <div :class="prefixCls">
+    <Popover v-model:visible="popoverVisible" title="" trigger="click" :overlayClassName="`${prefixCls}__overlay`">
+      <Badge :count="count" :overflowCount="9" :offset="[-4, 10]" :numberStyle="numberStyle">
+        <BellOutlined />
+      </Badge>
+      <template #content>
+        <Tabs>
+          <template v-for="item in listData" :key="item.key">
+            <TabPane>
+              <template #tab>
+                {{ item.name }}
+                <span v-if="item.list.length !== 0">({{ item.count }})</span>
+              </template>
+              <!-- 绑定title-click事件的通知列表中标题是“可点击”的-->
+              <NoticeList :list="item.list" @title-click="onNoticeClick" />
+            </TabPane>
+          </template>
+        </Tabs>
+        <a-row class="bottom-buttons">
+          <a-col :span="count === 0 ? 0 : 12">
+            <a-button @click="onEmptyNotify" type="dashed" block>清空消息</a-button>
+          </a-col>
+          <a-col :span="count === 0 ? 24 : 12">
+            <a-button @click="popoverVisible = false" type="dashed" block>
+              <router-link to="/monitor/mynews">查看更多</router-link>
+            </a-button>
+          </a-col>
+        </a-row>
+      </template>
+    </Popover>
     <DynamicNotice ref="dynamicNoticeRef" v-bind="dynamicNoticeProps" />
     <DetailModal @register="registerDetail" />
-
-    <sys-message-modal @register="registerMessageModal" @refresh="reloadCount"></sys-message-modal>
-  </div>
-  <div>
   </div>
 </template>
 <script lang="ts">
-  import { computed, defineComponent, ref, unref, reactive, onMounted, getCurrentInstance } from 'vue';
+  import { computed, defineComponent, ref, unref, reactive, onMounted, getCurrentInstance, onUnmounted } from 'vue';
   import { Popover, Tabs, Badge } from 'ant-design-vue';
   import { BellOutlined } from '@ant-design/icons-vue';
   import { tabListData } from './data';
@@ -25,15 +46,10 @@
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useGlobSetting } from '/@/hooks/setting';
   import { useUserStore } from '/@/store/modules/user';
-  import { connectWebSocket, onWebSocket } from '/@/hooks/web/useWebSocket';
+  import { connectWebSocket, onWebSocket, result } from '/@/hooks/web/useWebSocket';
   import { readAllMsg } from '/@/views/monitor/mynews/mynews.api';
   import { getToken } from '/@/utils/auth';
-  import md5 from 'crypto-js/md5';
-
-  import SysMessageModal from '/@/views/system/message/components/SysMessageModal.vue'
-  
   export default defineComponent({
-    inheritAttrs: false,
     components: {
       Popover,
       BellOutlined,
@@ -43,7 +59,6 @@
       NoticeList,
       DetailModal,
       DynamicNotice,
-      SysMessageModal,
     },
     setup() {
       const { prefixCls } = useDesign('header-notify');
@@ -52,7 +67,17 @@
       const glob = useGlobSetting();
       const dynamicNoticeProps = reactive({ path: '', formData: {} });
       const [registerDetail, detailModal] = useModal();
+      const popoverVisible = ref<boolean>(false);
       const listData = ref(tabListData);
+      listData.value[0].list = [];
+      listData.value[1].list = [];
+      listData.value[0].count = 0;
+      listData.value[1].count = 0;
+
+      onMounted(() => {
+        initWebSocket();
+      });
+
       const count = computed(() => {
         let count = 0;
         for (let i = 0; i < listData.value.length; i++) {
@@ -60,23 +85,7 @@
         }
         return count;
       });
-      const chatRef = ref();
 
-      const [registerMessageModal, { openModal: openMessageModal }] = useModal();
-      function clickBadge(){
-        //消息列表弹窗前去除角标
-        for (let i = 0; i < listData.value.length; i++) {
-          listData.value[i].count = 0;
-        }
-        openMessageModal(true, {})
-      }
-      
-      const popoverVisible = ref<boolean>(false);
-      onMounted(() => {
-       initWebSocket();
-      });
-
-      const messageCount = ref<number>(0)
       function mapAnnouncement(item) {
         return {
           ...item,
@@ -96,13 +105,6 @@
           listData.value[1].list = sysMsgList.map(mapAnnouncement);
           listData.value[0].count = anntMsgTotal;
           listData.value[1].count = sysMsgTotal;
-          //update-begin-author:taoyan date:2022-8-30 for: 消息数量改变触发chat组件事件
-          let msgCount = anntMsgTotal+sysMsgTotal;
-          //update-begin-author:wangshuai date:2022-09-02 for: 消息未读数为0也需要传递，因为聊天需要计算总数
-          chatRef.value.updateMessageCount(msgCount);
-          messageCount.value = msgCount
-          //update-end-author:wangshuai date:2022-09-02 for: 消息未读数为0也需要传递，因为聊天需要计算总数
-          //update-end-author:taoyan date:2022-8-30 for: 消息数量改变触发chat组件事件
         } catch (e) {
           console.warn('系统消息通知异常：', e);
         }
@@ -132,10 +134,8 @@
 
       // 初始化 WebSocket
       function initWebSocket() {
+        let userId = unref(userStore.getUserInfo).id;
         let token = getToken();
-        //将登录token生成一个短的标识
-        let wsClientId = md5(token);
-        let userId = unref(userStore.getUserInfo).id + "_" + wsClientId;
         // WebSocket与普通的请求所用协议有所不同，ws等同于http，wss等同于https
         let url = glob.domainUrl?.replace('https://', 'wss://').replace('http://', 'ws://') + '/websocket/' + userId;
         connectWebSocket(url);
@@ -143,6 +143,7 @@
       }
 
       function onWebSocketMessage(data) {
+        console.log('---onWebSocketMessage---', data)
         if (data.cmd === 'topic' || data.cmd === 'user') {
           //update-begin-author:taoyan date:2022-7-13 for: VUEN-1674【严重bug】系统通知，为什么必须刷新右上角才提示
           //后台保存数据太慢 前端延迟刷新消息
@@ -158,37 +159,17 @@
         popoverVisible.value = false;
         readAllMsg({}, loadData);
       }
-      async function reloadCount(id){
-        try {
-          await editCementSend(id);
-          await loadData();
-        } catch (e) {
-          console.error(e);
-        }
-      }
-
-      /**
-       * 获取消息未读数
-       */
-      function getSystemUnreadNum() {
-        chatRef.value.updateMessageCount(messageCount.value);
-      }
 
       return {
         prefixCls,
         listData,
         count,
-        clickBadge,
-        registerMessageModal,
-        reloadCount,
         onNoticeClick,
         onEmptyNotify,
         numberStyle: {},
         popoverVisible,
         registerDetail,
         dynamicNoticeProps,
-        chatRef,
-        getSystemUnreadNum
       };
     },
   });
@@ -286,14 +267,6 @@
           }
         }
       }
-    }
-  }
-  
-  /** VUEN-2222 鼠标放上去，怎么不是手势*/
-  .msg-clock{
-    cursor: pointer;
-    &:hover{
-      background-color: #f6f6f6;
     }
   }
 </style>
