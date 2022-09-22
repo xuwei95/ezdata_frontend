@@ -32,7 +32,8 @@ export const DictSearchInputCell = defineComponent({
   props: useJVxeCompProps(),
   setup(props: JVxeComponent.Props) {
     const { createMessage } = useMessage();
-    const { dict, loading, isAsync, options, innerOptions, originColumn, cellProps, innerSelectValue, handleChangeCommon } = useSelectDictSearch(props);
+    const { dict, loading, isAsync, options, innerOptions, originColumn, cellProps, innerSelectValue, handleChangeCommon } =
+      useSelectDictSearch(props);
     const hasRequest = ref(false);
     // 提示信息
     const tipsContent = computed(() => {

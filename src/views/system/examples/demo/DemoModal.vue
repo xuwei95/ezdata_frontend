@@ -24,6 +24,12 @@
     await resetFields();
     setModalProps({ confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
+    if(data.createBy){
+      await setFieldsValue({createBy: data.createBy})
+    }
+    if(data.createTime){
+      await setFieldsValue({createTime: data.createTime})
+    }
     if (unref(isUpdate)) {
       //获取详情
       data.record = await getDemoById({ id: data.record.id });
@@ -45,7 +51,7 @@
       //关闭弹窗
       closeModal();
       //刷新列表
-      emit('success');
+      emit('success', values);
     } finally {
       setModalProps({ confirmLoading: false });
     }

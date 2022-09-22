@@ -48,10 +48,7 @@ function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
     let tenantId = getTenantId();
     // URL支持{{ window.xxx }}占位符变量
     //update-begin---author:wangshuai ---date:20220711  for：[VUEN-1638]菜单tenantId需要动态生成------------
-    item.component = (item.component || '')
-      .replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2))
-      .replace('${token}', token)
-      .replace('${tenantId}', tenantId);
+    item.component = (item.component || '').replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2)).replace('${token}', token).replace('${tenantId}', tenantId);
     //update-end---author:wangshuai ---date:20220711  for：[VUEN-1638]菜单tenantId需要动态生成------------
     // 适配 iframe
     if (/^\/?http(s)?/.test(item.component as string)) {
@@ -112,7 +109,9 @@ function dynamicImport(dynamicViewsModules: Record<string, () => Promise<Recorda
     const matchKey = matchKeys[0];
     return dynamicViewsModules[matchKey];
   } else if (matchKeys?.length > 1) {
-    warn('Please do not create `.vue` and `.TSX` files with the same file name in the same hierarchical directory under the views folder. This will cause dynamic introduction failure');
+    warn(
+      'Please do not create `.vue` and `.TSX` files with the same file name in the same hierarchical directory under the views folder. This will cause dynamic introduction failure'
+    );
     return;
   }
 }

@@ -1,12 +1,12 @@
 import { BasicColumn } from '/@/components/Table';
-import moment from 'moment';
+import dayjs from 'dayjs';
 export const columns: BasicColumn[] = [
   {
     title: '请求时间',
     dataIndex: 'timestamp',
     width: 50,
-    customRender(text) {
-      return moment(text).format('YYYY-MM-DD HH:mm:ss');
+    customRender({text}) {
+      return dayjs(text).format('YYYY-MM-DD HH:mm:ss');
     },
   },
   {

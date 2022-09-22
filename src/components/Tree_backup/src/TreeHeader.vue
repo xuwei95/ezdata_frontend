@@ -7,7 +7,13 @@
 
     <div class="flex flex-1 justify-end items-center cursor-pointer" v-if="search || toolbar">
       <div :class="getInputSearchCls" v-if="search">
-        <InputSearch :placeholder="t('common.searchText')" size="small" allowClear v-model:value="searchValue" @search="$emit('clickSearch', $event)" />
+        <InputSearch
+          :placeholder="t('common.searchText')"
+          size="small"
+          allowClear
+          v-model:value="searchValue"
+          @search="$emit('clickSearch', $event)"
+        />
       </div>
       <Dropdown @click.prevent v-if="toolbar">
         <Icon icon="ion:ellipsis-vertical" />

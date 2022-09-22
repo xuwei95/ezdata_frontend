@@ -67,6 +67,9 @@ export const searchFormSchema: FormSchema[] = [
     field: 'birthday',
     label: '生日',
     component: 'RangePicker',
+    componentProps: {
+      valueType: 'Date'
+    },
     colProps: { span: 8 },
   },
   {
@@ -92,6 +95,18 @@ export const formSchema: FormSchema[] = [
   {
     field: 'id',
     label: 'id',
+    component: 'Input',
+    show: false,
+  },
+  {
+    field: 'createBy',
+    label: 'createBy',
+    component: 'Input',
+    show: false,
+  },
+  {
+    field: 'createTime',
+    label: 'createTime',
     component: 'Input',
     show: false,
   },
@@ -154,8 +169,8 @@ export const formSchema: FormSchema[] = [
     field: 'birthday',
     label: '生日',
     component: 'DatePicker',
+    defaultValue: '',
     componentProps: {
-      showTime: true,
       valueFormat: 'YYYY-MM-DD',
       placeholder: '请选择生日',
     },
@@ -171,8 +186,9 @@ export const formSchema: FormSchema[] = [
   },
   {
     field: 'content',
-    label: '个人简介',
+    label: '个人简介 - To introduce myself',
     component: 'InputTextArea',
+    labelLength: 4,
     componentProps: {
       placeholder: '请输入个人简介',
     },

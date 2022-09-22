@@ -70,7 +70,6 @@
 
   const { createMessage, createConfirm } = useMessage();
 
-  const selectRows = ref([]);
   //注册drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
   //回收站model
@@ -109,7 +108,7 @@
   });
 
   //注册table数据
-  const [registerTable, { reload, updateTableDataRecord }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload, updateTableDataRecord }, { rowSelection, selectedRows, selectedRowKeys }] = tableContext;
 
   /**
    * 新增事件
@@ -154,7 +153,7 @@
    * 批量删除事件
    */
   async function batchHandleDelete() {
-    let hasAdmin = unref(selectRows).filter((item) => item.username == 'admin');
+    let hasAdmin = unref(selectedRows).filter((item) => item.username == 'admin');
     if (unref(hasAdmin).length > 0) {
       createMessage.warning('管理员账号不允许此操作！');
       return;
@@ -197,7 +196,7 @@
    * 批量冻结解冻
    */
   function batchFrozen(status) {
-    let hasAdmin = unref(selectRows).filter((item) => item.username == 'admin');
+    let hasAdmin = selectedRows.value.filter((item) => item.username == 'admin');
     if (unref(hasAdmin).length > 0) {
       createMessage.warning('管理员账号不允许此操作！');
       return;

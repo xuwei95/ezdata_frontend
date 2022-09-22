@@ -290,7 +290,7 @@ export function usePopBiz(props, tableRef?) {
       if (column.isTotal === '1') {
         arr.push(column.dataIndex!);
       }
-      // 【VUEN-1569】【online报表】合计无效
+        // 【VUEN-1569】【online报表】合计无效
       if (column.children && column.children.length > 0) {
         let subArray = getNeedSumColumns(column.children);
         if (subArray.length > 0) {
