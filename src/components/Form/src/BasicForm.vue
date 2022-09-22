@@ -52,6 +52,7 @@
 
   import { basicProps } from './props';
   import { useDesign } from '/@/hooks/web/useDesign';
+  import dayjs from 'dayjs';
 
   export default defineComponent({
     name: 'BasicForm',
@@ -112,7 +113,7 @@
             if (!Array.isArray(defaultValue)) {
               schema.defaultValue = dateUtil(defaultValue);
             } else {
-              const def: moment.Moment[] = [];
+              const def: dayjs.Dayjs[] = [];
               defaultValue.forEach((item) => {
                 def.push(dateUtil(item));
               });
@@ -150,17 +151,29 @@
         formElRef: formElRef as Ref<FormActionType>,
       });
 
-      const { handleSubmit, setFieldsValue, clearValidate, validate, validateFields, getFieldsValue, updateSchema, resetSchema, appendSchemaByField, removeSchemaByFiled, resetFields, scrollToField } =
-        useFormEvents({
-          emit,
-          getProps,
-          formModel,
-          getSchema,
-          defaultValueRef,
-          formElRef: formElRef as Ref<FormActionType>,
-          schemaRef: schemaRef as Ref<FormSchema[]>,
-          handleFormValues,
-        });
+      const {
+        handleSubmit,
+        setFieldsValue,
+        clearValidate,
+        validate,
+        validateFields,
+        getFieldsValue,
+        updateSchema,
+        resetSchema,
+        appendSchemaByField,
+        removeSchemaByFiled,
+        resetFields,
+        scrollToField,
+      } = useFormEvents({
+        emit,
+        getProps,
+        formModel,
+        getSchema,
+        defaultValueRef,
+        formElRef: formElRef as Ref<FormActionType>,
+        schemaRef: schemaRef as Ref<FormSchema[]>,
+        handleFormValues,
+      });
 
       createFormContext({
         resetAction: resetFields,
