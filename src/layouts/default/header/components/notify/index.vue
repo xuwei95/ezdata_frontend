@@ -1,15 +1,13 @@
 <template>
-  <div class="msg-clock" :class="prefixCls">
-    <Badge :count="count" :overflowCount="9" :offset="[-4, 2]" :numberStyle="numberStyle" @click="clickBadge">
+  <div :class="prefixCls">
+    <Badge :count="count" :overflowCount="9" :offset="[-4, 10]" :numberStyle="numberStyle" @click="clickBadge">
       <BellOutlined />
     </Badge>
-    
+
     <DynamicNotice ref="dynamicNoticeRef" v-bind="dynamicNoticeProps" />
     <DetailModal @register="registerDetail" />
 
     <sys-message-modal @register="registerMessageModal" @refresh="reloadCount"></sys-message-modal>
-  </div>
-  <div>
   </div>
 </template>
 <script lang="ts">
@@ -33,7 +31,6 @@
   import SysMessageModal from '/@/views/system/message/components/SysMessageModal.vue'
   
   export default defineComponent({
-    inheritAttrs: false,
     components: {
       Popover,
       BellOutlined,
@@ -70,7 +67,7 @@
         }
         openMessageModal(true, {})
       }
-      
+
       const popoverVisible = ref<boolean>(false);
       onMounted(() => {
        initWebSocket();
@@ -215,9 +212,6 @@
         padding: 12px 24px;
         transition: background-color 300ms;
 
-        &:hover {
-          background-color: #e6f7ff;
-        }
       }
 
       .bottom-buttons {
@@ -288,12 +282,5 @@
       }
     }
   }
-  
-  /** VUEN-2222 鼠标放上去，怎么不是手势*/
-  .msg-clock{
-    cursor: pointer;
-    &:hover{
-      background-color: #f6f6f6;
-    }
-  }
+
 </style>
