@@ -1,10 +1,19 @@
 <template>
-  <TimePicker :value="innerTimeValue" allowClear :format="format" dropdownClassName="j-vxe-time-picker" style="min-width: 0" v-bind="cellProps" @change="handleChange" />
+  <TimePicker
+    :value="innerTimeValue"
+    allowClear
+    :format="format"
+    dropdownClassName="j-vxe-time-picker"
+    style="min-width: 0"
+    v-bind="cellProps"
+    @change="handleChange"
+    :getPopupContainer="(node) => node.parentNode"
+  />
 </template>
 
 <script lang="ts">
   import { ref, computed, watch, defineComponent } from 'vue';
-  import moment from 'moment';
+  import dayjs from 'dayjs';
   import { TimePicker } from 'ant-design-vue';
   import { dispatchEvent } from '/@/components/jeecg/JVxeTable/utils';
   import { JVxeComponent } from '/@/components/jeecg/JVxeTable/types';
@@ -28,7 +37,7 @@
           if (val == null || isEmpty(val)) {
             innerTimeValue.value = null;
           } else {
-            innerTimeValue.value = moment(val, format.value);
+            innerTimeValue.value = dayjs(val, format.value);
           }
         },
         { immediate: true }
