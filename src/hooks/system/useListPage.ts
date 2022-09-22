@@ -248,9 +248,9 @@ export function useListTable(tableProps: TableProps): [
     showIndexColumn: false,
     // 显示表格设置
     showTableSetting: true,
-    // 表格设置
+    // 表格全屏设置
     tableSetting: {
-      fullScreen: true,
+      fullScreen: false,
     },
     // 是否显示操作列
     showActionColumn: true,
