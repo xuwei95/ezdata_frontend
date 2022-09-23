@@ -174,7 +174,7 @@
     },
   });
 </script>
-<style lang="less">
+<style lang="less" scoped>
   //noinspection LessUnresolvedVariable
   @prefix-cls: ~'@{namespace}-header-notify';
 
