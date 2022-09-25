@@ -206,7 +206,7 @@ export function useListTable(tableProps: TableProps): [
       // 紧凑模式
       compact: true,
       // label默认宽度
-      labelWidth: 120,
+      // labelWidth: 120,
       // 按下回车后自动提交
       autoSubmitOnEnter: true,
       // 默认 row 配置

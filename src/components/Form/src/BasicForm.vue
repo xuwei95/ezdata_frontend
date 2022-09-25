@@ -81,7 +81,13 @@
 
       // Get the basic configuration of the form
       const getProps = computed((): FormProps => {
-        return { ...props, ...unref(propsRef) } as FormProps;
+        let mergeProps = { ...props, ...unref(propsRef) } as FormProps;
+        //update-begin-author:sunjianlei date:20220923 for: 如果用户设置了labelWidth，则使labelCol失效，解决labelWidth设置无效的问题
+        if (mergeProps.labelWidth) {
+          mergeProps.labelCol = undefined;
+        }
+        //update-end-author:sunjianlei date:20220923 for: 如果用户设置了labelWidth，则使labelCol失效，解决labelWidth设置无效的问题
+        return mergeProps;
       });
 
       const getFormClass = computed(() => {

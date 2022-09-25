@@ -109,7 +109,6 @@
       const searchInfo = ref(props.params);
       //查询form
       const formConfig = {
-        labelWidth: 200,
         baseColProps: {
           xs: 24,
           sm: 8,

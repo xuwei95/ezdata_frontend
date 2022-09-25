@@ -60,6 +60,8 @@
         }}</a-button>
         <a-button preIcon="ant-design:import-outlined" type="primary" @click="handleImport">弹窗导入</a-button>
 
+        <super-query :config="superQueryConfig" @search="handleSuperQuery"/>
+
         <a-dropdown v-if="checkedKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -97,6 +99,7 @@
   import { useGo } from '/@/hooks/web/usePage';
   import { router } from '/@/router';
   import { filterObj } from '/@/utils/common/compUtils';
+  import SuperQuery from '/@/components/jeecg/super/superquery/SuperQuery.vue'
   
   const go = useGo();
   const checkedKeys = ref<Array<string | number>>([]);
@@ -110,7 +113,7 @@
     api: getDemoList,
     columns,
     formConfig: {
-      labelWidth: 120,
+      //labelWidth: 120,
       schemas: searchFormSchema,
       fieldMapToTime: [['birthday', ['birthday_begin', 'birthday_end'], 'YYYY-MM-DD']],
       fieldMapToNumber: [['age', ['age_begin', 'age_end']]],
