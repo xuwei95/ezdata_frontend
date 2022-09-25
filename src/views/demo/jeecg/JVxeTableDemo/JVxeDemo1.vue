@@ -190,7 +190,7 @@
       key: 'datetime',
       type: JVxeTypes.datetime,
       width: 200,
-      defaultValue: '2019-4-30 14:52:22',
+      defaultValue: '2019-04-30 14:52:22',
       placeholder: '请选择',
     },
     {
