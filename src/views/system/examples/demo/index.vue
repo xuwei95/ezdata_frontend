@@ -60,8 +60,6 @@
         }}</a-button>
         <a-button preIcon="ant-design:import-outlined" type="primary" @click="handleImport">弹窗导入</a-button>
 
-        <super-query :config="superQueryConfig" @search="handleSuperQuery"/>
-
         <a-dropdown v-if="checkedKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -99,7 +97,6 @@
   import { useGo } from '/@/hooks/web/usePage';
   import { router } from '/@/router';
   import { filterObj } from '/@/utils/common/compUtils';
-  import SuperQuery from '/@/components/jeecg/super/superquery/SuperQuery.vue'
   
   const go = useGo();
   const checkedKeys = ref<Array<string | number>>([]);
@@ -266,17 +263,6 @@
   }
   //自定义查询----end---------
 
-  const superQueryConfig = reactive({
-    name:{ title: "名称", view: "text", type: "string", order: 1 },
-    sex:{ title: "性别", view: "list", type: "string", dictCode:'sex', order: 2 },
-  });
-  
-  function handleSuperQuery(params) {
-    Object.keys(params).map(k=>{
-      queryParam[k] = params[k]
-    });
-    searchQuery();
-  }
 </script>
 <style lang="less" scoped>
   .jeecg-basic-table-form-container {
