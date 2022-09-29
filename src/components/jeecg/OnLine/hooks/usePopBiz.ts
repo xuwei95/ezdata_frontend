@@ -512,6 +512,8 @@ export function usePopBiz(props, tableRef?) {
         //查询条件加载后再请求数据
         if (data) {
           setDataSource(data);
+          //传递路由参数和动态参数，不生效，
+          loadData(1);
         } else {
           //没有传递data时查询数据
           loadData(1);
@@ -531,6 +533,7 @@ export function usePopBiz(props, tableRef?) {
       pagination.current = 1;
     }
     let params = getQueryParams(); //查询条件
+    console.log('params', params);
     loading.value = true;
     let url = `${configUrl.getData}${unref(cgRpConfigId)}`;
     //缓存key
@@ -597,6 +600,11 @@ export function usePopBiz(props, tableRef?) {
       }
       queryParam.value = { ...queryTemp };
     }
+    // 合并路由参数
+    if (props.routeQuery) {
+      queryParam.value = Object.assign(queryParam.value, props.routeQuery);
+    }
+
     let dynamicTemp = {};
     if (props.param) {
       Object.keys(props.param).map((key) => {
