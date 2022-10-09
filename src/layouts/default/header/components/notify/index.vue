@@ -57,7 +57,6 @@
         }
         return count;
       });
-      const chatRef = ref();
 
       const [registerMessageModal, { openModal: openMessageModal }] = useModal();
       function clickBadge(){
@@ -96,7 +95,6 @@
           //update-begin-author:taoyan date:2022-8-30 for: 消息数量改变触发chat组件事件
           let msgCount = anntMsgTotal+sysMsgTotal;
           //update-begin-author:wangshuai date:2022-09-02 for: 消息未读数为0也需要传递，因为聊天需要计算总数
-          chatRef.value.updateMessageCount(msgCount);
           messageCount.value = msgCount
           //update-end-author:wangshuai date:2022-09-02 for: 消息未读数为0也需要传递，因为聊天需要计算总数
           //update-end-author:taoyan date:2022-8-30 for: 消息数量改变触发chat组件事件
@@ -164,12 +162,6 @@
         }
       }
 
-      /**
-       * 获取消息未读数
-       */
-      function getSystemUnreadNum() {
-        chatRef.value.updateMessageCount(messageCount.value);
-      }
 
       return {
         prefixCls,
@@ -184,8 +176,6 @@
         popoverVisible,
         registerDetail,
         dynamicNoticeProps,
-        chatRef,
-        getSystemUnreadNum
       };
     },
   });
