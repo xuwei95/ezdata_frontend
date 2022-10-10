@@ -8,6 +8,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'name',
     width: 70,
     align: 'left',
+    sorter: true
   },
   {
     title: '关键词',
@@ -23,6 +24,7 @@ export const columns: BasicColumn[] = [
     title: '工资',
     dataIndex: 'salaryMoney',
     width: 40,
+    sorter: true
   },
   {
     title: '奖金',
@@ -32,6 +34,7 @@ export const columns: BasicColumn[] = [
   {
     title: '性别',
     dataIndex: 'sex',
+    sorter: true,
     customRender: ({ record }) => {
       return render.renderDict(record.sex, 'sex');
       // let v = record.sex ? (record.sex == '1' ? '男' : '女') : '';

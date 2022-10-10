@@ -119,6 +119,11 @@
         style: { textAlign: 'left' },
       },
     },
+    //自定义默认排序
+    defSort: {
+      column: 'sex,salaryMoney',
+      order: 'desc',
+    },
     striped: true,
     useSearchForm: true,
     showTableSetting: true,
