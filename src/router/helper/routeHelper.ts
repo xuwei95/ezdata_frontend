@@ -7,6 +7,7 @@ import { warn } from '/@/utils/log';
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { getTenantId, getToken } from '/@/utils/auth';
 import { URL_HASH_TAB } from '/@/utils';
+import { packageViews } from '/@/utils/monorepo/dynamicRouter';
 import {useI18n} from "/@/hooks/web/useI18n";
 
 export type LayoutMapKey = 'LAYOUT';
