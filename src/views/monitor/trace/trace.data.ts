@@ -1,6 +1,6 @@
 import { BasicColumn } from '/@/components/Table';
 import dayjs from 'dayjs';
-import lodash from 'lodash';
+import lodash from 'lodash-es';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
 
