@@ -1276,10 +1276,6 @@
   "resolved" "https://registry.npmmirror.com/@istanbuljs/schema/-/schema-0.1.3.tgz"
   "version" "0.1.3"
 
-"@jeecg/online@1.0.1":
-  "integrity" "sha512-wB93qHXc5HVEvOT59Too9OpeSlnQyGnvMkG2lo7dZ1DnkUDbYXPH3QoxuxmZxDTQ5gJVaq1dX0zmUKb+4kts2Q=="
-  "resolved" "https://registry.npmmirror.com/@jeecg/online/-/online-1.0.1.tgz"
-  "version" "1.0.1"
 
 "@jest/console@^27.5.1":
   "integrity" "sha512-kZ/tNpS3NXn0mlXXXPNuDZnb4c0oZ20r4K5eemM2k30ZC3G0T02nXUvyhf5YdbXWHPEJLc9qGLxEZ216MdL+Zg=="
