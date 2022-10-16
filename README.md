@@ -31,11 +31,6 @@ JeecgBoot-Vue3采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术�
 |--------------------|------------------------|
 | `jeecgboot-vue3` | Vue3版前端代码 | 
 | `jeecg-boot`    | JAVA后台（支持微服务）        | 
-| `ant-design-vue-jeecg`  |Vue2版前端代码   |   
-
-
-
-> 入门必看>>[切换Vue3路由](http://vue3.jeecg.com/2671576)
 
 
 ## 技术文档
@@ -68,8 +63,16 @@ yarn install
 ```
 
 - 配置后台接口地址
+配置文件：.env.development
+
 ```bash
-.env.development
+#后台接口父地址(必填)
+VITE_GLOB_API_URL=/jeecgboot
+# 跨域代理，您可以配置多个 ,请注意，没有换行符
+VITE_PROXY = [["/jeecgboot","http://localhost:8080/jeecg-boot"],["/upload",
+"http://localhost:3300/upload"]]
+#后台接口全路径地址(必填)
+VITE_GLOB_DOMAIN_URL=http://localhost:8080/jeecg-boot
 ```
 
 - run
