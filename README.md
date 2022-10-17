@@ -35,7 +35,7 @@ JeecgBoot-Vue3采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术�
 
 ## 技术文档
 
--   开发文档：[http://vue3.jeecg.com](http://vue3.jeecg.com)
+-   官方文档：[http://vue3.jeecg.com](http://vue3.jeecg.com)
 -   官方网站： [http://www.jeecg.com](http://www.jeecg.com)
 -   在线演示：[http://boot3.jeecg.com](http://boot3.jeecg.com)
 -  快速入门：[入门视频](https://www.bilibili.com/video/BV1V34y187Y9 "入门视频") |  [ 代码生成](http://vue3.jeecg.com/2677352)
@@ -92,11 +92,13 @@ yarn build
 
 - host设置
 
+>注意： 需要把`127.0.0.1`替换成真实IP 比如`192.`开头,不然后端不通。
+
 ```bash
 127.0.0.1 jeecg-boot-system
 127.0.0.1 jeecg-boot-gateway
 ```
->注意： 需要把`127.0.0.1`替换成真实IP 比如`192.`开头,不然后端不通。
+
 
 - 下载项目
 
@@ -104,8 +106,8 @@ yarn build
 git clone https://github.com/jeecgboot/jeecgboot-vue3.git
 
 cd jeecgboot-vue3
-
 ```
+
 - 修改后台域名
 .env.production
 
