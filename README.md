@@ -63,15 +63,14 @@ yarn install
 ```
 
 - 配置后台接口地址
+>[info] 说明：把`http://localhost:8080/jeecg-boot` 替换成自己地址即可，其他不用改。
+
 配置文件：.env.development
 
 ```bash
-#后台接口父地址(必填)
 VITE_GLOB_API_URL=/jeecgboot
-# 跨域代理，您可以配置多个 ,请注意，没有换行符
 VITE_PROXY = [["/jeecgboot","http://localhost:8080/jeecg-boot"],["/upload",
 "http://localhost:3300/upload"]]
-#后台接口全路径地址(必填)
 VITE_GLOB_DOMAIN_URL=http://localhost:8080/jeecg-boot
 ```
 
