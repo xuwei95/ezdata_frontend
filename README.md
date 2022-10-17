@@ -1,6 +1,6 @@
 JEECG BOOT 低代码开发平台（Vue3前端）
 ===============
-当前最新版本： 3.4.3（发布时间：20221017）
+当前最新版本： 3.4.3（发布时间：2022-10-18）
 
 [![AUR](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg)](https://github.com/zhangdaiscott/jeecg-boot/blob/master/LICENSE)
 [![](https://img.shields.io/badge/Author-北京国炬软件-orange.svg)](http://www.jeecg.com)
