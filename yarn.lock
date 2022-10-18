@@ -11311,15 +11311,15 @@ vuedraggable@^4.1.0:
   dependencies:
     sortablejs "1.14.0"
 
-vxe-table-plugin-antd@^3.0.6:
+vxe-table-plugin-antd@^3.0.5:
   version "3.0.6"
-  resolved "https://registry.npmmirror.com/vxe-table-plugin-antd/-/vxe-table-plugin-antd-3.0.6.tgz"
+  resolved "https://registry.npmmirror.com/vxe-table-plugin-antd/-/vxe-table-plugin-antd-3.0.6.tgz#48d24ef85a602593772be95d23a0fb11a950af08"
   integrity sha512-ooeHUrE9R4mSlliaro5vq54BJki7xnYWUXRgfSnkN9w97n3HJK8RoCzWWAdxO2YqLTo8peMeaAcIVLYY6wyHuQ==
 
-vxe-table@^4.2.8:
-  version "4.2.8"
-  resolved "https://registry.npmmirror.com/vxe-table/-/vxe-table-4.2.8.tgz"
-  integrity sha512-t0IwE0XHZ+FKrE0x3daqm48OJprXEzDFfZWaqX64W/32n4LcCjywL9cMtL0WwplL3IHpDoe9JfKOp9d+jYwrUA==
+vxe-table@4.1.0:
+  version "4.1.0"
+  resolved "https://registry.npmmirror.com/vxe-table/-/vxe-table-4.1.0.tgz#6533ab768cada2e6743eaee801a5c7db54cc7581"
+  integrity sha512-FX4nc4ckkQGWG/W94z97KBIGrfZsbcni3pm+4uMzNQUcEgxgchnY78/4PrRC4ZRsHJIMv4mtNrzdfJDCTfA65g==
 
 w3c-hr-time@^1.0.2:
   version "1.0.2"
