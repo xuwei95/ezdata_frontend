@@ -33,6 +33,13 @@ JeecgBoot-Vue3采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术�
 | `jeecg-boot`    | JAVA后台（支持微服务）        | 
 
 
+## 技术支持
+
+使用中遇到问题或者BUG可以在 [Github上提Issues](https://github.com/jeecgboot/jeecgboot-vue3/issues/new)
+
+官方支持： http://jeecg.com/doc/help
+
+
 ## 技术文档
 
 -   官方文档：[http://vue3.jeecg.com](http://vue3.jeecg.com)
