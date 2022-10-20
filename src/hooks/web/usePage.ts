@@ -47,8 +47,15 @@ export const useRedo = (_router?: Router) => {
         return;
       }
       if (name && Object.keys(params).length > 0) {
-        params['_redirect_type'] = 'name';
-        params['path'] = String(name);
+        //update-begin-author:taoyan date:2022-10-19 for: VUEN-2356 【vue3】online表单、表单设计器 功能测试 右键刷新时 404
+        if(isDynamicRoute(params, name)){
+          params['_redirect_type'] = 'path';
+          params['path'] = fullPath;
+        }else{
+          params['_redirect_type'] = 'name';
+          params['path'] = String(name);
+        }
+        //update-end-author:taoyan date:2022-10-19 for: VUEN-2356 【vue3】online表单、表单设计器 功能测试 右键刷新时 404
       } else {
         params['_redirect_type'] = 'path';
         params['path'] = fullPath;
@@ -58,3 +65,21 @@ export const useRedo = (_router?: Router) => {
   }
   return redo;
 };
+
+/**
+ * 判断是不是动态路由的跳转
+ * @param params
+ * @param name
+ */
+function isDynamicRoute(params, name){
+  let arr = Object.keys(params);
+  let flag = false; 
+  for(let i=0;i<arr.length;i++){
+    let key = '@'+arr[i];
+    if((name as string).indexOf(key)>0){
+      flag = true;
+      break;
+    }
+  }
+  return flag;
+}
