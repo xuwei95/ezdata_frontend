@@ -92,6 +92,9 @@
       field: 'fieldTime',
       component: 'RangePicker',
       label: '时间字段',
+      componentProps: {
+        valueType: 'Date',
+      },
       colProps: {
         span: 8,
       },
