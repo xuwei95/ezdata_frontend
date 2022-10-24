@@ -13,8 +13,6 @@ import txt from '/@/assets/svg/fileType/txt.svg';
 import word from '/@/assets/svg/fileType/word.svg';
 import { getFileAccessHttpUrl } from '/@/utils/common/compUtils';
 import { createImgPreview } from '/@/components/Preview';
-import {EmojiIndex} from "emoji-mart-vue-fast/src";
-import data from "emoji-mart-vue-fast/data/apple.json";
 
 enum Api {
   list = '/sys/comment/listByForm',
@@ -365,16 +363,9 @@ export function useFileList() {
 /**
  * 用于emoji渲染
  */
-export function useEmojiHtml(){
+export function useEmojiHtml(globalEmojiIndex){
   const COLONS_REGEX = new RegExp('([^:]+)?(:[a-zA-Z0-9-_+]+:(:skin-tone-[2-6]:)?)','g');
-  let emojisToShowFilter = function() {
-    return true;
-  }
-  let emojiIndex = new EmojiIndex(data, {
-    emojisToShowFilter,
-    exclude:['recent','people','nature','foods','activity','places','objects','symbols','flags']
-  });
-  
+
   function getHtml(text) {
     if(!text){
       return ''
@@ -384,7 +375,7 @@ export function useEmojiHtml(){
       if (endsWith(before, 'alt="') || endsWith(before, 'data-text="')) {
         return match
       }
-      let emoji = emojiIndex.findEmoji(p2)
+      let emoji = globalEmojiIndex.findEmoji(p2)
       if (!emoji) {
         return match
       }
@@ -403,7 +394,7 @@ export function useEmojiHtml(){
   }
   
   return {
-    emojiIndex,
+    globalEmojiIndex,
     getHtml
   }
 }

@@ -45,14 +45,13 @@
 </template>
 
 <script lang="ts">
-  import { ref, watch, computed } from 'vue';
+  import {ref, watch, computed, inject} from 'vue';
   import { propTypes } from '/@/utils/propTypes';
   import { UserAddOutlined, PaperClipOutlined, SmileOutlined } from '@ant-design/icons-vue';
   import { Tooltip } from 'ant-design-vue';
   import UserSelectModal from '/@/components/Form/src/jeecg/components/modal/UserSelectModal.vue';
   import { useModal } from '/@/components/Modal';
   import UploadChunk from './UploadChunk.vue';
-  import { Picker } from 'emoji-mart-vue-fast/src';
   import 'emoji-mart-vue-fast/css/emoji-mart.css';
   import { useEmojiHtml } from './useComment';
 
@@ -79,7 +78,6 @@
       PaperClipOutlined,
       UploadChunk,
       SmileOutlined,
-      Picker,
     },
     props: {
       inner: propTypes.bool.def(false),
@@ -221,8 +219,9 @@
         e.stopPropagation();
         visibleEmoji.value = !visibleEmoji.value;
       }
-
-      const { emojiIndex, getHtml } = useEmojiHtml();
+      
+      const emojiIndex = inject('$globalEmojiIndex')
+      const { getHtml } = useEmojiHtml(emojiIndex);
 
       const commentHtml = computed(() => {
         let temp = myComment.value;

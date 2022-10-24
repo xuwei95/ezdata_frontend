@@ -28,16 +28,15 @@
 <script>
   import { PlusOutlined, EditOutlined } from '@ant-design/icons-vue';
   import { getModalHeight, getLogList } from './useComment'
-  import {ref, watchEffect} from 'vue'
+  import {inject, ref, watchEffect} from 'vue'
   import { propTypes } from '/@/utils/propTypes';
   import { Tooltip } from 'ant-design-vue';
-  import dayjs from 'dayjs';
-  import 'dayjs/locale/zh.js';
-  import relativeTime from 'dayjs/plugin/relativeTime';
-  import customParseFormat from 'dayjs/plugin/customParseFormat';
-  dayjs.locale('zh');
-  dayjs.extend(relativeTime);
-  dayjs.extend(customParseFormat);
+  // import dayjs from 'dayjs';
+  // import relativeTime from 'dayjs/plugin/relativeTime';
+  // import customParseFormat from 'dayjs/plugin/customParseFormat';
+  // dayjs.locale('zh');
+  // dayjs.extend(relativeTime);
+  // dayjs.extend(customParseFormat);
   
   export default {
     name: "DataLogList",
@@ -52,6 +51,7 @@
       datetime:  propTypes.number.def(1),
     },
     setup(props){
+      const dayjs = inject('$dayjs')
       const winHeight = getModalHeight();
       const height = ref(300);
       height.value = winHeight - 46 - 57 -53 - 30;

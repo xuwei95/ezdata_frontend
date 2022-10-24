@@ -75,15 +75,15 @@
   /**
    * 评论列表
    */
-  import { defineComponent, ref, onMounted, watch, watchEffect } from 'vue';
+  import { defineComponent, ref, onMounted, watch, watchEffect ,inject } from 'vue';
   import { propTypes } from '/@/utils/propTypes';
-  import dayjs from 'dayjs';
-  import 'dayjs/locale/zh.js';
-  import relativeTime from 'dayjs/plugin/relativeTime';
-  import customParseFormat from 'dayjs/plugin/customParseFormat';
-  dayjs.locale('zh');
-  dayjs.extend(relativeTime);
-  dayjs.extend(customParseFormat);
+  // import dayjs from 'dayjs';
+  // import relativeTime from 'dayjs/plugin/relativeTime';
+  // import customParseFormat from 'dayjs/plugin/customParseFormat';
+  // dayjs.locale('zh');
+  // dayjs.extend(relativeTime);
+  // dayjs.extend(customParseFormat);
+  
   import { MessageOutlined } from '@ant-design/icons-vue';
   import { Comment, Tooltip } from 'ant-design-vue';
   import { useUserStore } from '/@/store/modules/user';
@@ -113,6 +113,8 @@
       const { createMessage } = useMessage();
       const dataList = ref([]);
       const { userInfo } = useUserStore();
+      const dayjs = inject('$dayjs')
+      
       /**
        * 获取当前用户名称
        */
@@ -245,7 +247,8 @@
         }
       });
 
-      const { getHtml } = useEmojiHtml();
+      const storageEmojiIndex = inject('$globalEmojiIndex')
+      const { getHtml } = useEmojiHtml(storageEmojiIndex);
       const bottomCommentRef = ref()
       function handleClickItem(){
         bottomCommentRef.value.changeActive()
