@@ -1293,10 +1293,10 @@
   resolved "https://registry.npmmirror.com/@istanbuljs/schema/-/schema-0.1.3.tgz"
   integrity sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==
 
-"@jeecg/online@3.4.3-beta":
-  version "3.4.3-beta"
-  resolved "https://registry.npmmirror.com/@jeecg/online/-/online-3.4.3-beta.tgz"
-  integrity sha512-07CIgJE2bir3su+asLcReUlcZPlh2Y/YsIB9ZAbSHGiboSwseZGkjmV9JK2GBk5xt4KaMy/bkyaAV/26baprqw==
+"@jeecg/online@3.4.3":
+  version "3.4.3"
+  resolved "https://registry.npmmirror.com/@jeecg/online/-/online-3.4.3.tgz#adbf1e3ef6b0c3f0652ec06d7cf4bb9f589759c2"
+  integrity sha512-K8Dv7mvUgoRrQ9Y5lfU5iMWNlmzI7wauZNz6obRhB1KXrxbSMMNzf2RDgk0dSm9e+W18Cyip6MmV26SOZK9STA==
 
 "@jest/console@^27.5.1":
   version "27.5.1"
@@ -9538,7 +9538,7 @@ rollup-plugin-visualizer@^5.6.0:
     source-map "^0.7.3"
     yargs "^17.5.1"
 
-"rollup@>=2.59.0 <2.78.0", rollup@^2.43.1, rollup@^2.56.3, rollup@^2.60.2:
+"rollup@>=2.59.0 <2.78.0", rollup@^2.43.1, rollup@^2.60.2, rollup@^2.72.0:
   version "2.79.1"
   resolved "https://registry.npmmirror.com/rollup/-/rollup-2.79.1.tgz#bedee8faef7c9f93a2647ac0108748f497f081c7"
   integrity sha512-uKxbd0IhMZOhjAiD5oAFp7BqvkA4Dv47qpOCtaNvng4HBwdbWtdOh8f5nZNuk2rp51PMGk3bzfWu5oayNEuYnw==
@@ -11311,10 +11311,10 @@ vuedraggable@^4.1.0:
   dependencies:
     sortablejs "1.14.0"
 
-vxe-table-plugin-antd@^3.0.5:
-  version "3.0.6"
-  resolved "https://registry.npmmirror.com/vxe-table-plugin-antd/-/vxe-table-plugin-antd-3.0.6.tgz#48d24ef85a602593772be95d23a0fb11a950af08"
-  integrity sha512-ooeHUrE9R4mSlliaro5vq54BJki7xnYWUXRgfSnkN9w97n3HJK8RoCzWWAdxO2YqLTo8peMeaAcIVLYY6wyHuQ==
+vxe-table-plugin-antd@3.0.5:
+  version "3.0.5"
+  resolved "https://registry.npmmirror.com/vxe-table-plugin-antd/-/vxe-table-plugin-antd-3.0.5.tgz#717d6472abd7a8fe94157616aa16d115b8b15b98"
+  integrity sha512-qZXIxNKSqdvfVncvVopId7byy9FYUW+ygX4vwUhPceHwsUq0eyX5SVX/LLafqfsnkq4l8+EZ4zQ5/xQ6AfZ31Q==
 
 vxe-table@4.1.0:
   version "4.1.0"

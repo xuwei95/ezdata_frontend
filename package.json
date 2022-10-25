@@ -87,7 +87,7 @@
     "vue-types": "^4.1.1",
     "vuedraggable": "^4.1.0",
     "vxe-table": "4.1.0",
-    "vxe-table-plugin-antd": "^3.0.5",
+    "vxe-table-plugin-antd": "3.0.5",
     "xe-utils": "^3.3.1",
     "vue-json-pretty": "^2.0.6",
     "xss": "^1.0.13"
@@ -179,7 +179,7 @@
   },
   "resolutions": {
     "bin-wrapper": "npm:bin-wrapper-china",
-    "rollup": "^2.56.3"
+    "rollup": "^2.72.0"
   },
   "repository": {
     "type": "git",
