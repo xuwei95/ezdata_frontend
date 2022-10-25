@@ -12,7 +12,6 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
-//注册全局form 组件库
 export async function registerThirdComp(app: App) {
   // 注册 JVxeTable 组件
   registerJVxeTable(app);
