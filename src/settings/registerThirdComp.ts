@@ -2,14 +2,17 @@ import type { App } from 'vue';
 import { registerJVxeTable } from '/@/components/jeecg/JVxeTable';
 import { registerJVxeCustom } from '/@/components/JVxeCustom';
 
+// 注册全局聊天表情包
 import { Picker } from 'emoji-mart-vue-fast/src';
 import { EmojiIndex } from "emoji-mart-vue-fast/src";
 import data from "emoji-mart-vue-fast/data/apple.json";
 
+// 注册全局dayjs
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
+//注册全局form 组件库
 export async function registerThirdComp(app: App) {
   // 注册 JVxeTable 组件
   registerJVxeTable(app);
