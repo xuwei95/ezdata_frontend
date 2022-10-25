@@ -44,7 +44,7 @@
     </template>
     <template v-else>
       <a-date-picker
-        placeholder="1选择开始时间"
+        placeholder="选择开始时间"
         :show-time="true"
         valueFormat="YYYY-MM-DD HH:mm:ss"
         v-model:value="queryParam[item.field + '_begin']"
@@ -52,7 +52,7 @@
       ></a-date-picker>
       <span class="group-query-strig" style="width: auto; padding: 0 4px">~</span>
       <a-date-picker
-        placeholder="2选择结束时间"
+        placeholder="选择结束时间"
         :show-time="true"
         valueFormat="YYYY-MM-DD HH:mm:ss"
         v-model:value="queryParam[item.field + '_end']"
@@ -131,16 +131,8 @@
     <template #label>
       <span :title="item.label" class="label-text">{{ item.label }}</span>
     </template>
-    <JDictSelectTag v-if="item.config === '1'" v-model:value="queryParam[item.field]" :placeholder="'请选择' + item.label" :dict="getDictCode(item)">
-    </JDictSelectTag>
-    <!--TODO 新需要的组件-->
-    <!-- <j-online-search-select
-                v-else
-                :ref="item.field+'_search'"
-                v-model="queryParam[item.field]"
-                :placeholder=" '请选择'+item.label "
-                :sql="getSqlByDictCode(item)">
-        </j-online-search-select>-->
+    <JOnlineSearchSelect v-model:value="queryParam[item.field]" :placeholder="'请选择' + item.label" :sql="item.sql">
+  </JOnlineSearchSelect>
   </a-form-item>
 
   <a-form-item v-else-if="item.view === CompTypeEnum.SelUser" :labelCol="labelCol" :class="'jeecg-online-search'">
@@ -202,7 +194,10 @@
     <template #label>
       <span :title="item.label" class="label-text">{{ item.label }}</span>
     </template>
-    <template v-if="single_mode === item.mode">
+    <template v-if="single_mode === item.mode && 'string'== item.view">
+      <j-input :placeholder="'请输入' + item.label" v-model:value="queryParam[item.field]"></j-input>
+    </template>
+    <template v-else-if="single_mode === item.mode">
       <a-input :placeholder="'请输入' + item.label" v-model:value="queryParam[item.field]"></a-input>
     </template>
     <template v-else>
@@ -218,7 +213,7 @@
   import { defineComponent, ref } from 'vue';
   import { DateTypeEnum } from '/@/enums/DateTypeEnum.ts';
   import { CompTypeEnum } from '/@/enums/CompTypeEnum.ts';
-  import { JDictSelectTag, JTreeSelect, JCategorySelect, JSelectUserByDept, JSelectDept, JPopup, JAreaLinkage } from '/@/components/Form';
+  import { JDictSelectTag, JTreeSelect, JCategorySelect, JSelectUserByDept, JSelectDept, JPopup, JAreaLinkage,JInput,JSearchSelect } from '/@/components/Form';
   export default defineComponent({
     name: 'JPopupOnlReport',
     components: {
@@ -230,6 +225,7 @@
       JSelectDept,
       JPopup,
       JAreaLinkage,
+      JInput,
     },
     props: {
       formElRef: {

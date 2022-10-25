@@ -17,7 +17,7 @@ export enum CompTypeEnum {
   //分类字典树
   CatTree = 'cat_tree',
   //下拉搜索
-  SelSearch = 'sel_search',
+  SelSearch = 'search',
   //用户现在框
   SelUser = 'sel_user',
   //复选框
