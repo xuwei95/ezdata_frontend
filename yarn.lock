@@ -1293,10 +1293,10 @@
   resolved "https://registry.npmmirror.com/@istanbuljs/schema/-/schema-0.1.3.tgz"
   integrity sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==
 
-"@jeecg/online@3.4.3":
-  version "3.4.3"
-  resolved "https://registry.npmmirror.com/@jeecg/online/-/online-3.4.3.tgz#adbf1e3ef6b0c3f0652ec06d7cf4bb9f589759c2"
-  integrity sha512-K8Dv7mvUgoRrQ9Y5lfU5iMWNlmzI7wauZNz6obRhB1KXrxbSMMNzf2RDgk0dSm9e+W18Cyip6MmV26SOZK9STA==
+"@jeecg/online@3.4.3-GA":
+  version "3.4.3-GA"
+  resolved "https://registry.npmmirror.com/@jeecg/online/-/online-3.4.3-GA.tgz#606a14b2df63ee4b758f1e5b4bcde4a6228bb332"
+  integrity sha512-MtZD7ue8gLB8d0HSclzMwpyzHLbBlhYw5hOCSQBAPjbySFAXj+ajKtZgvcl1uk7loTaK2pPJWmoUPBP/CUPWbw==
 
 "@jest/console@^27.5.1":
   version "27.5.1"
