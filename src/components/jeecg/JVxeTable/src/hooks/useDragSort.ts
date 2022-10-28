@@ -39,6 +39,11 @@ export function useDragSort(props: JVxeTableProps, methods: JVxeTableMethods) {
           if (oldIndex === newIndex) {
             return;
           }
+          // 【VUEN-2505】获取当前行数据
+          let rowNode = xTable.getRowNode(e.item);
+          if (!rowNode) {
+            return;
+          }
           let from = e.from;
           let element = startChildren[oldIndex];
           let target = null;
@@ -54,6 +59,12 @@ export function useDragSort(props: JVxeTableProps, methods: JVxeTableMethods) {
           from.removeChild(element);
           from.insertBefore(element, target);
           nextTick(() => {
+            // 【VUEN-2505】算出因虚拟滚动导致的偏移量
+            let diffIndex = rowNode!.index - oldIndex;
+            if (diffIndex > 0) {
+              oldIndex = oldIndex + diffIndex;
+              newIndex = newIndex + diffIndex;
+            }
             methods.doSort(oldIndex, newIndex);
             methods.trigger('dragged', { oldIndex, newIndex });
           });

@@ -28,8 +28,8 @@ export function useJVxeComponent(props: JVxeComponent.Props) {
   const column = computed(() => props.params.column);
   // 用户配置的原始 column
   const originColumn = computed(() => column.value.params);
-  const rowIndex = computed(() => props.params.$rowIndex);
-  const columnIndex = computed(() => props.params.columnIndex);
+  const rowIndex = computed(() => props.params._rowIndex);
+  const columnIndex = computed(() => props.params._columnIndex);
   // 表格数据长度
   const fullDataLength = computed(() => props.params.$table.internalData.tableFullData.length);
   // 是否正在滚动中
