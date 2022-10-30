@@ -36,7 +36,7 @@
   import { defineComponent, computed } from 'vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import Icon from '/@/components/Icon/index';
-
+  import { checkChildrenHidden } from '/@/utils/common/compUtils';
   import MenuItem from './components/MenuItem.vue';
   import SubMenu from './components/SubMenuItem.vue';
   import { propTypes } from '/@/utils/propTypes';
@@ -79,18 +79,20 @@
         ];
       });
 
-      function menuHasChildren(menuTreeItem: Menu): boolean {
+      function menuHasChildren(menuTreeItem): boolean {
         return (
           !menuTreeItem.meta?.hideChildrenInMenu &&
           Reflect.has(menuTreeItem, 'children') &&
           !!menuTreeItem.children &&
           menuTreeItem.children.length > 0
+          &&checkChildrenHidden(menuTreeItem)
         );
       }
 
       return {
         prefixCls,
         menuHasChildren,
+        checkChildrenHidden,
         getShowMenu,
         getIcon,
         getI18nName,

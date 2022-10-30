@@ -15,6 +15,7 @@
   import { defineComponent, computed } from 'vue';
   import { Menu } from 'ant-design-vue';
   import { useDesign } from '/@/hooks/web/useDesign';
+  import { checkChildrenHidden } from '/@/utils/common/compUtils';
   import { itemProps } from '../props';
   import BasicMenuItem from './BasicMenuItem.vue';
   import MenuItemContent from './MenuItemContent.vue';
@@ -38,11 +39,13 @@
           Reflect.has(menuTreeItem, 'children') &&
           !!menuTreeItem.children &&
           menuTreeItem.children.length > 0
+          &&checkChildrenHidden(menuTreeItem)
         );
       }
       return {
         prefixCls,
         menuHasChildren,
+        checkChildrenHidden,
         getShowMenu,
       };
     },

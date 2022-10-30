@@ -325,3 +325,38 @@ export function stringIsNull(str) {
   // 两个 == 可以同时判断 null 和 undefined
   return str == null || str === 'null' || str === 'undefined';
 }
+
+/**
+ * 【组件多了可能存在性能问题】获取弹窗div，将下拉框、日期等组件挂载到modal上，解决弹窗遮盖问题
+ * @param node
+ */
+export function getAutoScrollContainer(node: HTMLElement) {
+  let element: Nullable<HTMLElement> = node
+  while (element != null) {
+    if (element.classList.contains('scrollbar__view')) {
+      // 判断是否有滚动条
+      if (element.clientHeight < element.scrollHeight) {
+        // 有滚动条时，挂载到父级，解决滚动问题
+        return node.parentElement
+      } else {
+        // 无滚动条时，挂载到body上，解决下拉框遮盖问题
+        return document.body
+      }
+    } else {
+      element = element.parentElement
+    }
+  }
+  // 不在弹窗内，走默认逻辑
+  return node.parentElement
+}
+
+/**
+ * 判断子菜单是否全部隐藏,如果子菜单全部隐藏则隐藏父菜单
+ * @param menuTreeItem
+ */
+export  function checkChildrenHidden(menuTreeItem){
+  if(!menuTreeItem.children){
+    return false
+  }
+  return menuTreeItem.children?.find((item) => item.hideMenu == false) != null;
+}
