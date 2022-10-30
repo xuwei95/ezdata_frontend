@@ -78,9 +78,8 @@ export class VAxios {
     // 请求侦听器配置处理
     this.axiosInstance.interceptors.request.use((config: AxiosRequestConfig) => {
       // If cancel repeat request is turned on, then cancel repeat request is prohibited
-      const {
-        headers: { ignoreCancelToken },
-      } = config;
+      // @ts-ignore
+      const { ignoreCancelToken } = config.requestOptions;
 
       const ignoreCancel = ignoreCancelToken !== undefined ? ignoreCancelToken : this.options.requestOptions?.ignoreCancelToken;
 
