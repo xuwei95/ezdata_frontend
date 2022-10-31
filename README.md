@@ -23,20 +23,18 @@ JeecgBoot-Vue3采用 Vue3.0、Vite、 Ant-Design-Vue、TypeScript 等新技术�
 
 官方支持： http://jeecg.com/doc/help
 
-##  项目源码
 
-| 仓库 | 后端源码 |前端 Vue3版 | 前端 Vue2版  |
-|-|-|-|-|
-| Github | [jeecg-boot](https://github.com/jeecgboot/jeecg-boot) | [jeecgboot-vue3](https://github.com/jeecgboot/jeecgboot-vue3)  | [ant-design-vue-jeecg](https://github.com/jeecgboot/ant-design-vue-jeecg)  |
-| 码云 | [jeecg-boot](https://gitee.com/jeecg/jeecg-boot) | [jeecgboot-vue3](https://gitee.com/jeecg/jeecgboot-vue3)  | [ant-design-vue-jeecg](https://gitee.com/jeecg/ant-design-vue-jeecg)   |
+## 源码下载
 
+- 后台源码 ：https://github.com/jeecgboot/jeecg-boot
+- 前端源码 ：https://github.com/jeecgboot/jeecgboot-vue3
 
 ##### 项目说明
 
 | 项目名                | 说明                     | 
 |--------------------|------------------------|
 | `jeecgboot-vue3` | Vue3版前端代码 | 
-| `jeecg-boot`    | JAVA后台（支持微服务）        | 
+| `jeecg-boot`    | SpringBoot后台项目（支持微服务）        | 
 
 
 ## 技术文档
