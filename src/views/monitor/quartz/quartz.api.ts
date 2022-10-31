@@ -9,9 +9,9 @@ enum Api {
   pause = '/sys/quartzJob/pause',
   resume = '/sys/quartzJob/resume',
   delete = '/sys/quartzJob/delete',
-  exportXlsUrl = 'sys/quartzJob/exportXls',
-  importExcelUrl = 'sys/quartzJob/importExcel',
-  execute = 'sys/quartzJob/execute',
+  exportXlsUrl = '/sys/quartzJob/exportXls',
+  importExcelUrl = '/sys/quartzJob/importExcel',
+  execute = '/sys/quartzJob/execute',
   deleteBatch = '/sys/quartzJob/deleteBatch',
 }
 
