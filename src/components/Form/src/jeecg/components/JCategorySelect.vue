@@ -76,7 +76,8 @@
       console.info(props);
       const emitData = ref<any[]>([]);
       const treeData = ref<any[]>([]);
-      const treeValue = ref('');
+      const treeValue = ref();
+      treeValue.value = '';
       const attrs = useAttrs();
       const [state] = useRuleFormItem(props, 'value', 'change', emitData);
       watch(
@@ -118,7 +119,11 @@
 
       function loadItemByCode() {
         if (!props.value || props.value == '0') {
-          treeValue.value = [];
+          if(props.multiple){
+            treeValue.value = [];
+          }else{
+            treeValue.value = '';
+          }
         } else {
           loadDictItem({ ids: props.value }).then((res) => {
             let values = props.value.split(',');
@@ -127,6 +132,9 @@
               value: values[index],
               label: item,
             }));
+            if(!props.multiple){
+              treeValue.value = treeValue.value[0];
+            }
             onLoadTriggleChange(res[0]);
           });
         }

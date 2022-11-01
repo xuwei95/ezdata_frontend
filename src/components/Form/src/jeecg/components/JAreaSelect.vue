@@ -1,24 +1,26 @@
 <template>
-  <div class="area-select">
-    <!--省份-->
-    <a-select v-model:value="province" @change="proChange" allowClear :disabled="disabled">
-      <template v-for="item in provinceOptions" :key="`${item.value}`">
-        <a-select-option :value="item.value">{{ item.label }}</a-select-option>
-      </template>
-    </a-select>
-    <!--城市-->
-    <a-select v-if="level >= 2" v-model:value="city" @change="cityChange" :disabled="disabled">
-      <template v-for="item in cityOptions" :key="`${item.value}`">
-        <a-select-option :value="item.value">{{ item.label }}</a-select-option>
-      </template>
-    </a-select>
-    <!--地区-->
-    <a-select v-if="level >= 3" v-model:value="area" @change="areaChange" :disabled="disabled">
-      <template v-for="item in areaOptions" :key="`${item.value}`">
-        <a-select-option :value="item.value">{{ item.label }}</a-select-option>
-      </template>
-    </a-select>
-  </div>
+  <a-form-item-rest>
+    <div class="area-select">
+      <!--省份-->
+      <a-select v-model:value="province" @change="proChange" allowClear :disabled="disabled">
+        <template v-for="item in provinceOptions" :key="`${item.value}`">
+          <a-select-option :value="item.value">{{ item.label }}</a-select-option>
+        </template>
+      </a-select>
+      <!--城市-->
+      <a-select v-if="level >= 2" v-model:value="city" @change="cityChange" :disabled="disabled">
+        <template v-for="item in cityOptions" :key="`${item.value}`">
+          <a-select-option :value="item.value">{{ item.label }}</a-select-option>
+        </template>
+      </a-select>
+      <!--地区-->
+      <a-select v-if="level >= 3" v-model:value="area" @change="areaChange" :disabled="disabled">
+        <template v-for="item in areaOptions" :key="`${item.value}`">
+          <a-select-option :value="item.value">{{ item.label }}</a-select-option>
+        </template>
+      </a-select>
+    </div>
+  </a-form-item-rest>
 </template>
 <script lang="ts">
   import { defineComponent, PropType, ref, reactive, watchEffect, computed, unref, watch, onMounted, onUnmounted, toRefs } from 'vue';
@@ -35,8 +37,17 @@
       area: [String],
       level: propTypes.number.def(3),
       disabled: propTypes.bool.def(false),
+      codeField: propTypes.string,
+      size: propTypes.string,
+      placeholder: propTypes.string,
+      formValues: propTypes.any,
+      allowClear: propTypes.bool.def(false),
+      getPopupContainer: {
+        type: Function,
+        default: (node) => node.parentNode,
+      },
     },
-    emits: ['change', 'update:value'],
+    emits: ['change', 'update:value','update:area','update:city','update:province'],
     setup(props, { emit, refs }) {
       const emitData = ref<any[]>([]);
       //下拉框的选择值

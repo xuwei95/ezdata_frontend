@@ -6,8 +6,8 @@
       :action="uploadUrl"
       :fileList="fileList"
       :disabled="disabled"
-      :remove="onRemove"
       v-bind="bindProps"
+      @remove="onRemove"
       @change="onFileChange"
       @preview="onFilePreview"
     >
