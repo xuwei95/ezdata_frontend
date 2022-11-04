@@ -77,7 +77,7 @@ export const formSchemas: FormSchema[] = [
     field: 'templateCode',
     component: 'Input',
     dynamicRules: ({ model, schema }) => {
-      return [{ required: true, message: '请输入模板编码！' }, ...rules.duplicateCheckRule('sys_sms_template', 'template_code', model, schema, true)];
+      return [ ...rules.duplicateCheckRule('sys_sms_template', 'template_code', model, schema, true)];
     },
     // 编辑模式下不可修改编码
     dynamicDisabled: (params) => !!params.values.id,
