@@ -61,6 +61,7 @@ export function transformRouteToMenu(routeModList: AppRouteModule[], routerMappi
         meta: node.meta,
         name: title,
         hideMenu,
+        alwaysShow:node.alwaysShow||false,
         path: node.path,
         ...(node.redirect ? { redirect: node.redirect } : {}),
       };
