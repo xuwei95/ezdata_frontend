@@ -20,7 +20,7 @@ export const basicProps = {
   },
   showTableSetting: propTypes.bool,
   autoCreateKey: propTypes.bool.def(true),
-  striped: propTypes.bool.def(true),
+  striped: propTypes.bool.def(false),
   showSummary: propTypes.bool,
   summaryFunc: {
     type: [Function, Array] as PropType<(...arg: any[]) => any[]>,

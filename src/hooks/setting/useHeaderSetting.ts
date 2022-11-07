@@ -50,6 +50,9 @@ export function useHeaderSetting() {
   const getShowBread = computed(() => {
     return unref(getMenuMode) !== MenuModeEnum.HORIZONTAL && unref(getShowBreadCrumb) && !unref(getSplit);
   });
+  const getShowBreadTitle = computed(() => {
+    return unref(getMenuMode) !== MenuModeEnum.HORIZONTAL && !unref(getShowBreadCrumb) && !unref(getSplit);
+  });
 
   const getShowHeaderLogo = computed(() => {
     return unref(getShowLogo) && !unref(getIsSidebarType) && !unref(getIsMixSidebar);
@@ -82,5 +85,6 @@ export function useHeaderSetting() {
     getShowInsetHeaderRef,
     getUnFixedAndFull,
     getHeaderBgColor,
+    getShowBreadTitle
   };
 }

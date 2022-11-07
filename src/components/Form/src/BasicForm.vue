@@ -322,7 +322,24 @@
         }
       }
     }
-
+    /*【美化表单】form的字体改小一号*/
+    .ant-form-item-label > label{
+      font-size: 13px;
+    }
+    .ant-form-item .ant-select {
+      font-size: 13px;
+    }
+    .ant-select-item-option-selected {
+      font-size: 13px;
+    }
+    .ant-select-item-option-content {
+      font-size: 13px;
+    }
+    .ant-input {
+      font-size: 13px;
+    }
+    /*【美化表单】form的字体改小一号*/
+    
     .ant-form-explain {
       font-size: 14px;
     }

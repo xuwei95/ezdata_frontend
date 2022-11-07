@@ -10,6 +10,8 @@
         :sider="false"
       />
       <LayoutBreadcrumb v-if="getShowContent && getShowBread" :theme="getHeaderTheme" />
+      <!-- 欢迎语 -->
+      <span v-if="getShowContent && getShowBreadTitle" :class="[prefixCls, `${prefixCls}--${getHeaderTheme}`,'headerIntroductionClass']"> 欢迎进入 {{ title }} </span>
     </div>
     <!-- left end -->
 
@@ -42,7 +44,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, unref, computed, ref, onMounted, toRaw } from 'vue';
-
+  import { useGlobSetting } from '/@/hooks/setting';
   import { propTypes } from '/@/utils/propTypes';
 
   import { Layout } from 'ant-design-vue';
@@ -98,7 +100,8 @@
       const userStore = useUserStore();
       const { getShowTopMenu, getShowHeaderTrigger, getSplit, getIsMixMode, getMenuWidth, getIsMixSidebar } = useMenuSetting();
       const { getUseErrorHandle, getShowSettingButton, getSettingButtonPosition } = useRootSetting();
-
+      const { title } = useGlobSetting();
+      
       const {
         getHeaderTheme,
         getShowFullScreen,
@@ -109,6 +112,7 @@
         getShowHeader,
         getShowSearch,
         getUseLockPage,
+        getShowBreadTitle,
       } = useHeaderSetting();
 
       const { getShowLocalePicker } = useLocale();
@@ -185,6 +189,7 @@
         getHeaderTheme,
         getShowHeaderTrigger,
         getIsMobile,
+        getShowBreadTitle,
         getShowBread,
         getShowContent,
         getSplitType,
@@ -203,10 +208,43 @@
         getUseLockPage,
         loginSelectOk,
         loginSelectRef,
+        title
       };
     },
   });
 </script>
 <style lang="less">
   @import './index.less';
+  //update-begin---author:scott ---date:2022-09-30  for：默认隐藏顶部菜单面包屑-----------
+  //顶部欢迎语展示样式
+  @prefix-cls: ~'@{namespace}-layout-header';
+  
+  .@{prefix-cls} {
+    display: flex;
+    padding: 0 8px;
+    align-items: center;
+    
+    .headerIntroductionClass {
+      margin-right: 4px;
+      margin-bottom: 2px;
+      border-bottom: 0px;
+      border-left: 0px;
+    }
+    
+    &--light {
+      .headerIntroductionClass {
+        color: @breadcrumb-item-normal-color;
+      }
+    }
+
+    &--dark {
+      .headerIntroductionClass {
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .anticon {
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+    //update-end---author:scott ---date::2022-09-30  for：默认隐藏顶部菜单面包屑--------------
+  }
 </style>

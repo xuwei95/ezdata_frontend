@@ -167,7 +167,7 @@ const setting: ProjectConfig = {
   lockTime: 0,
 
   // 显示面包屑
-  showBreadCrumb: true,
+  showBreadCrumb: false,
 
   // 显示面包屑图标
   showBreadCrumbIcon: true,

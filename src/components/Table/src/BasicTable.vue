@@ -17,7 +17,7 @@
     <!-- antd v3 升级兼容，阻止数据的收集，防止控制台报错 -->
     <!-- https://antdv.com/docs/vue/migration-v3-cn -->
     <a-form-item-rest>
-      <Table ref="tableElRef" v-bind="getBindValues" :rowClassName="getRowClassName" v-show="getEmptyDataIsShowTable" @change="handleTableChange">
+      <Table ref="tableElRef" v-bind="getBindValues" :rowClassName="getRowClassName" v-show="getEmptyDataIsShowTable" @resizeColumn="handleResizeColumn" @change="handleTableChange">
         <template #[item]="data" v-for="item in Object.keys($slots)" :key="item">
           <slot :name="item" v-bind="data || {}"></slot>
         </template>
@@ -289,6 +289,9 @@
         wrapRef,
         tableAction,
         redoHeight,
+        handleResizeColumn: (w, col) => {
+          col.width = w;
+        },
         getFormProps: getFormProps as any,
         replaceFormSlotKey,
         getFormSlotKeys,
@@ -406,8 +409,8 @@
     //表格选择工具栏样式
     .alert {
       height: 38px;
-      background-color: #f3f3f3;
-      border-color: #e3e3e3;
+      background-color: #e6f7ff;
+      border-color: #91d5ff;
     }
     &--inset {
       .ant-table-wrapper {

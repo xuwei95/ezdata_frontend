@@ -235,7 +235,7 @@ export function useListTable(tableProps: TableProps): [
       },
     },
     // 斑马纹
-    striped: true,
+    striped: false,
     // 是否可以自适应高度
     canResize: true,
     // 表格最小高度
