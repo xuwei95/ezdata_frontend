@@ -25,18 +25,23 @@ export default {
     defaultPageSize: 10,
     // 默认排序方法
     defaultSortFn: (sortInfo: SorterResult) => {
-      const { field, order } = sortInfo;
-      if (field && order) {
-        let sortType = 'ascend' == order ? 'asc' : 'desc';
+      //update-begin-author:taoyan date:2022-10-21 for: VUEN-2199【表单设计器】多字段排序
+      if(sortInfo instanceof Array){
+        let sortInfoArray:any[] = []
+        for(let item of sortInfo){
+          let info = getSort(item);
+          if(info){
+            sortInfoArray.push(info)
+          }
+        }
         return {
-          // 排序字段
-          column: field,
-          // 排序方式 asc/desc
-          order: sortType,
-        };
-      } else {
-        return {};
+          sortInfoString: JSON.stringify(sortInfoArray)
+        }
+      }else{
+        let info = getSort(sortInfo)
+        return info || {}
       }
+      //update-end-author:taoyan date:2022-10-21 for: VUEN-2199【表单设计器】多字段排序
     },
     // 自定义过滤方法
     defaultFilterFn: (data: Partial<Recordable<string[]>>) => {
@@ -63,3 +68,21 @@ export default {
     colon: true,
   },
 };
+
+/**
+ * 获取排序信息
+ * @param item
+ */
+function getSort(item){
+  const { field, order } = item;
+  if (field && order) {
+    let sortType = 'ascend' == order ? 'asc' : 'desc';
+    return {
+      // 排序字段
+      column: field,
+      // 排序方式 asc/desc
+      order: sortType,
+    };
+  }
+  return ''
+}

@@ -6,56 +6,71 @@ export const columns: BasicColumn[] = [
   {
     title: '姓名',
     dataIndex: 'name',
-    width: 70,
+    width: 170,
     align: 'left',
-    sorter: true
+    resizable: true,
+    sorter: {
+      multiple:1
+    }
   },
   {
     title: '关键词',
     dataIndex: 'keyWord',
-    width: 30,
+    width: 130,
+    resizable: true,
   },
   {
     title: '打卡时间',
     dataIndex: 'punchTime',
-    width: 40,
+    width: 140,
+    resizable: true,
   },
   {
     title: '工资',
     dataIndex: 'salaryMoney',
-    width: 40,
-    sorter: true
+    width: 140,
+    resizable: true,
+    sorter: {
+      multiple: 2
+    }
   },
   {
     title: '奖金',
     dataIndex: 'bonusMoney',
-    width: 40,
+    width: 140,
+    resizable: true,
   },
   {
     title: '性别',
     dataIndex: 'sex',
-    sorter: true,
+    sorter: {
+      multiple: 3
+    },
     customRender: ({ record }) => {
       return render.renderDict(record.sex, 'sex');
       // let v = record.sex ? (record.sex == '1' ? '男' : '女') : '';
       // return h('span', v);
     },
-    width: 20,
+    width: 120,
+    resizable: true,
   },
   {
     title: '生日',
     dataIndex: 'birthday',
-    width: 20,
+    width: 120,
+    resizable: true,
   },
   {
     title: '邮箱',
     dataIndex: 'email',
-    width: 20,
+    width: 120,
+    resizable: true,
   },
   {
     title: '个人简介',
     dataIndex: 'content',
-    width: 20,
+    width: 120,
+    resizable: true,
   },
 ];
 

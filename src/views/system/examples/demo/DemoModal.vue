@@ -1,10 +1,10 @@
 <template>
   <BasicModal v-bind="$attrs" @register="registerModal" :title="title" @ok="handleSubmit" width="40%">
-    <BasicForm @register="registerForm" />
+    <BasicForm @register="registerForm" :disabled="isDisabled" />
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import { ref, computed, unref } from 'vue';
+  import { ref, computed, unref, defineProps } from 'vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { formSchema } from './demo.data';
@@ -12,6 +12,16 @@
   // 声明Emits
   const emit = defineEmits(['register', 'success']);
   const isUpdate = ref(true);
+
+  //自定义接受参数
+  const props = defineProps({
+    //是否禁用页面
+    isDisabled: {
+      type: Boolean,
+      default: false,
+    },
+  });
+
   //表单配置
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     //labelWidth: 150,
@@ -22,7 +32,7 @@
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     //重置表单
     await resetFields();
-    setModalProps({ confirmLoading: false });
+    setModalProps({ confirmLoading: false, showOkBtn: !props.isDisabled});
     isUpdate.value = !!data?.isUpdate;
     if(data.createBy){
       await setFieldsValue({createBy: data.createBy})
@@ -40,7 +50,7 @@
     }
   });
   //设置标题
-  const title = computed(() => (!unref(isUpdate) ? '新增租户' : '编辑租户'));
+  const title = computed(() => (!unref(isUpdate) ? '新增' : '编辑'));
   //表单提交事件
   async function handleSubmit(v) {
     try {

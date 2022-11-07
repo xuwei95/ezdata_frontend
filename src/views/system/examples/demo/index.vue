@@ -78,8 +78,8 @@
         <TableAction :actions="getActions(record)" />
       </template>
     </BasicTable>
-    <DemoModal @register="registerModal" @success="reload" />
-    <JImportModal @register="registerModal1" :url="getImportUrl" online />
+    <DemoModal @register="registerModal" @success="reload" :isDisabled="isDisabled"/>
+    <JImportModal @register="registerModalJimport" :url="getImportUrl" online />
   </div>
 </template>
 <script lang="ts" setup>
@@ -100,10 +100,12 @@
   const go = useGo();
   const checkedKeys = ref<Array<string | number>>([]);
   const [registerModal, { openModal }] = useModal();
-  const [registerModal1, { openModal: openModal1 }] = useModal();
+  const [registerModalJimport, { openModal: openModalJimport }] = useModal();
   const { handleExportXls, handleImportXls } = useMethods();
   const min = ref();
   const max = ref();
+  const isDisabled = ref(false);
+  
   const [registerTable, { reload, setProps }] = useTable({
     title: '单表示例',
     api: getDemoList,
@@ -133,7 +135,7 @@
     canResize: false,
     rowKey: 'id',
     actionColumn: {
-      width: 30,
+      width: 180,
       title: '操作',
       dataIndex: 'action',
       slots: { customRender: 'action' },
@@ -145,13 +147,13 @@
    */
   const rowSelection = {
     type: 'checkbox',
-    columnWidth: 20,
+    columnWidth: 40,
     selectedRowKeys: checkedKeys,
     onChange: onSelectChange,
   };
 
   function handleImport() {
-    openModal1(true);
+    openModalJimport(true);
   }
 
   const exportParams = computed(()=>{
@@ -172,6 +174,10 @@
         onClick: handleEdit.bind(null, record),
       },
       {
+        label: '详情',
+        onClick: handleDetail.bind(null, record),
+      },
+      {
         label: '删除',
         popConfirm: {
           title: '是否确认删除',
@@ -180,7 +186,6 @@
       },
     ];
   }
-
 
   /**
    * 选择事件
@@ -194,6 +199,7 @@
    * 新增事件
    */
   function handleAdd() {
+    isDisabled.value = false;
     openModal(true, {
       isUpdate: false,
     });
@@ -203,6 +209,18 @@
    * 编辑事件
    */
   function handleEdit(record) {
+    isDisabled.value = false;
+    openModal(true, {
+      record,
+      isUpdate: true,
+    });
+  }
+
+  /**
+   * 详情页面
+   */
+  function handleDetail(record) {
+    isDisabled.value = true;
     openModal(true, {
       record,
       isUpdate: true,
