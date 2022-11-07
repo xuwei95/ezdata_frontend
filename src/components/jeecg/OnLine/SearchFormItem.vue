@@ -309,16 +309,16 @@
   }
 
   /* 查询条件左对齐样式设置 */
-  .jeecg-online-search ::v-deep .ant-form-item-label {
+  .jeecg-online-search :deep(.ant-form-item-label) {
     flex: 0 0 auto !important;
     width: auto;
   }
-  .jeecg-online-search ::v-deep .ant-form-item-control {
+  .jeecg-online-search :deep(.ant-form-item-control) {
     max-width: 100%;
   }
 
   /* label显示宽度 超出显示... */
-  .jeecg-online-search ::v-deep .label-text {
+  .jeecg-online-search :deep(.label-text) {
     max-width: v-bind(labelTextMaxWidth);
     overflow: hidden;
     white-space: nowrap;
