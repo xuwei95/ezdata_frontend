@@ -38,6 +38,7 @@
   import { treeProps } from '/@/components/Form/src/jeecg/props/props';
   import { BasicTree, TreeActionType } from '/@/components/Tree';
   import { useTreeBiz } from '/@/components/Form/src/jeecg/hooks/useTreeBiz';
+  import {propTypes} from "/@/utils/propTypes";
 
   export default defineComponent({
     name: 'DeptSelectModal',
@@ -52,6 +53,7 @@
         type: String,
         default: '部门选择',
       },
+      value: propTypes.oneOfType([propTypes.string, propTypes.array])
     },
     emits: ['register', 'getSelectResult'],
     setup(props, { emit, refs }) {
@@ -59,7 +61,12 @@
       const [register, { closeModal }] = useModalInner();
       const attrs = useAttrs();
       const treeRef = ref<Nullable<TreeActionType>>(null);
-      const getBindValue = Object.assign({}, unref(props), unref(attrs));
+      
+      //update-begin-author:taoyan date:2022-10-28 for: 部门选择警告类型不匹配
+      let propValue = props.value === ''?[]:props.value;
+      const getBindValue = Object.assign({}, unref(props), unref(attrs), {value: propValue});
+      //update-end-author:taoyan date:2022-10-28 for: 部门选择警告类型不匹配
+      
       const queryUrl = getQueryUrl();
       const [{ visibleChange, checkedKeys, getCheckStrictly, getSelectTreeData, onCheck, onLoadData, treeData, checkALL, expandAll, onSelect }] =
         useTreeBiz(treeRef, queryUrl, getBindValue);

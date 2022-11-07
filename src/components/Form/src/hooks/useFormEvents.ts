@@ -251,7 +251,11 @@ export function useFormEvents({
       const res = handleFormValues(values);
       emit('submit', res);
     } catch (error) {
-      throw new Error(error);
+      //update-begin-author:taoyan date:2022-11-4 for: 列表查询表单会触发校验错误导致重置失败，原因不明
+      emit('submit', {});
+      console.error('query form validate error, please ignore!', error)
+      //throw new Error(error);
+      //update-end-author:taoyan date:2022-11-4 for: 列表查询表单会触发校验错误导致重置失败，原因不明
     }
   }
 

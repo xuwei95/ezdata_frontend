@@ -5,22 +5,22 @@
         <a-row :gutter="24">
           <template v-for="(item, index) in queryInfo">
             <template v-if="item.hidden === '1'">
-              <a-col :md="8" :sm="24" :key="'query' + index" v-show="toggleSearchStatus">
+              <a-col :md="6" :sm="24" :key="'query' + index" v-show="toggleSearchStatus">
                 <SearchFormItem :formElRef="formRef" :queryParam="queryParam" :item="item" :dictOptions="dictOptions"></SearchFormItem>
               </a-col>
             </template>
             <template v-else>
-              <a-col :md="8" :sm="24" :key="'query' + index">
+              <a-col :md="6" :sm="24" :key="'query' + index">
                 <SearchFormItem :formElRef="formRef" :queryParam="queryParam" :item="item" :dictOptions="dictOptions"></SearchFormItem>
               </a-col>
             </template>
           </template>
 
-          <a-col :md="8" :sm="8">
+          <a-col :md="6" :sm="8">
             <span style="float: left; overflow: hidden" class="table-page-search-submitButtons">
               <a-col :lg="6">
-                <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset">重置</a-button>
-                <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery" style="margin-left: 8px">查询</a-button>
+                <a-button type="primary" preIcon="ant-design:search-outlined" @click="searchQuery">查询</a-button>
+                <a-button type="primary" preIcon="ant-design:reload-outlined" @click="searchReset" style="margin-left: 8px">重置</a-button>
                 <a @click="handleToggleSearch" style="margin-left: 8px">
                   {{ toggleSearchStatus ? '收起' : '展开' }}
                   <Icon :icon="toggleSearchStatus ? 'ant-design:up-outlined' : 'ant-design:down-outlined'" />
@@ -63,7 +63,8 @@
   import { useAttrs } from '/@/hooks/core/useAttrs';
   import { usePopBiz } from '/@/components/jeecg/OnLine/hooks/usePopBiz';
   import { useMessage } from '/@/hooks/web/useMessage';
-
+  import { useRoute } from 'vue-router';
+  
   export default defineComponent({
     name: 'JPopupOnlReport',
     components: {
@@ -89,7 +90,10 @@
       const toggleSearchStatus = ref(false);
       const attrs = useAttrs();
       const tableScroll = ref({ x: true });
-      const getBindValue = Object.assign({}, unref(props), unref(attrs));
+      const route = useRoute();
+      console.log('route.query = ',route.query)
+      const getBindValue = Object.assign({}, {routeQuery: route.query}, unref(props), unref(attrs));
+      
       const [
         {
           visibleChange,

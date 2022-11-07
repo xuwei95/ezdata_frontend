@@ -52,6 +52,9 @@
   const { prefixCls, tableContext } = useListPage({
     tableProps: {
       api: ticketList,
+      tableSetting:{
+        cacheKey:'ticket'
+      },
       columns: ticketColumns,
       canResize: false,
       useSearchForm: false,

@@ -68,6 +68,10 @@ export function useSelectBiz(getList, props) {
     columnWidth: 20,
     selectedRowKeys: checkedKeys,
     onChange: onSelectChange,
+    //update-begin-author:wangshuai---date:20221102--for: [VUEN-2562]用户选择，跨页选择后，只有当前页人员 ---
+    //table4.4.0新增属性选中之后是否清空上一页下一页的数据，默认false
+    preserveSelectedRowKeys:true,
+    //update-end-author:wangshuai---date:20221102--for: [VUEN-2562]用户选择，跨页选择后，只有当前页人员 ---
   };
 
   /**

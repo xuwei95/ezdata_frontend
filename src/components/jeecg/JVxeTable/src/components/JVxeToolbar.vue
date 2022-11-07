@@ -59,7 +59,8 @@
   const collapsed = ref(true);
   // 配置的按钮
   const btns = computed(() => {
-    let btns = props.toolbarConfig?.btn || ['add', 'remove', 'clearSelection'];
+    let { btn, btns } = props.toolbarConfig || {};
+    btns = btn || btns || ['add', 'remove', 'clearSelection'];
     // 排除掉没有授权的按钮
     return btns.filter((btn) => {
       // 系统默认的批量删除编码配置为 batch_delete 此处需要兼容一下

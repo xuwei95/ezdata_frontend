@@ -46,6 +46,7 @@ export const formSchema: FormSchema[] = [
       dropdownStyle: {
         maxHeight: '100vh',
       },
+      getPopupContainer: () => document.body,
     },
   },
   {

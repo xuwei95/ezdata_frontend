@@ -96,6 +96,10 @@
         field: 'selecteddeparts',
         show: !data?.departDisabled ?? false,
       },
+      {
+        field: 'selectedroles',
+        show: !data?.departDisabled ?? false,
+      },
     ]);
     // 无论新增还是编辑，都可以设置表单值
     if (typeof data.record === 'object') {
@@ -118,12 +122,13 @@
       let values = await validate();
       setDrawerProps({ confirmLoading: true });
       values.userIdentity === 1 && (values.departIds = '');
+      let isUpdateVal = unref(isUpdate);
       //提交表单
-      await saveOrUpdateUser(values, unref(isUpdate));
+      await saveOrUpdateUser(values, isUpdateVal);
       //关闭弹窗
       closeDrawer();
       //刷新列表
-      emit('success');
+      emit('success',{isUpdateVal ,values});
     } finally {
       setDrawerProps({ confirmLoading: false });
     }
