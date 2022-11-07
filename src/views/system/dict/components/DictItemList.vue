@@ -125,7 +125,7 @@
 <style scoped lang="less">
   @prefix-cls: ~'@{namespace}-row-invalid';
 
-  ::v-deep(.@{prefix-cls}) {
+  :deep(.@{prefix-cls}) {
     background: #f4f4f4;
     color: #bababa;
   }

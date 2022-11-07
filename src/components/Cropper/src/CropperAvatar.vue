@@ -120,7 +120,7 @@
       -webkit-transition: opacity 0.4s;
       transition: opacity 0.4s;
 
-      ::v-deep(svg) {
+      :deep(svg) {
         margin: auto;
       }
     }

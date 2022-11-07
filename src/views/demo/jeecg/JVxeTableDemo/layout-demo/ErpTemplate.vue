@@ -299,19 +299,19 @@
 <style lang="less" scoped>
   .sub-tabs {
     &.un-expand {
-      ::v-deep(.ant-tabs-content) {
+      :deep(.ant-tabs-content) {
         height: 0 !important;
       }
 
-      ::v-deep(.ant-tabs-nav) {
+      :deep(.ant-tabs-nav) {
         border-color: transparent !important;
       }
 
-      ::v-deep(.ant-tabs-ink-bar) {
+      :deep(.ant-tabs-ink-bar) {
         background-color: transparent !important;
       }
 
-      ::v-deep(.ant-tabs-tab) {
+      :deep(.ant-tabs-tab) {
         display: none !important;
       }
     }

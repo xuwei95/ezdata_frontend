@@ -162,7 +162,7 @@
       display: none;
     }
 
-    ::v-deep(.ant-pagination-disabled) {
+    :deep(.ant-pagination-disabled) {
       display: inline-block !important;
     }
 

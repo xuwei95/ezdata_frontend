@@ -163,7 +163,7 @@
 
 <style lang="less" scoped>
   // 【VUEN-188】解决滚动条不灵敏的问题
-  .depart-rule-tree ::v-deep(.scrollbar__bar) {
+  .depart-rule-tree :deep(.scrollbar__bar) {
     pointer-events: none;
   }
 </style>

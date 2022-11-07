@@ -152,12 +152,12 @@
 
 <style scoped lang="less">
    .msg-no-read{
-     ::v-deep .ant-badge-dot{
+     :deep(.ant-badge-dot){
       top: 5px;
       right: 3px;
     }
   }
-   ::v-deep .bpm-cuiban-content p{
+   :deep(.bpm-cuiban-content) p{
     display: inherit;
      margin-bottom: 0;
      margin-top: 0;

@@ -45,7 +45,7 @@
 <style scoped lang="less">
   // 关闭进度条的动画，防止滚动时动态赋值出现问题
   .j-vxe-progress.no-animation {
-    ::v-deep(.ant-progress-bg) {
+    :deep(.ant-progress-bg) {
       transition: none !important;
     }
   }

@@ -143,7 +143,7 @@
 </script>
 <style lang="less" scoped>
   /*升级antd3后，查询框与树贴的太近，样式优化*/
-  ::v-deep(.jeecg-tree-header) {
+  :deep(.jeecg-tree-header) {
     margin-bottom: 6px;
   }
 </style>
