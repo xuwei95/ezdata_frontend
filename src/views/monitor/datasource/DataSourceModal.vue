@@ -28,7 +28,7 @@
   const isUpdate = ref(true);
   //表单配置
   const [registerForm, { getFieldsValue, resetFields, validateFields, setFieldsValue, validate }] = useForm({
-    labelWidth: 150,
+    // labelWidth: 150,
     schemas: formSchema,
     showActionButtonGroup: false,
   });

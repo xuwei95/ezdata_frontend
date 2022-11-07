@@ -92,6 +92,12 @@ export const searchFormSchema: FormSchema[] = [
     colProps: { span: 6 },
   },
   {
+    label: '名字',
+    field: 'realname',
+    component: 'JInput',
+    colProps: { span: 6 },
+  },
+  {
     label: '性别',
     field: 'sex',
     component: 'JDictSelectTag',
@@ -100,12 +106,6 @@ export const searchFormSchema: FormSchema[] = [
       placeholder: '请选择性别',
       stringToNumber: true,
     },
-    colProps: { span: 6 },
-  },
-  {
-    label: '真实名称',
-    field: 'realname',
-    component: 'Input',
     colProps: { span: 6 },
   },
   {
