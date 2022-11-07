@@ -24,12 +24,13 @@
         <InputNumber v-model:value="valueLoop.interval" v-bind="typeLoopAttrs" />
         <span> 日 </span>
       </div>
-      <div class="item">
-        <a-radio :value="TypeEnum.work" v-bind="beforeRadioAttrs">工作日</a-radio>
-        <span> 本月 </span>
-        <InputNumber v-model:value="valueWork" v-bind="typeWorkAttrs" />
-        <span> 日，最近的工作日 </span>
-      </div>
+<!--       工作日暂不支持，会报错，先隐藏了 -->
+<!--      <div class="item">-->
+<!--        <a-radio :value="TypeEnum.work" v-bind="beforeRadioAttrs">工作日</a-radio>-->
+<!--        <span> 本月 </span>-->
+<!--        <InputNumber v-model:value="valueWork" v-bind="typeWorkAttrs" />-->
+<!--        <span> 日，最近的工作日 </span>-->
+<!--      </div>-->
       <div class="item">
         <a-radio :value="TypeEnum.last" v-bind="beforeRadioAttrs">最后一日</a-radio>
       </div>
