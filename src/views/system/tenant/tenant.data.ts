@@ -1,4 +1,5 @@
 import { BasicColumn, FormSchema } from '/@/components/Table';
+import { getAutoScrollContainer } from '/@/utils/common/compUtils';
 
 export const columns: BasicColumn[] = [
   {
@@ -83,6 +84,7 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       showTime: true,
       valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      getPopupContainer: getAutoScrollContainer,
     },
   },
   {
@@ -92,6 +94,7 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       showTime: true,
       valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      getPopupContainer: getAutoScrollContainer,
     },
   },
   {

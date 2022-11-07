@@ -21,6 +21,7 @@
       :groupId="uniqGroupId"
       :param="param"
       @ok="callBack"
+      :getContainer="getContainer"
     ></JPopupOnlReportModal>
   </div>
 </template>
@@ -50,6 +51,7 @@
       groupId: propTypes.string.def(''),
       formElRef: propTypes.object,
       setFieldsValue: propTypes.func,
+      getContainer: propTypes.func,
       fieldConfig: {
         type: Array,
         default: () => [],
