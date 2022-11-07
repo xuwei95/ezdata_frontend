@@ -61,9 +61,15 @@ export function useTable(tableProps?: Props): [
     }
     return table as TableActionType;
   }
+  
+  function getTableRef(){
+    return tableRef;
+  }
 
   const methods: TableActionType & {
     getForm: () => FormActionType;
+  } & {
+    getTableRef: () => any;
   } = {
     reload: async (opt?: FetchParams) => {
       return await getTableInstance().reload(opt);
@@ -153,6 +159,9 @@ export function useTable(tableProps?: Props): [
     collapseAll: () => {
       getTableInstance().collapseAll();
     },
+    getTableRef: () => {
+      return getTableRef();
+    }
   };
 
   return [register, methods];
