@@ -62,6 +62,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       proxy: createProxy(VITE_PROXY),
     },
     build: {
+      minify: 'terser',
       target: 'es2015',
       // 【VUEN-872】css编译兼容低版本chrome内核（例如360浏览器）
       cssTarget: 'chrome80',
