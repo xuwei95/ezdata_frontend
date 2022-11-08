@@ -260,7 +260,17 @@
        * 过滤选中option
        */
       function filterOption(input, option) {
-        return option?.children[0]?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+        //update-begin-author:taoyan date:2022-11-8 for: issues/218 所有功能表单的下拉搜索框搜索无效
+        let value = '', label = '';
+        try {
+          value = option.value;
+          label = option.children()[0].children;
+        }catch (e) {
+          console.log('获取下拉项失败', e)
+        }
+        let str = input.toLowerCase();
+        return value.toLowerCase().indexOf(str) >= 0 || label.toLowerCase().indexOf(str) >= 0;
+        //update-end-author:taoyan date:2022-11-8 for: issues/218 所有功能表单的下拉搜索框搜索无效
       }
 
       function getParentContainer(node) {
