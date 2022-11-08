@@ -28,7 +28,10 @@
         <a-alert type="info" show-icon class="alert" v-if="openRowSelection != null">
           <template #message>
             <template v-if="selectRowKeys.length > 0">
-              <span>已选中 {{ selectRowKeys.length }} 条记录(可跨页)</span>
+              <span>
+                <span>已选中 {{ selectRowKeys.length }} 条记录</span>
+                <span v-if="isAcrossPage">(可跨页)</span>
+              </span>
               <a-divider type="vertical" />
               <a @click="setSelectedRowKeys([])">清空</a>
               <slot name="alertAfter" />
@@ -86,8 +89,10 @@
       const { getSelectRowKeys, setSelectedRowKeys, getRowSelection } = useTableContext();
       const selectRowKeys = computed(() => getSelectRowKeys());
       const openRowSelection = computed(() => getRowSelection());
+      // 是否允许跨页选择
+      const isAcrossPage = computed(() => openRowSelection.value?.preserveSelectedRowKeys === true);
 
-      return { prefixCls, handleColumnChange, selectRowKeys, setSelectedRowKeys, openRowSelection };
+      return { prefixCls, handleColumnChange, selectRowKeys, setSelectedRowKeys, openRowSelection, isAcrossPage };
     },
   });
 </script>

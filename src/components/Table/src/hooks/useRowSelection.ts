@@ -16,6 +16,10 @@ export function useRowSelection(propsRef: ComputedRef<BasicTableProps>, tableDat
     }
 
     return {
+      // AntDV3.0 之后使用远程加载数据进行分页时，
+      // 默认会清空上一页选择的行数据（导致无法跨页选择），
+      // 将此属性设置为 true 即可解决。
+      preserveSelectedRowKeys: true,
       selectedRowKeys: unref(selectedRowKeysRef),
       onChange: (selectedRowKeys: string[]) => {
         setSelectedRowKeys(selectedRowKeys);
