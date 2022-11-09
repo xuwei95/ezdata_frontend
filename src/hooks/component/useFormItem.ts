@@ -31,8 +31,8 @@ export function useRuleFormItem<T extends Recordable>(props: T, key: keyof T = '
 
   const state: any = computed({
     get() {
-      //修复多选时空值显示问题
-      return !innerState.value || innerState.value === '' ? [] : innerState.value;
+      //修复多选时空值显示问题（兼容值为0的情况）
+      return innerState.value == null || innerState.value === '' ? [] : innerState.value;
     },
     set(value) {
       if (isEqual(value, defaultState.value)) return;
