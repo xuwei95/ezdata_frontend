@@ -146,7 +146,7 @@
 
       //update-begin-author:taoyan date:2022-5-31 for: VUEN-1145 下拉多选，搜索时，查不到数据
       function filterOption(input, option) {
-        return option.children[0].el.data.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+        return option.children()[0].children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
       }
       //update-end-author:taoyan date:2022-5-31 for: VUEN-1145 下拉多选，搜索时，查不到数据
 
