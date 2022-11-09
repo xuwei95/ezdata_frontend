@@ -170,7 +170,7 @@
       /** 用于搜索下拉框中的内容 */
       function handleFilterOption(input, option) {
         // 在 label 中搜索
-        let labelIf = option?.children[0]?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+        let labelIf = option.children()[0]?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
         if (labelIf) {
           return true;
         }
