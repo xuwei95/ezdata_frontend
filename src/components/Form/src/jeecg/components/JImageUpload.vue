@@ -189,7 +189,7 @@
             handleDelete(file);
           }
         }
-        emitData.value = fileUrls.join(',');
+        // emitData.value = fileUrls.join(',');
         state.value = fileUrls.join(',');
         emit('update:value', fileUrls.join(','));
       }

@@ -1,6 +1,7 @@
 import type { UnwrapRef, Ref, WritableComputedRef, DeepReadonly } from 'vue';
 import { reactive, readonly, computed, getCurrentInstance, watchEffect, unref, nextTick, toRaw } from 'vue';
-import {Form} from "ant-design-vue";
+import { Form } from 'ant-design-vue';
+import { FormItemContext } from 'ant-design-vue/es/form/FormItemContext';
 
 import { isEqual } from 'lodash-es';
 export function useRuleFormItem<T extends Recordable, K extends keyof T, V = UnwrapRef<T[K]>>(
@@ -8,7 +9,7 @@ export function useRuleFormItem<T extends Recordable, K extends keyof T, V = Unw
   key?: K,
   changeEvent?,
   emitData?: Ref<any[] | undefined>
-): [WritableComputedRef<V>, (val: V) => void, DeepReadonly<V>];
+): [WritableComputedRef<V>, (val: V) => void, DeepReadonly<V>, FormItemContext];
 export function useRuleFormItem<T extends Recordable>(props: T, key: keyof T = 'value', changeEvent = 'change', emitData?: Ref<any[]>) {
   const instance = getCurrentInstance();
   const emit = instance?.emit;
@@ -46,5 +47,5 @@ export function useRuleFormItem<T extends Recordable>(props: T, key: keyof T = '
     },
   });
 
-  return [state, setState, defaultState];
+  return [state, setState, defaultState, formItemContext];
 }
