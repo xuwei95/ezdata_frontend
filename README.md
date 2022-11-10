@@ -62,7 +62,7 @@ git clone https://github.com/jeecgboot/jeecgboot-vue3.git
 ```bash
 cd jeecgboot-vue3
 
-yarn install
+pnpm install
 
 ```
 
@@ -81,14 +81,14 @@ VITE_GLOB_DOMAIN_URL=http://localhost:8080/jeecg-boot
 - run
 
 ```bash
-yarn serve
+pnpm serve
 ```
 
 
 - build
 
 ```bash
-yarn build
+pnpm build
 ```
 
 
@@ -124,9 +124,9 @@ VITE_GLOB_DOMAIN_URL=http://jeecg-boot-system:8080/jeecg-boot
 - 编译项目
 
 ```bash
-yarn install
+pnpm install
 
-yarn build
+pnpm build
 ```
 
 - 启动容器
