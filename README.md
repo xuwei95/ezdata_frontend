@@ -171,16 +171,18 @@ VITE_GLOB_DOMAIN_URL=http://jeecg-boot-gateway:9999
 
 本项目需要一定前端基础知识，请确保掌握 Vue 的基础知识，以便能处理一些常见的问题。 建议在开发前先学一下以下内容，提前了解和学习这些知识，会对项目理解非常有帮助:
 
-*   [Vue3 文档](https://v3.vuejs.org/)
+*   [JeecgBoot-Vue3文档](http://vue3.jeecg.com)
+*   [Vue3 文档](https://cn.vuejs.org/)
 *   [TypeScript](https://www.typescriptlang.org/)
-*   [Vue-router](https://next.router.vuejs.org/)
-*   [Ant-Design-Vue](https://2x.antdv.com/docs/vue/introduce-cn/)
+*   [Vue-router](https://router.vuejs.org/zh)
+*   [Ant-Design-Vue](https://www.antdv.com/docs/vue/introduce-cn/)
 *   [Vben文档](https://vvbin.cn/doc-next)
 *   [Es6](https://es6.ruanyifeng.com/)
-*   [Vitejs](https://vitejs.dev/)
+*   [Vitejs](https://cn.vitejs.dev/guide/)
 *   [Pinia(vuex替代方案)](https://pinia.esm.dev/introduction.html)
 *   [Vue-RFCS](https://github.com/vuejs/rfcs)
 *   [Vue2 迁移到 3](https://v3.vuejs.org/guide/migration/introduction.html)
+*   [vxetable文档](https://vxetable.cn)
 *   [~~WindiCss~~](https://windicss.netlify.app/)
 
 
