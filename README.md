@@ -305,6 +305,36 @@ VITE_GLOB_DOMAIN_URL=http://jeecg-boot-gateway:9999
 
 
 
+
+## 入门必备
+
+本项目需要一定前端基础知识，请确保掌握 Vue 的基础知识，以便能处理一些常见的问题。 建议在开发前先学一下以下内容，提前了解和学习这些知识，会对项目理解非常有帮助:
+
+*   [Vue3 文档](https://v3.vuejs.org/)
+*   [TypeScript](https://www.typescriptlang.org/)
+*   [Vue-router](https://next.router.vuejs.org/)
+*   [Ant-Design-Vue](https://2x.antdv.com/docs/vue/introduce-cn/)
+*   [Vben文档](https://vvbin.cn/doc-next)
+*   [Es6](https://es6.ruanyifeng.com/)
+*   [Vitejs](https://vitejs.dev/)
+*   [Pinia(vuex替代方案)](https://pinia.esm.dev/introduction.html)
+*   [Vue-RFCS](https://github.com/vuejs/rfcs)
+*   [Vue2 迁移到 3](https://v3.vuejs.org/guide/migration/introduction.html)
+*   [~~WindiCss~~](https://windicss.netlify.app/)
+
+
+##   浏览器支持
+
+**本地开发**推荐使用`Chrome 最新版`浏览器，**不支持**`Chrome 90`以下版本。
+
+**生产环境**支持现代浏览器，不支持 IE。
+
+| [![IE](https://raw.githubusercontent.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png)](http://godban.github.io/browsers-support-badges/)IE | [![ Edge](https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png)](http://godban.github.io/browsers-support-badges/)Edge | [![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png)](http://godban.github.io/browsers-support-badges/)Firefox | [![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png)](http://godban.github.io/browsers-support-badges/)Chrome | [![Safari](https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png)](http://godban.github.io/browsers-support-badges/)Safari |
+| --- | --- | --- | --- | --- |
+| not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
+
+
+
 ##   系统效果
 系统后台
 
@@ -341,12 +371,6 @@ Online表单&Online报表&代码生成
 ![](https://static.oschina.net/uploads/img/201904/14160633_u59G.png "")
 ![](https://static.oschina.net/uploads/img/201907/05165142_yyQ7.png "")
 
-报表设计
-
-![](https://oscimg.oschina.net/oscnet/up-da89eb034b8583d57b3f61493fec313ed28.png)
-![](https://oscimg.oschina.net/oscnet/up-35deca9d020d61ad464accfdeb3bb90ba5c.png)
-![](https://oscimg.oschina.net/oscnet/up-d1695b4a53ebbc9e9651e309e5af1c8bd30.png)
-![](https://oscimg.oschina.net/oscnet/up-4cc634b612e97f08ab702ef34f2ede53f2a.png)
 
 
 大屏模板
@@ -356,35 +380,6 @@ Online表单&Online报表&代码生成
 ![](https://static.oschina.net/uploads/img/201912/25133301_k9Kc.jpg "")
 
 ![](https://oscimg.oschina.net/oscnet/up-649cb79c01eb95d5c2217a5dad28515da82.png)
-
-
-
-## 入门必备
-
-本项目需要一定前端基础知识，请确保掌握 Vue 的基础知识，以便能处理一些常见的问题。 建议在开发前先学一下以下内容，提前了解和学习这些知识，会对项目理解非常有帮助:
-
-*   [Vue3 文档](https://v3.vuejs.org/)
-*   [TypeScript](https://www.typescriptlang.org/)
-*   [Vue-router](https://next.router.vuejs.org/)
-*   [Ant-Design-Vue](https://2x.antdv.com/docs/vue/introduce-cn/)
-*   [Vben文档](https://vvbin.cn/doc-next)
-*   [Es6](https://es6.ruanyifeng.com/)
-*   [Vitejs](https://vitejs.dev/)
-*   [Pinia(vuex替代方案)](https://pinia.esm.dev/introduction.html)
-*   [Vue-RFCS](https://github.com/vuejs/rfcs)
-*   [Vue2 迁移到 3](https://v3.vuejs.org/guide/migration/introduction.html)
-*   [~~WindiCss~~](https://windicss.netlify.app/)
-
-
-##   浏览器支持
-
-**本地开发**推荐使用`Chrome 最新版`浏览器，**不支持**`Chrome 90`以下版本。
-
-**生产环境**支持现代浏览器，不支持 IE。
-
-| [![IE](https://raw.githubusercontent.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png)](http://godban.github.io/browsers-support-badges/)IE | [![ Edge](https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png)](http://godban.github.io/browsers-support-badges/)Edge | [![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png)](http://godban.github.io/browsers-support-badges/)Firefox | [![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png)](http://godban.github.io/browsers-support-badges/)Chrome | [![Safari](https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png)](http://godban.github.io/browsers-support-badges/)Safari |
-| --- | --- | --- | --- | --- |
-| not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
 
 
 
