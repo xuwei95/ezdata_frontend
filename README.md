@@ -63,20 +63,17 @@ git clone https://github.com/jeecgboot/jeecgboot-vue3.git
 cd jeecgboot-vue3
 
 pnpm install
-
 ```
 
-- 配置后台接口地址
->[info] 说明：把`http://localhost:8080/jeecg-boot` 替换成自己地址即可，其他不用改。
-
-配置文件：.env.development
+- 配置接口地址 `.env.development`
 
 ```bash
-VITE_GLOB_API_URL=/jeecgboot
-VITE_PROXY = [["/jeecgboot","http://localhost:8080/jeecg-boot"],["/upload",
-"http://localhost:3300/upload"]]
+VITE_PROXY = [["/jeecgboot","http://localhost:8080/jeecg-boot"],["/upload","http://localhost:3300/upload"]]
 VITE_GLOB_DOMAIN_URL=http://localhost:8080/jeecg-boot
 ```
+
+>[info] 说明：把`http://localhost:8080/jeecg-boot` 换成自己地址，其他不用改。
+
 
 - run
 
@@ -112,8 +109,7 @@ git clone https://github.com/jeecgboot/jeecgboot-vue3.git
 cd jeecgboot-vue3
 ```
 
-- 修改后台域名
-.env.production
+- 配置接口域名 `.env.production`
 
 ```bash
 VITE_GLOB_API_URL=/jeecgboot
