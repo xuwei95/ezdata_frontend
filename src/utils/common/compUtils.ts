@@ -351,10 +351,15 @@ export function getAutoScrollContainer(node: HTMLElement) {
 }
 
 /**
- * 判断子菜单是否全部隐藏,如果子菜单全部隐藏则隐藏父菜单
+ * 判断子菜单是否全部隐藏
  * @param menuTreeItem
  */
 export  function checkChildrenHidden(menuTreeItem){
+  //是否是聚合路由
+  let alwaysShow=menuTreeItem.alwaysShow;
+  if(alwaysShow){
+    return false;
+  }
   if(!menuTreeItem.children){
     return false
   }
