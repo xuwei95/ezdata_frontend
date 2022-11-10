@@ -72,7 +72,7 @@ VITE_PROXY = [["/jeecgboot","http://localhost:8080/jeecg-boot"],["/upload","http
 VITE_GLOB_DOMAIN_URL=http://localhost:8080/jeecg-boot
 ```
 
->[info] 说明：把`http://localhost:8080/jeecg-boot` 换成自己地址，其他不用改。
+> 说明：把`http://localhost:8080/jeecg-boot` 换成自己地址，其他不用改。
 
 
 - run
@@ -160,6 +160,40 @@ VITE_GLOB_DOMAIN_URL=http://jeecg-boot-gateway:9999
 ```bash
 镜像需要重现构建，最好把单体的镜像删掉，重新构建docker镜像。
 ```
+
+
+
+
+
+
+
+## 入门必备
+
+本项目需要一定前端基础知识，请确保掌握 Vue 的基础知识，以便能处理一些常见的问题。 建议在开发前先学一下以下内容，提前了解和学习这些知识，会对项目理解非常有帮助:
+
+*   [Vue3 文档](https://v3.vuejs.org/)
+*   [TypeScript](https://www.typescriptlang.org/)
+*   [Vue-router](https://next.router.vuejs.org/)
+*   [Ant-Design-Vue](https://2x.antdv.com/docs/vue/introduce-cn/)
+*   [Vben文档](https://vvbin.cn/doc-next)
+*   [Es6](https://es6.ruanyifeng.com/)
+*   [Vitejs](https://vitejs.dev/)
+*   [Pinia(vuex替代方案)](https://pinia.esm.dev/introduction.html)
+*   [Vue-RFCS](https://github.com/vuejs/rfcs)
+*   [Vue2 迁移到 3](https://v3.vuejs.org/guide/migration/introduction.html)
+*   [~~WindiCss~~](https://windicss.netlify.app/)
+
+
+##   浏览器支持
+
+**本地开发**推荐使用`Chrome 最新版`浏览器，**不支持**`Chrome 90`以下版本。
+
+**生产环境**支持现代浏览器，不支持 IE。
+
+| [![IE](https://raw.githubusercontent.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png)](http://godban.github.io/browsers-support-badges/)IE | [![ Edge](https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png)](http://godban.github.io/browsers-support-badges/)Edge | [![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png)](http://godban.github.io/browsers-support-badges/)Firefox | [![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png)](http://godban.github.io/browsers-support-badges/)Chrome | [![Safari](https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png)](http://godban.github.io/browsers-support-badges/)Safari |
+| --- | --- | --- | --- | --- |
+| not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
+
 
 
 ## 功能模块
@@ -271,11 +305,9 @@ VITE_GLOB_DOMAIN_URL=http://jeecg-boot-gateway:9999
 │  ├─Online在线表单 - 功能已开放
 │  ├─Online代码生成器 - 功能已开放
 │  ├─Online在线报表 - 功能已开放
-│  ├─Online在线图表(未开源)
-│  ├─Online图表模板配置(未开源)
-│  ├─Online布局设计(未开源)
-│  ├─多数据源管理 - 功能已开放
-│─流程模块功能 (未开源)
+│  ├─Online在线图表(暂未开源)
+│  ├─多数据源管理
+│─流程模块功能 (暂未开源)
 │  ├─流程设计器
 │  ├─表单设计器
 │  ├─大屏设计器
@@ -289,46 +321,11 @@ VITE_GLOB_DOMAIN_URL=http://jeecg-boot-gateway:9999
 │  └─我发起的流程
 │  └─我的抄送
 │  └─流程委派、抄送、跳转
-│  └─。。。
-│─OA办公组件 (未开源)
-│  ├─更多功能
-│  └─。。。
-└─其他模块 (暂不开源)
+│  └─OA办公组件
+└─其他模块 
    └─更多功能开发中。。 
    
 ```
-
-
-
-
-
-## 入门必备
-
-本项目需要一定前端基础知识，请确保掌握 Vue 的基础知识，以便能处理一些常见的问题。 建议在开发前先学一下以下内容，提前了解和学习这些知识，会对项目理解非常有帮助:
-
-*   [Vue3 文档](https://v3.vuejs.org/)
-*   [TypeScript](https://www.typescriptlang.org/)
-*   [Vue-router](https://next.router.vuejs.org/)
-*   [Ant-Design-Vue](https://2x.antdv.com/docs/vue/introduce-cn/)
-*   [Vben文档](https://vvbin.cn/doc-next)
-*   [Es6](https://es6.ruanyifeng.com/)
-*   [Vitejs](https://vitejs.dev/)
-*   [Pinia(vuex替代方案)](https://pinia.esm.dev/introduction.html)
-*   [Vue-RFCS](https://github.com/vuejs/rfcs)
-*   [Vue2 迁移到 3](https://v3.vuejs.org/guide/migration/introduction.html)
-*   [~~WindiCss~~](https://windicss.netlify.app/)
-
-
-##   浏览器支持
-
-**本地开发**推荐使用`Chrome 最新版`浏览器，**不支持**`Chrome 90`以下版本。
-
-**生产环境**支持现代浏览器，不支持 IE。
-
-| [![IE](https://raw.githubusercontent.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png)](http://godban.github.io/browsers-support-badges/)IE | [![ Edge](https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png)](http://godban.github.io/browsers-support-badges/)Edge | [![Firefox](https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png)](http://godban.github.io/browsers-support-badges/)Firefox | [![Chrome](https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png)](http://godban.github.io/browsers-support-badges/)Chrome | [![Safari](https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png)](http://godban.github.io/browsers-support-badges/)Safari |
-| --- | --- | --- | --- | --- |
-| not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
-
 
 
 ##   系统效果
