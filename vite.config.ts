@@ -3,7 +3,6 @@ import pkg from './package.json';
 import dayjs from 'dayjs';
 import { loadEnv } from 'vite';
 import { resolve } from 'path';
-//require('vue-jeecg-plugs/packages/utils')
 import { generateModifyVars } from './build/generate/generateModifyVars';
 import { createProxy } from './build/vite/proxy';
 import { wrapperEnv } from './build/utils';
@@ -62,9 +61,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       proxy: createProxy(VITE_PROXY),
     },
     build: {
-      minify: 'terser',
       target: 'es2015',
-      // 【VUEN-872】css编译兼容低版本chrome内核（例如360浏览器）
       cssTarget: 'chrome80',
       outDir: OUTPUT_DIR,
       terserOptions: {
@@ -72,10 +69,11 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           keep_infinity: true,
           // Used to delete console in production environment
           drop_console: VITE_DROP_CONSOLE,
+          drop_debugger: true,
         },
       },
       // Turning off brotliSize display can slightly reduce packaging time
-      brotliSize: false,
+      reportCompressedSize: false,
       chunkSizeWarningLimit: 2000,
     },
     define: {
@@ -83,6 +81,10 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       // Suppress warning
       __INTLIFY_PROD_DEVTOOLS__: false,
       __APP_INFO__: JSON.stringify(__APP_INFO__),
+      //新增以下变量，临时解决 https://github.com/vbenjs/vite-plugin-theme/issues/27
+      __COLOR_PLUGIN_OUTPUT_FILE_NAME__: undefined,
+      __PROD__: true,
+      __COLOR_PLUGIN_OPTIONS__: {},
     },
     css: {
       preprocessorOptions: {
