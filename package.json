@@ -34,7 +34,6 @@
     "gen:icon": "esno ./build/generate/icon/index.ts"
   },
   "dependencies": {
-    "terser": "^5.14.2",
     "@jeecg/online": "3.4.3-GA",
     "@iconify/iconify": "^2.2.1",
     "@ant-design/colors": "^6.0.0",
