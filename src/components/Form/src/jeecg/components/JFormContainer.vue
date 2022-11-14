@@ -21,7 +21,7 @@
   });
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   .jeecg-form-container-disabled {
     cursor: not-allowed;
 
@@ -41,6 +41,12 @@
 
     .ant-upload-list {
       cursor: grabbing;
+    }
+
+    fieldset[disabled]{
+      .anticon-delete{
+        display: none !important;
+      }
     }
   }
 
