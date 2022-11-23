@@ -44,7 +44,7 @@ export function useJvxeMethod(requestAddOrEdit, classifyIntoFormData, tableRefs,
     getAllTable()
       .then((tables) => {
         let values = formRef.value.getFieldsValue();
-        return validateFormModelAndTables(formRef.value.validate, values, tables, formRef.value.getProps);
+        return validateFormModelAndTables(formRef.value.validate, values, tables, formRef.value.getProps, false);
       })
       .then((allValues) => {
         /** 一次性验证一对一的所有子表 */
@@ -61,7 +61,13 @@ export function useJvxeMethod(requestAddOrEdit, classifyIntoFormData, tableRefs,
       .catch((e) => {
         if (e.error === VALIDATE_FAILED) {
           // 如果有未通过表单验证的子表，就自动跳转到它所在的tab
-          activeKey.value = e.index == null ? unref(activeKey) : refKeys.value[e.index];
+          //update-begin-author:taoyan date:2022-11-22 for: VUEN-2866【代码生成】Tab风格 一对多子表校验不通过时，点击提交表单空白了，流程附加页面也有此问题
+          if(e.paneKey){
+            activeKey.value = e.paneKey
+          }else{
+            activeKey.value = e.index == null ? unref(activeKey) : refKeys.value[e.index];
+          }
+          //update-end-author:taoyan date:2022-11-22 for: VUEN-2866【代码生成】Tab风格 一对多子表校验不通过时，点击提交表单空白了，流程附加页面也有此问题
         } else {
           console.error(e);
         }
