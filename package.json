@@ -34,7 +34,7 @@
     "gen:icon": "esno ./build/generate/icon/index.ts"
   },
   "dependencies": {
-    "@jeecg/online": "3.4.3-GA",
+    "@jeecg/online": "3.4.4-RC",
     "@iconify/iconify": "^2.2.1",
     "@ant-design/colors": "^6.0.0",
     "@ant-design/icons-vue": "^6.1.0",

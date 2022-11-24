@@ -11,7 +11,7 @@ specifiers:
   '@commitlint/config-conventional': ^16.2.1
   '@iconify/iconify': ^2.2.1
   '@iconify/json': ^2.1.30
-  '@jeecg/online': 3.4.3-GA
+  '@jeecg/online': 3.4.4-RC
   '@logicflow/core': ^1.1.13
   '@logicflow/extension': ^1.1.13
   '@purge-icons/generated': ^0.8.1
@@ -148,7 +148,7 @@ dependencies:
   '@ant-design/colors': registry.npmmirror.com/@ant-design/colors/6.0.0
   '@ant-design/icons-vue': registry.npmmirror.com/@ant-design/icons-vue/6.1.0_vue@3.2.43
   '@iconify/iconify': registry.npmmirror.com/@iconify/iconify/2.2.1
-  '@jeecg/online': registry.npmmirror.com/@jeecg/online/3.4.3-GA
+  '@jeecg/online': registry.npmmirror.com/@jeecg/online/3.4.4-RC
   '@logicflow/core': registry.npmmirror.com/@logicflow/core/1.1.30
   '@logicflow/extension': registry.npmmirror.com/@logicflow/extension/1.1.30
   '@vue/runtime-core': registry.npmmirror.com/@vue/runtime-core/3.2.43
@@ -2306,10 +2306,10 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  registry.npmmirror.com/@jeecg/online/3.4.3-GA:
-    resolution: {integrity: sha512-MtZD7ue8gLB8d0HSclzMwpyzHLbBlhYw5hOCSQBAPjbySFAXj+ajKtZgvcl1uk7loTaK2pPJWmoUPBP/CUPWbw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@jeecg/online/-/online-3.4.3-GA.tgz}
+  registry.npmmirror.com/@jeecg/online/3.4.4-RC:
+    resolution: {integrity: sha512-EjibCo++GszsWuLn3+kqaxt12Zim7f0XWSiHzypef4aAqBKYDnG30Z5K3j5W1g4g22fjVUkrb1rQ8rSLTlPdBw==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@jeecg/online/-/online-3.4.4-RC.tgz}
     name: '@jeecg/online'
-    version: 3.4.3-GA
+    version: 3.4.4-RC
     dev: false
 
   registry.npmmirror.com/@jest/console/27.5.1:

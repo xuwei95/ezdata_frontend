@@ -141,4 +141,6 @@ export type ComponentType =
   | 'JSearchSelect'
   | 'JAddInput'
   | 'Time'
+  | 'RangeDate'
+  | 'RangeNumber'
   | 'JRangeNumber';

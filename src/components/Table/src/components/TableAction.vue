@@ -149,7 +149,10 @@
   .@{prefix-cls} {
     display: flex;
     align-items: center;
-
+    /* update-begin-author:taoyan date:2022-11-18 for: 表格默认行高比官方示例多出2px*/
+    height: 22px;
+    /* update-end-author:taoyan date:2022-11-18 for: 表格默认行高比官方示例多出2px*/
+    
     .action-divider {
       display: table;
     }

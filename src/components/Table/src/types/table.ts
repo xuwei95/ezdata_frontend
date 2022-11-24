@@ -447,6 +447,8 @@ export interface BasicColumn extends ColumnProps {
   auth?: RoleEnum | RoleEnum[] | string | string[];
   // 业务控制是否显示
   ifShow?: boolean | ((column: BasicColumn) => boolean);
+  //compType-用于记录类型
+  compType?: string;
 }
 
 export type ColumnChangeParam = {

@@ -645,4 +645,38 @@ export const schemas: FormSchema[] = [
     label: '选中值',
     colProps: { span: 12 },
   },
+  {
+    field: 'radioButtonGroup',
+    component: 'RadioButtonGroup',
+    label: 'RadioButtonGroup',
+    helpMessage: ['component模式'],
+    colProps: { span: 12 },
+    defaultValue: '0',
+    componentProps: {
+      options: [
+        { value: '0',icon: 'ant-design:setting'},
+        { label: '停用', value: '1',icon: 'mdi:home' },
+      ],
+    },
+  },
+  {
+    field: 'radioButtonGroup',
+    component: 'JEllipsis',
+    label: '选中值',
+    colProps: { span: 12 },
+  },
+  {
+    field: 'superQuery',
+    component: 'Input',
+    label: '高级查询',
+    helpMessage: ['插槽模式'],
+    slot: 'superQuery',
+    colProps: { span: 12 },
+  },
+  {
+    field: 'superQuery',
+    component: 'JEllipsis',
+    label: '选中值',
+    colProps: { span: 12 },
+  },
 ];

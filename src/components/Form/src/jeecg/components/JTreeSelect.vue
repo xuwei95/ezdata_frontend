@@ -48,6 +48,10 @@
     multiple: propTypes.bool.def(false),
     loadTriggleChange: propTypes.bool.def(false),
     reload: propTypes.number.def(1),
+    //update-begin-author:taoyan date:2022-11-8 for: issues/4173 Online JTreeSelect控件changeOptions方法未生效
+    url: propTypes.string.def(''),
+    params: propTypes.object.def({})
+    //update-end-author:taoyan date:2022-11-8 for: issues/4173 Online JTreeSelect控件changeOptions方法未生效
   });
   const attrs = useAttrs();
   const emit = defineEmits(['change', 'update:value']);
@@ -103,17 +107,23 @@
         treeValue.value = null;
       }
     } else {
-      let params = { key: props.value };
-      let result = await defHttp.get({ url: `${Api.view}${props.dict}`, params }, { isTransformResponse: false });
-      if (result.success) {
-        let values = props.value.split(',');
-        treeValue.value = result.result.map((item, index) => ({
-          key: values[index],
-          value: values[index],
-          label: item,
-        }));
-        onLoadTriggleChange(result.result[0]);
+      //update-begin-author:taoyan date:2022-11-8 for: issues/4173 Online JTreeSelect控件changeOptions方法未生效
+      if(props.url){
+        getItemFromTreeData();
+      }else{
+        let params = { key: props.value };
+        let result = await defHttp.get({ url: `${Api.view}${props.dict}`, params }, { isTransformResponse: false });
+        if (result.success) {
+          let values = props.value.split(',');
+          treeValue.value = result.result.map((item, index) => ({
+            key: values[index],
+            value: values[index],
+            label: item,
+          }));
+          onLoadTriggleChange(result.result[0]);
+        }
       }
+      //update-end-author:taoyan date:2022-11-8 for: issues/4173 Online JTreeSelect控件changeOptions方法未生效
     }
   }
 
@@ -165,6 +175,9 @@
    */
   async function asyncLoadTreeData(treeNode) {
     if (treeNode.dataRef.children) {
+      return Promise.resolve();
+    }
+    if(props.url){
       return Promise.resolve();
     }
     let pid = treeNode.dataRef.key;
@@ -261,6 +274,67 @@
       }
     });
   }
+
+  //update-begin-author:taoyan date:2022-11-8 for: issues/4173 Online JTreeSelect控件changeOptions方法未生效
+  watch(()=>props.url, async (val)=>{
+    if(val){
+      await loadRootByUrl();
+    }
+  });
+
+  /**
+   * 根据自定义的请求地址加载数据
+   */
+  async function loadRootByUrl(){
+    let url = props.url;
+    let params = props.params;
+    let res = await defHttp.get({ url, params }, { isTransformResponse: false });
+    if (res.success && res.result) {
+      for (let i of res.result) {
+        i.key = i.value;
+        i.isLeaf = !!i.leaf;
+      }
+      treeData.value = [...res.result];
+    } else {
+      console.log('数根节点查询结果异常', res);
+    }
+  }
+
+  /**
+   * 根据已有的树数据 翻译选项
+   */
+  function getItemFromTreeData(){
+    let data = treeData.value;
+    let arr = []
+    findChildrenNode(data, arr);
+    if(arr.length>0){
+      treeValue.value = arr
+      onLoadTriggleChange(arr[0]);
+    }
+  }
+
+  /**
+   * 递归找子节点
+   * @param data
+   * @param arr
+   */
+  function findChildrenNode(data, arr){
+    let val = props.value;
+    if(data && data.length){
+      for(let item of data){
+        if(val===item.value){
+          arr.push({
+            key: item.key,
+            value: item.value,
+            label: item.label||item.title
+          })
+        }else{
+          findChildrenNode(item.children, arr)
+        }
+      }
+    }
+  }
+  //update-end-author:taoyan date:2022-11-8 for: issues/4173 Online JTreeSelect控件changeOptions方法未生效
 
   // onCreated
   validateProp().then(() => {
