@@ -159,6 +159,11 @@
         if (Array.isArray(state.value)) {
           state.value = state.value.filter((item) => item != null && item !== '');
         }
+        //update-begin---author:wangshuai ---date:20221123  for：单选模式要改成字符串------------
+        if(mode !== 'multiple' && state.value && state.value.length>0){
+          state.value = state.value[0];
+        }
+        //update-end---author:wangshuai ---date:20221123  for：单选模式要改成字符串--------------
         // nextTick(() => formItemContext.onFieldChange());
       }
 
