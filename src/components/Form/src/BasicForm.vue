@@ -113,15 +113,28 @@
       const getSchema = computed((): FormSchema[] => {
         const schemas: FormSchema[] = unref(schemaRef) || (unref(getProps).schemas as any);
         for (const schema of schemas) {
-          const { defaultValue, component } = schema;
+          const { defaultValue, component, componentProps } = schema;
           // handle date type
           if (defaultValue && dateItemType.includes(component)) {
+            const { valueFormat } = componentProps
             if (!Array.isArray(defaultValue)) {
-              schema.defaultValue = dateUtil(defaultValue);
+              //update-begin---author:wangshuai ---date:20221124  for：[issues/215]列表页查询框（日期选择框）设置初始时间，一进入页面时，后台报日期转换类型错误的------------
+              if(valueFormat){
+                schema.defaultValue = dateUtil(defaultValue).format(valueFormat);
+              }else{
+                schema.defaultValue = dateUtil(defaultValue);
+              }
+              //update-end---author:wangshuai ---date:20221124  for：[issues/215]列表页查询框（日期选择框）设置初始时间，一进入页面时，后台报日期转换类型错误的------------
             } else {
               const def: dayjs.Dayjs[] = [];
               defaultValue.forEach((item) => {
-                def.push(dateUtil(item));
+                //update-begin---author:wangshuai ---date:20221124  for：[issues/215]列表页查询框（日期选择框）设置初始时间，一进入页面时，后台报日期转换类型错误的------------
+                if(valueFormat){
+                  def.push(dateUtil(item).format(valueFormat));
+                }else{
+                  def.push(dateUtil(item));
+                }
+                //update-end---author:wangshuai ---date:20221124  for：[issues/215]列表页查询框（日期选择框）设置初始时间，一进入页面时，后台报日期转换类型错误的------------
               });
               schema.defaultValue = def;
             }
