@@ -182,6 +182,9 @@
         if (file.status != 'uploading') {
           fileList.forEach((file) => {
             if (file.status === 'done') {
+              //update-begin---author:wangshuai ---date:20221121  for：[issues/248]原生表单内使用图片组件,关闭弹窗图片组件值不会被清空------------
+              initTag.value = true;
+              //update-end---author:wangshuai ---date:20221121  for：[issues/248]原生表单内使用图片组件,关闭弹窗图片组件值不会被清空------------
               fileUrls.push(file.response.message);
             }
           });
