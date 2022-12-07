@@ -97,7 +97,12 @@ export function useForm(props?: Props): UseFormReturnType {
       if(values){
         Object.keys(values).map(key=>{
           if (values[key] instanceof Array) {
-            values[key] = values[key].join(',');
+            // update-begin-author:sunjianlei date:20221205 for: 【issues/4330】判断如果是对象数组，则不拼接
+            let isObject = typeof (values[key][0] || '') === 'object';
+            if (!isObject) {
+              values[key] = values[key].join(',');
+            }
+            // update-end-author:sunjianlei date:20221205 for: 【issues/4330】判断如果是对象数组，则不拼接
           }
         });
       }
