@@ -5,8 +5,7 @@
   <RadioGroup v-bind="attrs" v-model:value="state" button-style="solid">
     <template v-for="item in getOptions" :key="`${item.value}`">
       <RadioButton :value="item.value" :disabled="item.disabled">
-        <Icon v-if="item.icon" :icon="item.icon" />
-        {{ item.label ? item.label : '' }}
+        {{ item.label }}
       </RadioButton>
     </template>
   </RadioGroup>
@@ -17,13 +16,8 @@
   import { isString } from '/@/utils/is';
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
   import { useAttrs } from '/@/hooks/core/useAttrs';
-  import { Icon } from '/@/components/Icon';
-  type OptionsItem = {
-    icon?: string;
-    label?: string;
-    value: string | number | boolean;
-    disabled?: boolean;
-  };
+
+  type OptionsItem = { label: string; value: string | number | boolean; disabled?: boolean };
   type RadioItem = string | OptionsItem;
 
   export default defineComponent({
@@ -31,7 +25,6 @@
     components: {
       RadioGroup: Radio.Group,
       RadioButton: Radio.Button,
-      Icon,
     },
     props: {
       value: {

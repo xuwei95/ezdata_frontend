@@ -17,26 +17,57 @@
             <Icon icon="mdi:chevron-down"></Icon>
           </a-button>
         </a-dropdown>
+        <a-button
+          preIcon="ant-design:user-add-outlined"
+          type="primary"
+          @click="handleInvitation"
+          style="margin-right: 5px"
+          :disabled="selectedRowKeys.length === 0"
+          >邀请用户加入</a-button
+        >
+        <a-button
+          preIcon="ant-design:plus-outlined"
+          type="primary"
+          @click="handlePack"
+          style="margin-right: 5px"
+          :disabled="selectedRowKeys.length === 0"
+          >套餐</a-button
+        >
+        <a-button type="primary" @click="recycleBinClick" preIcon="ant-design:hdd-outlined">回收站</a-button>
       </template>
       <template #action="{ record }">
         <TableAction :actions="getActions(record)" />
       </template>
     </BasicTable>
     <TenantModal @register="registerModal" @success="reload" />
+    <UserSelectModal rowKey="id" @register="registerSelUserModal" @getSelectResult="onSelectOk" />
+    <TenantUserModal @register="registerTenUserModal" />
+    <!--  产品包  -->
+    <TenantPackModal @register="registerPackModal" />
+    <!--  租户回收站  -->
+    <TenantRecycleBinModal @register="registerRecycleBinModal" @success="reload" />
   </div>
 </template>
 <script lang="ts" name="system-tenant" setup>
-  import { ref } from 'vue';
+  import { ref, unref } from 'vue';
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useModal } from '/@/components/Modal';
-  import { getTenantList, deleteTenant, batchDeleteTenant } from './tenant.api';
+  import { getTenantList, deleteTenant, batchDeleteTenant, invitationUserJoin } from './tenant.api';
   import { columns, searchFormSchema } from './tenant.data';
   import TenantModal from './TenantModal.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useListPage } from '/@/hooks/system/useListPage';
+  import UserSelectModal from '/@/components/Form/src/jeecg/components/modal/UserSelectModal.vue';
+  import TenantUserModal from './TenantUserModal.vue';
+  import TenantPackModal from './TenantPackModal.vue';
+  import TenantRecycleBinModal from './TenantRecycleBinModal.vue';
 
   const { createMessage } = useMessage();
   const [registerModal, { openModal }] = useModal();
+  const [registerSelUserModal, { openModal: userOpenModal }] = useModal();
+  const [registerTenUserModal, { openModal: tenUserOpenModal }] = useModal();
+  const [registerPackModal, { openModal: packModal }] = useModal();
+  const [registerRecycleBinModal, { openModal: recycleBinModal }] = useModal();
 
   // 列表页面公共参数、方法
   const { prefixCls, tableContext } = useListPage({
@@ -49,6 +80,10 @@
         schemas: searchFormSchema,
         fieldMapToTime: [['fieldTime', ['beginDate', 'endDate'], 'YYYY-MM-DD HH:mm:ss']],
       },
+      actionColumn:{
+        width: 150,
+        fixed:'right'
+      }
     },
   });
   const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
@@ -70,6 +105,10 @@
           placement: 'left',
           confirm: handleDelete.bind(null, record),
         },
+      },
+      {
+        label: '用户',
+        onClick: handleSeeUser.bind(null, record.id),
       },
     ];
   }
@@ -97,13 +136,70 @@
    * 删除事件
    */
   async function handleDelete(record) {
-    await deleteTenant({ id: record.id }, reload);
+    await deleteTenant({ id: record.id }, handleSuccess);
   }
 
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
-    await batchDeleteTenant({ ids: selectedRowKeys.value }, reload);
+    await batchDeleteTenant({ ids: selectedRowKeys.value }, handleSuccess);
+  }
+
+  /**
+   * 邀请用户加入租户
+   */
+  function handleInvitation() {
+    userOpenModal(true, {});
+  }
+
+  /**
+   * 用户选择回调事件
+   * @param options
+   * @param values
+   */
+  async function onSelectOk(options, values) {
+    if (values && values.length > 0) {
+      await invitationUserJoin({ ids: selectedRowKeys.value.join(','), userIds: values.join(',') });
+    } else {
+      createMessage.warn('请选择用户!');
+    }
+  }
+
+  /**
+   * 查看用户
+   * @param id
+   */
+  function handleSeeUser(id) {
+    tenUserOpenModal(true, {
+      id: id,
+    });
+  }
+
+  /**
+   * 新增产品包
+   */
+  function handlePack() {
+    if (unref(selectedRowKeys).length > 1) {
+      createMessage.warn('请选择一个');
+      return;
+    }
+    packModal(true, {
+      tenantId: unref(selectedRowKeys.value.join(',')),
+    });
+  }
+
+  /**
+   * 回收站
+   */
+  function recycleBinClick() {
+    recycleBinModal(true, {});
+  }
+
+  /**
+   * 删除成功之后回调事件
+   */
+  function handleSuccess() {
+    (selectedRowKeys.value = []) && reload();
   }
 </script>

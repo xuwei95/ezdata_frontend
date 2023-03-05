@@ -7,7 +7,7 @@
     import { propTypes } from '/@/utils/propTypes';
     import { Form } from 'ant-design-vue';
 
-    const placeholder = ['最小值', '最大值']
+    const placeholder = ['开始日期', '结束日期']
     /**
      * 用于范围查询
      */

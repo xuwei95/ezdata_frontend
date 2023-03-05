@@ -142,8 +142,11 @@
       });
 
       watchEffect(() => {
-        visibleRef.value = !!props.visible;
         fullScreenRef.value = !!props.defaultFullscreen;
+      });
+
+      watchEffect(() => {
+        visibleRef.value = !!props.visible;
       });
 
       watch(

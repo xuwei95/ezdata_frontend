@@ -115,4 +115,7 @@ export const basicProps = {
   labelAlign: propTypes.string,
 
   rowProps: Object as PropType<RowProps>,
+  
+  // 当表单是查询条件的时候 当表单改变后自动查询，不需要点击查询按钮
+  autoSearch: propTypes.bool.def(false),
 };

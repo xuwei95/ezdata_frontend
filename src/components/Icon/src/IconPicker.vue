@@ -89,6 +89,7 @@
     copy: propTypes.bool.def(false),
     mode: propTypes.oneOf<('svg' | 'iconify')[]>(['svg', 'iconify']).def('iconify'),
     disabled: propTypes.bool.def(true),
+    clearSelect: propTypes.bool.def(false)
   });
 
   const emit = defineEmits(['change', 'update:value']);
@@ -126,13 +127,22 @@
   }
 
   function handleClick(icon: string) {
-    currentSelect.value = icon;
-    if (props.copy) {
-      clipboardRef.value = icon;
-      if (unref(isSuccessRef)) {
-        createMessage.success(t('component.icon.copy'));
+    if(props.clearSelect === true){
+      if(currentSelect.value===icon){
+        currentSelect.value = ''
+      }else{
+        currentSelect.value = icon;
+      }
+    }else{
+      currentSelect.value = icon;
+      if (props.copy) {
+        clipboardRef.value = icon;
+        if (unref(isSuccessRef)) {
+          createMessage.success(t('component.icon.copy'));
+        }
       }
     }
+    
   }
 
   function handleSearchChange(e: ChangeEvent) {

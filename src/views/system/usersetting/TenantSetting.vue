@@ -1,0 +1,565 @@
+<template>
+  <div class="tenant-padding">
+    <div class="my-tenant">我的租户</div>
+    <div class="tenant-list" v-if="dataSource.length>0">
+      <div v-for="item in dataSource" class="tenant-list-item" @click="drownClick(item)">
+        <div class="tenant-title">
+          <div class="item-left">
+            <div class="item-name">{{ item.name }}</div>
+            <div class="item-house" @click.stop="copyClick(item.houseNumber)">
+              <span>
+                组织门牌号：{{ item.houseNumber }}
+                <Icon icon="ant-design:copy-outlined" style="font-size: 13px; margin-left: 2px" />
+              </span>
+            </div>
+          </div>
+          <div class="item-right">
+            <span v-if="item.userTenantStatus === '3'">
+              <span class="examine">待审核</span>
+              <span class="pointer cancel-apply" @click.stop="cancelApplyClick(item.tenantUserId)">取消申请</span>
+            </span>
+            <div v-else style="width: 75px"></div>
+            <span style="margin-left: 24px">
+              <Icon v-if="item.show" icon="ant-design:down-outlined" style="font-size: 13px; color: #707070" />
+              <Icon v-else icon="ant-design:right-outlined" style="font-size: 13px; color: #707070" />
+            </span>
+          </div>
+        </div>
+        <div class="item-content" v-show="item.show">
+          <div class="content-box">
+            <div class="content-name"> 组织名片 </div>
+            <div class="content-desc">
+              <div class="flex-flow">
+                <div class="content-des-text">姓名</div>
+                <div style="font-size: 13px;color: #000000">
+                  {{ userDetail.realname }}
+                </div>
+              </div>
+              <div class="flex-flow">
+                <div class="content-des-text">部门</div>
+                <div style="font-size: 13px">
+                  {{ userDetail.orgCodeTxt ? userDetail.orgCodeTxt : '未填写' }}
+                </div>
+              </div>
+              <div class="flex-flow">
+                <div class="content-des-text">职业</div>
+                <div style="font-size: 13px">
+                  {{ userDetail.postText ? userDetail.postText : '未填写' }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-box">
+            <span
+              v-if="item.userTenantStatus !== '3'"
+              @click.stop="footerClick('editTenant', item)"
+              class="font-color333 flex-flow margin-right40 font-size13 pointer"
+            >
+              <Icon icon="ant-design:edit-outlined" class="footer-icon" />
+              <span>查看租户名片</span>
+            </span>
+            <span v-else class="font-color9e flex-flow margin-right40 font-size13">
+              <Icon icon="ant-design:edit-outlined" class="footer-icon" />
+              <span>查看租户名片</span>
+            </span>
+            <span
+              v-if="item.userTenantStatus !== '3' && item.auth"
+              @click.stop="footerClick('tenantSetting', item)"
+              class="font-color333 flex-flow margin-right40 font-size13 pointer"
+            >
+              <Icon icon="ant-design:tool-outlined" class="footer-icon" />
+              <span>租户管理？</span>
+            </span>
+            <span v-else-if="item.userTenantStatus === '3' && item.auth" class="font-color9e flex-flow margin-right40 font-size13">
+              <Icon icon="ant-design:tool-outlined" class="footer-icon" />
+              <span>租户管理？</span>
+            </span>
+            <span
+              v-if="item.userTenantStatus !== '3' && !item.auth"
+              @click.stop="footerClick('tenantSetting', item)"
+              class="font-color333 flex-flow margin-right40 font-size13 pointer"
+            >
+              <Icon icon="ant-design:tool-outlined" class="footer-icon" />
+              <span>申请角色权限？</span>
+            </span>
+            <span v-else-if="item.userTenantStatus === '3' && !item.auth" class="font-color9e flex-flow margin-right40 font-size13">
+              <Icon icon="ant-design:tool-outlined" class="footer-icon" />
+              <span>申请角色权限？</span>
+            </span>
+            <span
+              v-if="item.userTenantStatus !== '3'"
+              @click.stop="footerClick('tenantSetting', item)"
+              class="font-color333 flex-flow margin-right40 font-size13 pointer"
+            >
+              <Icon icon="ant-design:gold-outlined" class="footer-icon" />
+              <span>我的汇报关系？</span>
+            </span>
+            <span v-else class="font-color9e flex-flow margin-right40 font-size13">
+              <Icon icon="ant-design:gold-outlined" class="footer-icon" />
+              <span>我的汇报关系？</span>
+            </span>
+            <span
+              v-if="item.userTenantStatus !== '3'"
+              @click.stop="footerClick('exitTenant', item)"
+              class="font-color333 flex-flow margin-right40 font-size13 pointer"
+            >
+              <Icon icon="ant-design:export-outlined" class="footer-icon" />
+              <span>退出租户</span>
+            </span>
+            <span v-else class="font-color9e flex-flow margin-right40 font-size13">
+              <Icon icon="ant-design:export-outlined" class="footer-icon" />
+              <span>退出租户</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a-empty v-else description="暂无数据" style="position: relative;top: 50px;"/>
+  </div>
+  <a-modal v-model:visible="tenantVisible" width="400px" wrapClassName="edit-tenant-setting">
+    <template #title>
+      <div style="font-size: 17px; font-weight: 700">查看名片</div>
+      <div style="color: #9e9e9e; margin-top: 10px; font-size: 13px"> 名片是您在该组织下的个人信息，只在本组织中展示。 </div>
+    </template>
+    <div style="margin-top: 24px; font-size: 13px; padding: 0 24px">
+      <div class="font-color75">姓名</div>
+      <div class="margin-top6 margin-bottom-16">{{ userDetail.realname }}</div>
+      <div>部门</div>
+      <div class="margin-top6 margin-bottom-16">{{ userDetail.orgCodeTxt ? userDetail.orgCodeTxt : '未填写' }}</div>
+      <div>职位</div>
+      <div class="margin-top6 margin-bottom-16">{{ userDetail.postText ? userDetail.postText : '未填写' }}</div>
+      <div>工作地点</div>
+      <div class="margin-top6 margin-bottom-16">{{ userData.workPlace ? userData.workPlace : '未填写' }}</div>
+      <div>工号</div>
+      <div class="margin-top6 margin-bottom-16">{{ userDetail.workNo ? userDetail.workNo : '未填写' }}</div>
+    </div>
+  </a-modal>
+
+  <!-- 退出租户 -->
+  <a-modal v-model:visible="cancelVisible" width="800" destroy-on-close>
+    <template #title>
+      <div class="cancellation">
+        <Icon icon="ant-design:warning-outlined" style="font-size: 20px;color: red"/>
+        退出租户 {{myTenantInfo.name}}
+      </div>
+    </template>
+    <a-form :model="formCancelState" ref="cancelTenantRef">
+      <a-form-item name="tenantName">
+        <a-row :span="24" style="padding: 20px 20px 0;font-size: 13px">
+          <a-col :span="24">
+            请输入租户名称
+          </a-col>
+          <a-col :span="24" style="margin-top: 10px">
+            <a-input v-model:value="formCancelState.tenantName" @change="tenantNameChange"/>
+          </a-col>
+        </a-row>
+      </a-form-item>
+      <a-form-item name="loginPassword">
+        <a-row :span="24" style="padding: 0 20px;font-size: 13px">
+          <a-col :span="24">
+            请输入您的登录密码
+          </a-col>
+          <a-col :span="24" style="margin-top: 10px">
+            <a-input-password v-model:value="formCancelState.loginPassword" />
+          </a-col>
+        </a-row>
+      </a-form-item>
+    </a-form>
+    <template #footer>
+      <a-button type="primary" @click="handleOutClick" :disabled="outBtnDisabled">确定</a-button>
+      <a-button @click="handleCancelOutClick">取消</a-button>
+    </template>
+  </a-modal>
+  
+  <a-modal 
+    title="变更拥有者" 
+    v-model:visible="owenVisible" 
+    width="800" 
+    destroy-on-close 
+    :cancelButtonProps="{display:'none'}" 
+    @ok="changeOwen">
+      <div style="padding: 20px">
+        <a-row :span="24">
+          <div class="change-owen">
+            只有变更拥有着之后,才能退出
+          </div>
+        </a-row>
+        <a-row :span="24" style="margin-top: 10px">
+          <UserSelect v-model:value="tenantOwen" izExcludeMy/>
+        </a-row>
+      </div>
+  </a-modal>
+</template>
+
+<script lang="ts" name="tenant-setting" setup>
+import { onMounted, ref, unref } from "vue";
+import {getTenantListByUserId, cancelApplyTenant, exitUserTenant, changeOwenUserTenant} from "./UserSetting.api";
+import { useUserStore } from "/@/store/modules/user";
+import { CollapseContainer } from "/@/components/Container";
+import { getFileAccessHttpUrl } from "/@/utils/common/compUtils";
+import headerImg from "/@/assets/images/header.jpg";
+import {useMessage} from "/@/hooks/web/useMessage";
+import { initDictOptions } from '/@/utils/dict';
+import { uniqWith } from 'lodash-es';
+import { Modal } from 'ant-design-vue';
+import UserSelect from '/@/components/Form/src/jeecg/components/userSelect/index.vue';
+
+//数据源
+const dataSource = ref<any>([]);
+const userStore = useUserStore();
+
+//数据源
+const { createMessage } = useMessage();
+//部门字典
+const departOptions = ref<any>([]);
+//租户编辑是或否隐藏
+const tenantVisible = ref<boolean>(false);
+//用户数据
+const userData = ref<any>([]);
+//用户
+const userDetail = ref({
+  realname: userStore.getUserInfo.realname,
+  workNo: userStore.getUserInfo.workNo,
+  orgCodeTxt: userStore.getUserInfo.orgCodeTxt,
+  postText: userStore.getUserInfo.postText,
+});
+/**
+ * 初始化租户数据
+ */
+  async function initDataSource() {
+  //获取用户数据
+    //update-begin---author:wangshuai ---date:20230109  for: [QQYUN-3645]个人设置我的租户查询审核中和正常的------------
+    getTenantListByUserId({ userTenantStatus: '1,3' }).then((res) => {
+    if (res.success) {
+        dataSource.value = res.result;
+      } else {
+        dataSource.value = [];
+      }
+    });
+    //update-end---author:wangshuai ---date:20230109  for：[QQYUN-3645]个人设置我的租户查询审核中和正常的------------
+  }
+
+  /**
+   * 复制门户
+   * @param value
+   */
+  function copyClick(value) {
+    // 创建input元素
+    const el = document.createElement('input');
+    // 给input元素赋值需要复制的文本
+    el.setAttribute('value', value);
+    // 将input元素插入页面
+    document.body.appendChild(el);
+    // 选中input元素的文本
+    el.select();
+    // 复制内容到剪贴板
+    document.execCommand('copy');
+    // 删除input元素
+    document.body.removeChild(el);
+    createMessage.success('复制成功');
+  };
+
+  /**
+   * 取消申请
+   * @param id
+   */
+  function cancelApplyClick(id) {
+    Modal.confirm({
+      title: '取消申请',
+      content: '是否取消申请',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        cancelApplyTenant({ tenantId: id }).then((res) => {
+          if (res.success) {
+            createMessage.success('取消申请成功');
+            initDataSource();
+          }else{
+            createMessage.warning(res.message);
+          }
+        }).catch((e)=>{
+           createMessage.warning(e.message);
+        });
+      },
+    });
+  };
+
+  /**
+   * 展开关闭事件
+   */
+  function drownClick(value) {
+    if (!value.show) {
+      value.show = true;
+    } else {
+      value.show = false;
+    }
+  };
+
+  /**
+   * 获取部门文本
+   * @param value
+   */
+  function getDepartText(value) {
+    let arr = departOptions.value.filter((item) => {
+      item.value == value;
+    });
+    if (arr && arr.length > 0) {
+      return arr[0].label;
+    }
+    return '未填写';
+  };
+
+  /**
+   * 底部文本点击事件
+   */
+  function footerClick(type, item) {
+    userData.value = item;
+    //编辑组织名片
+    if (type === 'editTenant') {
+      tenantVisible.value = true;
+    }else if(type === 'exitTenant'){
+      //退出租户
+      formCancelState.value = {loginPassword:'', tenantName:''};
+      outBtnDisabled.value = true;
+      cancelVisible.value = true;
+      myTenantInfo.value = item;
+    }
+  }
+
+  //退出租户弹窗
+  const cancelVisible = ref<boolean>(false);
+  //退出租户数据
+  const formCancelState = ref<any>({});
+  //租户数据
+  const myTenantInfo = ref<any>({});  
+  //注销租户弹窗确定按钮是否可以点击
+  const outBtnDisabled = ref<boolean>(true);
+  //拥有者
+  const tenantOwen = ref<string>('');
+  //拥有者弹窗
+  const owenVisible = ref<boolean>(false);
+  
+  /**
+   * 租户名称值改变事件
+   */
+  function tenantNameChange() {
+    let name = unref(myTenantInfo).name;
+    let tenantName = unref(formCancelState).tenantName;
+    if(name === tenantName){
+      outBtnDisabled.value = false;
+    }else{
+      outBtnDisabled.value = true;
+    }
+  }
+
+  /**
+   * 退出确定点击事件
+   */
+  async function handleOutClick() {
+    if(!unref(formCancelState).loginPassword){
+        createMessage.warning("请输入登录密码");
+        return;
+    }
+    console.log("myTenantInfo::::",myTenantInfo);
+    await exitUserTenant({ id: unref(myTenantInfo).tenantUserId, loginPassword: unref(formCancelState).loginPassword }).then((res) => {
+      if (res.success) {
+        createMessage.success(res.message);
+        cancelVisible.value = false;
+        //切换租户后要刷新首页
+        window.location.reload();
+      } else {
+        if (res.message === 'assignedOwen') {
+          //需要指定变更者
+          owenVisible.value = true;
+          cancelVisible.value = false;
+        } else {
+          createMessage.warning(res.message);
+        }
+      }
+    }).catch((res) => {
+      createMessage.warning(res.message);
+    })
+  }
+  
+  /**
+   * 退出租户取消事件
+   */
+  function handleCancelOutClick() {
+    cancelVisible.value = false;
+    outBtnDisabled.value = true;
+  }
+
+  /**
+   * 变更拥有着
+   */
+  function changeOwen() {
+    if(!unref(tenantOwen)){
+      createMessage.warning("请选择变更拥有者");
+      return;
+    }
+    changeOwenUserTenant({userId:unref(tenantOwen)}).then((res) =>{
+      if(res.success){
+        createMessage.success(res.message);
+        //切换租户后要刷新首页
+        window.location.reload();
+      } else {
+        createMessage.warning(res.message);
+      }
+    })
+  }
+onMounted(() => {
+  initDataSource();
+});
+
+</script>
+
+<style lang="less" scoped>
+.tenant-padding{
+  padding: 30px 40px 0 20px;
+}
+.my-tenant{
+  font-size: 17px;
+  font-weight: 700!important;
+  color: #333!important;
+  margin-bottom: 20px;
+}
+.tenant-list{
+  box-sizing: border-box;
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+}
+.tenant-list-item{
+  border: 1px solid #eaeaea;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  overflow: hidden;
+  padding: 0 25px;
+  width: 100%;
+  .item-name{
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 0;
+    cursor: pointer;
+    font-size:17px;
+    color: #333!important;
+    font-weight: 700!important;
+  }
+}
+.tenant-list-item:hover{
+  box-shadow: 0 1px 2px 0 rgba(0,0,0,0.2);
+}
+.pointer {
+  cursor: pointer;
+}
+
+.examine {
+  color: #2c9cff;
+  font-size: 13px;
+}
+
+.cancel-apply {
+  margin-left: 24px;
+  color: red;
+  font-size: 13px;
+}
+
+.item-content {
+  transition: ease-in 2s;
+
+  .content-box {
+    border-top: 1px solid #eaeaea;
+    box-sizing: border-box;
+    display: flex;
+    padding: 24px 0;
+  }
+
+  .content-name {
+    color: #757575;
+    text-align: center;
+    width: 100px;
+    font-size: 13px;
+  }
+
+  .content-desc {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .content-des-text {
+    color: #757575;
+    text-align: left;
+    width: 76px;
+    font-size: 13px;
+  }
+}
+
+.flex-flow {
+  display: flex;
+  min-width: 0;
+}
+
+.footer-box {
+  border-top: 1px solid #eaeaea;
+  box-sizing: border-box;
+  display: flex;
+  padding: 24px 0;
+  color: #757575;
+}
+
+.margin-right40 {
+  margin-right: 40px;
+}
+
+.font-color333 {
+  color: #333333;
+  font-weight: normal;
+}
+
+.font-color9e {
+  color: #9e9e9e;
+}
+
+.font-color75 {
+  color: #757575;
+}
+
+.font-size13 {
+  font-size: 13px;
+}
+
+.footer-icon {
+  font-size: 13px !important;
+  margin-right: 13px;
+  position: relative;
+  top: 4px;
+}
+:deep(.edit-tenant-setting) {
+  color: #0a8fe9;
+}
+.margin-top6 {
+  margin-top: 6px;
+}
+.margin-bottom-16 {
+  margin-bottom: 16px;
+}
+.item-right {
+  align-items: center;
+  display: flex;
+}
+.tenant-title {
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  padding: 24px 0;
+}
+.change-owen{
+  font-size: 14px;
+  font-weight: 700;
+}
+</style>

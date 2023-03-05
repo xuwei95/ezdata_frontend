@@ -77,7 +77,7 @@
       function onSearch(value: string) {
         keyword.value = value;
       }
-
+      
       const superQueryConfig = {
         name:{ title: "名称", view: "text", type: "string", order: 1 },
         birthday:{ title: "生日", view: "date", type: "string", order: 2 },
@@ -92,7 +92,7 @@
           model[field] = str
         }
       }
-      
+
       return {
         schemas,
         formElRef,
@@ -102,6 +102,7 @@
         onSearch: useDebounceFn(onSearch, 300),
         searchParams,
         superQueryConfig,
+        handleSuperQuery,
         handleReset: () => {
           keyword.value = '';
         },

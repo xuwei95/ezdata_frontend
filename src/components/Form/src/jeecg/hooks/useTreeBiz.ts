@@ -29,6 +29,9 @@ export function useTreeBiz(treeRef, getList, props) {
   watch(
     selectValues,
     ({ value: values }: Recordable) => {
+      if(!values){
+        return;
+      }
       if (openModal.value == false && values.length > 0) {
         loadingEcho.value = isFirstLoadEcho;
         isFirstLoadEcho = false;

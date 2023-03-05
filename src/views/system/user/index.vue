@@ -4,9 +4,9 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
+        <a-button type="primary" preIcon="ant-design:plus-outlined"  @click="handleCreate"> 新增</a-button>
         <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+        <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls" >导入</j-upload-button>
         <a-button type="primary" @click="handleSyncUser" preIcon="ant-design:sync-outlined"> 同步流程</a-button>
         <a-button type="primary" @click="openModal(true, {})" preIcon="ant-design:hdd-outlined"> 回收站</a-button>
         <JThirdAppButton biz-type="user" :selected-row-keys="selectedRowKeys" syncToApp syncToLocal @sync-finally="onSyncFinally" />
@@ -46,6 +46,10 @@
     <UserAgentModal @register="registerAgentModal" @success="reload" />
     <!--回收站-->
     <UserRecycleBinModal @register="registerModal" @success="reload" />
+    <!-- 离职受理人弹窗 -->
+    <UserQuitAgentModal @register="registerQuitAgentModal" @success="reload" />
+    <!-- 离职人员列弹窗 -->
+    <UserQuitModal @register="registerQuitModal" @success="reload" />
   </div>
 </template>
 
@@ -58,17 +62,18 @@
   import PasswordModal from './PasswordModal.vue';
   import UserAgentModal from './UserAgentModal.vue';
   import JThirdAppButton from '/@/components/jeecg/thirdApp/JThirdAppButton.vue';
+  import UserQuitAgentModal from './UserQuitAgentModal.vue';
+  import UserQuitModal from './UserQuitModal.vue';
   import { useDrawer } from '/@/components/Drawer';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { columns, searchFormSchema } from './user.data';
-  import { list, deleteUser, batchDeleteUser, getImportUrl, getExportUrl, frozenBatch, syncUser } from './user.api';
-  // import { usePermission } from '/@/hooks/web/usePermission'
-  // const { hasPermission } = usePermission();
+  import { listNoCareTenant, deleteUser, batchDeleteUser, getImportUrl, getExportUrl, frozenBatch, syncUser } from './user.api';
+  import {usePermission} from "/@/hooks/web/usePermission";
 
   const { createMessage, createConfirm } = useMessage();
-
+  const { isDisabledAuth } = usePermission();
   //注册drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
   //回收站model
@@ -77,13 +82,17 @@
   const [registerPasswordModal, { openModal: openPasswordModal }] = useModal();
   //代理人model
   const [registerAgentModal, { openModal: openAgentModal }] = useModal();
+  //离职代理人model
+  const [registerQuitAgentModal, { openModal: openQuitAgentModal }] = useModal();
+  //离职用户列表model
+  const [registerQuitModal, { openModal: openQuitModal }] = useModal();
 
   // 列表页面公共参数、方法
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     designScope: 'user-list',
     tableProps: {
       title: '用户列表',
-      api: list,
+      api: listNoCareTenant,
       columns: columns,
       size: 'small',
       formConfig: {
@@ -249,6 +258,7 @@
       },
       {
         label: '密码',
+        //auth: 'user:changepwd',
         onClick: handleChangePassword.bind(null, record.username),
       },
       {
@@ -279,6 +289,15 @@
         onClick: handleAgentSettings.bind(null, record.username),
       },
     ];
+  }
+
+  /**
+   * 离职
+   * @param userName
+   */
+  function handleQuit(userName) {
+    //打开离职代理人弹窗
+    openQuitAgentModal(true, { userName });
   }
 </script>
 

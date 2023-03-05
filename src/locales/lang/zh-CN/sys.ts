@@ -69,7 +69,7 @@ export default {
 
     signInTitle: 'Jeecg Boot',
     signInDesc: '是中国最具影响力的 企业级低代码平台！在线开发，可视化拖拽设计，零代码实现80%的基础功能~',
-    policy: '我同意xxx隐私政策',
+    policy: '我同意敲敲云隐私政策',
     scanSign: `扫码后，即可完成登录`,
     scanSuccess: `扫码成功，登录中`,
 
@@ -101,5 +101,12 @@ export default {
     mobile: '手机号码',
 
     subTitleText: '{0}秒后返回登录页面',
+
+    //重置密码页面中文
+    authentication:'验证身份',
+    resetLoginPassword:'重置登录密码',
+    resetSuccess:'重置成功',
+    nextStep:'下一步',
+    goToLogin:'去登录'
   },
 };

@@ -42,7 +42,7 @@ export enum ConfigEnum {
   // Sign
   Sign = 'X-Sign',
   // 租户id
-  TENANT_ID = 'tenant-id',
+  TENANT_ID = 'X-Tenant-Id',
   // 版本
   VERSION = 'X-Version',
   // 低代码应用ID

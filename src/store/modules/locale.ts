@@ -14,6 +14,10 @@ const lsLocaleSetting = (ls.get(LOCALE_KEY) || localeSetting) as LocaleSetting;
 interface LocaleState {
   localInfo: LocaleSetting;
   pathTitleMap: object;
+  // myapps主题色（低代码应用列表首页）
+  appIndexTheme: string
+  // myapps - 跳转前路由地址
+  appMainPth: string
 }
 
 export const useLocaleStore = defineStore({
@@ -21,6 +25,8 @@ export const useLocaleStore = defineStore({
   state: (): LocaleState => ({
     localInfo: lsLocaleSetting,
     pathTitleMap: {},
+    appIndexTheme: '',
+    appMainPth: ''
   }),
   getters: {
     getShowPicker(): boolean {
@@ -34,6 +40,12 @@ export const useLocaleStore = defineStore({
       return (path) => state.pathTitleMap[path];
     },
     //update-end-author:taoyan date:2022-6-1 for: VUEN-1144 online 配置成菜单后，打开菜单，显示名称未展示为菜单名称
+    getAppIndexTheme(): string {
+      return this.appIndexTheme;
+    },
+    getAppMainPth(): string {
+      return this.appMainPth;
+    },
   },
   actions: {
     /**
@@ -58,6 +70,12 @@ export const useLocaleStore = defineStore({
       this.pathTitleMap[path] = title;
     },
     //update-end-author:taoyan date:2022-6-1 for: VUEN-1144 online 配置成菜单后，打开菜单，显示名称未展示为菜单名称
+    setAppIndexTheme(theme) {
+      this.appIndexTheme = theme;
+    },
+    setAppMainPth(path) {
+      this.appMainPth = path;
+    },
   },
 });
 

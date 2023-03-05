@@ -46,7 +46,7 @@ export const columns: JVxeColumn[] = [
     placeholder: '请输入${title}',
     validateRules: [
       {
-        pattern: '^1(3|4|5|7|8)\\d{9}$',
+        pattern: '^1[3456789]\\d{9}$',
         message: '${title}格式不正确',
       },
     ],

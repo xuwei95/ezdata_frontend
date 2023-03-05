@@ -16,6 +16,8 @@ export interface ActionItem extends ButtonProps {
   tooltip?: string | TooltipProps;
   // 自定义类名
   class?: string | Record<string, boolean> | any[];
+  // 自定义图标颜色
+  iconColor?: string;
 }
 
 export interface PopConfirm {

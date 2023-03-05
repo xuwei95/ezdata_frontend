@@ -142,11 +142,13 @@ export const roleIndexFormSchema: FormSchema[] = [
     field: 'url',
     component: 'Input',
     required: true,
+    helpMessage: '首页路由的访问地址',
   },
   {
     label: '组件地址',
     field: 'component',
     component: 'Input',
+    helpMessage: '首页路由的组件地址',
     componentProps: {
       placeholder: '请输入前端组件',
     },
@@ -155,6 +157,7 @@ export const roleIndexFormSchema: FormSchema[] = [
   {
     field: 'route',
     label: '是否路由菜单',
+    helpMessage: '非路由菜单设置成首页，需开启',
     component: 'Switch',
     defaultValue: true
   },

@@ -18,6 +18,7 @@ import { setupI18n } from '/@/locales/setupI18n';
 import { registerGlobComp } from '/@/components/registerGlobComp';
 import { registerThirdComp } from '/@/settings/registerThirdComp';
 import { useSso } from '/@/hooks/web/useSso';
+// 注册online模块lib
 import { registerPackages } from '/@/utils/monorepo/registerPackages';
 
 // 在本地开发中引入的,以提高浏览器响应速度
@@ -37,7 +38,7 @@ async function bootstrap() {
   // 初始化内部系统配置
   initAppConfigStore();
 
-  // 注册外部模块路由
+  // 注册外部模块路由(注册online模块lib)
   registerPackages(app);
 
   // 注册全局组件

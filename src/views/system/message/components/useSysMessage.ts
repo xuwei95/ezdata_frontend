@@ -4,6 +4,7 @@ import { getDictItemsByCode } from '/@/utils/dict/index';
 import { useRouter, useRoute } from 'vue-router'
 import { useAppStore } from '/@/store/modules/app';
 import { useTabs } from '/@/hooks/web/useTabs';
+import { useModal } from '/@/components/Modal';
 
 /**
  * 列表接口
@@ -188,7 +189,7 @@ export function useMessageHref(emit){
     let path = temp[0].text;
     path = path.replace('{DETAIL_ID}', busId)
     //固定参数 detailId 用于查询表单数据
-    let query = {
+    let query:any = {
       detailId: busId
     };
     // 额外参数处理

@@ -353,6 +353,7 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
             insertIndex: index,
             $table: xTable,
             target: instanceRef.value,
+            isModalData: options?.isModalData
           });
         }
       }
@@ -368,6 +369,8 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
     setActive?: boolean;
     //是否需要触发change事件
     emitChange?:boolean
+    // 是否是modal弹窗添加的数据
+    isModalData?:boolean
   }
 
   /**

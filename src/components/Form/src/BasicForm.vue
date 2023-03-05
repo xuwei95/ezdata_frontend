@@ -53,6 +53,7 @@
   import { basicProps } from './props';
   import { useDesign } from '/@/hooks/web/useDesign';
   import dayjs from 'dayjs';
+  import { useDebounceFn } from '@vueuse/core';
 
   export default defineComponent({
     name: 'BasicForm',
@@ -239,13 +240,19 @@
         propsRef.value = deepMerge(unref(propsRef) || {}, formProps);
       }
 
+      //update-begin-author:taoyan date:2022-11-28 for: QQYUN-3121 【优化】表单视图问题#scott测试 8、此功能未实现
+      const onFormSubmitWhenChange = useDebounceFn(handleSubmit, 300);
       function setFormModel(key: string, value: any) {
         formModel[key] = value;
         const { validateTrigger } = unref(getBindValue);
         if (!validateTrigger || validateTrigger === 'change') {
           validateFields([key]).catch((_) => {});
         }
+        if(props.autoSearch === true){
+          onFormSubmitWhenChange();
+        }
       }
+      //update-end-author:taoyan date:2022-11-28 for: QQYUN-3121 【优化】表单视图问题#scott测试 8、此功能未实现
 
       function handleEnterPress(e: KeyboardEvent) {
         const { autoSubmitOnEnter } = unref(getProps);

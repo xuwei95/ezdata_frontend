@@ -146,24 +146,26 @@
 
       function handleChange(e) {
         const { mode } = unref<Recordable>(getBindValue);
+        let changeValue:any;
         // 兼容多选模式
+        
+        //update-begin---author:wangshuai ---date:20230216  for：[QQYUN-4290]公文发文：选择机关代字报错,是因为值改变触发了change事件三次，导致数据发生改变------------
+        //采用一个值，不然的话state值变换触发多个change
         if (mode === 'multiple') {
-          state.value = e?.target?.value ?? e;
+          changeValue = e?.target?.value ?? e;
+          // 过滤掉空值
+          if (changeValue == null || changeValue === '') {
+            changeValue = [];
+          }
+          if (Array.isArray(changeValue)) {
+            changeValue = changeValue.filter((item) => item != null && item !== '');
+          }
         } else {
-          state.value = [e?.target?.value ?? e];
+          changeValue = e?.target?.value ?? e;
         }
-        // 过滤掉空值
-        if (state.value == null || state.value === '') {
-          state.value = [];
-        }
-        if (Array.isArray(state.value)) {
-          state.value = state.value.filter((item) => item != null && item !== '');
-        }
-        //update-begin---author:wangshuai ---date:20221123  for：单选模式要改成字符串------------
-        if(mode !== 'multiple' && state.value && state.value.length>0){
-          state.value = state.value[0];
-        }
-        //update-end---author:wangshuai ---date:20221123  for：单选模式要改成字符串--------------
+        state.value = changeValue;
+        //update-end---author:wangshuai ---date:20230216  for：[QQYUN-4290]公文发文：选择机关代字报错,是因为值改变触发了change事件三次，导致数据发生改变------------
+        
         // nextTick(() => formItemContext.onFieldChange());
       }
 

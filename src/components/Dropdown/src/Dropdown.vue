@@ -14,15 +14,18 @@
           >
             <a-popconfirm v-if="popconfirm && item.popConfirm" v-bind="getPopConfirmAttrs(item.popConfirm)">
               <template #icon v-if="item.popConfirm.icon">
-                <Icon :icon="item.popConfirm.icon" />
+                <Icon v-if="item.iconColor" :icon="item.popConfirm.icon" :color="item.iconColor"/>
+                <Icon v-else :icon="item.popConfirm.icon"/>
               </template>
               <div class="dropdown-event-area">
-                <Icon :icon="item.icon" v-if="item.icon" />
+                <Icon :icon="item.icon" v-if="item.icon && item.iconColor" :color="item.iconColor"/>
+                <Icon :icon="item.icon" v-else-if="item.icon"/>
                 <span class="ml-1">{{ item.text }}</span>
               </div>
             </a-popconfirm>
             <template v-else>
-              <Icon :icon="item.icon" v-if="item.icon" />
+              <Icon :icon="item.icon" v-if="item.icon && item.iconColor" :color="item.iconColor"/>
+              <Icon :icon="item.icon" v-else-if="item.icon"/>
               <span class="ml-1">{{ item.text }}</span>
             </template>
           </a-menu-item>

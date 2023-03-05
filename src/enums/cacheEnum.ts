@@ -32,6 +32,9 @@ export const TENANT_ID = 'TENANT_ID';
 // login info key
 export const LOGIN_INFO_KEY = 'LOGIN__INFO__';
 
+// 聊天UID key
+export const JEECG_CHAT_UID = 'JEECG_CHAT_UID';
+
 export enum CacheTypeEnum {
   SESSION,
   LOCAL,

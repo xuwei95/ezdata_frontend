@@ -1,14 +1,31 @@
 <template>
-  <BasicDrawer v-bind="$attrs" @register="registerDrawer" title="角色权限配置" width="650px" destroyOnClose showFooter>
+  <BasicDrawer v-bind="$attrs" @register="registerDrawer" width="650px" destroyOnClose showFooter>
+    <template #title>
+      角色权限配置
+      <a-dropdown>
+        <Icon icon="ant-design:more-outlined" class="more-icon" />
+        <template #overlay>
+          <a-menu @click="treeMenuClick">
+            <a-menu-item key="checkAll">选择全部</a-menu-item>
+            <a-menu-item key="cancelCheck">取消选择</a-menu-item>
+            <div class="line"></div>
+            <a-menu-item key="openAll">展开全部</a-menu-item>
+            <a-menu-item key="closeAll">折叠全部</a-menu-item>
+            <div class="line"></div>
+            <a-menu-item key="relation">层级关联</a-menu-item>
+            <a-menu-item key="standAlone">层级独立</a-menu-item>
+          </a-menu>
+        </template>
+      </a-dropdown>
+    </template>
     <BasicTree
       ref="treeRef"
       checkable
-      toolbar
       :treeData="treeData"
       :checkedKeys="checkedKeys"
-      :expandedKeys="allTreeKeys"
+      :expandedKeys="expandedKeys"
       :selectedKeys="selectedKeys"
-      :checkStrictly="true"
+      :checkStrictly="checkStrictly"
       :clickRowToExpand="false"
       title="所拥有的的权限"
       @check="onCheck"
@@ -50,6 +67,10 @@
   const treeRef = ref(null);
   const loading = ref(false);
 
+  //展开折叠的key
+  const expandedKeys = ref<any>([]);
+  //父子节点选中状态是否关联
+  const checkStrictly = ref<boolean>(true);
   const [registerDrawer1, { openDrawer: openDataRuleDrawer }] = useDrawer();
   const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
     await reset();
@@ -59,6 +80,7 @@
     const roleResult = await queryTreeListForRole();
     treeData.value = roleResult.treeList;
     allTreeKeys.value = roleResult.ids;
+    expandedKeys.value = roleResult.ids;
     //初始化角色菜单数据
     const permResult = await queryRolePermission({ roleId: unref(roleId) });
     checkedKeys.value = permResult;
@@ -110,10 +132,50 @@
       permissionIds: unref(getTree().getCheckedKeys()).join(','),
       lastpermissionIds: unref(defaultCheckedKeys).join(','),
     };
+    //update-begin-author:taoyan date:2023-2-11 for: issues/352 VUE角色授权重复保存
+    if(loading.value===false){
+      await doSave(params)
+    }else{
+      console.log('请等待上次执行完毕!');
+    }
+    if(exit){
+      // 如果关闭
+      closeDrawer();
+    }else{
+      // 没有关闭需要重新获取选中数据
+      const permResult = await queryRolePermission({ roleId: unref(roleId) });
+      defaultCheckedKeys.value = permResult;
+    }
+  }
+  
+  // VUE角色授权重复保存 #352
+  async function doSave(params) {
     loading.value = true;
     await saveRolePermission(params);
-    loading.value = false;
-    exit && closeDrawer();
+    setTimeout(()=>{
+      loading.value = false;
+    }, 500)
+  }
+  //update-end-author:taoyan date:2023-2-11 for: issues/352 VUE角色授权重复保存
+
+  /**
+   * 树菜单选择
+   * @param key
+   */
+  function treeMenuClick({ key }) {
+    if (key === 'checkAll') {
+      checkedKeys.value = allTreeKeys.value;
+    } else if (key === 'cancelCheck') {
+      checkedKeys.value = [];
+    } else if (key === 'openAll') {
+      expandedKeys.value = allTreeKeys.value;
+    } else if (key === 'closeAll') {
+      expandedKeys.value = [];
+    } else if (key === 'relation') {
+      checkStrictly.value = false;
+    } else {
+      checkStrictly.value = true;
+    }
   }
 </script>
 
@@ -123,4 +185,22 @@
     position: absolute;
     width: 618px;
   }
+  //update-begin---author:wangshuai ---date:20230202  for：抽屉弹窗标题图标下拉样式------------
+  .line {
+    height: 1px;
+    width: 100%;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .more-icon {
+    font-size: 20px !important;
+    color: black;
+    display: inline-flex;
+    float: right;
+    margin-right: 2px;
+    cursor: pointer;
+  }
+  :deep(.jeecg-tree-header){
+    border-bottom: none;
+  }
+  //update-end---author:wangshuai ---date:20230202  for：抽屉弹窗标题图标下拉样式------------
 </style>

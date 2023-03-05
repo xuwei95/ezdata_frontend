@@ -21,6 +21,9 @@ export enum Api {
 
   getCurrentUserDeparts = '/sys/user/getCurrentUserDeparts',
   selectDepart = '/sys/selectDepart',
+  getUpdateDepartInfo = '/sys/user/getUpdateDepartInfo',
+  doUpdateDepartInfo = '/sys/user/doUpdateDepartInfo',
+  changeDepartChargePerson = '/sys/user/changeDepartChargePerson',
 }
 
 /**
@@ -93,3 +96,27 @@ export const getUserDeparts = (params?) => defHttp.get({ url: Api.getCurrentUser
  * 切换选择部门
  */
 export const selectDepart = (params?) => defHttp.put({ url: Api.selectDepart, params });
+
+/**
+ * 编辑部门前获取部门相关信息
+ * @param id
+ */
+export const getUpdateDepartInfo = (id) => defHttp.get({ url: Api.getUpdateDepartInfo, params: {id} });
+
+/**
+ * 编辑部门
+ * @param params
+ */
+export const doUpdateDepartInfo = (params) => defHttp.put({ url: Api.doUpdateDepartInfo, params });
+
+/**
+ * 删除部门
+ * @param id
+ */
+export const deleteDepart = (id) => defHttp.delete({ url: Api.delete, params:{ id } }, { joinParamsToUrl: true });
+
+/**
+ * 设置负责人 取消负责人
+ * @param params
+ */
+export const changeDepartChargePerson = (params) => defHttp.put({ url: Api.changeDepartChargePerson, params });

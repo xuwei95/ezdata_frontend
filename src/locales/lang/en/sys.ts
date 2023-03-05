@@ -94,9 +94,17 @@ export default {
 
     userName: 'Username',
     password: 'Password',
+    inputCode: 'Verification code',
     confirmPassword: 'Confirm Password',
     email: 'Email',
     smsCode: 'SMS code',
     mobile: 'Mobile',
+
+    //重置密码页面英文
+    authentication:'authentication',
+    resetLoginPassword:'reset login password',
+    resetSuccess:'reset succeeded',
+    nextStep:'next step',
+    goToLogin:'go to login'
   },
 };

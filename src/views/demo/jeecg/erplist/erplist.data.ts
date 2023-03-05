@@ -179,7 +179,7 @@ export const customerFormSchema: FormSchema[] = [
     label: '联系方式',
     field: 'telphone',
     component: 'Input',
-    rules: [{ required: false, pattern: /^1[3|4|5|7|8|9][0-9]\d{8}$/, message: '手机号码格式有误' }],
+    rules: [{ required: false, pattern: /^1[3456789]\d{9}$/, message: '手机号码格式有误' }],
   },
   {
     label: 'orderId',

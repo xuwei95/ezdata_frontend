@@ -88,6 +88,7 @@
   /** url 变化时，动态设置组件名称placeholder */
   function onUrlChange(url) {
     let placeholder = '';
+    let httpUrl = url;
     if (url != null && url != '') {
       if (url.startsWith('/')) {
         url = url.substring(1);
@@ -100,5 +101,12 @@
       placeholder = '请输入组件名称';
     }
     updateSchema([{ field: 'componentName', componentProps: { placeholder } }]);
+    //update-begin---author:wangshuai ---date:20230204  for：[QQYUN-4058]菜单添加智能化处理------------
+    if (httpUrl != null && httpUrl != '') {
+      if (httpUrl.startsWith('http://') || httpUrl.startsWith('https://')) {
+        setFieldsValue({ component: httpUrl });
+      }
+    }
+    //update-end---author:wangshuai ---date:20230204  for：[QQYUN-4058]菜单添加智能化处理------------
   }
 </script>

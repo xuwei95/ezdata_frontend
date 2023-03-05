@@ -65,7 +65,9 @@ export function useTableScroll(
     if (!tableEl) return;
 
     if (!bodyEl) {
-      bodyEl = tableEl.querySelector('.ant-table-body');
+      //update-begin-author:taoyan date:2023-2-11 for: issues/355 前端-jeecgboot-vue3 3.4.4版本,BasicTable高度自适应功能失效,设置BasicTable组件maxHeight失效; 原因已找到,请看详情
+      bodyEl = tableEl.querySelector('.ant-table-tbody');
+      //update-end-author:taoyan date:2023-2-11 for: issues/355 前端-jeecgboot-vue3 3.4.4版本,BasicTable高度自适应功能失效,设置BasicTable组件maxHeight失效; 原因已找到,请看详情
       if (!bodyEl) return;
     }
 
@@ -91,7 +93,7 @@ export function useTableScroll(
     await nextTick();
     //Add a delay to get the correct bottomIncludeBody paginationHeight footerHeight headerHeight
 
-    const headEl = tableEl.querySelector('.ant-table-thead ');
+    const headEl = tableEl.querySelector('.ant-table-thead');
 
     if (!headEl) return;
 

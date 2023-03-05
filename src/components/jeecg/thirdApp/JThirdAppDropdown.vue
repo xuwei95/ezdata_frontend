@@ -4,7 +4,7 @@
     <template #overlay>
       <a-menu @click="handleMenuClick">
         <a-menu-item v-if="syncToApp" key="to-app">同步到{{ name }}</a-menu-item>
-        <a-menu-item v-if="syncToLocal" key="to-local">同步到本地</a-menu-item>
+        <a-menu-item v-if="getSyncToLocal" key="to-local">同步到本地</a-menu-item>
       </a-menu>
     </template>
   </a-dropdown>
@@ -16,6 +16,7 @@
 
 <script lang="ts" setup>
   /* JThirdAppButton 的子组件，不可单独使用 */
+  import { computed } from 'vue';
 
   const props = defineProps({
     type: String,
@@ -25,6 +26,14 @@
   });
   // 声明Emits
   const emit = defineEmits(['to-app', 'to-local']);
+
+  const getSyncToLocal = computed(() => {
+    // 由于企业微信接口变更，将不再支持同步到本地
+    if (props.type === 'wechatEnterprise') {
+      return false;
+    }
+    return props.syncToLocal;
+  });
 
   function handleMenuClick(event) {
     emit(event.key, { type: props.type });

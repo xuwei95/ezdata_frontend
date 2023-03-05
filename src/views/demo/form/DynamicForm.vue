@@ -102,7 +102,7 @@
         span: 12,
       },
       dynamicRules: ({ values }) => {
-        return values.field8 ? [{ required: true, message: '字段4必填' }] : [];
+        return values.field8 ? [{ required: true, message: '字段必填' }] : [];
       },
       componentProps: {
         options: [

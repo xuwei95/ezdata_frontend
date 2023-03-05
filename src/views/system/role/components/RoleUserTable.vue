@@ -2,7 +2,7 @@
   <BasicDrawer @register="registerBaseDrawer" title="角色用户" width="800" destroyOnClose>
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
-        <a-button type="primary" @click="handleCreate"> 新增用户</a-button>
+        <a-button type="primary" @click="handleCreate" v-if="!disableUserEdit"> 新增用户</a-button>
         <a-button type="primary" @click="handleSelect"> 已有用户</a-button>
 
         <a-dropdown v-if="checkedKeys.length > 0">
@@ -42,6 +42,10 @@
   import { getUserRoles } from '../../user/user.api';
 
   const emit = defineEmits(['register', 'hideUserList']);
+  const props = defineProps({
+    disableUserEdit: {type:Boolean,default:false}
+  })
+  
   const checkedKeys = ref<Array<string | number>>([]);
   const roleId = ref('');
   const [registerBaseDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
@@ -167,6 +171,7 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
+        ifShow: () => !props.disableUserEdit,
       },
       {
         label: '取消关联',

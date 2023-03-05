@@ -9,4 +9,6 @@ export enum PageEnum {
   ERROR_LOG_PAGE = '/error-log/list',
   // auth2登录路由路径
   OAUTH2_LOGIN_PAGE_PATH = '/oauth2-app/login',
+  //文件路由
+  SYS_FILES_PATH = '/file/share',
 }

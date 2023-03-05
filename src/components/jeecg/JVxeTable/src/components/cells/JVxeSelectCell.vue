@@ -89,6 +89,9 @@
         let props = originColumn.value.props || {};
         props['mode'] = 'multiple';
         props['maxTagCount'] = 1;
+        //update-begin-author:taoyan date:2022-12-5 for: issues/271 Online表单主子表单下拉多选无法搜索
+        originColumn.value.allowSearch = true;
+        //update-end-author:taoyan date:2022-12-5 for: issues/271 Online表单主子表单下拉多选无法搜索
         originColumn.value.props = props;
       } else if (searchTypes.includes(props.type)) {
         // 处理搜索

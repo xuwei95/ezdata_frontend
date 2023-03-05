@@ -78,7 +78,7 @@ export const baseSetschemas: FormSchema[] = [
     dynamicRules: ({ model, schema }) => {
       return [
         { ...rules.duplicateCheckRule('sys_user', 'phone', model, schema, false)[0] },
-        { pattern: /^1[3|4|5|7|8|9][0-9]\d{8}$/, message: '手机号码格式有误' },
+        { pattern: /^1[3456789]\d{9}$/, message: '手机号码格式有误' },
       ];
     },
     colProps: { span: 18 },

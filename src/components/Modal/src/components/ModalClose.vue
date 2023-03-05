@@ -11,7 +11,7 @@
 
     <!-- 是否开启评论区域 -->
     <template v-if="enableComment">
-      <Tooltip title="关闭" placement="bottom" v-if="commentSpan>0">
+      <Tooltip title="收起" placement="bottom" v-if="commentSpan>0">
         <RightSquareOutlined @click="handleCloseComment" style="font-size: 16px"/>
       </Tooltip>
       <Tooltip title="展开" placement="bottom" v-else>
@@ -50,7 +50,7 @@
           prefixCls,
           `${prefixCls}--custom`,
           {
-            [`${prefixCls}--can-full`]: props.canFullscreen,
+            [`${prefixCls}--can-full`]: props.canFullscreen || props.enableComment,
           },
         ];
       });

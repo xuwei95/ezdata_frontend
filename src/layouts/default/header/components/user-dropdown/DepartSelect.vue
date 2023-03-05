@@ -151,7 +151,7 @@
    * 提交数据
    */
   async function handleSubmit() {
-    if (unref(isMultiTenant) && !unref(tenantSelected)) {
+    if (unref(isMultiTenant) && unref(tenantSelected)==null) {
       validate_status.value = 'error';
       return false;
     }
@@ -165,6 +165,9 @@
           userStore.setTenant(unref(tenantSelected));
         }
         createMessage.success('切换成功');
+        
+        //切换租户后要刷新首页
+        window.location.reload();
       })
       .catch((e) => {
         console.log('登录选择出现问题', e);
@@ -187,6 +190,7 @@
         const result = await selectDepart({
           username: userStore.getUserInfo.username,
           orgCode: unref(departSelected),
+          loginTenantId: unref(tenantSelected),
         });
         if (result.userInfo) {
           const userInfo = result.userInfo;

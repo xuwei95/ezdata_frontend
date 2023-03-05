@@ -53,11 +53,14 @@
           <a-button preIcon="ant-design:import-outlined" type="primary">导入</a-button>
         </a-upload>
         <a-button preIcon="ant-design:export-outlined" type="primary" @click="handleExportXls('单表示例', getExportUrl,exportParams)">导出</a-button>
+        <a-button preIcon="ant-design:filter" type="primary" @click="">高级查询</a-button>
         <a-button preIcon="ant-design:plus-outlined" type="primary" @click="openTab">打开Tab页</a-button>
         <a-button preIcon="ant-design:retweet-outlined" type="primary" @click="customSearch = !customSearch">{{
           customSearch ? '表单配置查询' : '自定义查询'
         }}</a-button>
         <a-button preIcon="ant-design:import-outlined" type="primary" @click="handleImport">弹窗导入</a-button>
+
+        <super-query :config="superQueryConfig" @search="handleSuperQuery"/>
 
         <a-dropdown v-if="checkedKeys.length > 0">
           <template #overlay>
@@ -122,7 +125,7 @@
     },
     //自定义默认排序
     defSort: {
-      column: 'sex,salaryMoney',
+      column: 'createTime,sex',
       order: 'desc',
     },
     striped: true,
@@ -285,6 +288,17 @@
   }
   //自定义查询----end---------
 
+  const superQueryConfig = reactive({
+    name:{ title: "名称", view: "text", type: "string", order: 1 },
+    sex:{ title: "性别", view: "list", type: "string", dictCode:'sex', order: 2 },
+  });
+  
+  function handleSuperQuery(params) {
+    Object.keys(params).map(k=>{
+      queryParam[k] = params[k]
+    });
+    searchQuery();
+  }
 </script>
 <style lang="less" scoped>
   .jeecg-basic-table-form-container {

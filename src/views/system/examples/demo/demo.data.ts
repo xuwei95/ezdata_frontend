@@ -211,4 +211,10 @@ export const formSchema: FormSchema[] = [
       placeholder: '请输入个人简介',
     },
   },
+  {
+    field: 'updateCount',
+    label: '乐观锁',
+    show: false,
+    component: 'Input',
+  },
 ];

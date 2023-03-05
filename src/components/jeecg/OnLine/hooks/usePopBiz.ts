@@ -559,6 +559,11 @@ export function usePopBiz(props, tableRef?) {
         }
       }
       dataSource.value = data.records;
+      //update-begin-author:taoyan date:2023-2-11 for:issues/356 在线报表分页有问题
+      tableRef.value && tableRef.value.setPagination({
+        total: Number(data.total)
+      })
+      //update-end-author:taoyan date:2023-2-11 for:issues/356 在线报表分页有问题
     } else {
       pagination.total = 0;
       dataSource.value = [];

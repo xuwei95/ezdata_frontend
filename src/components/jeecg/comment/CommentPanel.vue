@@ -1,13 +1,13 @@
 <template>
   <div class="comment-tabs-warp" v-if="showStatus">
     <a-tabs @change="handleChange" :animated="false">
-      <a-tab-pane tab="评论" key="comment" class="comment-list-tab">
+      <a-tab-pane v-if="showComment" tab="评论" key="comment" class="comment-list-tab">
         <comment-list :tableName="tableName" :dataId="dataId" :datetime="datetime1"></comment-list>
       </a-tab-pane>
-      <a-tab-pane tab="文件" key="file">
+      <a-tab-pane v-if="showFiles" tab="文件" key="file">
         <comment-files :tableName="tableName" :dataId="dataId" :datetime="datetime2"></comment-files>
       </a-tab-pane>
-      <a-tab-pane tab="日志" key="log">
+      <a-tab-pane v-if="showDataLog" tab="日志" key="log">
         <data-log-list :tableName="tableName" :dataId="dataId" :datetime="datetime3"></data-log-list>
       </a-tab-pane>
     </a-tabs>
@@ -35,6 +35,12 @@
     props: {
       tableName: propTypes.string.def(''),
       dataId: propTypes.string.def(''),
+      // 显示评论
+      showComment: propTypes.bool.def(true),
+      // 显示文件
+      showFiles: propTypes.bool.def(true),
+      // 显示日志
+      showDataLog: propTypes.bool.def(true),
     },
     setup(props) {
       const showStatus = computed(() => {

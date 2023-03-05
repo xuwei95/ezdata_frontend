@@ -1,6 +1,6 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
-import { getAllRolesList, getAllTenantList } from './user.api';
+import { getAllRolesListNoByTenant, getAllTenantList } from './user.api';
 import { rules } from '/@/utils/helper/validator';
 import { render } from '/@/utils/common/renderUtils';
 export const columns: BasicColumn[] = [
@@ -189,7 +189,7 @@ export const formSchema: FormSchema[] = [
     component: 'ApiSelect',
     componentProps: {
       mode: 'multiple',
-      api: getAllRolesList,
+      api: getAllRolesListNoByTenant,
       labelField: 'roleName',
       valueField: 'id',
     },
@@ -293,7 +293,7 @@ export const formSchema: FormSchema[] = [
     dynamicRules: ({ model, schema }) => {
       return [
         { ...rules.duplicateCheckRule('sys_user', 'phone', model, schema, true)[0] },
-        { pattern: /^1[3|4|5|7|8|9][0-9]\d{8}$/, message: '手机号码格式有误' },
+        { pattern: /^1[3456789]\d{9}$/, message: '手机号码格式有误' },
       ];
     },
   },
@@ -403,5 +403,139 @@ export const formAgentSchema: FormSchema[] = [
       dictCode: 'valid_status',
       type: 'radioButton',
     },
+  },
+];
+
+export const formQuitAgentSchema: FormSchema[] = [
+  {
+    label: '',
+    field: 'id',
+    component: 'Input',
+    show: false,
+  },
+  {
+    field: 'userName',
+    label: '用户名',
+    component: 'Input',
+    componentProps: {
+      readOnly: true,
+      allowClear: false,
+    },
+  },
+  {
+    field: 'agentUserName',
+    label: '交接人员',
+    required: true,
+    component: 'JSelectUser',
+    componentProps: {
+      rowKey: 'username',
+      labelKey: 'realname',
+      maxSelectCount: 1,
+    },
+  },
+  {
+    field: 'startTime',
+    label: '交接开始时间',
+    component: 'DatePicker',
+    required: true,
+    componentProps: {
+      showTime: true,
+      valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      placeholder: '请选择交接开始时间',
+      getPopupContainer: () => document.body,
+    },
+  },
+  {
+    field: 'endTime',
+    label: '交接结束时间',
+    component: 'DatePicker',
+    required: true,
+    componentProps: {
+      showTime: true,
+      valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      placeholder: '请选择交接结束时间',
+      getPopupContainer: () => document.body,
+    },
+  },
+  {
+    field: 'status',
+    label: '状态',
+    component: 'JDictSelectTag',
+    defaultValue: '1',
+    componentProps: {
+      dictCode: 'valid_status',
+      type: 'radioButton',
+    },
+  },
+];
+
+//租户用户列表
+export const userTenantColumns: BasicColumn[] = [
+  {
+    title: '用户账号',
+    dataIndex: 'username',
+    width: 120,
+  },
+  {
+    title: '用户姓名',
+    dataIndex: 'realname',
+    width: 100,
+  },
+  {
+    title: '头像',
+    dataIndex: 'avatar',
+    width: 120,
+    customRender: render.renderAvatar,
+  },
+  {
+    title: '手机号',
+    dataIndex: 'phone',
+    width: 100,
+  },
+  {
+    title: '部门',
+    width: 150,
+    dataIndex: 'orgCodeTxt',
+  },
+  {
+    title: '状态',
+    dataIndex: 'status',
+    width: 80,
+    customRender: ({ text }) => {
+      if (text === '1') {
+        return '正常';
+      } else if (text === '3') {
+        return '审批中';
+      } else {
+        return '已拒绝';
+      }
+    },
+  },
+];
+
+//用户租户搜索表单
+export const userTenantFormSchema: FormSchema[] = [
+  {
+    label: '账号',
+    field: 'username',
+    component: 'Input',
+    colProps: { span: 6 },
+  },
+  {
+    label: '名字',
+    field: 'realname',
+    component: 'Input',
+    colProps: { span: 6 },
+  },
+  {
+    label: '性别',
+    field: 'sex',
+    component: 'JDictSelectTag',
+    componentProps: {
+      dictCode: 'sex',
+      placeholder: '请选择性别',
+      stringToNumber: true,
+    },
+    colProps: { span: 6 },
   },
 ];

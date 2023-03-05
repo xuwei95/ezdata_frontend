@@ -27,6 +27,7 @@
   <RoleUserTable @register="roleUserDrawer" />
   <!--角色编辑抽屉-->
   <RoleDrawer @register="registerDrawer" @success="reload" :showFooter="showFooter" />
+  <!--角色详情-->
   <RoleDesc @register="registerDesc"></RoleDesc>
   <!--角色菜单授权抽屉-->
   <RolePermissionDrawer @register="rolePermissionDrawer" />
@@ -49,6 +50,7 @@
   const showFooter = ref(true);
   const [roleUserDrawer, { openDrawer: openRoleUserDrawer }] = useDrawer();
   const [registerDrawer, { openDrawer }] = useDrawer();
+  const [registerModal, { openModal }] = useModal();
   const [registerIndexModal, { openModal: openIndexModal }] = useModal();
   const [rolePermissionDrawer, { openDrawer: openRolePermissionDrawer }] = useDrawer();
   const [registerDesc, { openDrawer: openRoleDesc }] = useDrawer();
@@ -57,7 +59,7 @@
   const { prefixCls, tableContext, onImportXls, onExportXls } = useListPage({
     designScope: 'role-template',
     tableProps: {
-      title: '角色列表',
+      title: '系统角色列表',
       api: list,
       columns: columns,
       formConfig: {
@@ -130,6 +132,7 @@
   function handlePerssion(record) {
     openRolePermissionDrawer(true, { roleId: record.id });
   }
+
   /**
    * 首页配置弹窗
    */

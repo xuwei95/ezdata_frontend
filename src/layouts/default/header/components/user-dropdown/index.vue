@@ -156,7 +156,9 @@
             updatePassword();
             break;
           case 'account':
-            go(`/page-demo/account/setting`);
+            //update-begin---author:wangshuai ---date:20221125  for：进入用户设置页面------------
+            go(`/system/usersetting`);
+            //update-end---author:wangshuai ---date:20221125  for：进入用户设置页面--------------
             break;
         }
       }

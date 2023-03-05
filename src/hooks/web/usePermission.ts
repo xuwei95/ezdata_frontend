@@ -18,10 +18,15 @@ import { isArray } from '/@/utils/is';
 import { useMultipleTabStore } from '/@/store/modules/multipleTab';
 
 // User permissions related operations
-export function usePermission(formData?) {
+export function usePermission() {
   const userStore = useUserStore();
   const appStore = useAppStore();
   const permissionStore = usePermissionStore();
+  //动态加载流程节点表单权限
+  let formData: any = {};
+  function initBpmFormData(_bpmFormData) {
+    formData = _bpmFormData;
+  }
   const { closeAll } = useTabs(router);
 
   //==================================工作流权限判断-begin=========================================
@@ -165,5 +170,5 @@ export function usePermission(formData?) {
   }
   //update-end-author:taoyan date:2022-6-17 for: VUEN-1342【流程】编码方式 节点权限配置好后，未生效
 
-  return { changeRole, hasPermission, togglePermissionMode, refreshMenu, isDisabledAuth };
+  return { changeRole, hasPermission, togglePermissionMode, refreshMenu, isDisabledAuth, initBpmFormData };
 }

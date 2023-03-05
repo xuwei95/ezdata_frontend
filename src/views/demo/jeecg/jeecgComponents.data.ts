@@ -139,6 +139,21 @@ export const schemas: FormSchema[] = [
     colProps: { span: 12 },
   },
   {
+    field: 'xldx2',
+    component: 'JSelectMultiple',
+    label: '字典下拉多选2',
+    colProps: { span: 12 },
+    componentProps: {
+      dictCode: 'sex',
+    },
+  },
+  {
+    field: 'xldx2',
+    component: 'JEllipsis',
+    label: '选择值',
+    colProps: { span: 12 },
+  },
+  {
     field: 'dxxlk',
     component: 'JDictSelectTag',
     label: '字典下拉单选',
@@ -645,26 +660,21 @@ export const schemas: FormSchema[] = [
     label: '选中值',
     colProps: { span: 12 },
   },
+  
   {
-    field: 'radioButtonGroup',
-    component: 'RadioButtonGroup',
-    label: 'RadioButtonGroup',
+    field: 'userSelect2',
+    component: 'UserSelect',
+    label: '高级用户选择',
     helpMessage: ['component模式'],
     colProps: { span: 12 },
-    defaultValue: '0',
-    componentProps: {
-      options: [
-        { value: '0',icon: 'ant-design:setting'},
-        { label: '停用', value: '1',icon: 'mdi:home' },
-      ],
-    },
   },
   {
-    field: 'radioButtonGroup',
+    field: 'userSelect2',
     component: 'JEllipsis',
     label: '选中值',
     colProps: { span: 12 },
   },
+  
   {
     field: 'superQuery',
     component: 'Input',

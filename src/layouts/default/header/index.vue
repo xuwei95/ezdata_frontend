@@ -11,7 +11,7 @@
       />
       <LayoutBreadcrumb v-if="getShowContent && getShowBread" :theme="getHeaderTheme" />
       <!-- 欢迎语 -->
-      <span v-if="getShowContent && getShowBreadTitle" :class="[prefixCls, `${prefixCls}--${getHeaderTheme}`,'headerIntroductionClass']"> 欢迎进入 {{ title }} </span>
+      <span v-if="getShowContent && getShowBreadTitle && !getIsMobile" :class="[prefixCls, `${prefixCls}--${getHeaderTheme}`,'headerIntroductionClass']"> 欢迎进入 {{ title }} </span>
     </div>
     <!-- left end -->
 

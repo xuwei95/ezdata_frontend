@@ -291,7 +291,7 @@
               fileSize: item.size,
             };
             newFileList.push(fileJson);
-          } else {
+          }else{
             return;
           }
         }

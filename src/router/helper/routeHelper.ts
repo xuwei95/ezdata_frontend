@@ -5,8 +5,9 @@ import { getParentLayout, LAYOUT, EXCEPTION_COMPONENT } from '/@/router/constant
 import { cloneDeep, omit } from 'lodash-es';
 import { warn } from '/@/utils/log';
 import { createRouter, createWebHashHistory } from 'vue-router';
-import { getTenantId, getToken } from '/@/utils/auth';
+import { getTenantId, getToken } from "/@/utils/auth";
 import { URL_HASH_TAB } from '/@/utils';
+//引入online lib路由
 import { packageViews } from '/@/utils/monorepo/dynamicRouter';
 import {useI18n} from "/@/hooks/web/useI18n";
 
@@ -27,7 +28,7 @@ let dynamicViewsModules: Record<string, () => Promise<Recordable>>;
 function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
   if (!dynamicViewsModules) {
     dynamicViewsModules = import.meta.glob('../../views/**/*.{vue,tsx}');
-    // 跟模块views合并
+    //合并online lib路由
     dynamicViewsModules = Object.assign({}, dynamicViewsModules, packageViews);
   }
   if (!routes) return;

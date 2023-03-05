@@ -73,8 +73,10 @@ export function useMethods() {
                                 <span>具体详情请<a href = ${href} download = ${fileName}> 点击下载 </a> </span> 
                               </div>`,
           });
-        } else if (fileInfo.code === 500) {
+          //update-begin---author:wangshuai ---date:20221121  for：[VUEN-2827]导入无权限，提示图标错误------------
+        } else if (fileInfo.code === 500 || fileInfo.code === 510) {
           createMessage.error(fileInfo.message || `${data.file.name} 导入失败`);
+          //update-end---author:wangshuai ---date:20221121  for：[VUEN-2827]导入无权限，提示图标错误------------
         } else {
           createMessage.success(fileInfo.message || `${data.file.name} 文件上传成功`);
         }

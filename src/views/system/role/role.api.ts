@@ -3,6 +3,7 @@ import { Modal } from 'ant-design-vue';
 
 enum Api {
   list = '/sys/role/list',
+  listByTenant = '/sys/role/listByTenant',
   save = '/sys/role/add',
   edit = '/sys/role/edit',
   deleteRole = '/sys/role/delete',
@@ -34,10 +35,15 @@ export const getExportUrl = Api.exportXls;
  */
 export const getImportUrl = Api.importExcel;
 /**
- * 列表
+ * 系统角色列表
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+/**
+ * 租户角色列表
+ * @param params
+ */
+export const listByTenant = (params) => defHttp.get({ url: Api.listByTenant, params });
 
 /**
  * 删除角色

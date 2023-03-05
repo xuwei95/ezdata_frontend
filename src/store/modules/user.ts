@@ -123,9 +123,10 @@ export const useUserStore = defineStore({
       try {
         const { goHome = true, mode, ...loginParams } = params;
         const data = await loginApi(loginParams, mode);
-        const { token } = data;
+        const { token, userInfo } = data;
         // save token
         this.setToken(token);
+        this.setTenant(userInfo.loginTenantId);
         return this.afterLoginAction(goHome, data);
       } catch (error) {
         return Promise.reject(error);
@@ -246,6 +247,7 @@ export const useUserStore = defineStore({
       this.setSessionTimeout(false);
       this.setUserInfo(null);
       this.setLoginInfo(null);
+      this.setTenant(null);
       //update-begin-author:liusq date:2022-5-5 for:退出登录后清除拖拽模块的接口前缀
       localStorage.removeItem(JDragConfigEnum.DRAG_BASE_URL);
       //update-end-author:liusq date:2022-5-5 for: 退出登录后清除拖拽模块的接口前缀
