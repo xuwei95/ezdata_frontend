@@ -18,9 +18,10 @@
     </BasicTable>
   </BasicModal>
   <TenantPackMenuModal @register="registerPackMenu" @success="success" />
+  <TenantPackUserModal @register="registerPackUser" @success="success" />
 </template>
 <script lang="ts" setup name="tenant-pack-modal">
-  import { ref, unref } from 'vue';
+  import { reactive, ref, unref } from 'vue';
   import { BasicModal, useModal, useModalInner } from '/@/components/Modal';
   import { packColumns, userColumns, packFormSchema } from './tenant.data';
   import { getTenantUserList, leaveTenant, packList, deletePackPermissions } from './tenant.api';
@@ -28,8 +29,11 @@
   import { BasicTable, TableAction } from '/@/components/Table';
   import TenantPackMenuModal from './TenantPackMenuModal.vue';
   import {Modal} from "ant-design-vue";
+  import TenantPackUserModal from './TenantPackUserModal.vue';
+  import {useMessage} from "/@/hooks/web/useMessage";
 
   const [registerPackMenu, { openModal }] = useModal();
+  const [registerPackUser, { openModal: packUserOpenModal }] = useModal();
   const tenantId = ref<number>(0);
   // 列表页面公共参数、方法
   const { prefixCls, tableContext } = useListPage({
@@ -57,12 +61,14 @@
       },
     },
   });
-  const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
   // Emits声明
   const emit = defineEmits(['register', 'success']);
+  const createBy = ref<string>('');
   //表单赋值
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     tenantId.value = data.tenantId;
+    createBy.value = data.createBy;
     success();
   });
   //设置标题
@@ -76,6 +82,10 @@
   function getActions(record) {
     return [
       {
+        label: '用户',
+        onClick: seeTenantPackUser.bind(null, record),
+      },
+      {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
       },
@@ -83,7 +93,7 @@
         label: '删除',
         popConfirm: {
           title: '是否确认删除租户产品包',
-          confirm: handleDelete.bind(null, record.id),
+          confirm: handleDelete.bind(null, record),
         },
       },
     ];
@@ -108,18 +118,37 @@
     });
   }
 
+  //默认系统产品包不允许删除,包含(超级管理员、组织账户管理员、组织应用管理员)
+  const packCode = reactive<any>(['superAdmin','accountAdmin','appAdmin']);
+  const { createMessage } = useMessage();
+  
   /**
    * 删除产品包
    * @param 删除
    */
-  async function handleDelete(id) {
-    await deletePackPermissions({ ids: id }, success);
+  async function handleDelete(record) {
+    //update-begin---author:wangshuai ---date:20230222  for：系统默认产品包不允许删除------------
+    if(packCode.indexOf(record.packCode) != -1){
+        createMessage.warning("默认系统产品包不允许删除");
+       return;
+    }
+    //update-end---author:wangshuai ---date:20230222  for：系统默认产品包不允许删除------------
+    await deletePackPermissions({ ids: record.id }, success);
   }
 
   /**
    * 批量删除产品包
    */
   async function handlePackBatch() {
+    let value = selectedRows.value;
+    if(value && value.length>0){
+      for (let i = 0; i < value.length; i++) {
+        if(packCode.indexOf(value[i].packCode) != -1){
+          createMessage.warning("默认系统产品包不允许删除");
+          return;
+        }
+      }
+    }
     Modal.confirm({
       title: '删除租户产品包',
       content: '是否删除租户产品包',
@@ -140,5 +169,16 @@
       isUpdate: false,
       tenantId: unref(tenantId),
     });
+  }
+
+  /**
+   * 产品包下面的用户
+   * @param record
+   */
+  function seeTenantPackUser(record) {
+    record.createBy = unref(createBy);
+    packUserOpenModal(true,{
+      record:record
+    })
   }
 </script>

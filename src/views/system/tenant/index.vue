@@ -86,7 +86,7 @@
       }
     },
   });
-  const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload }, { rowSelection, selectedRowKeys, selectedRows }] = tableContext;
 
   /**
    * 操作列定义
@@ -186,6 +186,8 @@
     }
     packModal(true, {
       tenantId: unref(selectedRowKeys.value.join(',')),
+      //将租户创建人(拥有者)传递过去，产品包下的用户不允许非拥有者删除
+      createBy: selectedRows.value[0].createBy
     });
   }
 

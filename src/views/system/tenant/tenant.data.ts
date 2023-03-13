@@ -49,6 +49,11 @@ export const columns: BasicColumn[] = [
     title: '部门',
     width: 150
   },
+  {
+    dataIndex: 'createBy_dictText',
+    title: '创建者(拥有者)',
+    width: 150
+  },
 /*  {
     title: '开始时间',
     dataIndex: 'beginDate',
@@ -300,6 +305,7 @@ export const packMenuFormSchema: FormSchema[] = [
       pidField: 'parent_id',
       multiple: true,
       treeCheckAble:true,
+      treeCheckStrictly: true,
       getPopupContainer: () => document.body,
     },
   },
@@ -371,4 +377,27 @@ export const searchRecycleFormSchema : FormSchema[] = [
     label: '门牌号',
     component: 'Input',
   },
+]
+
+//产品包用户列表
+export const tenantPackUserColumns: BasicColumn[] = [
+  {
+    title: '用户',
+    dataIndex: 'realname',
+    width: 200,
+  },
+  {
+    title: '部门',
+    dataIndex: 'departNames',
+    width: 200,
+    ellipsis: true,
+    slots: { customRender: 'departNames' }
+  },
+  {
+    title: '职位',
+    dataIndex: 'positionNames',
+    ellipsis: true,
+    width: 200,
+    slots: { customRender: 'positionNames' }
+  }
 ]
