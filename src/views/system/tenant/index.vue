@@ -40,7 +40,7 @@
       </template>
     </BasicTable>
     <TenantModal @register="registerModal" @success="reload" />
-    <UserSelectModal rowKey="id" @register="registerSelUserModal" @getSelectResult="onSelectOk" />
+    <TenantInviteUserModal @register="registerSelUserModal" @inviteOk="handleInviteUserOk"/>
     <TenantUserModal @register="registerTenUserModal" />
     <!--  产品包  -->
     <TenantPackModal @register="registerPackModal" />
@@ -57,7 +57,7 @@
   import TenantModal from './TenantModal.vue';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useListPage } from '/@/hooks/system/useListPage';
-  import UserSelectModal from '/@/components/Form/src/jeecg/components/modal/UserSelectModal.vue';
+  import TenantInviteUserModal from './TenantInviteUserModal.vue';
   import TenantUserModal from './TenantUserModal.vue';
   import TenantPackModal from './TenantPackModal.vue';
   import TenantRecycleBinModal from './TenantRecycleBinModal.vue';
@@ -156,14 +156,14 @@
   /**
    * 用户选择回调事件
    * @param options
-   * @param values
+   * @param value
    */
-  async function onSelectOk(options, values) {
-    if (values && values.length > 0) {
-      await invitationUserJoin({ ids: selectedRowKeys.value.join(','), userIds: values.join(',') });
-    } else {
-      createMessage.warn('请选择用户!');
+  async function handleInviteUserOk(value) {
+    //update-begin---author:wangshuai ---date:20230314  for：【QQYUN-4605】后台的邀请谁加入租户，没办法选不是租户下的用户------------
+    if (value) {
+      await invitationUserJoin({ ids: selectedRowKeys.value.join(','), phone: value });
     }
+    //update-end---author:wangshuai ---date:20230314  for：【QQYUN-4605】后台的邀请谁加入租户，没办法选不是租户下的用户------------
   }
 
   /**
