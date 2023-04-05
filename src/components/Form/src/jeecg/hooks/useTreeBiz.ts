@@ -115,8 +115,31 @@ export function useTreeBiz(treeRef, getList, props) {
   /**
    * 勾选全部
    */
-  function checkALL(checkAll) {
+  async function checkALL(checkAll) {
     getTree().checkAll(checkAll);
+    //update-begin---author:wangshuai ---date:20230403  for：【issues/394】所属部门树操作全部勾选不生效/【issues/4646】部门全部勾选后，点击确认按钮，部门信息丢失------------
+    await nextTick();
+    checkedKeys.value = getTree().getCheckedKeys();
+    if(checkAll){
+      getTreeRow();
+    }else{
+      selectRows.value = [];
+    }
+    //update-end---author:wangshuai ---date:20230403  for：【issues/394】所属部门树操作全部勾选不生效/【issues/4646】部门全部勾选后，点击确认按钮，部门信息丢失------------
+  }
+
+  /**
+   * 获取数列表
+   * @param res
+   */
+  function getTreeRow() {
+    let ids = "";
+    if(unref(checkedKeys).length>0){
+      ids = checkedKeys.value.join(",");
+    }
+    getList({ids:ids}).then((res) =>{
+      selectRows.value = res;
+    })
   }
 
   /**

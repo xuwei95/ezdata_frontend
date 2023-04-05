@@ -56,15 +56,17 @@ class Area {
       }
     }
   }
-
-  getText(code) {
+  
+//update-begin-author:liusq---date:20230404--for: [issue/382]省市区组件JAreaLinkage数据不回显---
+  getText(code,index=3) {
     if (!code || code.length == 0) {
       return '';
     }
     let arr = [];
-    this.getAreaBycode(code, arr, 3);
+    this.getAreaBycode(code, arr, index);
     return arr.join('/');
   }
+//update-end-author:liusq---date:20230404--for: [issue/382]省市区组件JAreaLinkage数据不回显---
 
   getRealCode(code) {
     let arr = [];
@@ -98,12 +100,14 @@ const jeecgAreaData = new Area();
 
 // 根据code找文本
 const getAreaTextByCode = function (code) {
+  let index = 3;
   //update-begin-author:liusq---date:20220531--for: 判断code是否是多code逗号分割的字符串，是的话，获取最后一位的code ---
   if (code && code.includes(',')) {
+    index = code.split(",").length;
     code = code.substr(code.lastIndexOf(',') + 1);
   }
   //update-end-author:liusq---date:20220531--for: 判断code是否是多code逗号分割的字符串，是的话，获取最后一位的code ---
-  return jeecgAreaData.getText(code);
+  return jeecgAreaData.getText(code,index);
 };
 
 export { getAreaTextByCode };

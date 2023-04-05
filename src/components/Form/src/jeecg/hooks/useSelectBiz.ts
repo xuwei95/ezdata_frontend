@@ -138,8 +138,10 @@ export function useSelectBiz(getList, props) {
   }
   //删除已选择的信息
   function handleDeleteSelected(record) {
-    checkedKeys.value = checkedKeys.value.splice(checkedKeys.value.indexOf(record['id']), 1);
-    selectRows.value = selectRows.value.filter((item) => item['id'] !== record['id']);
+    //update-begin---author:wangshuai ---date:20230404  for：【issues/424】开启右侧列表后，在右侧列表中删除用户时，逻辑有问题------------
+    checkedKeys.value = checkedKeys.value.filter((item) => item != record[props.rowKey]);
+    selectRows.value = selectRows.value.filter((item) => item[props.rowKey] !== record[props.rowKey]);
+    //update-end---author:wangshuai ---date:20230404  for：【issues/424】开启右侧列表后，在右侧列表中删除用户时，逻辑有问题------------
   }
   //清空选择项
   function reset() {

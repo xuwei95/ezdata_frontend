@@ -81,7 +81,7 @@
         required: false,
       },
     },
-    emits: ['options-change', 'change'],
+    emits: ['options-change', 'change','update:value'],
     setup(props, { emit, refs }) {
       const dictOptions = ref<any[]>([]);
       const attrs = useAttrs();
@@ -164,6 +164,10 @@
           changeValue = e?.target?.value ?? e;
         }
         state.value = changeValue;
+
+        //update-begin---author:wangshuai ---date:20230403  for：【issues/4507】JDictSelectTag组件使用时，浏览器给出警告提示：Expected Function, got Array------------
+        emit('update:value',changeValue)
+        //update-end---author:wangshuai ---date:20230403  for：【issues/4507】JDictSelectTag组件使用时，浏览器给出警告提示：Expected Function, got Array述------------
         //update-end---author:wangshuai ---date:20230216  for：[QQYUN-4290]公文发文：选择机关代字报错,是因为值改变触发了change事件三次，导致数据发生改变------------
         
         // nextTick(() => formItemContext.onFieldChange());
