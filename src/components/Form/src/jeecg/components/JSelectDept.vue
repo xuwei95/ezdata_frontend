@@ -1,7 +1,7 @@
 <!--部门选择组件-->
 <template>
   <div>
-    <JSelectBiz @handleOpen="handleOpen" :loading="loadingEcho" v-bind="attrs" />
+    <JSelectBiz @handleOpen="handleOpen" :loading="loadingEcho" v-bind="attrs" @change="handleChange"/>
     <DeptSelectModal @register="regModal" @getSelectResult="setValue" v-bind="getBindValue" />
   </div>
 </template>
@@ -119,6 +119,17 @@
         emit('update:value', values.join(','));
       }
       const getBindValue = Object.assign({}, unref(props), unref(attrs));
+
+      //update-begin---author:wangshuai ---date:20230406  for：【issues/397】在表单中使用v-model:value绑定JSelectDept组件时无法清除已选择的数据------------
+      /**
+       * 值改变事件更新value值
+       * @param values
+       */
+      function handleChange(values) {
+        emit('update:value', values);
+      }
+      //update-end---author:wangshuai ---date:20230406  for：【issues/397】在表单中使用v-model:value绑定JSelectDept组件时无法清除已选择的数据------------
+      
       return {
         state,
         attrs,
@@ -130,6 +141,7 @@
         regModal,
         setValue,
         handleOpen,
+        handleChange
       };
     },
   });
