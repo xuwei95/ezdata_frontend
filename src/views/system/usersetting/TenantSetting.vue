@@ -420,7 +420,9 @@ onMounted(() => {
 .my-tenant{
   font-size: 17px;
   font-weight: 700!important;
-  color: #333!important;
+  /*begin 兼容暗夜模式*/
+  color: @text-color;
+  /*end 兼容暗夜模式*/
   margin-bottom: 20px;
 }
 .tenant-list{
@@ -430,7 +432,9 @@ onMounted(() => {
   overflow-x: hidden;
 }
 .tenant-list-item{
-  border: 1px solid #eaeaea;
+  /*begin 兼容暗夜模式*/
+  border: 1px solid @border-color-base;
+  /*end 兼容暗夜模式*/
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -446,7 +450,9 @@ onMounted(() => {
     padding: 14px 0;
     cursor: pointer;
     font-size:17px;
-    color: #333!important;
+    /*begin 兼容暗夜模式*/
+    color: @text-color;
+    /*end 兼容暗夜模式*/
     font-weight: 700!important;
   }
 }
@@ -472,14 +478,18 @@ onMounted(() => {
   transition: ease-in 2s;
 
   .content-box {
-    border-top: 1px solid #eaeaea;
+    /*begin 兼容暗夜模式*/
+    border-top: 1px solid @border-color-base;
+    /*end 兼容暗夜模式*/
     box-sizing: border-box;
     display: flex;
     padding: 24px 0;
   }
 
   .content-name {
-    color: #757575;
+    /*begin 兼容暗夜模式*/
+    color: @text-color;
+    /*end 兼容暗夜模式*/
     text-align: center;
     width: 100px;
     font-size: 13px;
@@ -491,7 +501,9 @@ onMounted(() => {
   }
 
   .content-des-text {
-    color: #757575;
+    /*begin 兼容暗夜模式*/
+    color: @text-color;
+    /*end 兼容暗夜模式*/
     text-align: left;
     width: 76px;
     font-size: 13px;
@@ -504,7 +516,9 @@ onMounted(() => {
 }
 
 .footer-box {
-  border-top: 1px solid #eaeaea;
+  /*begin 兼容暗夜模式*/
+  border-top: 1px solid @border-color-base;
+  /*end 兼容暗夜模式*/
   box-sizing: border-box;
   display: flex;
   padding: 24px 0;
@@ -515,18 +529,20 @@ onMounted(() => {
   margin-right: 40px;
 }
 
+/*begin 兼容暗夜模式*/
 .font-color333 {
-  color: #333333;
+  color: @text-color;
   font-weight: normal;
 }
 
 .font-color9e {
-  color: #9e9e9e;
+  color: @text-color;
 }
 
 .font-color75 {
-  color: #757575;
+  color: @text-color;
 }
+/*end 兼容暗夜模式*/
 
 .font-size13 {
   font-size: 13px;

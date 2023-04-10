@@ -4,7 +4,7 @@
       <DepartLeftTree ref="leftTree" @select="onTreeSelect" />
     </a-col>
     <a-col :xl="18" :lg="24" :md="24" style="margin-bottom: 10px">
-      <div style="height: 100%; background-color: white">
+      <div style="height: 100%;" class="address-book">
         <!--引用表格-->
         <BasicTable @register="registerTable">
           <template #post="{ text }">
@@ -86,4 +86,10 @@
 
 <style lang="less" scoped>
   @import './index.less';
+
+  /*begin 兼容暗夜模式*/
+  .address-book{
+    background-color: @component-background !important;
+  }
+  /*end 兼容暗夜模式*/
 </style>

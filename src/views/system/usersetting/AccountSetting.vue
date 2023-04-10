@@ -22,16 +22,6 @@
       <span class="pointer blue-e5" style="margin-left: 10px" @click="updatePassWord">修改</span>
     </div>
 
-    <div class="account-row-item">
-      <div class="account-label gray-75">账号绑定</div>
-      <span>
-        <WechatFilled :style="!wechatData.bindWechat ? { color: '#9e9e9e' } : { color: '#1ec563' }" />
-        <span class="gray-75" style="margin-left: 12px">微信</span>
-        <span class="gray-75" style="margin-left: 8px" v-if="wechatData.bindWechat">{{ '已绑定：' + wechatData.name }}</span>
-        <span class="blue-e5 pointer" style="margin-left: 24px" @click="wechatBind">{{ !wechatData.bindWechat ? '绑定' : '解绑' }}</span>
-      </span>
-    </div>
-
     <div class="account-row-item clearfix">
       <div class="account-label gray-75">账户注销</div>
       <span style="color: red" class="pointer" @click="cancellation">注销</span>
@@ -145,7 +135,9 @@ onMounted(() => {
 <style lang="less" scoped>
 .account-row-item {
   align-items: center;
-  border-bottom: 1px solid #eaeaea;
+  /*begin 兼容暗夜模式*/
+  border-bottom: 1px solid @border-color-base;
+  /*end 兼容暗夜模式*/
   box-sizing: border-box;
   display: flex;
   height: 71px;
@@ -158,7 +150,9 @@ onMounted(() => {
 }
 
 .gray-75 {
-  color: #757575 !important;
+  /*begin 兼容暗夜模式*/
+  color: @text-color !important;
+  /*end 兼容暗夜模式*/
 }
 
 .pointer {
@@ -188,7 +182,9 @@ onMounted(() => {
 .my-account{
   font-size: 17px;
   font-weight: 700!important;
-  color: #333!important;
+  /*begin 兼容暗夜模式*/
+  color: @text-color;
+  /*end 兼容暗夜模式*/
   margin-bottom: 20px;
 }
 </style>

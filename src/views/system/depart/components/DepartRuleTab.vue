@@ -166,4 +166,11 @@
   .depart-rule-tree :deep(.scrollbar__bar) {
     pointer-events: none;
   }
+
+   /*begin 兼容暗夜模式*/
+  .j-box-bottom-button-float{
+    background-color: @component-background;
+    border-top: 1px solid @border-color-base;
+  }
+  /*end 兼容暗夜模式*/
 </style>

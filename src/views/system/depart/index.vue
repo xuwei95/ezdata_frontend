@@ -4,7 +4,7 @@
       <DepartLeftTree ref="leftTree" @select="onTreeSelect" @rootTreeData="onRootTreeData" />
     </a-col>
     <a-col :xl="12" :lg="24" :md="24" style="margin-bottom: 10px">
-      <div style="height: 100%; background-color: white">
+      <div style="height: 100%;" class="depart-manage">
         <a-tabs v-show="departData != null" defaultActiveKey="base-info">
           <a-tab-pane tab="基本信息" key="base-info" forceRender style="position: relative">
             <div style="padding: 20px">
@@ -60,4 +60,11 @@
 
 <style lang="less">
   @import './index.less';
+</style>
+<style lang="less" scoped>
+  /*begin 兼容暗夜模式*/
+  .depart-manage{
+    background-color: @component-background;
+  }
+  /*end 兼容暗夜模式*/
 </style>

@@ -30,7 +30,7 @@
     <div class="account-data">
       <!-- 详细资料 -->
       <div class="account-detail">
-        <div class="font-size-15 font-bold" style="color: #333!important;margin-bottom: 16px">详细资料</div>
+        <div class="font-size-15 font-bold font-color-gray" style="margin-bottom: 16px">详细资料</div>
         <div class="margin-bottom-10 font-size-13">
           <span class="gray-75 item-label">生日</span>
           <span class="gray-3">{{ userInfo.birthday }}</span>
@@ -50,7 +50,7 @@
       </div>
       <!-- 联系信息 -->
       <div class="account-info">
-        <div class="font-size-15 font-bold" style="color: #333!important;margin-bottom: 16px">联系信息</div>
+        <div class="font-size-15 font-bold font-color-gray" style="margin-bottom: 16px">联系信息</div>
         <div class="margin-bottom-10 font-size-13">
           <span class="gray-75 item-label">邮箱</span>
           <span class="gray-3">{{ userInfo.email ? userInfo.email : "未填写" }}</span>
@@ -219,7 +219,7 @@ onMounted(async () => {
 .user-setting-top {
   padding-top: 40px;
   width: 100%;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid @border-color-base;
   display: flex;
   padding-bottom: 40px;
 }
@@ -261,7 +261,9 @@ onMounted(async () => {
   width: 200px;
   text-overflow: ellipsis;
   line-height: 32px!important;
-  color: #333;
+  /*begin 兼容暗夜模式*/
+  color: @text-color;
+  /*end 兼容暗夜模式*/
   font-weight: 500;
 }
 
@@ -300,13 +302,15 @@ onMounted(async () => {
   margin-bottom: 10px;
 }
 
+/*begin 兼容暗夜模式*/
 .gray-75 {
-  color: #757575 !important;
+  color: @text-color !important;
 }
 
 .gray-3 {
-  color: #333333;
+  color: @text-color;
 }
+/*end 兼容暗夜模式*/
 
 .account-info {
   width: 60%;
@@ -335,7 +339,9 @@ onMounted(async () => {
 }
 
 .use-day{
-  color: #333;
+  /*begin 兼容暗夜模式*/
+  color: @text-color;
+  /*end 兼容暗夜模式*/
   margin-top: 10px;
   font-size: 13px;
   span{
@@ -346,4 +352,9 @@ onMounted(async () => {
 .font-size-13{
   font-size: 13px;
 }
+/*begin 兼容暗夜模式*/
+.font-color-gray{
+  color: @text-color;
+}
+/*end 兼容暗夜模式*/
 </style>

@@ -74,14 +74,18 @@ export default defineComponent({
   }
   //tabs弹窗左边样式
   :deep(.ant-tabs-nav){
-    background-color: #FFFFFF;
+    /*begin 兼容暗夜模式*/
+    background-color: @component-background;
+    /*end 兼容暗夜模式*/
     height: 260px;
   }
   //tabs弹窗右边边样式
   :deep(.ant-tabs-content-holder){
     position: relative;
     left: 12px;
-    background: #FFFFFF;
+    /*begin 兼容暗夜模式*/
+    background: @component-background;
+    /*end 兼容暗夜模式*/
     height: auto !important;
   }
 }
@@ -105,6 +109,8 @@ export default defineComponent({
   padding-right:14px;
 }
 .icon-font-color{
-  color: #9e9e9e;
+  /*begin 兼容暗夜模式*/
+  color: @text-color;
+  /*end 兼容暗夜模式*/
 }
 </style>
