@@ -117,7 +117,15 @@
           const { defaultValue, component, componentProps } = schema;
           // handle date type
           if (defaultValue && dateItemType.includes(component)) {
-            const { valueFormat } = componentProps
+            //update-begin---author:wangshuai ---date:20230410  for：【issues/435】代码生成的日期控件赋默认值报错------------
+            let valueFormat:string = "";
+            if(componentProps){
+              valueFormat = componentProps?.valueFormat;
+            }
+            if(!valueFormat){
+              console.warn("未配置valueFormat,可能导致格式化错误！");
+            }
+            //update-end---author:wangshuai ---date:20230410  for：【issues/435】代码生成的日期控件赋默认值报错------------
             if (!Array.isArray(defaultValue)) {
               //update-begin---author:wangshuai ---date:20221124  for：[issues/215]列表页查询框（日期选择框）设置初始时间，一进入页面时，后台报日期转换类型错误的------------
               if(valueFormat){
