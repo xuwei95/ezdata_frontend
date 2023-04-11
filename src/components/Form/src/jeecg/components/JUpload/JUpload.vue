@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, computed, watch, nextTick, createApp } from 'vue';
+  import { ref, reactive, computed, watch, nextTick, createApp,unref } from 'vue';
   import { Icon } from '/@/components/Icon';
   import { getToken } from '/@/utils/auth';
   import { uploadUrl } from '/@/api/common/api';
@@ -82,7 +82,10 @@
   const isImageMode = computed(() => props.fileType === UploadTypeEnum.image);
   // 合并 props 和 attrs
   const bindProps = computed(() => {
-    const bind: any = Object.assign({}, props, attrs);
+    //update-begin-author:liusq date:20220411 for: [issue/455]上传组件传入accept限制上传文件类型无效
+    const bind: any = Object.assign({}, props, unref(attrs));
+    //update-end-author:liusq date:20220411 for: [issue/455]上传组件传入accept限制上传文件类型无效
+
     bind.name = 'file';
     bind.listType = isImageMode.value ? 'picture-card' : 'text';
     bind.class = [bind.class, { 'upload-disabled': props.disabled }];

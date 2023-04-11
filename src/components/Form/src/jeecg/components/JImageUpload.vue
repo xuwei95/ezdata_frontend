@@ -2,6 +2,7 @@
   <div class="clearfix">
     <a-upload
       :listType="listType"
+      accept="image/*"
       :multiple="multiple"
       :action="uploadUrl"
       :headers="headers"
