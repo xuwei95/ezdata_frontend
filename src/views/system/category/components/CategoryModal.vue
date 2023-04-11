@@ -14,6 +14,7 @@
   const isUpdate = ref(true);
   const expandedRowKeys = ref([]);
   const treeData = ref([]);
+  const isSubAdd = ref(false);
   //表单配置
   const [registerForm, { resetFields, setFieldsValue, validate, updateSchema }] = useForm({
     schemas: formSchema,
@@ -34,6 +35,7 @@
     expandedRowKeys.value = [];
     setModalProps({ confirmLoading: false, minHeight: 80 });
     isUpdate.value = !!data?.isUpdate;
+    isSubAdd.value = !!!data?.isUpdate && data.record.id;
     if (data?.record) {
       //表单赋值
       await setFieldsValue({
@@ -79,7 +81,7 @@
       //展开的节点信息
       await getExpandKeysByPid(values['pid'], unref(treeData));
       //刷新列表(isUpdate:是否编辑;values:表单信息;expandedArr:展开的节点信息)
-      emit('success', { isUpdate: unref(isUpdate), values: { ...values }, expandedArr: unref(expandedRowKeys).reverse() });
+      emit('success', { isUpdate: unref(isUpdate), isSubAdd:unref(isSubAdd), values: { ...values }, expandedArr: unref(expandedRowKeys).reverse() });
     } finally {
       setModalProps({ confirmLoading: false });
     }

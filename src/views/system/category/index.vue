@@ -145,7 +145,7 @@
   /**
    * 成功回调
    */
-  async function handleSuccess({ isUpdate, values, expandedArr }) {
+  async function handleSuccess({ isUpdate,isSubAdd, values, expandedArr }) {
     if (isUpdate) {
       //编辑回调
       updateTableDataRecord(values.id, values);
@@ -155,9 +155,15 @@
         reload();
       } else {
         //新增子集
-        expandedRowKeys.value = [];
-        for (let key of unref(expandedArr)) {
-          await expandTreeNode(key);
+        //update-begin-author:liusq---date:20230411--for: [issue/4550]分类字典数据量过多会造成数据查询时间过长--- 
+        if(isSubAdd){
+          await expandTreeNode(values.pid);
+        //update-end-author:liusq---date:20230411--for: [issue/4550]分类字典数据量过多会造成数据查询时间过长--- 
+        }else{
+          expandedRowKeys.value = [];
+          for (let key of unref(expandedArr)) {
+            await expandTreeNode(key);
+          }
         }
       }
     }
@@ -247,8 +253,12 @@
    *操作表格后处理树节点展开合并
    * */
   async function expandTreeNode(key) {
-    let record = findTableDataRecord(key);
-    expandedRowKeys.value.push(key);
+    let record:any = findTableDataRecord(key);
+    //update-begin-author:liusq---date:20230411--for: [issue/4550]分类字典数据量过多会造成数据查询时间过长，显示“接口请求超时,请刷新页面重试!”--- 
+    if(!expandedRowKeys.value.includes(key)){
+      expandedRowKeys.value.push(key);
+    }
+    //update-end-author:liusq---date:20230411--for: [issue/4550]分类字典数据量过多会造成数据查询时间过长，显示“接口请求超时,请刷新页面重试!”--- 
     let result = await getChildList({ pid: key });
     if (result && result.length > 0) {
       record.children = getDataByResult(result);
