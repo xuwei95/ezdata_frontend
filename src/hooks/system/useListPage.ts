@@ -69,13 +69,20 @@ export function useListPage(options: ListPageOptions) {
     if (realUrl) {
       let title = typeof name === 'function' ? name() : name;
       //update-begin-author:taoyan date:20220507 for: erp代码生成 子表 导出报错，原因未知-
-      let paramsForm = {};
+      let paramsForm:any = {};
       try {
         paramsForm = await getForm().validate();
       } catch (e) {
         console.error(e);
       }
       //update-end-author:taoyan date:20220507 for: erp代码生成 子表 导出报错，原因未知-
+      
+      //update-begin-author:liusq date:20230410 for:[/issues/409]导出功能没有按排序结果导出,设置导出默认排序，创建时间倒序
+      if(!paramsForm?.column){
+         Object.assign(paramsForm,{column:'createTime',order:'desc'});
+      }
+      //update-begin-author:liusq date:20230410 for: [/issues/409]导出功能没有按排序结果导出,设置导出默认排序，创建时间倒序
+      
       //如果参数不为空，则整合到一起
       //update-begin-author:taoyan date:20220507 for: erp代码生成 子表 导出动态设置mainId
       if (params) {
@@ -90,6 +97,7 @@ export function useListPage(options: ListPageOptions) {
       if (selectedRowKeys.value && selectedRowKeys.value.length > 0) {
         paramsForm['selections'] = selectedRowKeys.value.join(',');
       }
+      console.log()
       return handleExportXls(title as string, realUrl, filterObj(paramsForm));
       //update-end---author:wangshuai ---date:20220411  for：导出新增自定义参数--------------
     } else {
