@@ -116,7 +116,7 @@ cd jeecgboot-vue3
 VITE_GLOB_API_URL=/jeecgboot
 VITE_GLOB_DOMAIN_URL=http://jeecg-boot-system:8080/jeecg-boot
 ```
-后台单体启动 [见此文档](http://doc.jeecg.com/2043889)
+后台单体启动 [见此文档](https://help.jeecg.com/java/setup/docker/up.html)
 
 - 编译项目
 
@@ -147,7 +147,7 @@ VITE_GLOB_API_URL=/jeecgboot
 VITE_GLOB_DOMAIN_URL=http://jeecg-boot-gateway:9999
 ```
 
-后台微服务启动 [见此文档](http://doc.jeecg.com/2656147)
+后台微服务启动 [见此文档](https://help.jeecg.com/java/springcloud/docker.html)
 
 - 区别2. 修改Dockerfile文件
 
