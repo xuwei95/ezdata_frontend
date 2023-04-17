@@ -110,9 +110,7 @@ function handleInnerColumn(args: HandleArgs, col: JVxeColumn, handler: (args: Ha
  * 处理隐藏列
  */
 function handleHiddenColumn({ col, columns }: HandleArgs) {
-  col!.params = cloneDeep(col);
   delete col!.type;
-  col!.field = col!.key
   col!.visible = false;
   columns.push(col!);
 }
