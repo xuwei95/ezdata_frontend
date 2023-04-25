@@ -46,8 +46,13 @@ export function createPermissionGuard(router: Router) {
     if (whitePathList.includes(to.path as PageEnum)) {
       if (to.path === LOGIN_PATH && token) {
         const isSessionTimeout = userStore.getSessionTimeout;
+        
+        //update-begin---author:scott ---date:2023-04-24  for：【QQYUN-4713】登录代码调整逻辑有问题，改造待观察--
+        //TODO vben默认写法，暂时不知目的，有问题暂时先注释掉
+        //await userStore.afterLoginAction();
+        //update-end---author:scott ---date::2023-04-24  for：【QQYUN-4713】登录代码调整逻辑有问题，改造待观察--
+        
         try {
-          await userStore.afterLoginAction();
           if (!isSessionTimeout) {
             next((to.query?.redirect as string) || '/');
             return;
