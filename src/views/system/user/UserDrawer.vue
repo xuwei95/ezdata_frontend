@@ -16,7 +16,7 @@
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { formSchema } from './user.data';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-  import { saveOrUpdateUser, getUserRoles, getUserDepartList } from './user.api';
+  import { saveOrUpdateUser, getUserRoles, getUserDepartList, getAllRolesListNoByTenant, getAllRolesList } from './user.api';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
@@ -99,6 +99,12 @@
       {
         field: 'selectedroles',
         show: !data?.departDisabled ?? false,
+        //update-begin---author:wangshuai ---date:20230424  for：【issues/4844】多租户模式下，新增或编辑用户，选择角色一栏，角色选项没有做租户隔离------------
+        //判断是否为多租户模式
+        componentProps:{
+          api: data.tenantSaas?getAllRolesList:getAllRolesListNoByTenant
+        }
+        //update-end---author:wangshuai ---date:20230424  for：【issues/4844】多租户模式下，新增或编辑用户，选择角色一栏，角色选项没有做租户隔离------------
       },
     ]);
     // 无论新增还是编辑，都可以设置表单值
