@@ -35,6 +35,7 @@
       v-model:value="state"
       :filterOption="handleFilterOption"
       :getPopupContainer="getPopupContainer"
+      :style="style"
       @change="handleChange"
     >
       <a-select-option v-if="showChooseOption" :value="null">请选择…</a-select-option>
@@ -80,6 +81,7 @@
         default: [],
         required: false,
       },
+      style: propTypes.any,
     },
     emits: ['options-change', 'change','update:value'],
     setup(props, { emit, refs }) {
@@ -176,6 +178,9 @@
       /** 单选radio的值变化事件 */
       function handleChangeRadio(e) {
         state.value = e?.target?.value ?? e;
+        //update-begin---author:wangshuai ---date:20230504  for：【issues/506】JDictSelectTag 组件 type="radio" 没有返回值------------
+        emit('update:value',e?.target?.value ?? e)
+        //update-end---author:wangshuai ---date:20230504  for：【issues/506】JDictSelectTag 组件 type="radio" 没有返回值------------
       }
 
       /** 用于搜索下拉框中的内容 */
