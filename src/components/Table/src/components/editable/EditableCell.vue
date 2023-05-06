@@ -190,7 +190,7 @@
           currentValueRef.value = (e as ChangeEvent).target.value;
         } else if (component === 'Checkbox') {
           currentValueRef.value = (e as ChangeEvent).target.checked;
-        } else if (isString(e) || isBoolean(e) || isNumber(e)) {
+        } else if (isString(e) || isBoolean(e) || isNumber(e) || isArray(e)) {
           currentValueRef.value = e;
         }
         const onChange = props.column?.editComponentProps?.onChange;

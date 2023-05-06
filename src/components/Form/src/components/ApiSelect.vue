@@ -114,6 +114,17 @@
           //--@updateBy-begin----author:liusq---date:20210914------for:判断选择模式，multiple多选情况下的value值空的情况下需要设置为数组------
           unref(attrs).mode == 'multiple' && !Array.isArray(unref(state)) && setState([]);
           //--@updateBy-end----author:liusq---date:20210914------for:判断选择模式，multiple多选情况下的value值空的情况下需要设置为数组------
+
+          //update-begin---author:wangshuai ---date:20230505  for：初始化value值，如果是多选字符串的情况下显示不出来------------
+          initValue();
+          //update-end---author:wangshuai ---date:20230505  for：初始化value值，如果是多选字符串的情况下显示不出来------------
+        }
+      }
+
+      function initValue() {
+        let value = props.value;
+        if (value && typeof value === 'string' && value != 'null' && value != 'undefined') {
+          state.value = value.split(',');
         }
       }
 
