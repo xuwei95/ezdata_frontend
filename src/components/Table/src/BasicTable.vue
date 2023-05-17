@@ -349,6 +349,14 @@
       margin-right: 0;
     }
 
+    //update-begin-author:liusq---date:20230517--for: [issues/526]RangePicker 设置预设范围按钮样式问题---
+    .ant-picker-preset {
+      .ant-tag {
+        margin-right: 8px !important;
+      }
+    }
+    //update-end-author:liusq---date:20230517--for: [issues/526]RangePicker 设置预设范围按钮样式问题---
+
     .ant-table-wrapper {
       padding: 6px;
       background-color: @component-background;
