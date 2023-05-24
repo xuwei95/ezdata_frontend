@@ -298,7 +298,12 @@
         // 如果设定了排序信息，需要写入排序信息，在关键词后加 [orderby:create_time,desc]
         if(props.params && props.params.column && props.params.order){
           let temp = text||''
-          return temp+'[orderby:'+props.params.column+','+props.params.order+']'
+          
+          //update-begin-author:taoyan date:2023-5-22 for: /issues/4905 表单生成器字段配置时，选择关联字段，在进行高级配置时，无法加载数据库列表，提示 Sgin签名校验错误！ #4905
+          temp = temp+'[orderby:'+props.params.column+','+props.params.order+']'
+          return encodeURI(temp);
+          //update-end-author:taoyan date:2023-5-22 for: /issues/4905 表单生成器字段配置时，选择关联字段，在进行高级配置时，无法加载数据库列表，提示 Sgin签名校验错误！ #4905
+          
         }else{
           return text;
         }
