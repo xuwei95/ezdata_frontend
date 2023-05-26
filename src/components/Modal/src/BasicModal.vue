@@ -4,7 +4,7 @@
       <ModalClose :canFullscreen="getProps.canFullscreen" :fullScreen="fullScreenRef" :commentSpan="commentSpan" :enableComment="getProps.enableComment" @comment="handleComment" @cancel="handleCancel" @fullscreen="handleFullScreen" />
     </template>
 
-    <template #title v-if="!$slots.title">
+    <template #title v-if="!isNoTitle">
       <ModalHeader :helpMessage="getProps.helpMessage" :title="getMergeProps.title" @dblclick="handleTitleDbClick" />
     </template>
 
@@ -70,7 +70,7 @@
     inheritAttrs: false,
     props: basicProps,
     emits: ['visible-change', 'height-change', 'cancel', 'ok', 'register', 'update:visible'],
-    setup(props, { emit, attrs }) {
+    setup(props, { emit, attrs , slots}) {
       const visibleRef = ref(false);
       const propsRef = ref<Partial<ModalProps> | null>(null);
       const modalWrapperRef = ref<any>(null);
@@ -101,6 +101,13 @@
           ...(unref(propsRef) as any),
         };
       });
+        //update-begin-author:liusq date:2023-05-25 for:【issues/4856】Modal控件设置 :title = null 无效
+        //是否未设置标题
+        const isNoTitle = computed(() => {
+            //标题为空并且不含有标题插槽
+            return !unref(getMergeProps).title && !slots.title;
+        });
+        //update-end-author:liusq date:2023-05-25 for:【issues/4856】Modal控件设置 :title = null 无效
 
       const { handleFullScreen, getWrapClassName, fullScreenRef } = useFullScreen({
         modalWrapperRef,
@@ -243,7 +250,8 @@
         handleTitleDbClick,
         getWrapperHeight,
         commentSpan,
-        handleComment
+        handleComment,
+        isNoTitle
       };
     },
   });
