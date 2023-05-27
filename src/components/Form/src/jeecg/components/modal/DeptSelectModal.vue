@@ -64,8 +64,10 @@
       
       //update-begin-author:taoyan date:2022-10-28 for: 部门选择警告类型不匹配
       let propValue = props.value === ''?[]:props.value;
-      const getBindValue = Object.assign({}, unref(props), unref(attrs), {value: propValue});
-      //update-end-author:taoyan date:2022-10-28 for: 部门选择警告类型不匹配
+      //update-begin-author:liusq date:2023-05-26 for:  [issues/538]JSelectDept组件受 dynamicDisabled 影响
+      const getBindValue = Object.assign({}, unref(props), unref(attrs), {value: propValue},{disabled: false});
+      //update-end-author:liusq date:2023-05-26 for:  [issues/538]JSelectDept组件受 dynamicDisabled 影响
+     //update-end-author:taoyan date:2022-10-28 for: 部门选择警告类型不匹配
       
       const queryUrl = getQueryUrl();
       const [{ visibleChange, checkedKeys, getCheckStrictly, getSelectTreeData, onCheck, onLoadData, treeData, checkALL, expandAll, onSelect }] =
