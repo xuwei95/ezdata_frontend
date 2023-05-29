@@ -18,6 +18,8 @@
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { saveOrUpdateUser, getUserRoles, getUserDepartList, getAllRolesListNoByTenant, getAllRolesList } from './user.api';
   import { useDrawerAdaptiveWidth } from '/@/hooks/jeecg/useAdaptiveWidth';
+  import { getTenantId } from "/@/utils/auth";
+
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
   const attrs = useAttrs();
@@ -106,7 +108,20 @@
         }
         //update-end---author:wangshuai ---date:20230424  for：【issues/4844】多租户模式下，新增或编辑用户，选择角色一栏，角色选项没有做租户隔离------------
       },
+      //update-begin---author:wangshuai ---date:20230522  for：【issues/4935】租户用户编辑界面中租户下拉框未过滤，显示当前系统所有的租户------------
+      {
+        field: 'relTenantIds',
+        componentProps:{
+          disabled: !!data.tenantSaas,
+        },
+      },
+      //update-end---author:wangshuai ---date:20230522  for：【issues/4935】租户用户编辑界面中租户下拉框未过滤，显示当前系统所有的租户------------
     ]);
+    //update-begin---author:wangshuai ---date:20230522  for：【issues/4935】租户用户编辑界面中租户下拉框未过滤，显示当前系统所有的租户------------
+    if(!unref(isUpdate) && data.tenantSaas){
+      await setFieldsValue({ relTenantIds: getTenantId().toString() })
+    }
+    //update-end---author:wangshuai ---date:20230522  for：【issues/4935】租户用户编辑界面中租户下拉框未过滤，显示当前系统所有的租户------------
     // 无论新增还是编辑，都可以设置表单值
     if (typeof data.record === 'object') {
       setFieldsValue({
