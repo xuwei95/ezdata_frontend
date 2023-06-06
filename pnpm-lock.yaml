@@ -15,6 +15,7 @@ specifiers:
   '@logicflow/core': ^1.1.13
   '@logicflow/extension': ^1.1.13
   '@purge-icons/generated': ^0.8.1
+  '@qiaoqiaoyun/drag-free': ^1.0.2
   '@rys-fe/vite-plugin-theme': ^0.8.6
   '@types/codemirror': ^5.60.5
   '@types/crypto-js': ^4.1.1
@@ -153,6 +154,7 @@ dependencies:
   '@jeecg/online': registry.npmmirror.com/@jeecg/online/3.4.4-RC
   '@logicflow/core': registry.npmmirror.com/@logicflow/core/1.1.31
   '@logicflow/extension': registry.npmmirror.com/@logicflow/extension/1.1.31
+  '@qiaoqiaoyun/drag-free': registry.npmmirror.com/@qiaoqiaoyun/drag-free/1.0.2_@vue+compiler-sfc@3.2.47
   '@vue/runtime-core': registry.npmmirror.com/@vue/runtime-core/3.2.47
   '@vue/shared': registry.npmmirror.com/@vue/shared/3.2.47
   '@vueuse/core': registry.npmmirror.com/@vueuse/core/8.9.4_vue@3.2.47
@@ -3437,6 +3439,55 @@ packages:
     dependencies:
       '@iconify/iconify': registry.npmmirror.com/@iconify/iconify/2.2.1
     dev: true
+
+  registry.npmmirror.com/@qiaoqiaoyun/drag-free/1.0.2_@vue+compiler-sfc@3.2.47:
+    resolution: {integrity: sha512-3aJfn5MQ4NfTX8uJdnmK32Ha1v/z6splRQsIyinXKtnAnOrNRrKCz5ZQpE8BH+wbsHrbE5jZS2IaSNXfCfFyXQ==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@qiaoqiaoyun/drag-free/-/drag-free-1.0.2.tgz}
+    id: registry.npmmirror.com/@qiaoqiaoyun/drag-free/1.0.2
+    name: '@qiaoqiaoyun/drag-free'
+    version: 1.0.2
+    dependencies:
+      '@ant-design/colors': registry.npmmirror.com/@ant-design/colors/6.0.0
+      '@ant-design/icons-vue': registry.npmmirror.com/@ant-design/icons-vue/6.1.0_vue@3.2.47
+      '@fullcalendar/core': registry.npmmirror.com/@fullcalendar/core/5.10.1
+      '@fullcalendar/daygrid': registry.npmmirror.com/@fullcalendar/daygrid/5.10.1
+      '@fullcalendar/interaction': registry.npmmirror.com/@fullcalendar/interaction/5.10.1
+      '@fullcalendar/timegrid': registry.npmmirror.com/@fullcalendar/timegrid/5.10.1
+      '@fullcalendar/vue3': registry.npmmirror.com/@fullcalendar/vue3/5.10.1_vue@3.2.47
+      '@types/echarts': registry.npmmirror.com/@types/echarts/4.9.17
+      '@vueuse/core': registry.npmmirror.com/@vueuse/core/6.9.2_vue@3.2.47
+      ant-design-vue: registry.npmmirror.com/ant-design-vue/3.2.15_vue@3.2.47
+      axios: registry.npmmirror.com/axios/0.24.0
+      china-area-data: registry.npmmirror.com/china-area-data/5.0.1
+      codemirror: registry.npmmirror.com/codemirror/5.65.12
+      core-js: registry.npmmirror.com/core-js/3.29.0
+      crypto-js: registry.npmmirror.com/crypto-js/4.1.1
+      dayjs: registry.npmmirror.com/dayjs/1.11.7
+      echarts: registry.npmmirror.com/echarts/5.4.1
+      echarts-gl: registry.npmmirror.com/echarts-gl/2.0.9_echarts@5.4.1
+      echarts-liquidfill: registry.npmmirror.com/echarts-liquidfill/3.1.0_echarts@5.4.1
+      html2canvas: registry.npmmirror.com/html2canvas/1.4.1
+      jspdf: registry.npmmirror.com/jspdf/2.5.1
+      lodash-es: registry.npmmirror.com/lodash-es/4.17.21
+      md5: registry.npmmirror.com/md5/2.3.0
+      mitt: registry.npmmirror.com/mitt/3.0.0
+      qs: registry.npmmirror.com/qs/6.11.0
+      tinymce: registry.npmmirror.com/tinymce/5.10.7
+      vue: registry.npmmirror.com/vue/3.2.47
+      vue-clipboard3: registry.npmmirror.com/vue-clipboard3/2.0.0
+      vue-count-to2: registry.npmmirror.com/vue-count-to2/1.0.6_vue@3.2.47
+      vue-grid-layout: registry.npmmirror.com/vue-grid-layout/3.0.0-beta1
+      vue-plugin-preset: registry.npmmirror.com/vue-plugin-preset/3.12.2
+      vue-types: registry.npmmirror.com/vue-types/4.2.1_vue@3.2.47
+      vue3-colorpicker: registry.npmmirror.com/vue3-colorpicker/2.1.2_7wryzkawmgppxntnuuhkysufku
+      vuedraggable: registry.npmmirror.com/vuedraggable/4.1.0_vue@3.2.47
+      xlsx: registry.npmmirror.com/xlsx/0.17.5
+    transitivePeerDependencies:
+      - '@interactjs/core'
+      - '@interactjs/utils'
+      - '@vue/compiler-sfc'
+      - '@vue/composition-api'
+      - debug
+    dev: false
 
   registry.npmmirror.com/@rollup/plugin-babel/5.3.1_4tnfxcmsyr7y5qv3uwkivwqysm:
     resolution: {integrity: sha512-WFfdLWU/xVWKeRQnKmIAQULUI7Il0gZnBIH/ZFO069wYIfPu+8zrfp/KMW0atmELoRDq8FbiP3VCss9MhCut7Q==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@rollup/plugin-babel/-/plugin-babel-5.3.1.tgz}
