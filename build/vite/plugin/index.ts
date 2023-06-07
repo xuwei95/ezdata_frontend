@@ -5,7 +5,9 @@ import legacy from '@vitejs/plugin-legacy';
 import purgeIcons from 'vite-plugin-purge-icons';
 import windiCSS from 'vite-plugin-windicss';
 import VitePluginCertificate from 'vite-plugin-mkcert';
-import vueSetupExtend from 'vite-plugin-vue-setup-extend';
+//update-begin-author:liusq date:2023-06-06 for: [issues/555]开发环境，vscode断点调试，文件或行数对不上
+import vueSetupExtend from 'vite-plugin-vue-setup-extend-plus';
+//update-end-author:liusq date:2023-06-06 for: [issues/555]开发环境，vscode断点调试，文件或行数对不上
 import { configHtmlPlugin } from './html';
 import { configPwaConfig } from './pwa';
 import { configMockPlugin } from './mock';
