@@ -65,6 +65,10 @@ export function useFileCell(props, fileType: UploadTypeEnum, options?) {
     if (path) {
       innerFile.value.path = path;
       handleChangeCommon(innerFile.value);
+    } else {
+      //update-begin-author:liusq date:2023-06-05 for: [issues/530]JVxeTable 的JVxeTypes.image类型，无法全部删除上传图片
+      handleChangeCommon(null);
+      //update-end-author:liusq date:2023-06-05 for:  [issues/530]JVxeTable 的JVxeTypes.image类型，无法全部删除上传图片
     }
   }
 
