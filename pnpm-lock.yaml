@@ -15,7 +15,7 @@ specifiers:
   '@logicflow/core': ^1.1.13
   '@logicflow/extension': ^1.1.13
   '@purge-icons/generated': ^0.8.1
-  '@qiaoqiaoyun/drag-free': ^1.0.511
+  '@qiaoqiaoyun/drag-free': ^1.0.52
   '@rys-fe/vite-plugin-theme': ^0.8.6
   '@types/codemirror': ^5.60.5
   '@types/crypto-js': ^4.1.1
@@ -180,7 +180,7 @@ dependencies:
   mockjs: registry.npmmirror.com/mockjs/1.1.0
   nprogress: registry.npmmirror.com/nprogress/0.2.0
   path-to-regexp: registry.npmmirror.com/path-to-regexp/6.2.1
-  pinia: registry.npmmirror.com/pinia/2.0.12_vue@3.3.4
+  pinia: registry.npmmirror.com/pinia/2.0.12_typescript@4.9.5+vue@3.3.4
   pinyin-pro: registry.npmmirror.com/pinyin-pro/3.15.1
   print-js: registry.npmmirror.com/print-js/1.6.0
   qrcode: registry.npmmirror.com/qrcode/1.5.3
@@ -201,8 +201,8 @@ dependencies:
   vue-router: registry.npmmirror.com/vue-router/4.2.2_vue@3.3.4
   vue-types: registry.npmmirror.com/vue-types/4.2.1_vue@3.3.4
   vuedraggable: registry.npmmirror.com/vuedraggable/4.1.0_vue@3.3.4
-  vxe-table: registry.npmmirror.com/vxe-table/4.1.0
-  vxe-table-plugin-antd: registry.npmmirror.com/vxe-table-plugin-antd/3.0.5
+  vxe-table: registry.npmmirror.com/vxe-table/4.1.0_vue@3.3.4+xe-utils@3.5.11
+  vxe-table-plugin-antd: registry.npmmirror.com/vxe-table-plugin-antd/3.0.5_vxe-table@4.1.0
   xe-utils: registry.npmmirror.com/xe-utils/3.5.11
   xss: registry.npmmirror.com/xss/1.0.14
 
@@ -13021,17 +13021,25 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  registry.npmmirror.com/pinia/2.0.12_vue@3.3.4:
+  registry.npmmirror.com/pinia/2.0.12_typescript@4.9.5+vue@3.3.4:
     resolution: {integrity: sha512-tUeuYGFrLU5irmGyRAIxp35q1OTcZ8sKpGT4XkPeVcG35W4R6cfXDbCGexzmVqH5lTQJJTXXbNGutIu9yS5yew==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://registry.npmmirror.com/pinia/-/pinia-2.0.12.tgz}
     id: registry.npmmirror.com/pinia/2.0.12
     name: pinia
     version: 2.0.12
+    peerDependencies:
+      '@vue/composition-api': ^1.4.0
+      typescript: '>=4.4.4'
+      vue: ^2.6.14 || ^3.2.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      typescript:
+        optional: true
     dependencies:
       '@vue/devtools-api': registry.npmmirror.com/@vue/devtools-api/6.5.0
+      typescript: registry.npmmirror.com/typescript/4.9.5
+      vue: registry.npmmirror.com/vue/3.3.4
       vue-demi: registry.npmmirror.com/vue-demi/0.14.5_vue@3.3.4
-    transitivePeerDependencies:
-      - '@vue/composition-api'
-      - vue
     dev: false
 
   registry.npmmirror.com/pinkie-promise/2.0.1:
@@ -16502,16 +16510,28 @@ packages:
       vue: registry.npmmirror.com/vue/3.3.4
     dev: false
 
-  registry.npmmirror.com/vxe-table-plugin-antd/3.0.5:
+  registry.npmmirror.com/vxe-table-plugin-antd/3.0.5_vxe-table@4.1.0:
     resolution: {integrity: sha512-qZXIxNKSqdvfVncvVopId7byy9FYUW+ygX4vwUhPceHwsUq0eyX5SVX/LLafqfsnkq4l8+EZ4zQ5/xQ6AfZ31Q==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://registry.npmmirror.com/vxe-table-plugin-antd/-/vxe-table-plugin-antd-3.0.5.tgz}
+    id: registry.npmmirror.com/vxe-table-plugin-antd/3.0.5
     name: vxe-table-plugin-antd
     version: 3.0.5
+    peerDependencies:
+      vxe-table: ^4.0.30
+    dependencies:
+      vxe-table: registry.npmmirror.com/vxe-table/4.1.0_vue@3.3.4+xe-utils@3.5.11
     dev: false
 
-  registry.npmmirror.com/vxe-table/4.1.0:
+  registry.npmmirror.com/vxe-table/4.1.0_vue@3.3.4+xe-utils@3.5.11:
     resolution: {integrity: sha512-FX4nc4ckkQGWG/W94z97KBIGrfZsbcni3pm+4uMzNQUcEgxgchnY78/4PrRC4ZRsHJIMv4mtNrzdfJDCTfA65g==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://registry.npmmirror.com/vxe-table/-/vxe-table-4.1.0.tgz}
+    id: registry.npmmirror.com/vxe-table/4.1.0
     name: vxe-table
     version: 4.1.0
+    peerDependencies:
+      vue: ^3.2.2
+      xe-utils: ^3.2.0
+    dependencies:
+      vue: registry.npmmirror.com/vue/3.3.4
+      xe-utils: registry.npmmirror.com/xe-utils/3.5.11
     dev: false
 
   registry.npmmirror.com/w3c-hr-time/1.0.2:
