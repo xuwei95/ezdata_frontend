@@ -2,10 +2,6 @@
   <div ref="exportRef">
     <ViewEngine :dragData="dragData" :token="getToken()" @go="compRouter" @btnClick="btnClick"></ViewEngine>  
   </div>
-  
-  <DemoModal @register="registerModal"/>
-  <DesformViewModal @register="registerRecordModal" :showComment="false" :showFiles="false" :showDataLog="false"/>
-    
 </template>
 
 <script lang="ts" name="drag-page-view" setup>
@@ -17,7 +13,6 @@
   import { openWindow } from '/@/utils';
   import { getToken } from '/@/utils/auth';
   import { useUserStore } from '/@/store/modules/user';
-  import DemoModal from '/@/views/system/examples/demo/DemoModal.vue';
   import {router} from "/@/router";
   import {useExportImage} from './useExportImage'
   

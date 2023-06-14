@@ -19,7 +19,7 @@
           :token="getToken()"
           :tenantId="getTenantId()"
           :lowAppId="lowAppId"
-          :isLowApp="isLowApp"
+          :isLowApp="false"
           @save="handleSave"
           @close="handleClose"
           @scroll="handleScroll"
