@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@jeecg/online": "3.4.4-RC",
-    "@qiaoqiaoyun/drag-free": "^1.0.2",
+    "@qiaoqiaoyun/drag-free": "^1.0.5",
     "@iconify/iconify": "^2.2.1",
     "@ant-design/colors": "^6.0.0",
     "@ant-design/icons-vue": "^6.1.0",
