@@ -3476,7 +3476,6 @@ packages:
       vue-clipboard3: registry.npmmirror.com/vue-clipboard3/2.0.0
       vue-count-to2: registry.npmmirror.com/vue-count-to2/1.0.6_vue@3.2.47
       vue-grid-layout: registry.npmmirror.com/vue-grid-layout/3.0.0-beta1
-      vue-plugin-preset: registry.npmmirror.com/vue-plugin-preset/3.12.2
       vue-types: registry.npmmirror.com/vue-types/4.2.1_vue@3.2.47
       vue3-colorpicker: registry.npmmirror.com/vue3-colorpicker/2.1.2_7wryzkawmgppxntnuuhkysufku
       vuedraggable: registry.npmmirror.com/vuedraggable/4.1.0_vue@3.2.47
@@ -16851,11 +16850,6 @@ packages:
     version: 0.4.6
     dev: false
 
-  registry.npmmirror.com/vue-plugin-preset/3.12.2:
-    resolution: {integrity: sha512-4VUSakZe9Lt4/JeY/7kzh7Yyb8p+1vcwGwFcGKhNtQrOvZFEDHhB4HwTJFy3XGrIWyzGORTQCfY37kgtAkDYgA==, registry: http://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vue-plugin-preset/-/vue-plugin-preset-3.12.2.tgz}
-    name: vue-plugin-preset
-    version: 3.12.2
-    dev: false
 
   registry.npmmirror.com/vue-print-nb-jeecg/1.0.12:
     resolution: {integrity: sha512-jHyWm6/TxB1iU2nHL7upQdHVdxb1SJQ9n3XKeYTaruFdbSphLo1vDtTunS2qVCjupk8lui7FlF5rxxSNr0zjZg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vue-print-nb-jeecg/-/vue-print-nb-jeecg-1.0.12.tgz}
