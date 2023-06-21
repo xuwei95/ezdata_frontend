@@ -19,7 +19,7 @@
       },
       type: {
         type: String as PropType<string>,
-        default: 'bar',
+        default: 'line',
       },
       width: {
         type: String as PropType<string>,
