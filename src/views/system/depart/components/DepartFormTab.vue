@@ -2,7 +2,7 @@
   <a-spin :spinning="loading">
     <BasicForm @register="registerForm" />
     <div class="j-box-bottom-button offset-20" style="margin-top: 30px">
-      <div class="j-box-bottom-button-float">
+      <div class="j-box-bottom-button-float" :class="[`${prefixCls}`]">
         <a-button preIcon="ant-design:sync-outlined" @click="onReset">重置</a-button>
         <a-button type="primary" preIcon="ant-design:save-filled" @click="onSubmit">保存</a-button>
       </div>
@@ -15,13 +15,15 @@
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { saveOrUpdateDepart } from '../depart.api';
   import { useBasicFormSchema, orgCategoryOptions } from '../depart.data';
+  import { useDesign } from '/@/hooks/web/useDesign';
+
+  const { prefixCls } = useDesign('j-depart-form-content');
 
   const emit = defineEmits(['success']);
   const props = defineProps({
     data: { type: Object, default: () => ({}) },
     rootTreeData: { type: Array, default: () => [] },
   });
-  const prefixCls = inject('prefixCls');
   const loading = ref<boolean>(false);
   // 当前是否是更新模式
   const isUpdate = ref<boolean>(true);
@@ -112,11 +114,15 @@
     }
   }
 </script>
-<style lang="less" scoped>
-   /*begin 兼容暗夜模式*/
-  .j-box-bottom-button-float{
-    background-color: @component-background;
+<style lang="less">
+  // update-begin-author:liusq date:20230625 for: [issues/563]暗色主题部分失效
+
+  @prefix-cls: ~'@{namespace}-j-depart-form-content';
+  /*begin 兼容暗夜模式*/
+  .@{prefix-cls} {
+    background: @component-background;
     border-top: 1px solid @border-color-base;
   }
-   /*end 兼容暗夜模式*/
+  /*end 兼容暗夜模式*/
+  // update-end-author:liusq date:20230625 for: [issues/563]暗色主题部分失效
 </style>

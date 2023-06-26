@@ -24,7 +24,7 @@
     <a-empty v-else description="无可配置部门权限" />
 
     <div class="j-box-bottom-button offset-20" style="margin-top: 30px">
-      <div class="j-box-bottom-button-float">
+      <div class="j-box-bottom-button-float" :class="[`${prefixCls}`]">
         <a-dropdown :trigger="['click']" placement="top">
           <template #overlay>
             <a-menu>
@@ -52,14 +52,15 @@
   import { BasicTree } from '/@/components/Tree/index';
   import DepartDataRuleDrawer from './DepartDataRuleDrawer.vue';
   import { queryRoleTreeList, queryDepartPermission, saveDepartPermission } from '../depart.api';
+  import { useDesign } from '/@/hooks/web/useDesign';
 
+  const { prefixCls } = useDesign('j-depart-form-content');
   const props = defineProps({
     data: { type: Object, default: () => ({}) },
   });
   // 当前选中的部门ID，可能会为空，代表未选择部门
   const departId = computed(() => props.data?.id);
 
-  const prefixCls = inject('prefixCls');
   const basicTree = ref();
   const loading = ref<boolean>(false);
   const treeData = ref<any[]>([]);
@@ -166,11 +167,4 @@
   .depart-rule-tree :deep(.scrollbar__bar) {
     pointer-events: none;
   }
-
-   /*begin 兼容暗夜模式*/
-  .j-box-bottom-button-float{
-    background-color: @component-background;
-    border-top: 1px solid @border-color-base;
-  }
-  /*end 兼容暗夜模式*/
 </style>

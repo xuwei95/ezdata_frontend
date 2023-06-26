@@ -84,12 +84,6 @@
   queryPositionInfo();
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   @import './index.less';
-
-  /*begin 兼容暗夜模式*/
-  .address-book{
-    background-color: @component-background !important;
-  }
-  /*end 兼容暗夜模式*/
 </style>
