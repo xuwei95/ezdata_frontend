@@ -4,7 +4,7 @@
 <script lang="ts">
   import { defineComponent, PropType, ref, Ref, watchEffect, reactive, watch } from 'vue';
   import { useECharts } from '/@/hooks/web/useECharts';
-
+  import { cloneDeep } from 'lodash-es';
   export default defineComponent({
     name: 'Pie',
     props: {
@@ -70,7 +70,7 @@
       );
       function initCharts() {
         if (props.option) {
-          Object.assign(option, props.option);
+          Object.assign(option, cloneDeep(props.option));
         }
         option.series[0].data = props.chartData;
         setOptions(option);

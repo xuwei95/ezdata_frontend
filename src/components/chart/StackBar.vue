@@ -4,7 +4,7 @@
 <script lang="ts">
   import { defineComponent, PropType, ref, Ref, reactive, watchEffect, watch } from 'vue';
   import { useECharts } from '/@/hooks/web/useECharts';
-
+  import { cloneDeep } from 'lodash-es';
   export default defineComponent({
     name: 'StackBar',
     props: {
@@ -82,7 +82,7 @@
       );
       function initCharts() {
         if (props.option) {
-          Object.assign(option, props.option);
+          Object.assign(option, cloneDeep(props.option));
         }
         //图例类型
         let typeArr = Array.from(new Set(props.chartData.map((item) => item.type)));

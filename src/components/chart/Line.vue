@@ -4,7 +4,7 @@
 <script lang="ts">
   import { defineComponent, PropType, ref, Ref, reactive, watchEffect } from 'vue';
   import { useECharts } from '/@/hooks/web/useECharts';
-
+  import { cloneDeep } from 'lodash-es';
   export default defineComponent({
     name: 'line',
     props: {
@@ -63,7 +63,7 @@
 
       function initCharts() {
         if (props.option) {
-          Object.assign(option, props.option);
+          Object.assign(option, cloneDeep(props.option));
         }
         let seriesData = props.chartData.map((item) => {
           return item.value;
