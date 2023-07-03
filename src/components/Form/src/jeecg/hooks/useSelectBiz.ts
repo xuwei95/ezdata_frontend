@@ -79,7 +79,7 @@ export function useSelectBiz(getList, props) {
    */
   const indexColumnProps = {
     dataIndex: 'index',
-    width: 20,
+    width: 50,
   };
 
   /**

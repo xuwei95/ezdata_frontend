@@ -11,7 +11,8 @@ export const columns: BasicColumn[] = [
   {
     title: '职务名称',
     dataIndex: 'name',
-    width: 200,
+    align: 'left'
+    // width: 200,
   },
   // {
   //   title: '职务等级',

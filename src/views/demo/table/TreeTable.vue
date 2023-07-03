@@ -19,6 +19,7 @@
       const [register, { expandAll, collapseAll }] = useTable({
         title: '树形表格',
         isTreeTable: true,
+        expandIconColumnIndex: 1,
         rowSelection: {
           type: 'checkbox',
           getCheckboxProps(record: Recordable) {

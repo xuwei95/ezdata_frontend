@@ -22,7 +22,10 @@
           <slot :name="item" v-bind="data || {}"></slot>
         </template>
         <template #headerCell="{ column }">
-          <HeaderCell :column="column" />
+          <!-- update-begin--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题 -->
+          <CustomSelectHeader v-if="isCustomSelection(column)" v-bind="selectHeaderProps"/>
+          <HeaderCell v-else :column="column" />
+          <!-- update-end--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题 -->
         </template>
         <!-- 增加对antdv3.x兼容 -->
         <template #bodyCell="data">
@@ -39,6 +42,7 @@
   import { Table } from 'ant-design-vue';
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { PageWrapperFixedHeightKey } from '/@/components/Page/injectionKey';
+  import CustomSelectHeader from './components/CustomSelectHeader.vue'
   import expandIcon from './components/ExpandIcon';
   import HeaderCell from './components/HeaderCell.vue';
   import { InnerHandlers } from './types/table';
@@ -56,6 +60,7 @@
   import { useTableFooter } from './hooks/useTableFooter';
   import { useTableForm } from './hooks/useTableForm';
   import { useDesign } from '/@/hooks/web/useDesign';
+  import { useCustomSelection } from "./hooks/useCustomSelection";
 
   import { omit } from 'lodash-es';
   import { basicProps } from './props';
@@ -67,6 +72,7 @@
       Table,
       BasicForm,
       HeaderCell,
+      CustomSelectHeader,
     },
     props: basicProps,
     emits: [
@@ -112,8 +118,34 @@
       const { getLoading, setLoading } = useLoading(getProps);
       const { getPaginationInfo, getPagination, setPagination, setShowPagination, getShowPagination } = usePagination(getProps);
 
-      const { getRowSelection, getRowSelectionRef, getSelectRows, clearSelectedRowKeys, getSelectRowKeys, deleteSelectRowByKey, setSelectedRowKeys } =
-        useRowSelection(getProps, tableData, emit);
+      // update-begin--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题
+
+      // const { getRowSelection, getRowSelectionRef, getSelectRows, clearSelectedRowKeys, getSelectRowKeys, deleteSelectRowByKey, setSelectedRowKeys } =
+      //   useRowSelection(getProps, tableData, emit);
+
+      // 子级列名
+      const childrenColumnName = computed(() => getProps.value.childrenColumnName || 'children');
+
+      // 自定义选择列
+      const {
+        getRowSelection,
+        getSelectRows,
+        getSelectRowKeys,
+        setSelectedRowKeys,
+        getRowSelectionRef,
+        selectHeaderProps,
+        isCustomSelection,
+        handleCustomSelectColumn,
+        clearSelectedRowKeys,
+        deleteSelectRowByKey,
+      } = useCustomSelection(
+        getProps,
+        wrapRef,
+        getPaginationInfo,
+        tableData,
+        childrenColumnName
+      )
+      // update-end--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题
 
       const {
         handleTableChange: onTableChange,
@@ -153,7 +185,10 @@
 
       const { getViewColumns, getColumns, setCacheColumnsByField, setColumns, getColumnsRef, getCacheColumns } = useColumns(
         getProps,
-        getPaginationInfo
+        getPaginationInfo,
+        // update-begin--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题
+        handleCustomSelectColumn,
+        // update-end--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题
       );
 
       const { getScrollRef, redoHeight } = useTableScroll(getProps, tableElRef, getColumnsRef, getRowSelectionRef, getDataSourceRef);
@@ -213,8 +248,19 @@
         }*/
         //update-end---author:wangshuai ---date:20230214  for：[QQYUN-4237]代码生成 内嵌子表模式 没有滚动条------------ 
 
+        // update-begin--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题
+        // 自定义选择列，需要去掉原生的
+        delete propsData.rowSelection
+        // update-end--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题
+
         propsData = omit(propsData, ['class', 'onChange']);
         return propsData;
+      });
+
+      // 统一设置表格列宽度
+      const getMaxColumnWidth = computed(() => {
+        const values = unref(getBindValues);
+        return values.maxColumnWidth > 0 ? values.maxColumnWidth + 'px' : null;
       });
 
       const getWrapperClass = computed(() => {
@@ -225,6 +271,7 @@
           {
             [`${prefixCls}-form-container`]: values.useSearchForm,
             [`${prefixCls}--inset`]: values.inset,
+            [`${prefixCls}-col-max-width`]: getMaxColumnWidth.value != null,
           },
         ];
       });
@@ -300,7 +347,14 @@
         replaceFormSlotKey,
         getFormSlotKeys,
         getWrapperClass,
+        getMaxColumnWidth,
         columns: getViewColumns,
+
+        // update-begin--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题
+        selectHeaderProps,
+        isCustomSelection,
+        // update-end--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题
+
       };
     },
   });
@@ -429,5 +483,15 @@
         padding: 0;
       }
     }
+
+    // ------ 统一设置表格列最大宽度 ------
+    &-col-max-width {
+      .ant-table-thead tr th,
+      .ant-table-tbody tr td {
+        max-width: v-bind(getMaxColumnWidth);
+      }
+    }
+    // ------ 统一设置表格列最大宽度 ------
+
   }
 </style>

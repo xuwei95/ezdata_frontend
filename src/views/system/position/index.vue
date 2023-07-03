@@ -49,6 +49,10 @@
       formConfig: {
         schemas: searchFormSchema,
       },
+      actionColumn: {
+        width: 180,
+      },
+      showIndexColumn: true,
     },
     exportConfig: {
       name: '职务列表',

@@ -80,13 +80,13 @@
         {
           title: '角色名称',
           dataIndex: 'roleName',
-          width: 40,
+          width: 240,
           align: 'left',
         },
         {
           title: '角色编码',
           dataIndex: 'roleCode',
-          width: 40,
+          // width: 40,
         },
       ];
 

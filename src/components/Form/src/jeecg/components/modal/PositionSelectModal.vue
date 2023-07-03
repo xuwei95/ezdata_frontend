@@ -113,18 +113,18 @@
         {
           title: '职务编码',
           dataIndex: 'code',
-          width: 40,
+          width: 180,
           align: 'left',
         },
         {
           title: '职务名称',
           dataIndex: 'name',
-          width: 40,
+          // width: 180,
         },
         {
           title: '职务等级',
           dataIndex: 'postRank_dictText',
-          width: 40,
+          width: 180,
         },
       ];
       //已选择的table信息
