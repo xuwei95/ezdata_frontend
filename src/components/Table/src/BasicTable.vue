@@ -140,6 +140,7 @@
         deleteSelectRowByKey,
       } = useCustomSelection(
         getProps,
+        emit,
         wrapRef,
         getPaginationInfo,
         tableData,
