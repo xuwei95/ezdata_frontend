@@ -1,7 +1,7 @@
 <!--用户选择组件-->
 <template>
   <div>
-    <JSelectBiz @handleOpen="handleOpen" :loading="loadingEcho" v-bind="attrs"></JSelectBiz>
+    <JSelectBiz @change="handleChange" @handleOpen="handleOpen" :loading="loadingEcho" v-bind="attrs"></JSelectBiz>
     <UserSelectModal :rowKey="rowKey" @register="regModal" @getSelectResult="setValue" v-bind="getBindValue"></UserSelectModal>
   </div>
 </template>
@@ -119,6 +119,17 @@
         emit('update:value', values.join(','));
       }
       const getBindValue = Object.assign({}, unref(props), unref(attrs));
+
+      //update-begin---author:wangshuai ---date:20230711  for：换成异步组件加载，否则会影响到其他页面描述------------
+      /**
+       * 下拉框值改变回调事件
+       * @param values
+       */
+      function handleChange(values) {
+        emit('update:value', values);
+      }
+      //update-end---author:wangshuai ---date:20230711  for：换成异步组件加载，否则会影响到其他页面描述------------
+      
       return {
         state,
         attrs,
@@ -130,6 +141,7 @@
         regModal,
         setValue,
         handleOpen,
+        handleChange,
       };
     },
   });
