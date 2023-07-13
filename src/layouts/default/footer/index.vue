@@ -25,6 +25,7 @@
   import { useRouter } from 'vue-router';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useLayoutHeight } from '../content/useContentViewHeight';
+  import { ThemeEnum } from '/@/enums/appEnum';
 
   export default defineComponent({
     name: 'LayoutFooter',
@@ -37,6 +38,9 @@
 
       const footerRef = ref<ComponentRef>(null);
       const { setFooterHeight } = useLayoutHeight();
+      //当前主题
+      const { getDarkMode } = useRootSetting();
+      const isDark = computed(() => getDarkMode.value === ThemeEnum.DARK);
 
       const getShowLayoutFooter = computed(() => {
         if (unref(getShowFooter)) {
@@ -47,7 +51,10 @@
         }
         return unref(getShowFooter) && !unref(currentRoute).meta?.hiddenFooter;
       });
-
+      //鼠标移入的颜色设置
+      const hoverColor = computed(() => {
+        return unref(isDark) ? 'rgba(255, 255, 255, 1)' : 'rgba(0, 0, 0, 0.85)';
+      });
       return {
         getShowLayoutFooter,
         prefixCls,
@@ -57,6 +64,7 @@
         SITE_URL,
         openWindow,
         footerRef,
+        hoverColor,
       };
     },
   });
@@ -65,9 +73,9 @@
   @prefix-cls: ~'@{namespace}-layout-footer';
 
   @normal-color: rgba(0, 0, 0, 0.45);
-
-  @hover-color: rgba(0, 0, 0, 0.85);
-
+  // update-begin-author:liusq date:2023-7-12 for: [issues/608] dark 模式下底部 footer 文字 hover 样式导致文字消失
+  @hover-color: v-bind(hoverColor);
+  // update-end-author:liusq date:2023-7-12 for: [issues/608] dark 模式下底部 footer 文字 hover 样式导致文字消失
   .@{prefix-cls} {
     color: @normal-color;
     text-align: center;
