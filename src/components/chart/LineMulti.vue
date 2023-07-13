@@ -7,7 +7,7 @@
   import { cloneDeep } from 'lodash-es';
 
   export default defineComponent({
-    name: 'lineMulti',
+    name: 'LineMulti',
     props: {
       chartData: {
         type: Array,
@@ -76,14 +76,25 @@
         let xAxisData = Array.from(new Set(props.chartData.map((item) => item.name)));
         let seriesData = [];
         typeArr.forEach((type) => {
-          let obj = { name: type, type: props.type };
-          let chartArr = props.chartData.filter((item) => type === item.type);
+          let obj: any = { name: type, type: props.type };
+          // update-begin-author:liusq date:2023-7-12 for: [issues/613] LineMulti 在数据不对齐时，横坐标计算错误
+          let data = [];
+          xAxisData.forEach((x) => {
+            let dataArr = props.chartData.filter((item) => type === item.type && item.name == x);
+            if (dataArr && dataArr.length > 0) {
+              data.push(dataArr[0].value);
+            } else {
+              data.push(null);
+            }
+          });
+          // update-end-author:liusq date:2023-7-12 for: [issues/613] LineMulti 在数据不对齐时，横坐标计算错误
           //data数据
-          obj['data'] = chartArr.map((item) => item.value);
+          obj['data'] = data;
           seriesData.push(obj);
         });
         option.series = seriesData;
         option.xAxis.data = xAxisData;
+        console.log('option', option);
         setOptions(option);
         getInstance()?.off('click', onClick);
         getInstance()?.on('click', onClick);
