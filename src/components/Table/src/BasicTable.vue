@@ -18,7 +18,8 @@
     <!-- https://antdv.com/docs/vue/migration-v3-cn -->
     <a-form-item-rest>
       <Table ref="tableElRef" v-bind="getBindValues" :rowClassName="getRowClassName" v-show="getEmptyDataIsShowTable" @resizeColumn="handleResizeColumn" @change="handleTableChange">
-        <template #[item]="data" v-for="item in Object.keys($slots)" :key="item">
+        <!-- antd的原生插槽直接传递 -->
+        <template #[item]="data" v-for="item in slotNamesGroup.native" :key="item">
           <slot :name="item" v-bind="data || {}"></slot>
         </template>
         <template #headerCell="{ column }">
@@ -29,14 +30,21 @@
         </template>
         <!-- 增加对antdv3.x兼容 -->
         <template #bodyCell="data">
-          <slot name="bodyCell" v-bind="data || {}"></slot>
+          <!-- update-begin--author:liaozhiyang---date:220230717---for：【issues-179】antd3 一些警告以及报错(针对表格) -->
+          <template v-if="data.column.slotsBak?.customRender">
+            <slot :name="data.column.slotsBak.customRender" v-bind="data || {}"></slot>
+          </template>
+          <template v-else>
+            <slot name="bodyCell" v-bind="data || {}"></slot>
+          </template>
+          <!-- update-begin--author:liaozhiyang---date:22030717---for：【issues-179】antd3 一些警告以及报错(针对表格) -->
         </template>
       </Table>
     </a-form-item-rest>
   </div>
 </template>
 <script lang="ts">
-  import type { BasicTableProps, TableActionType, SizeType, ColumnChangeParam } from './types/table';
+  import type { BasicTableProps, TableActionType, SizeType, ColumnChangeParam, BasicColumn } from './types/table';
 
   import { defineComponent, ref, computed, unref, toRaw, inject, watchEffect } from 'vue';
   import { Table } from 'ant-design-vue';
@@ -216,7 +224,7 @@
 
       const { getHeaderProps } = useTableHeader(getProps, slots, handlers);
 
-      const { getFooterProps } = useTableFooter(getProps, getScrollRef, tableElRef, getDataSourceRef);
+      const { getFooterProps } = useTableFooter(getProps, slots, getScrollRef, tableElRef, getDataSourceRef);
 
       const { getFormProps, replaceFormSlotKey, getFormSlotKeys, handleSearchInfoChange } = useTableForm(getProps, slots, fetch, getLoading);
 
@@ -273,6 +281,8 @@
             [`${prefixCls}-form-container`]: values.useSearchForm,
             [`${prefixCls}--inset`]: values.inset,
             [`${prefixCls}-col-max-width`]: getMaxColumnWidth.value != null,
+            // 是否显示表尾合计
+            [`${prefixCls}--show-summary`]: values.showSummary,
           },
         ];
       });
@@ -325,6 +335,33 @@
       };
       createTableContext({ ...tableAction, wrapRef, getBindValues });
 
+      // update-begin--author:sunjianlei---date:220230718---for：【issues/179】兼容新老slots写法，移除控制台警告
+      // 获取分组之后的slot名称
+      const slotNamesGroup = computed<{
+        // AntTable原生插槽
+        native: string[];
+        // 列自定义插槽
+        custom: string[];
+      }>(() => {
+        const native: string[] = [];
+        const custom: string[] = [];
+        const columns = unref<Recordable[]>(getViewColumns) as BasicColumn[];
+        const allCustomRender = columns.map<string>((column) => column.slotsBak?.customRender);
+        for (const name of Object.keys(slots)) {
+          // 过滤特殊的插槽
+          if (['bodyCell'].includes(name)) {
+            continue;
+          }
+          if (allCustomRender.includes(name)) {
+            custom.push(name);
+          } else {
+            native.push(name);
+          }
+        }
+        return { native, custom };
+      });
+      // update-end--author:sunjianlei---date:220230718---for：【issues/179】兼容新老slots写法，移除控制台警告
+
       expose(tableAction);
 
       emit('register', tableAction, formActions);
@@ -355,7 +392,7 @@
         selectHeaderProps,
         isCustomSelection,
         // update-end--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题
-
+        slotNamesGroup,
       };
     },
   });
@@ -494,5 +531,16 @@
     }
     // ------ 统一设置表格列最大宽度 ------
 
+    // update-begin--author:sunjianlei---date:220230718---for：【issues/622】修复表尾合计错位的问题
+    &--show-summary {
+      .ant-table > .ant-table-footer {
+        padding: 12px 0 0;
+      }
+
+      .ant-table.ant-table-bordered > .ant-table-footer {
+        border: 0;
+      }
+    }
+    // update-end--author:sunjianlei---date:220230718---for：【issues/622】修复表尾合计错位的问题
   }
 </style>

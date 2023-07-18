@@ -99,7 +99,7 @@ function handleActionColumn(propsRef: ComputedRef<BasicTableProps>, columns: Bas
 export function useColumns(
   propsRef: ComputedRef<BasicTableProps>,
   getPaginationRef: ComputedRef<boolean | PaginationProps>,
-  handleCustomSelectColumn: Fn,
+  handleCustomSelectColumn: Fn
 ) {
   const columnsRef = ref(unref(propsRef).columns) as unknown as Ref<BasicColumn[]>;
   let cacheColumns = unref(propsRef).columns;
@@ -150,6 +150,14 @@ export function useColumns(
         return hasPermission(column.auth) && isIfShow(column);
       })
       .map((column) => {
+        // update-begin--author:liaozhiyang---date:20230718---for: 【issues-179】antd3 一些警告以及报错(针对表格)
+        if(column.slots?.customRender) {
+          // slots的备份，兼容老的写法，转成新写法避免控制台警告
+          column.slotsBak = column.slots;
+          delete column.slots;
+        }
+        // update-end--author:liaozhiyang---date:20230718---for: 【issues-179】antd3 一些警告以及报错(针对表格)
+
         const { slots, customRender, format, edit, editRow, flag, title: metaTitle } = column;
 
         if (!slots || !slots?.title) {

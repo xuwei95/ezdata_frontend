@@ -425,6 +425,8 @@ export interface BasicColumn extends ColumnProps {
   customTitle?: VueNode;
 
   slots?: Recordable;
+  // slots的备份，兼容老的写法，转成新写法避免控制台警告
+  slotsBak?: Recordable;
 
   // Whether to hide the column by default, it can be displayed in the column configuration
   defaultHidden?: boolean;

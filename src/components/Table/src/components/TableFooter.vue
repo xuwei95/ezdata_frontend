@@ -2,7 +2,7 @@
   <Table
     v-if="summaryFunc || summaryData"
     :showHeader="false"
-    :bordered="false"
+    :bordered="bordered"
     :pagination="false"
     :dataSource="getDataSource"
     :rowKey="(r) => r[rowKey]"
@@ -28,6 +28,10 @@
     name: 'BasicTableFooter',
     components: { Table },
     props: {
+      bordered: {
+        type: Boolean,
+        default: false,
+      },
       summaryFunc: {
         type: Function as PropType<Fn>,
       },
@@ -38,6 +42,8 @@
         type: Object as PropType<Recordable>,
       },
       rowKey: propTypes.string.def('key'),
+      // 是否有展开列
+      hasExpandedRow: propTypes.bool,
     },
     setup(props) {
       const table = useTableContext();
@@ -66,8 +72,14 @@
         const hasRowSummary = dataSource.some((item) => Reflect.has(item, SUMMARY_ROW_KEY));
         const hasIndexSummary = dataSource.some((item) => Reflect.has(item, SUMMARY_INDEX_KEY));
 
+        // 是否有序号列
+        let hasIndexCol = false;
+        // 是否有选择列
+        let hasSelection = table.getRowSelection() && hasRowSummary
+
         if (index !== -1) {
           if (hasIndexSummary) {
+            hasIndexCol = true;
             columns[index].customRender = ({ record }) => record[SUMMARY_INDEX_KEY];
             columns[index].ellipsis = false;
           } else {
@@ -75,15 +87,27 @@
           }
         }
 
-        if (table.getRowSelection() && hasRowSummary) {
+        if (hasSelection) {
           const isFixed = columns.some((col) => col.fixed === 'left');
           columns.unshift({
-            width: 60,
+            width: 50,
             title: 'selection',
             key: 'selectionKey',
             align: 'center',
             ...(isFixed ? { fixed: 'left' } : {}),
-            customRender: ({ record }) => record[SUMMARY_ROW_KEY],
+            customRender: ({ record }) => hasIndexCol ? '' : record[SUMMARY_ROW_KEY],
+          });
+        }
+
+        if (props.hasExpandedRow) {
+          const isFixed = columns.some((col) => col.fixed === 'left');
+          columns.unshift({
+            width: 50,
+            title: 'expandedRow',
+            key: 'expandedRowKey',
+            align: 'center',
+            ...(isFixed ? { fixed: 'left' } : {}),
+            customRender: () => '',
           });
         }
         return columns;

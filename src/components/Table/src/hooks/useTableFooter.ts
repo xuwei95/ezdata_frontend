@@ -1,4 +1,4 @@
-import type { ComputedRef, Ref } from 'vue';
+import type { ComputedRef, Ref, Slots } from 'vue';
 import type { BasicTableProps } from '../types/table';
 import { unref, computed, h, nextTick, watchEffect } from 'vue';
 import TableFooter from '../components/TableFooter.vue';
@@ -6,6 +6,7 @@ import { useEventListener } from '/@/hooks/event/useEventListener';
 
 export function useTableFooter(
   propsRef: ComputedRef<BasicTableProps>,
+  slots: Slots,
   scrollRef: ComputedRef<{
     x: string | number | true;
     y: Nullable<number>;
@@ -18,9 +19,18 @@ export function useTableFooter(
     return (unref(getDataSourceRef) || []).length === 0;
   });
 
+  // 是否有展开行
+  const hasExpandedRow = computed(() => Object.keys(slots).includes('expandedRowRender'))
+
   const getFooterProps = computed((): Recordable | undefined => {
-    const { summaryFunc, showSummary, summaryData } = unref(propsRef);
-    return showSummary && !unref(getIsEmptyData) ? () => h(TableFooter, { summaryFunc, summaryData, scroll: unref(scrollRef) }) : undefined;
+    const { summaryFunc, showSummary, summaryData, bordered } = unref(propsRef);
+    return showSummary && !unref(getIsEmptyData) ? () => h(TableFooter, {
+      bordered,
+      summaryFunc,
+      summaryData,
+      scroll: unref(scrollRef),
+      hasExpandedRow: hasExpandedRow.value
+    }) : undefined;
   });
 
   watchEffect(() => {
