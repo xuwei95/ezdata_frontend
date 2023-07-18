@@ -4,7 +4,7 @@ import type { BasicTableProps, PaginationProps, TableRowSelection } from '/@/com
 import { computed, nextTick, onUnmounted, ref, toRaw, unref, watch, watchEffect } from 'vue';
 import { omit } from 'lodash-es';
 import { throttle } from 'lodash-es';
-import { Checkbox } from 'ant-design-vue';
+import { Checkbox, Radio } from 'ant-design-vue';
 import { isFunction } from '/@/utils/is';
 import { findNodeAll } from '/@/utils/helper/treeHelper';
 import { ROW_KEY } from '/@/components/Table/src/const';
@@ -61,6 +61,11 @@ export function useCustomSelection(
     };
   });
 
+  // 是否是单选
+  const isRadio = computed(() => {
+    return getRowSelectionRef.value?.type === 'radio';
+  });
+
   const getAutoCreateKey = computed(() => {
     return unref(propsRef).autoCreateKey && !unref(propsRef).rowKey;
   });
@@ -95,10 +100,22 @@ export function useCustomSelection(
   const selectHeaderProps = computed(() => {
     return {
       onSelectAll,
+      isRadio: isRadio.value,
       selectedLength: flattedData.value.filter((data) => selectedKeys.value.includes(getRecordKey(data))).length,
       pageSize: currentPageSize.value,
     };
   });
+
+  // 监听传入的selectedRowKeys
+  watch(
+    () => unref(propsRef)?.rowSelection?.selectedRowKeys,
+    (val: string[]) => {
+      if (Array.isArray(val)) {
+        setSelectedRowKeys(val);
+      }
+    },
+    { immediate: true }
+  );
 
   // 当任意一个变化时，触发同步检测
   watch([selectedKeys, selectedRows], () => {
@@ -233,6 +250,11 @@ export function useCustomSelection(
 
   function updateSelected(record, checked) {
     const recordKey = getRecordKey(record);
+    if (isRadio.value) {
+      selectedKeys.value = [recordKey];
+      selectedRows.value = [record];
+      return;
+    }
     const index = selectedKeys.value.findIndex((key) => key === recordKey);
     if (checked) {
       if (index === -1) {
@@ -290,10 +312,22 @@ export function useCustomSelection(
   }
 
   // 自定义渲染Body
-  function bodyCustomRender({ record, index }) {
+  function bodyCustomRender(params) {
+    const { index } = params;
     if (!recordIsShow(index)) {
       return '';
     }
+    if (isRadio.value) {
+      return renderRadioComponent(params);
+    } else {
+      return renderCheckboxComponent(params);
+    }
+  }
+
+  /**
+   * 渲染checkbox组件
+   */
+  function renderCheckboxComponent({ record }) {
     const recordKey = getRecordKey(record);
     // 获取用户自定义checkboxProps
     const checkboxProps = ((getCheckboxProps) => {
@@ -309,7 +343,20 @@ export function useCustomSelection(
     return (
       <Checkbox
         {...checkboxProps}
-        data-index={index}
+        key={'j-select__' + recordKey}
+        checked={selectedKeys.value.includes(recordKey)}
+        onUpdate:checked={(checked) => onSelect(record, checked)}
+      />
+    );
+  }
+
+  /**
+   * 渲染radio组件
+   */
+  function renderRadioComponent({ record }) {
+    const recordKey = getRecordKey(record);
+    return (
+      <Radio
         key={'j-select__' + recordKey}
         checked={selectedKeys.value.includes(recordKey)}
         onUpdate:checked={(checked) => onSelect(record, checked)}
