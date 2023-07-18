@@ -137,19 +137,24 @@ export function useJVxeComponent(props: JVxeComponent.Props) {
   );
 
   /** 通用处理 change 事件 */
-  function handleChangeCommon($value) {
-    let newValue = enhanced.getValue($value, ctx);
-    let oldValue = value.value
-    trigger('change', { value: newValue });
-    // 触发valueChange事件
-    parentTrigger('valueChange', {
-      type: props.type,
-      value: newValue,
-      oldValue: oldValue,
-      col: originColumn.value,
-      rowIndex: rowIndex.value,
-      columnIndex: columnIndex.value,
-    });
+  function handleChangeCommon($value, force = false) {
+    const newValue = enhanced.getValue($value, ctx);
+    const oldValue = value.value;
+    // update-begin--author:liaozhiyang---date:20230718---for：【issues-5025】JVueTable的事件 @valueChange重复触发问题
+    const execute = force ? true : newValue !== oldValue;
+    if (execute) {
+      trigger('change', { value: newValue });
+      // 触发valueChange事件
+      parentTrigger('valueChange', {
+        type: props.type,
+        value: newValue,
+        oldValue: oldValue,
+        col: originColumn.value,
+        rowIndex: rowIndex.value,
+        columnIndex: columnIndex.value,
+      });
+    }
+    // update-end--author:liaozhiyang---date:20230718---for：【issues-5025】JVueTable的事件 @valueChange重复触发问题
   }
 
   /** 通用处理 blur 事件 */
