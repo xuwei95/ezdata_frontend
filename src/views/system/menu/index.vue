@@ -52,7 +52,6 @@
       size: 'small',
       pagination: false,
       isTreeTable: true,
-      expandIconColumnIndex: 1,
       striped: true,
       useSearchForm: true,
       showTableSetting: true,

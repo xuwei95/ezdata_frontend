@@ -146,6 +146,7 @@
         handleCustomSelectColumn,
         clearSelectedRowKeys,
         deleteSelectRowByKey,
+        getExpandIconColumnIndex,
       } = useCustomSelection(
         getProps,
         emit,
@@ -248,6 +249,8 @@
           dataSource,
           footer: unref(getFooterProps),
           ...unref(getExpandOption),
+          // 【QQYUN-5837】动态计算 expandIconColumnIndex
+          expandIconColumnIndex: getExpandIconColumnIndex.value,
         };
 
         //update-begin---author:wangshuai ---date:20230214  for：[QQYUN-4237]代码生成 内嵌子表模式 没有滚动条------------

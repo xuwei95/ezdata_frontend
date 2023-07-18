@@ -435,6 +435,20 @@ export function useCustomSelection(
     }
   }
 
+  // 【QQYUN-5837】动态计算 expandIconColumnIndex
+  const getExpandIconColumnIndex = computed(() => {
+    const { expandIconColumnIndex } = unref(propsRef);
+    // 未设置选择列，则保持不变
+    if (getRowSelectionRef.value == null) {
+      return expandIconColumnIndex;
+    }
+    // 设置了选择列，并且未传入 index 参数，则返回 1
+    if (expandIconColumnIndex == null) {
+      return 1;
+    }
+    return expandIconColumnIndex;
+  });
+
   return {
     getRowSelection,
     getRowSelectionRef,
@@ -446,6 +460,7 @@ export function useCustomSelection(
     isCustomSelection,
     handleCustomSelectColumn,
     clearSelectedRowKeys,
+    getExpandIconColumnIndex,
   };
 }
 

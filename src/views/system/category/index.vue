@@ -68,7 +68,6 @@
         schemas: searchFormSchema,
       },
       isTreeTable: true,
-      expandIconColumnIndex: 1,
     },
     exportConfig: {
       name: '分类字典列表',
