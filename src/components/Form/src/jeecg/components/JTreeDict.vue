@@ -55,7 +55,7 @@
 
   async function loadViewInfo() {
     if (!props.value || props.value == '0') {
-      treeValue.value = null;
+      treeValue.value = { value: null, label: null };
     } else {
       let params = { field: props.field, val: props.value };
       let result = await defHttp.get({ url: Api.view, params });

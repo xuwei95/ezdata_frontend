@@ -77,7 +77,6 @@
       const emitData = ref<any[]>([]);
       const treeData = ref<any[]>([]);
       const treeValue = ref();
-      treeValue.value = '';
       const attrs = useAttrs();
       const [state] = useRuleFormItem(props, 'value', 'change', emitData);
       watch(
@@ -122,7 +121,7 @@
           if(props.multiple){
             treeValue.value = [];
           }else{
-            treeValue.value = null;
+            treeValue.value = { value: null, label: null };
           }
         } else {
           loadDictItem({ ids: props.value }).then((res) => {
