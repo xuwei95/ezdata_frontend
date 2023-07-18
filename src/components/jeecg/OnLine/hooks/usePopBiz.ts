@@ -57,12 +57,12 @@ export function usePopBiz(props, tableRef?) {
   /**
    * 选择列配置
    */
-  const rowSelection = {
+  const rowSelection = reactive({
     fixed: true,
     selectedRowKeys: checkedKeys,
     selectionRows: selectRows,
     onChange: onSelectChange,
-  };
+  });
 
   /**
    * 序号列配置
