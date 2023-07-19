@@ -43,39 +43,40 @@
         :rowSelection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
         @change="handleTableChange"
       >
-        <template slot="htmlSlot" slot-scope="text">
-          <div v-html="text"></div>
-        </template>
-        <template #imgSlot="{ text, record }">
-          <span v-if="!text" style="font-size: 12px; font-style: italic">无图片</span>
-          <img v-else :src="getImgView(text)" :preview="record.id" alt="" class="anty-img-wrap" />
-        </template>
-        <template #pcaSlot="{ text }">
-          <div>{{ getAreaTextByCode(text) }}</div>
-        </template>
-        <template #fileSlot="{ text }">
-          <span v-if="!text" style="font-size: 12px; font-style: italic">无文件</span>
-          <a-button v-else :ghost="true" type="primary" preIcon="ant-design:download" size="small" @click="downloadFile(text)"> 下载 </a-button>
-        </template>
-
-        <template #action="{ text, record }">
-          <a @click="handleEdit(record)">编辑</a>
-          <a-divider type="vertical" />
-          <a-dropdown>
-            <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>
-            <template #overlay>
-              <a-menu class="antd-more">
-                <a-menu-item>
-                  <a @click="handleDetail(record)">详情</a>
-                </a-menu-item>
-                <a-menu-item>
-                  <Popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
-                    <a>删除</a>
-                  </Popconfirm>
-                </a-menu-item>
-              </a-menu>
-            </template>
-          </a-dropdown>
+        <template #bodyCell="{ column, text, record }">
+          <template v-if="column.dataIndex==='tupian'">
+            <span v-if="!text" style="font-size: 12px; font-style: italic">无图片</span>
+            <img v-else :src="getImgView(text)" :preview="record.id" alt="" class="anty-img-wrap" />
+          </template>
+          <template v-else-if="column.dataIndex==='wenjian'">
+            <span v-if="!text" style="font-size: 12px; font-style: italic">无文件</span>
+            <a-button v-else :ghost="true" type="primary" preIcon="ant-design:download" size="small" @click="downloadFile(text)"> 下载 </a-button>
+          </template>
+          <template v-else-if="column.dataIndex==='action'">
+            <a @click="handleEdit(record)">编辑</a>
+            <a-divider type="vertical" />
+            <a-dropdown>
+              <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>
+              <template #overlay>
+                <a-menu class="antd-more">
+                  <a-menu-item>
+                    <a @click="handleDetail(record)">详情</a>
+                  </a-menu-item>
+                  <a-menu-item>
+                    <Popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
+                      <a>删除</a>
+                    </Popconfirm>
+                  </a-menu-item>
+                </a-menu>
+              </template>
+            </a-dropdown>
+          </template>
+          <!-- <template v-else-if="column.dataIndex==='htmlSlot'">
+            <div v-html="text"></div>
+          </template>
+          <template v-else-if="column.dataIndex==='pcaSlot'">
+            <div>{{ getAreaTextByCode(text) }}</div>
+          </template> -->
         </template>
       </a-table>
     </div>
@@ -160,13 +161,11 @@
       title: '文件',
       align: 'center',
       dataIndex: 'wenjian',
-      slots: { customRender: 'fileSlot' },
     },
     {
       title: '图片',
       align: 'center',
       dataIndex: 'tupian',
-      slots: { customRender: 'imgSlot' },
     },
     {
       title: '操作',
@@ -174,7 +173,6 @@
       align: 'center',
       fixed: 'right',
       width: 147,
-      slots: { customRender: 'action' },
     },
   ]);
 
