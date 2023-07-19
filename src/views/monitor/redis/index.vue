@@ -16,7 +16,7 @@
   </div>
 </template>
 <script lang="ts" name="monitor-redis" setup>
-  import { onMounted, ref, reactive, Ref } from 'vue';
+  import { onMounted, ref, reactive, Ref, onUnmounted } from 'vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { getInfo, getRedisInfo } from './redis.api';
   import dayjs from 'dayjs';
@@ -186,4 +186,9 @@
       loadData();
     }, 1000);
   });
+  // update-begin--author:liaozhiyang---date:220230719---for：【issues-615】系统监控中的REDIS监控页面打开，再关闭后，没有关闭计时器
+  onUnmounted(() => {
+    closeTimer();
+  });
+  // update-end--author:liaozhiyang---date:220230719---for：【issues-615】系统监控中的REDIS监控页面打开，再关闭后，没有关闭计时器
 </script>
