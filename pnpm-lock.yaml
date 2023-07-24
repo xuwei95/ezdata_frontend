@@ -11,7 +11,7 @@ specifiers:
   '@commitlint/config-conventional': ^16.2.1
   '@iconify/iconify': ^2.2.1
   '@iconify/json': ^2.1.30
-  '@jeecg/online': 3.5.3-beta
+  '@jeecg/online': 3.5.3-beta2
   '@logicflow/core': ^1.1.13
   '@logicflow/extension': ^1.1.13
   '@purge-icons/generated': ^0.8.1
@@ -151,7 +151,7 @@ dependencies:
   '@ant-design/colors': registry.npmmirror.com/@ant-design/colors/6.0.0
   '@ant-design/icons-vue': registry.npmmirror.com/@ant-design/icons-vue/6.1.0_vue@3.3.4
   '@iconify/iconify': registry.npmmirror.com/@iconify/iconify/2.2.1
-  '@jeecg/online': 3.5.3-beta
+  '@jeecg/online': 3.5.3-beta2
   '@logicflow/core': registry.npmmirror.com/@logicflow/core/1.2.8
   '@logicflow/extension': registry.npmmirror.com/@logicflow/extension/1.2.8_ts-node@10.9.1
   '@qiaoqiaoyun/drag-free': registry.npmmirror.com/@qiaoqiaoyun/drag-free/1.0.511
@@ -554,8 +554,8 @@ packages:
     dev: false
     optional: true
 
-  /@jeecg/online/3.5.3-beta:
-    resolution: {integrity: sha512-2Wb6Yh0UdxHC6K09gFPGy6HbXHVrhhx/YrauvFDcWwf4YMcx/y08/c4x80QKtu4JRdED64rITBYwsRi4jc7W7g==}
+  /@jeecg/online/3.5.3-beta2:
+    resolution: {integrity: sha512-X/skDi4TD5vDPcX6vHR/p9eEknFXTZozsQrKOfQOo27df9EYPyV9M43J8P+559IEoLdPVAeZmC8JQ+us9LIYYA==}
     dev: false
 
   /@sindresorhus/is/0.7.0:
@@ -12360,7 +12360,7 @@ packages:
     dependencies:
       graceful-fs: 4.2.11
       parse-json: registry.npmmirror.com/parse-json/2.2.0
-      pify: registry.npmmirror.com/pify/2.3.0
+      pify: 2.3.0
       pinkie-promise: registry.npmmirror.com/pinkie-promise/2.0.1
       strip-bom: registry.npmmirror.com/strip-bom/2.0.0
     dev: true
@@ -13179,7 +13179,7 @@ packages:
     engines: {node: '>=4'}
     dependencies:
       config-chain: registry.npmmirror.com/config-chain/1.1.13
-      pify: registry.npmmirror.com/pify/3.0.0
+      pify: 3.0.0
     dev: true
 
   registry.npmmirror.com/npm-run-all/4.1.5:
@@ -13695,7 +13695,7 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       graceful-fs: 4.2.11
-      pify: registry.npmmirror.com/pify/2.3.0
+      pify: 2.3.0
       pinkie-promise: registry.npmmirror.com/pinkie-promise/2.0.1
     dev: true
 

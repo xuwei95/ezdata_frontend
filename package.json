@@ -33,7 +33,7 @@
     "gen:icon": "esno ./build/generate/icon/index.ts"
   },
   "dependencies": {
-    "@jeecg/online": "3.5.3-beta",
+    "@jeecg/online": "3.5.3-beta2",
     "@qiaoqiaoyun/drag-free": "^1.0.52",
     "@iconify/iconify": "^2.2.1",
     "@ant-design/colors": "^6.0.0",
