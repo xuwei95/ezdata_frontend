@@ -11,7 +11,7 @@ specifiers:
   '@commitlint/config-conventional': ^16.2.1
   '@iconify/iconify': ^2.2.1
   '@iconify/json': ^2.1.30
-  '@jeecg/online': 3.5.3-beta2
+  '@jeecg/online': 3.5.3-beta3
   '@logicflow/core': ^1.1.13
   '@logicflow/extension': ^1.1.13
   '@purge-icons/generated': ^0.8.1
@@ -151,7 +151,7 @@ dependencies:
   '@ant-design/colors': registry.npmmirror.com/@ant-design/colors/6.0.0
   '@ant-design/icons-vue': registry.npmmirror.com/@ant-design/icons-vue/6.1.0_vue@3.3.4
   '@iconify/iconify': registry.npmmirror.com/@iconify/iconify/2.2.1
-  '@jeecg/online': 3.5.3-beta2
+  '@jeecg/online': 3.5.3-beta3
   '@logicflow/core': registry.npmmirror.com/@logicflow/core/1.2.8
   '@logicflow/extension': registry.npmmirror.com/@logicflow/extension/1.2.8_ts-node@10.9.1
   '@qiaoqiaoyun/drag-free': registry.npmmirror.com/@qiaoqiaoyun/drag-free/1.0.511
@@ -554,8 +554,8 @@ packages:
     dev: false
     optional: true
 
-  /@jeecg/online/3.5.3-beta2:
-    resolution: {integrity: sha512-X/skDi4TD5vDPcX6vHR/p9eEknFXTZozsQrKOfQOo27df9EYPyV9M43J8P+559IEoLdPVAeZmC8JQ+us9LIYYA==}
+  /@jeecg/online/3.5.3-beta3:
+    resolution: {integrity: sha512-Nx1+zu0+nn+oc3RjlPGtRhxORAq4EWMJbLOOGT17WFYGn4sDXLYinBKzBxv9xrk0JbRouNYrayRf2TQpiU7qCg==}
     dev: false
 
   /@sindresorhus/is/0.7.0:
@@ -1563,7 +1563,7 @@ packages:
     engines: {node: '>=6'}
     requiresBuild: true
     dependencies:
-      pify: registry.npmmirror.com/pify/4.0.1
+      pify: 4.0.1
       semver: registry.npmmirror.com/semver/5.7.1
     dev: true
     optional: true
@@ -13780,14 +13780,6 @@ packages:
     version: 3.0.0
     engines: {node: '>=4'}
     dev: true
-
-  registry.npmmirror.com/pify/4.0.1:
-    resolution: {integrity: sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://registry.npmmirror.com/pify/-/pify-4.0.1.tgz}
-    name: pify
-    version: 4.0.1
-    engines: {node: '>=6'}
-    dev: true
-    optional: true
 
   registry.npmmirror.com/pinia/2.0.12_typescript@4.9.5+vue@3.3.4:
     resolution: {integrity: sha512-tUeuYGFrLU5irmGyRAIxp35q1OTcZ8sKpGT4XkPeVcG35W4R6cfXDbCGexzmVqH5lTQJJTXXbNGutIu9yS5yew==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://registry.npmmirror.com/pinia/-/pinia-2.0.12.tgz}
