@@ -128,19 +128,20 @@ export function filterDictTextByCache(dictCode, key) {
 
 /** 通过code获取字典数组 */
 export async function getDictItems(dictCode, params) {
+  // update-begin--author:liaozhiyang---date:20230809---for：【issues/668】JDictSelectUtil数据字典工具类中的getDictItems方法出错
   //优先从缓存中读取字典配置
   if (getDictItemsByCode(dictCode)) {
     let desformDictItems = getDictItemsByCode(dictCode).map((item) => ({
       ...item,
       label: item.text,
     }));
-    return desformDictItems;
+    return Promise.resolve(desformDictItems);
   }
 
   //缓存中没有，就请求后台
   return await ajaxGetDictItems(dictCode, params)
-    .then(({ success, result }) => {
-      if (success) {
+    .then((result) => {
+      if (result.length) {
         let res = result.map((item) => ({ ...item, label: item.text }));
         console.log('------- 从DB中获取到了字典-------dictCode : ', dictCode, res);
         return Promise.resolve(res);
@@ -153,4 +154,5 @@ export async function getDictItems(dictCode, params) {
       console.error('getDictItems error: ', res);
       return Promise.resolve([]);
     });
+  // update-end--author:liaozhiyang---date:20230809---for：【issues/668】JDictSelectUtil数据字典工具类中的getDictItems方法出错
 }
