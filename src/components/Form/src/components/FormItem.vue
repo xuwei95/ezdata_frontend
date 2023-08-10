@@ -14,6 +14,7 @@
   import { upperFirst, cloneDeep } from 'lodash-es';
   import { useItemLabelWidth } from '../hooks/useLabelWidth';
   import { useI18n } from '/@/hooks/web/useI18n';
+  import { useAppInject } from '/@/hooks/web/useAppInject';
 
   export default defineComponent({
     name: 'BasicFormItem',
@@ -343,7 +344,14 @@
         }
 
         const { baseColProps = {} } = props.formProps;
-        const realColProps = { ...baseColProps, ...colProps };
+        // update-begin--author:liaozhiyang---date:20230803---for：【issues-641】调整表格搜索表单的span配置无效 
+        const { getIsMobile } = useAppInject();
+        let realColProps;
+        if (colProps['span'] && !unref(getIsMobile)) {
+          ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'].forEach((name) => delete baseColProps[name]);
+        }
+        realColProps = { ...baseColProps, ...colProps };
+        // update-end--author:liaozhiyang---date:20230803---for：【issues-641】调整表格搜索表单的span配置无效 
         const { isIfShow, isShow } = getShow();
         const values = unref(getValues);
 
