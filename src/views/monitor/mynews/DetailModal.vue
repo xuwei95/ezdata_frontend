@@ -1,5 +1,5 @@
 <template>
-  <BasicModal v-bind="$attrs" @register="registerModal" title="查看详情" :minHeight="600" :showCancelBtn="false" :showOkBtn="false" :height="88">
+  <BasicModal v-bind="$attrs" @register="registerModal" title="查看详情" :minHeight="600" :showCancelBtn="false" :showOkBtn="false" :height="88" :destroyOnClose="true">
     <a-card class="daily-article">
       <a-card-meta :title="content.titile" :description="'发布人：' + content.sender + ' 发布时间： ' + content.sendTime"> </a-card-meta>
       <a-divider />
