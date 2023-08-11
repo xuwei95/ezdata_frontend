@@ -57,7 +57,7 @@
         default: () => [],
       },
     },
-    emits: ['update:value', 'register'],
+    emits: ['update:value', 'register', 'change','focus' ],
     setup(props, { emit, refs }) {
       const { createMessage } = useMessage();
       const attrs = useAttrs();
@@ -67,9 +67,11 @@
       //注册model
       const [regModal, { openModal }] = useModal();
       //表单值
-      let { groupId, code, fieldConfig } = props;
+      let {code, fieldConfig } = props;
+      // update-begin--author:liaozhiyang---date:20230811---for：【issues/675】子表字段Popup弹框数据不更新
       //唯一分组groupId
-      const uniqGroupId = computed(() => (groupId ? `${groupId}_${code}_${fieldConfig[0]['source']}_${fieldConfig[0]['target']}` : ''));
+      const uniqGroupId = computed(() => (props.groupId ? `${props.groupId}_${code}_${fieldConfig[0]['source']}_${fieldConfig[0]['target']}` : ''));
+      // update-begin--author:liaozhiyang---date:20230811---for：【issues/675】子表字段Popup弹框数据不更新
       /**
        * 判断popup配置项是否正确
        */
@@ -94,6 +96,7 @@
        * 打开pop弹出框
        */
       function handleOpen() {
+        emit('focus');
         !props.disabled && openModal(true);
       }
 
@@ -121,6 +124,9 @@
         props.formElRef && props.formElRef.setFieldsValue(values);
         //传入赋值方法方式赋值
         props.setFieldsValue && props.setFieldsValue(values);
+        // update-begin--author:liaozhiyang---date:20230811---for：【issues/5213】JPopup抛出change事件
+        emit('change', values);
+        // update-end--author:liaozhiyang---date:20230811---for：【issues/5213】JPopup抛出change事件
       }
 
       return {
