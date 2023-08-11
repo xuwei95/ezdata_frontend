@@ -101,7 +101,11 @@
       const toggleSearchStatus = ref(false);
       const attrs = useAttrs();
       const tableScroll = ref({ x: true });
-      const getBindValue = Object.assign({}, unref(props), unref(attrs));
+      // update-begin--author:liaozhiyang---date:20230811---for：【issues/675】子表字段Popup弹框数据不更新
+      const getBindValue = computed(() => {
+        return Object.assign({}, unref(props), unref(attrs));
+      });
+      // update-end--author:liaozhiyang---date:20230811---for：【issues/675】子表字段Popup弹框数据不更新
       const [
         {
           visibleChange,
