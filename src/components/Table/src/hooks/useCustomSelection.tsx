@@ -234,7 +234,9 @@ export function useCustomSelection(
           } else {
             setTimeout(() => {
               emitChange();
-              resolve();
+              // update-begin--author:liaozhiyang---date:20230811---for：【QQYUN-5687】批量选择，提示成功后，又来一个提示
+              setTimeout(() =>resolve(), 0);
+              // update-end--author:liaozhiyang---date:20230811---for：【QQYUN-5687】批量选择，提示成功后，又来一个提示
             }, 500);
           }
         }, 300);
@@ -411,8 +413,12 @@ export function useCustomSelection(
       const found = allSelectedRows.find((item) => getRecordKey(item) === key);
       found && trueSelectedRows.push(found);
     });
-    selectedRows.value = trueSelectedRows;
-    emitChange();
+    // update-begin--author:liaozhiyang---date:20230811---for：【issues/657】浏览器卡死问题
+    if (trueSelectedRows.length) {
+      selectedRows.value = trueSelectedRows;
+      emitChange();
+    }
+    // update-end--author:liaozhiyang---date:20230811---for：【issues/657】】浏览器卡死问题
   }
 
   function getSelectRows<T = Recordable>() {
