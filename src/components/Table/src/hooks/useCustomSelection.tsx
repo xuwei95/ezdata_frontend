@@ -413,12 +413,14 @@ export function useCustomSelection(
       const found = allSelectedRows.find((item) => getRecordKey(item) === key);
       found && trueSelectedRows.push(found);
     });
+    // update-begin--author:liaozhiyang---date:20230823---for：【QQYUN-6283】点击表格清空，rowSelect里面的selectedRowKeys没置空。
     // update-begin--author:liaozhiyang---date:20230811---for：【issues/657】浏览器卡死问题
-    if (trueSelectedRows.length) {
+    if (trueSelectedRows.length || !rowKeys.length) {
       selectedRows.value = trueSelectedRows;
       emitChange();
     }
     // update-end--author:liaozhiyang---date:20230811---for：【issues/657】】浏览器卡死问题
+    // update-end--author:liaozhiyang---date:20230823---for：【QQYUN-6283】点击表格清空，rowSelect里面的selectedRowKeys没置空。
   }
 
   function getSelectRows<T = Recordable>() {
