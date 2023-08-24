@@ -27,7 +27,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
   // The boolean type read by loadEnv is a string. This function can be converted to boolean type
   const viteEnv = wrapperEnv(env);
 
-  const { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY, VITE_DROP_CONSOLE } = viteEnv;
+  const { VITE_PORT, VITE_PUBLIC_PATH, VITE_PROXY } = viteEnv;
 
   const isBuild = command === 'build';
 
@@ -65,17 +65,14 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       target: 'es2015',
       cssTarget: 'chrome80',
       outDir: OUTPUT_DIR,
-      terserOptions: {
-        compress: {
-          keep_infinity: true,
-          // Used to delete console in production environment
-          drop_console: VITE_DROP_CONSOLE,
-          drop_debugger: true,
-        },
-      },
-      // Turning off brotliSize display can slightly reduce packaging time
+      // 关闭brotliSize显示可以稍微减少打包时间
       reportCompressedSize: false,
+      // 提高超大静态资源警告大小
       chunkSizeWarningLimit: 2000,
+    },
+    esbuild: {
+      //清除全局的console.log和debug
+      drop: isBuild ? ['console', 'debugger'] : [],
     },
     define: {
       // setting vue-i18-next
