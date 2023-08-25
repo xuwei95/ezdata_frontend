@@ -65,6 +65,27 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       target: 'es2015',
       cssTarget: 'chrome80',
       outDir: OUTPUT_DIR,
+      rollupOptions: {
+        output: {
+          chunkFileNames: 'js/[name]-[hash].js', // 引入文件名的名称
+          entryFileNames: 'js/[name]-[hash].js', // 包的入口文件名称
+          // manualChunks配置 (依赖包从大到小排列)
+          manualChunks: {
+            'tinymce-vendor': ['tinymce'],
+            'echarts-vendor': ['echarts'],
+            'antd-vue-vendor': ['ant-design-vue'],
+            'vxe-table-vendor': ['vxe-table'],
+            'codemirror-vendor': ['codemirror'],
+            'emoji-mart-vue-fast': ['emoji-mart-vue-fast'],
+            'jeecg-online-vendor': ['@jeecg/online'],
+            // 将 Lodash 库的代码单独打包
+            'lodash-es-vendor': ['lodash-es'],
+            'html2canvas-vendor': ['html2canvas'],
+            // vue vue-router合并打包
+            vue: ['vue', 'vue-router'],
+          },
+        }
+      },
       // 关闭brotliSize显示可以稍微减少打包时间
       reportCompressedSize: false,
       // 提高超大静态资源警告大小
