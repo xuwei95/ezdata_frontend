@@ -53,7 +53,7 @@
   import { useModal } from '/@/components/Modal';
   import UploadChunk from './UploadChunk.vue';
   import 'emoji-mart-vue-fast/css/emoji-mart.css';
-  import { useEmojiHtml } from './useComment';
+  import { getGloablEmojiIndex, useEmojiHtml } from './useComment';
 
   const optionsName = {
     categories: {

@@ -30,7 +30,8 @@
 
 <script lang="ts">
   import { computed, defineComponent } from 'vue';
-  import { JSelectDept } from '/@/components/Form';
+  //import { JSelectDept } from '/@/components/Form';
+  import JSelectDept from '/src/components/form/src/jeecg/components/JSelectDept.vue';
   import { JVxeComponent } from '/@/components/jeecg/JVxeTable/types';
   import { useJVxeComponent, useJVxeCompProps } from '/@/components/jeecg/JVxeTable/hooks';
 

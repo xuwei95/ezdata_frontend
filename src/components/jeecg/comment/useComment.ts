@@ -13,6 +13,8 @@ import txt from '/@/assets/svg/fileType/txt.svg';
 import word from '/@/assets/svg/fileType/word.svg';
 import { getFileAccessHttpUrl } from '/@/utils/common/compUtils';
 import { createImgPreview } from '/@/components/Preview';
+import data from "emoji-mart-vue-fast/data/apple.json";
+import { EmojiIndex } from "emoji-mart-vue-fast/src";
 
 enum Api {
   list = '/sys/comment/listByForm',
@@ -37,6 +39,21 @@ const getViewFileDomain = () => defHttp.get({ url: Api.getFileViewDomain });
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+
+export function getGloablEmojiIndex(){
+  if(window['myEmojiIndex']){
+    console.log("----走window['myEmojiIndex']缓存，不new新对象！")
+    return window['myEmojiIndex'];
+  }
+
+  window['myEmojiIndex'] = new EmojiIndex(data, {
+    function() {
+      return true;
+    },
+    exclude:['recent','people','nature','foods','activity','places','objects','symbols','flags']
+  });
+  return window['myEmojiIndex'];
+}
 
 /**
  * 查询单条记录
