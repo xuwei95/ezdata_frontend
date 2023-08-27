@@ -161,7 +161,7 @@
     "vite-plugin-svg-icons": "^2.0.1",
     "@rys-fe/vite-plugin-theme": "^0.8.6",
     "vite-plugin-vue-setup-extend-plus": "^0.1.0",
-    "vite-plugin-windicss": "^1.8.7",
+    "unocss": "^0.55.3",
     "vue-eslint-parser": "^8.3.0",
     "vue-tsc": "^0.33.9"
   },
