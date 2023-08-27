@@ -76,7 +76,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
             'antd-vue-vendor': ['ant-design-vue'],
             'vxe-table-vendor': ['vxe-table'],
             'codemirror-vendor': ['codemirror'],
-            'emoji-mart-vue-fast': ['emoji-mart-vue-fast'],
+            //'emoji-mart-vue-fast': ['emoji-mart-vue-fast'],
             'jeecg-online-vendor': ['@jeecg/online'],
             // 将 Lodash 库的代码单独打包
             'lodash-es-vendor': ['lodash-es'],
