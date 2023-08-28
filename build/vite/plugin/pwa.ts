@@ -1,5 +1,5 @@
 /**
- * Zero-config PWA for Vite
+ * vite-plugin-pwa是vite的一个官方插件，它的功能就是通过简单的配置将你的vite项目变成pwa应用
  * https://github.com/antfu/vite-plugin-pwa
  */
 import { VitePWA } from 'vite-plugin-pwa';

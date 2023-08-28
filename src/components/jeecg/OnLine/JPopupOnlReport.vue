@@ -243,7 +243,7 @@
     }
   }
 
-  :deep .jeecg-basic-table .ant-table-wrapper .ant-table-title {
+  :deep(.jeecg-basic-table .ant-table-wrapper .ant-table-title){
     min-height: 0;
   }
 </style>
