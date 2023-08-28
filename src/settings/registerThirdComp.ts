@@ -2,8 +2,8 @@ import type { App } from 'vue';
 import { registerJVxeTable } from '/@/components/jeecg/JVxeTable';
 import { registerJVxeCustom } from '/@/components/JVxeCustom';
 
-// // 注册全局聊天表情包
-// import { Picker } from 'emoji-mart-vue-fast/src';
+// 注册全局聊天表情包
+import { Picker } from 'emoji-mart-vue-fast/src';
 // import { EmojiIndex } from "emoji-mart-vue-fast/src";
 // import data from "emoji-mart-vue-fast/data/apple.json";
 
@@ -17,9 +17,9 @@ export async function registerThirdComp(app: App) {
   registerJVxeTable(app);
   // 注册 JVxeTable 自定义组件
   await registerJVxeCustom();
-  // //---------------------------------------------------------------------
-  // // 注册全局聊天表情包
-  // app.component('Picker', Picker);
+  //---------------------------------------------------------------------
+  // 注册全局聊天表情包
+  app.component('Picker', Picker);
   // let myEmojiIndex = new EmojiIndex(data, {
   //   function() {
   //     return true;
@@ -28,7 +28,7 @@ export async function registerThirdComp(app: App) {
   // });
   // app.config.globalProperties.$globalEmojiIndex = myEmojiIndex;
   // app.provide('$globalEmojiIndex', myEmojiIndex);
-  // //---------------------------------------------------------------------
+  //---------------------------------------------------------------------
   // 注册全局dayjs
   dayjs.locale('zh-cn');
   dayjs.extend(relativeTime);

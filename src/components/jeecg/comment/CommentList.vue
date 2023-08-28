@@ -247,7 +247,8 @@
         }
       });
 
-      const storageEmojiIndex = inject('$globalEmojiIndex')
+      // const storageEmojiIndex = inject('$globalEmojiIndex')
+      const storageEmojiIndex = getGloablEmojiIndex()
       const { getHtml } = useEmojiHtml(storageEmojiIndex);
       const bottomCommentRef = ref()
       function handleClickItem(){

@@ -220,7 +220,8 @@
         visibleEmoji.value = !visibleEmoji.value;
       }
       
-      const emojiIndex = inject('$globalEmojiIndex')
+      //const emojiIndex = inject('$globalEmojiIndex')
+      const emojiIndex = getGloablEmojiIndex()
       const { getHtml } = useEmojiHtml(emojiIndex);
 
       const commentHtml = computed(() => {
