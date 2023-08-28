@@ -1,7 +1,8 @@
 import { computed, nextTick, ref, unref, watch } from 'vue';
 import { propTypes } from '/@/utils/propTypes';
 import { useDesign } from '/@/hooks/web/useDesign';
-import { getEnhanced, replaceProps, vModel } from '../utils/enhancedUtils';
+import { getEnhanced, replaceProps } from '../utils/enhancedUtils';
+import { vModel } from '/@/components/jeecg/JVxeTable/utils';
 import { JVxeRenderType } from '../types/JVxeTypes';
 import { isBoolean, isFunction, isObject, isPromise } from '/@/utils/is';
 import { JVxeComponent } from '../types/JVxeComponent';
