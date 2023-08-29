@@ -4,7 +4,7 @@
 <script lang="ts">
   import { computed, defineComponent, ref } from 'vue';
   //import { JPopup } from '/@/components/Form';
-  import JPopup from '/src/components/form/src/jeecg/components/JPopup.vue';
+  import JPopup from '/@/components/Form/src/jeecg/components/JPopup.vue';
   import { JVxeComponent } from '/@/components/jeecg/JVxeTable/types';
   import { useJVxeComponent, useJVxeCompProps } from '/@/components/jeecg/JVxeTable/hooks';
   import { dispatchEvent, vModel } from '/@/components/jeecg/JVxeTable/utils';

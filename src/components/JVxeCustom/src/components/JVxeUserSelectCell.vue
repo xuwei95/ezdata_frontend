@@ -7,7 +7,7 @@
 <script lang="ts">
   import { computed, defineComponent } from 'vue';
   //import { JSelectUser } from '/@/components/Form';
-  import JSelectUser from '/src/components/form/src/jeecg/components/JSelectUser.vue';
+  import JSelectUser from '/@/components/Form/src/jeecg/components/JSelectUser.vue';
   import { JVxeComponent } from '/@/components/jeecg/JVxeTable/types';
   import { useJVxeComponent, useJVxeCompProps } from '/@/components/jeecg/JVxeTable/hooks';
   import { dispatchEvent } from '/@/components/jeecg/JVxeTable/utils';
