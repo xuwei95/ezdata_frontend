@@ -57,7 +57,7 @@
         default: () => [],
       },
     },
-    emits: ['update:value', 'register', 'change','focus' ],
+    emits: ['update:value', 'register', 'popUpChange', 'focus'],
     setup(props, { emit, refs }) {
       const { createMessage } = useMessage();
       const attrs = useAttrs();
@@ -124,9 +124,9 @@
         props.formElRef && props.formElRef.setFieldsValue(values);
         //传入赋值方法方式赋值
         props.setFieldsValue && props.setFieldsValue(values);
-        // update-begin--author:liaozhiyang---date:20230811---for：【issues/5213】JPopup抛出change事件
-        emit('change', values);
-        // update-end--author:liaozhiyang---date:20230811---for：【issues/5213】JPopup抛出change事件
+        // update-begin--author:liaozhiyang---date:20230831---for：【issues/5288】popup弹框，无法将选择的数据填充到自身
+        emit('popUpChange', values);
+        // update-begin--author:liaozhiyang---date:20230831---for：【issues/5288】popup弹框，无法将选择的数据填充到自身
       }
 
       return {
