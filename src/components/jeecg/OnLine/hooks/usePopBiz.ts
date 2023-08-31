@@ -69,12 +69,12 @@ export function usePopBiz(ob, tableRef?) {
   /**
    * 选择列配置
    */
-  const rowSelection = reactive({
+  const rowSelection = {
     fixed: true,
     selectedRowKeys: checkedKeys,
     selectionRows: selectRows,
     onChange: onSelectChange,
-  });
+  };
 
   /**
    * 序号列配置
@@ -114,18 +114,20 @@ export function usePopBiz(ob, tableRef?) {
     if (!selectedRowKeys || selectedRowKeys.length == 0) {
       selectRows.value = [];
     } else {
+      // update-begin--author:liaozhiyang---date:20230830---for：【issues/726】JPopup组件里的表格全选没有选中数据
+      selectRows.value = [];
       for (let i = 0; i < selectedRowKeys.length; i++) {
         let combineKey = combineRowKey(getRowByKey(selectedRowKeys[i]));
         let keys = unref(checkedKeys);
-        if (combineKey && keys.indexOf(combineKey) < 0) {
+        if (combineKey && keys.indexOf(combineKey) != -1) {
           let row = getRowByKey(selectedRowKeys[i]);
           row && selectRows.value.push(row);
         }
       }
+      // update-end--author:liaozhiyang---date:20230830---for：【issues/726】JPopup组件里的表格全选没有选中数据
     }
     checkedKeys.value = selectedRowKeys;
   }
-
   /**
    * 过滤没用选项
    * @param selectedRowKeys
