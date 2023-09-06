@@ -1,5 +1,5 @@
 <template>
-  <Select @dropdownVisibleChange="handleFetch" v-bind="attrs_" @change="handleChange" :options="getOptions" v-model:value="state">
+  <Select @dropdownVisibleChange="handleFetch" v-bind="attrs_" @change="handleChange" :options="getOptions" v-model:value="state" :filterOption="filterOption">
     <template #[item]="data" v-for="item in Object.keys($slots)">
       <slot :name="item" v-bind="data || {}"></slot>
     </template>
@@ -154,7 +154,17 @@
         emitData.value = args;
       }
 
-      return { state, attrs_, attrs, getOptions, loading, t, handleFetch, handleChange };
+      // update-begin--author:liaozhiyang---date:20230904---for：【issues/5305】无法按照预期进行搜索
+      const filterOption = (inputValue, option) => {
+        if (typeof option['label'] === 'string') {
+          return option['label'].toLowerCase().indexOf(inputValue.toLowerCase()) != -1;
+        } else {
+          return true;
+        }
+      };
+      // update-begin--author:liaozhiyang---date:20230904---for：【issues/5305】无法按照预期进行搜索
+
+      return { state, attrs_, attrs, getOptions, loading, t, handleFetch, handleChange, filterOption };
     },
   });
 </script>
