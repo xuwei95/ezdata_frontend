@@ -331,7 +331,15 @@
               }
 
               plainSortOptions.value = columns;
-              setColumns(columns);
+              // update-begin--author:liaozhiyang---date:20230904---for：【QQYUN-6424】table字段列表设置不显示后，再拖拽字段顺序，原本不显示的，又显示了
+              if(state.checkedList.length != columns.length){
+                const cols = columns.map(item => item.value);
+                const arr = cols.filter((cItem) => state.checkedList.find((lItem) => lItem === cItem));
+                setColumns(arr);
+              } else {
+                setColumns(columns);
+              }
+              // update-begin--author:liaozhiyang---date:20230904---for：【QQYUN-6424】table字段列表设置不显示后，再拖拽字段顺序，原本不显示的，又显示了
             },
           });
           // 记录原始 order 序列
