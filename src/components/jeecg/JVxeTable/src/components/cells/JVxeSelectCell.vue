@@ -5,7 +5,7 @@
       <span>&nbsp;加载中…</span>
     </template>
     <template v-for="option of selectOptions" :key="option.value">
-      <a-select-option :value="option.value" :disabled="option.disabled">
+      <a-select-option :value="option.value" :title="option.text || option.label || option.title" :disabled="option.disabled">
         <span>{{ option.text || option.label || option.title || option.value }}</span>
       </a-select-option>
     </template>
@@ -133,9 +133,12 @@
 
       /** 用于搜索下拉框中的内容 */
       function handleSelectFilterOption(input, option) {
+      
         let { allowSearch, allowInput } = originColumn.value;
         if (allowSearch === true || allowInput === true) {
-          return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+          // update-begin--author:liaozhiyang---date:20230904---for：【issues/5305】JVxeTypes.select 无法按照预期进行搜索
+          return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+          // update-begin--author:liaozhiyang---date:20230904---for：【issues/5305】JVxeTypes.select 无法按照预期进行搜索
         }
         return true;
       }
