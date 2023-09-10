@@ -202,6 +202,9 @@
         closeModal();
         checkedKeys.value = [];
         selectRows.value = [];
+        // update-begin--author:liaozhiyang---date:20230908---for：【issues/742】选择后删除默认仍然存在
+        tableRef.value.clearSelectedRowKeys();
+        // update-end--author:liaozhiyang---date:20230908---for：【issues/742】选择后删除默认仍然存在
       }
 
       /**
@@ -282,7 +285,7 @@
       white-space: nowrap;
     }
   }
-  :deep(.jeecg-basic-table .ant-table-wrapper .ant-table-title) {
+  :deep(.jeecg-basic-table .ant-table-wrapper .ant-table-title){
     min-height: 0;
   }
 </style>
