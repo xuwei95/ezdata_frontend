@@ -1,15 +1,19 @@
-import { getAuthCache } from '/@/utils/auth';
-import { DB_DICT_DATA_KEY } from '/@/enums/cacheEnum';
 import { defHttp } from '/@/utils/http/axios';
+import { useUserStore } from '/@/store/modules/user';
 
 /**
  * 从缓存中获取字典配置
  * @param code
  */
 export const getDictItemsByCode = (code) => {
-  if (getAuthCache(DB_DICT_DATA_KEY) && getAuthCache(DB_DICT_DATA_KEY)[code]) {
-    return getAuthCache(DB_DICT_DATA_KEY)[code];
+  // update-begin--author:liaozhiyang---date:20230908---for：【QQYUN-6417】生产环境字典慢的问题
+  const userStore = useUserStore();
+  const dictItems = userStore.getAllDictItems;
+  if (typeof dictItems === 'object' && dictItems[code]) {
+    return dictItems[code];
   }
+  // update-end--author:liaozhiyang---date:20230908---for：【QQYUN-6417】生产环境字典慢的问题
+
 };
 /**
  * 获取字典数组

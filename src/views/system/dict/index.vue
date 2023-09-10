@@ -51,6 +51,7 @@
   import { columns, searchFormSchema } from './dict.data';
   import { list, deleteDict, batchDeleteDict, getExportUrl, getImportUrl, refreshCache, queryAllDictItems } from './dict.api';
   import { DB_DICT_DATA_KEY } from '/src/enums/cacheEnum';
+  import { useUserStore } from '/@/store/modules/user';
 
   const { createMessage } = useMessage();
   //字典model
@@ -146,7 +147,10 @@
     if (result.success) {
       const res = await queryAllDictItems();
       removeAuthCache(DB_DICT_DATA_KEY);
-      setAuthCache(DB_DICT_DATA_KEY, res.result);
+      // update-begin--author:liaozhiyang---date:20230908---for：【QQYUN-6417】生产环境字典慢的问题
+      const userStore = useUserStore();
+      userStore.setAllDictItems(res.result);
+      // update-end--author:liaozhiyang---date:20230908---for：【QQYUN-6417】生产环境字典慢的问题
       createMessage.success('刷新缓存完成！');
     } else {
       createMessage.error('刷新缓存失败！');
