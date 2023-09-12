@@ -6,6 +6,7 @@ import { unref } from 'vue';
 
 import { useRouter } from 'vue-router';
 import { REDIRECT_NAME } from '/@/router/constant';
+import { useUserStore } from '/@/store/modules/user';
 
 export type RouteLocationRawEx = Omit<RouteLocationRaw, 'path'> & { path: PageEnum };
 
@@ -15,12 +16,16 @@ function handleError(e: Error) {
 
 // page switch
 export function useGo(_router?: Router) {
+  // update-begin--author:liaozhiyang---date:20230908---for：【issues/694】404返回首页问题
+  const userStore = useUserStore();
+  const homePath = userStore.getUserInfo.homePath || PageEnum.BASE_HOME;
+  // update-end--author:liaozhiyang---date:20230908---for：【issues/694】404返回首页问题
   let router;
   if (!_router) {
     router = useRouter();
   }
   const { push, replace } = _router || router;
-  function go(opt: PageEnum | RouteLocationRawEx | string = PageEnum.BASE_HOME, isReplace = false) {
+  function go(opt: PageEnum | RouteLocationRawEx | string = homePath, isReplace = false) {
     if (!opt) {
       return;
     }
