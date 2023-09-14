@@ -324,6 +324,8 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
             linkageMethods.getLinkageOptionsAsync(configItem, '');
           }
         }
+      } else if (col?.type === JVxeTypes.hidden) {
+        record[col.key] = col.defaultValue ?? '';
       }
     });
     return record;
