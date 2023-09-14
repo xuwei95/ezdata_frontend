@@ -185,11 +185,15 @@
 
       /** 用于搜索下拉框中的内容 */
       function handleFilterOption(input, option) {
-        // 在 label 中搜索
-        let labelIf = option.children()[0]?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-        if (labelIf) {
-          return true;
+        // update-begin--author:liaozhiyang---date:20230914---for：【QQYUN-6514】 配置的时候，Y轴不能输入多个字段了，控制台报错
+        if (typeof option.children === 'function') {
+          // 在 label 中搜索
+          let labelIf = option.children()[0]?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+          if (labelIf) {
+            return true;
+          }
         }
+        // update-end--author:liaozhiyang---date:20230914---for：【QQYUN-6514】 配置的时候，Y轴不能输入多个字段了，控制台报错
         // 在 value 中搜索
         return (option.value || '').toString().toLowerCase().indexOf(input.toLowerCase()) >= 0;
       }
