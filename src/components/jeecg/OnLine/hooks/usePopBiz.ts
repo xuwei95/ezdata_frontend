@@ -712,6 +712,9 @@ export function usePopBiz(ob, tableRef?) {
           selectRows.value.splice(rowKey_index, 1);
         }
       }
+      // update-begin--author:liaozhiyang---date:20230914---for：【issues/5357】点击行选中
+      tableRef.value.setSelectedRowKeys([...checkedKeys.value]);
+      // update-end--author:liaozhiyang---date:20230914---for：【issues/5357】点击行选中
     }
   }
 
