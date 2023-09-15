@@ -112,7 +112,13 @@
           parseArrayValue(val);
         }
       } else {
-        parsePathsValue(val);
+        //update-begin---author:liusq ---date:20230914  for：[issues/5327]Upload组件returnUrl为false时上传的字段值返回了一个'[object Object]' ------------
+        if (props.returnUrl) {
+          parsePathsValue(val);
+        } else {
+          val && parseArrayValue(JSON.parse(val));
+        }
+        //update-end---author:liusq ---date:20230914  for：[issues/5327]Upload组件returnUrl为false时上传的字段值返回了一个'[object Object]' ------------
       }
     },
     { immediate: true }
