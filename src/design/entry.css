@@ -166,3 +166,16 @@
     transform: translateY(0);
   }
 }
+
+/*update-begin---author:wangshuai ---date:20230829  for：UnoCSS替代windicss 导致全局默认边框样丢失------------*/
+*, :before, :after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: #e5e7eb;
+}
+.border-primary,.hover\:border-primary:hover {
+  --tw-border-opacity: 1;
+  border-color: rgba(24,144,255,var(--tw-border-opacity))
+}
+/*update-end---author:wangshuai ---date:20230829  for：UnoCSS替代windicss 导致全局默认边框样丢失------------*/
