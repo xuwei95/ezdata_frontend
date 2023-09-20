@@ -1,5 +1,5 @@
 /**
- * Generate additional configuration files when used for packaging. The file can be configured with some global variables, so that it can be changed directly externally without repackaging
+ * 生成外部配置文件，用于生产发布后配置，无需重新打包
  */
 import { GLOB_CONFIG_FILE_NAME, OUTPUT_DIR } from '../constant';
 import fs, { writeFileSync } from 'fs-extra';

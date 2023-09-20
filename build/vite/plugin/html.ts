@@ -19,11 +19,11 @@ export function configHtmlPlugin(env: ViteEnv, isBuild: boolean) {
   const htmlPlugin: PluginOption[] = createHtmlPlugin({
     minify: isBuild,
     inject: {
-      // Inject data into ejs template
+      // 修改模板html的标题
       data: {
         title: VITE_GLOB_APP_TITLE,
       },
-      // Embed the generated app.config.js file
+      // 将app.config.js文件注入到模板html中
       tags: isBuild
         ? [
             {

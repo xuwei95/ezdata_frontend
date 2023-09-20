@@ -31,7 +31,7 @@ export default [
     method: 'get',
     response: ({ query }) => {
       const { keyword } = query;
-      console.log(keyword);
+      console.log("查询条件：", keyword);
       return resultSuccess(demoTreeList(keyword));
     },
   },

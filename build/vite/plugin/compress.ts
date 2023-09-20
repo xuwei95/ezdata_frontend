@@ -13,9 +13,9 @@ export function configCompressPlugin(compress: 'gzip' | 'brotli' | 'none', delet
   if (compressList.includes('gzip')) {
     plugins.push(
       compressPlugin({
-        threshold: 10240, // 对超过10k的数据压缩
         verbose: true,
         disable: false,
+        threshold: 10240,
         algorithm: 'gzip',
         ext: '.gz',
         deleteOriginFile,
