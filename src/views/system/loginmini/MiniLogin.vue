@@ -527,6 +527,19 @@ html[data-theme='dark'] {
     .ant-checkbox-inner,.aui-success h3{
       border-color: #c9d1d9;
     }
+    //update-begin---author:wangshuai ---date:20230828  for：【QQYUN-6363】这个样式代码有问题，不在里面，导致表达式有问题------------
+    &-sign-in-way {
+      .anticon {
+        font-size: 22px !important;
+        color: #888 !important;
+        cursor: pointer !important;
+
+        &:hover {
+          color: @primary-color !important;
+        }
+      }
+    }
+    //update-end---author:wangshuai ---date:20230828  for：【QQYUN-6363】这个样式代码有问题，不在里面，导致表达式有问题------------
   }
 
   input.fix-auto-fill,
@@ -534,18 +547,7 @@ html[data-theme='dark'] {
     -webkit-text-fill-color: #c9d1d9 !important;
     box-shadow: inherit !important;
   }
-
-  &-sign-in-way {
-    .anticon {
-      font-size: 22px !important;
-      color: #888 !important;
-      cursor: pointer !important;
-
-      &:hover {
-        color: @primary-color !important;
-      }
-    }
-  }
+  
   .ant-divider-inner-text {
     font-size: 12px !important;
     color: @text-color-secondary !important;
