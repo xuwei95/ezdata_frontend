@@ -172,7 +172,6 @@ export function useDataSource(
   }
 
   function insertTableDataRecord(record: Recordable, index: number): Recordable | undefined {
-    //【issues/136】同步Vben：BasicTable 调用插入函数异常插入两条记录]
     // if (!dataSourceRef.value || dataSourceRef.value.length == 0) return;
     index = index ?? dataSourceRef.value?.length;
     unref(dataSourceRef).splice(index, 0, record);
