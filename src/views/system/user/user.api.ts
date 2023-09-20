@@ -25,7 +25,6 @@ enum Api {
   changePassword = '/sys/user/changePassword',
   frozenBatch = '/sys/user/frozenBatch',
   getUserAgent = '/sys/sysUserAgent/queryByUserName',
-  syncUser = '/act/process/extActProcess/doSyncUser',
   userQuitAgent = '/sys/user/userQuitAgent',
   getQuitList = '/sys/user/getQuitList',
   putCancelQuit = '/sys/user/putCancelQuit',
@@ -178,11 +177,6 @@ export const saveOrUpdateAgent = (params) => {
   return defHttp.post({ url: url, params });
 };
 
-/**
- * 用户同步流程
- * @param params
- */
-export const syncUser = () => defHttp.put({ url: Api.syncUser });
 
 /**
  * 用户离职(新增代理人和用户状态变更操作)

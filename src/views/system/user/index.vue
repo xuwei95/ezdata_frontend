@@ -7,7 +7,6 @@
         <a-button type="primary" preIcon="ant-design:plus-outlined"  @click="handleCreate"> 新增</a-button>
         <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
         <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls" >导入</j-upload-button>
-        <a-button type="primary" @click="handleSyncUser" preIcon="ant-design:sync-outlined"> 同步流程</a-button>
         <a-button type="primary" @click="openModal(true, {})" preIcon="ant-design:hdd-outlined"> 回收站</a-button>
         <JThirdAppButton biz-type="user" :selected-row-keys="selectedRowKeys" syncToApp syncToLocal @sync-finally="onSyncFinally" />
         <a-dropdown v-if="selectedRowKeys.length > 0">
@@ -69,7 +68,7 @@
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { columns, searchFormSchema } from './user.data';
-  import { listNoCareTenant, deleteUser, batchDeleteUser, getImportUrl, getExportUrl, frozenBatch, syncUser } from './user.api';
+  import { listNoCareTenant, deleteUser, batchDeleteUser, getImportUrl, getExportUrl, frozenBatch } from './user.api';
   import {usePermission} from "/@/hooks/web/usePermission";
 
   const { createMessage, createConfirm } = useMessage();
@@ -222,12 +221,6 @@
     });
   }
 
-  /**
-   *同步流程
-   */
-  function handleSyncUser() {
-    syncUser();
-  }
   /**
    *同步钉钉和微信回调
    */
