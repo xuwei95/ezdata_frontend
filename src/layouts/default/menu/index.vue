@@ -163,6 +163,13 @@
     },
   });
 </script>
+<style lang="less" scoped>
+  // update-begin--author:liaozhiyang---date:20230803---for：【QQYUN-5872】菜单优化，上下滚动条去掉
+  .scroll-container :deep(.scrollbar__bar) {
+    display: none;
+  }
+  // update-end--author:liaozhiyang---date:20230803---for：【QQYUN-5872】菜单优化，上下滚动条去掉
+</style>
 <style lang="less">
   @prefix-cls: ~'@{namespace}-layout-menu';
   @logo-prefix-cls: ~'@{namespace}-app-logo';
