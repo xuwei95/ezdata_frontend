@@ -368,11 +368,13 @@ export function useCustomSelection(
 
   // 创建选择列
   function handleCustomSelectColumn(columns: BasicColumn[]) {
-    if (!propsRef.value.rowSelection) {
+    // update-begin--author:liaozhiyang---date:20230919---for：【issues/757】JPopup表格的选择列固定配置不生效
+    const rowSelection = propsRef.value.rowSelection;
+    if (!rowSelection) {
       return;
     }
-    const isFixedLeft = columns.some((item) => item.fixed === 'left');
-
+    const isFixedLeft = rowSelection.fixed || columns.some((item) => item.fixed === 'left');
+    // update-begin--author:liaozhiyang---date:20230919---for：【issues/757】JPopup表格的选择列固定配置不生效
     columns.unshift({
       title: '选择列',
       flag: 'CHECKBOX',
