@@ -82,8 +82,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           manualChunks: {
             'tinymce-vendor': ['tinymce'],
             'echarts-vendor': ['echarts'],
-            'antd-vue-vendor': ['ant-design-vue'],
-            'vxe-table-vendor': ['vxe-table'],
+            'antd-vue-vendor': ['ant-design-vue','@ant-design/icons-vue','@ant-design/colors'],
+            'vxe-table-vendor': ['vxe-table','vxe-table-plugin-antd','xe-utils'],
             'codemirror-vendor': ['codemirror'],
             //'emoji-mart-vue-fast': ['emoji-mart-vue-fast'],
             'jeecg-online-vendor': ['@jeecg/online'],
@@ -92,8 +92,9 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
             'html2canvas-vendor': ['html2canvas'],
             // vue vue-router合并打包
             vue: ['vue', 'vue-router'],
+            'cron-parser-vendor': ['cron-parser'],
           },
-        },
+        }
       },
       // 关闭brotliSize显示可以稍微减少打包时间
       reportCompressedSize: false,
