@@ -19,3 +19,8 @@
 
   useTitle();
 </script>
+<style lang="less">
+// update-begin--author:liaozhiyang---date:20230803---for：【QQYUN-5839】windi会影响到html2canvas绘制的图片样式
+img{display:inline-block;}
+// update-end--author:liaozhiyang---date:20230803---for：【QQYUN-5839】windi会影响到html2canvas绘制的图片样式
+</style>
