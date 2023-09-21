@@ -31,7 +31,7 @@
         <!-- 增加对antdv3.x兼容 -->
         <template #bodyCell="data">
           <!-- update-begin--author:liaozhiyang---date:220230717---for：【issues-179】antd3 一些警告以及报错(针对表格) -->
-          <template v-if="data.column.slotsBak?.customRender">
+          <template v-if="data.column?.slotsBak?.customRender">
             <slot :name="data.column.slotsBak.customRender" v-bind="data || {}"></slot>
           </template>
           <template v-else>
