@@ -71,7 +71,7 @@
           {
             label: '角色名称',
             field: 'roleName',
-            component: 'JInput',
+            component: 'Input',
           },
         ],
       };
