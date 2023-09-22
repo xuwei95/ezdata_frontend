@@ -11,6 +11,7 @@
           :allDefaultValues="defaultValueRef"
           :formModel="formModel"
           :setFormModel="setFormModel"
+          :validateFields="validateFields"
         >
           <template #[item]="data" v-for="item in Object.keys($slots)">
             <slot :name="item" v-bind="data || {}"></slot>
@@ -252,10 +253,12 @@
       const onFormSubmitWhenChange = useDebounceFn(handleSubmit, 300);
       function setFormModel(key: string, value: any) {
         formModel[key] = value;
-        const { validateTrigger } = unref(getBindValue);
-        if (!validateTrigger || validateTrigger === 'change') {
-          validateFields([key]).catch((_) => {});
-        }
+        // update-begin--author:liaozhiyang---date:20230922---for：【issues/752】表单校验dynamicRules 无法 使用失去焦点后校验 trigger: 'blur'
+        // const { validateTrigger } = unref(getBindValue);
+        // if (!validateTrigger || validateTrigger === 'change') {
+        //   validateFields([key]).catch((_) => {});
+        // }
+        // update-end--author:liaozhiyang---date:20230922---for：【issues/752】表单校验dynamicRules 无法 使用失去焦点后校验 trigger: 'blur'
         if(props.autoSearch === true){
           onFormSubmitWhenChange();
         }

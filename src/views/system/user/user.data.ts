@@ -171,7 +171,7 @@ export const formSchema: FormSchema[] = [
     field: 'workNo',
     required: true,
     component: 'Input',
-    dynamicRules: ({ model, schema }) => rules.duplicateCheckRule('sys_user', 'work_no', model, schema, true),
+    dynamicRules: ({ model, schema }) => ({ ...rules.duplicateCheckRule('sys_user', 'work_no', model, schema, true), trigger: 'blur' }),
   },
   {
     label: '职务',
@@ -286,8 +286,8 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
     dynamicRules: ({ model, schema }) => {
       return [
-        { ...rules.duplicateCheckRule('sys_user', 'email', model, schema, true)[0] },
-        { ...rules.rule('email', false)[0] },
+        { ...rules.duplicateCheckRule('sys_user', 'email', model, schema, true)[0], trigger: 'blur' },
+        { ...rules.rule('email', false)[0], trigger: 'blur' },
       ];
     },
   },
@@ -297,8 +297,8 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
     dynamicRules: ({ model, schema }) => {
       return [
-        { ...rules.duplicateCheckRule('sys_user', 'phone', model, schema, true)[0] },
-        { pattern: /^1[3456789]\d{9}$/, message: '手机号码格式有误' },
+        { ...rules.duplicateCheckRule('sys_user', 'phone', model, schema, true)[0], trigger: 'blur' },
+        { pattern: /^1[3456789]\d{9}$/, message: '手机号码格式有误', trigger: 'blur' },
       ];
     },
   },
@@ -386,6 +386,7 @@ export const formAgentSchema: FormSchema[] = [
       showTime: true,
       valueFormat: 'YYYY-MM-DD HH:mm:ss',
       placeholder: '请选择代理开始时间',
+      getPopupContainer: () => document.body,
     },
   },
   {
@@ -397,6 +398,7 @@ export const formAgentSchema: FormSchema[] = [
       showTime: true,
       valueFormat: 'YYYY-MM-DD HH:mm:ss',
       placeholder: '请选择代理结束时间',
+      getPopupContainer: () => document.body,
     },
   },
   {

@@ -1,4 +1,4 @@
-import type { NamePath, RuleObject } from 'ant-design-vue/lib/form/interface';
+import type { NamePath, RuleObject, ValidateOptions } from 'ant-design-vue/lib/form/interface';
 import type { VNode, ComputedRef } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '/@/components/Button';
 import type { FormItem } from './formItem';
@@ -37,7 +37,7 @@ export interface FormActionType {
   getProps: ComputedRef<Partial<FormProps>>;
   removeSchemaByFiled: (field: string | string[]) => Promise<void>;
   appendSchemaByField: (schema: FormSchema, prefixField: string | undefined, first?: boolean | undefined) => Promise<void>;
-  validateFields: (nameList?: NamePath[]) => Promise<any>;
+  validateFields: (nameList?: NamePath[], options?: ValidateOptions) => Promise<any>;
   validate: (nameList?: NamePath[]) => Promise<any>;
   scrollToField: (name: NamePath, options?: ScrollOptions) => Promise<void>;
 }

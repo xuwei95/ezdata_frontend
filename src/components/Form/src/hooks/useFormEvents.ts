@@ -1,6 +1,6 @@
 import type { ComputedRef, Ref } from 'vue';
 import type { FormProps, FormSchema, FormActionType } from '../types/form';
-import type { NamePath } from 'ant-design-vue/lib/form/interface';
+import type { NamePath, ValidateOptions } from 'ant-design-vue/lib/form/interface';
 import { unref, toRaw } from 'vue';
 import { isArray, isFunction, isObject, isString } from '/@/utils/is';
 import { deepMerge, getValueType } from '/@/utils';
@@ -207,8 +207,8 @@ export function useFormEvents({
     });
   }
 
-  async function validateFields(nameList?: NamePath[] | undefined) {
-    return unref(formElRef)?.validateFields(nameList);
+  async function validateFields(nameList?: NamePath[] | undefined, options?: ValidateOptions) {
+    return unref(formElRef)?.validateFields(nameList, options);
   }
 
   async function validate(nameList?: NamePath[] | undefined) {
