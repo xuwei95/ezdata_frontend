@@ -88,7 +88,7 @@ export function useTableScroll(
 
     bodyEl!.style.height = 'unset';
 
-    if (!unref(getCanResize) || tableData.length === 0) return;
+    if (!unref(getCanResize) || ( !tableData || tableData.length === 0)) return;
 
     await nextTick();
     //Add a delay to get the correct bottomIncludeBody paginationHeight footerHeight headerHeight
@@ -150,10 +150,11 @@ export function useTableScroll(
 
   const getScrollX = computed(() => {
     let width = 0;
-    if (unref(rowSelectionRef)) {
-      width += 60;
-    }
-
+    // update-begin--author:liaozhiyang---date:20230922---for：【QQYUN-6391】在线表单列表字段过多时,列头和数据对不齐
+    // if (unref(rowSelectionRef)) {
+    //   width += 60;
+    // }
+    // update-end--author:liaozhiyang---date:20230922---for：【QQYUN-6391】在线表单列表字段过多时,列头和数据对不齐
     // TODO props ?? 0;
     const NORMAL_WIDTH = 150;
 
