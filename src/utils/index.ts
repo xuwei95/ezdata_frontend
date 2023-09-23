@@ -301,8 +301,10 @@ export function importViewsFile(path): Promise<any> {
  * @param token
  */
 export function goJmReportViewPage(url, id, token) {
+  // update-begin--author:liaozhiyang---date:20230904---for：【QQYUN-6390】eval替换成new Function，解决build警告
   // URL支持{{ window.xxx }}占位符变量
-  url = url.replace(/{{([^}]+)?}}/g, (_s1, s2) => eval(s2))
+  url = url.replace(/{{([^}]+)?}}/g, (_s1, s2) => _eval(s2))
+  // update-end--author:liaozhiyang---date:20230904---for：【QQYUN-6390】eval替换成new Function，解决build警告
   if (url.includes('?')) {
     url += '&'
   } else {
@@ -311,4 +313,58 @@ export function goJmReportViewPage(url, id, token) {
   url += `id=${id}`
   url += `&token=${token}`
   window.open(url)
+}
+
+/**
+ * 获取随机颜色
+ */
+export function getRandomColor(index?) {
+
+  const colors = [
+    'rgb(100, 181, 246)',
+    'rgb(77, 182, 172)',
+    'rgb(255, 183, 77)',
+    'rgb(229, 115, 115)',
+    'rgb(149, 117, 205)',
+    'rgb(161, 136, 127)',
+    'rgb(144, 164, 174)',
+    'rgb(77, 208, 225)',
+    'rgb(129, 199, 132)',
+    'rgb(255, 138, 101)',
+    'rgb(133, 202, 205)',
+    'rgb(167, 214, 118)',
+    'rgb(254, 225, 89)',
+    'rgb(251, 199, 142)',
+    'rgb(239, 145, 139)',
+    'rgb(169, 181, 255)',
+    'rgb(231, 218, 202)',
+    'rgb(252, 128, 58)',
+    'rgb(254, 161, 172)',
+    'rgb(194, 163, 205)',
+  ];
+  return index && index < 19 ? colors[index] : colors[Math.floor((Math.random()*(colors.length-1)))];
+}
+
+export function getRefPromise(componentRef) {
+  return new Promise((resolve) => {
+    (function next() {
+      const ref = componentRef.value;
+      if (ref) {
+        resolve(ref);
+      } else {
+        setTimeout(() => {
+          next();
+        }, 100);
+      }
+    })();
+  });
+}
+
+/**
+ * 2023-09-04
+ * liaozhiyang
+ * 用new Function替换eval
+ */
+export function _eval(str: string) {
+ return new Function(`return ${str}`)();
 }

@@ -125,6 +125,8 @@
         },
       ] = usePopBiz(getBindValue, tableRef);
 
+      pagination.pageSizeOptions = ['10', '100', '300'];
+
       const showSearchFlag = computed(() => unref(queryInfo) && unref(queryInfo).length > 0);
       /**
        *监听code
@@ -245,5 +247,8 @@
 
   :deep(.jeecg-basic-table .ant-table-wrapper .ant-table-title){
     min-height: 0;
+  }
+  :deep(.ant-select-selector){
+    min-width: 95px;
   }
 </style>

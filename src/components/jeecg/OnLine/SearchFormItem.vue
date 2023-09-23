@@ -215,7 +215,7 @@
   import { CompTypeEnum } from '/@/enums/CompTypeEnum.ts';
   import { JDictSelectTag, JTreeSelect, JCategorySelect, JSelectUserByDept, JSelectDept, JPopup, JAreaLinkage,JInput,JSearchSelect } from '/@/components/Form';
   export default defineComponent({
-    name: 'JPopupOnlReport',
+    name: 'SearchFormItem',
     components: {
       //JOnlineSearchSelect
       JDictSelectTag,
