@@ -5,18 +5,18 @@
       <!--插槽:table标题-->
       <template #tableTitle>
         <a-upload name="file" :showUploadList="false" :action="ossAction" :headers="tokenHeader" :beforeUpload="beforeUpload" @change="handleChange">
-          <a-button type="primary" preIcon="ant-design:upload-outlined">OSS文件上传</a-button>
+          <a-button v-auth="['system:oss:upload']" type="primary" preIcon="ant-design:upload-outlined">文件上传</a-button>
         </a-upload>
-        <a-upload
-          name="file"
-          :showUploadList="false"
-          :action="minioAction"
-          :headers="tokenHeader"
-          :beforeUpload="beforeUpload"
-          @change="handleChange"
-        >
-          <a-button type="primary" preIcon="ant-design:upload-outlined">MINIO文件上传</a-button>
-        </a-upload>
+<!--        <a-upload-->
+<!--          name="file"-->
+<!--          :showUploadList="false"-->
+<!--          :action="minioAction"-->
+<!--          :headers="tokenHeader"-->
+<!--          :beforeUpload="beforeUpload"-->
+<!--          @change="handleChange"-->
+<!--        >-->
+<!--          <a-button type="primary" preIcon="ant-design:upload-outlined">MINIO文件上传</a-button>-->
+<!--        </a-upload>-->
       </template>
       <!--操作栏-->
       <template #action="{ record }">
@@ -38,7 +38,7 @@
 
   const { createMessage } = useMessage();
   const glob = useGlobSetting();
-  const tokenHeader = { 'X-Access-Token': getToken() };
+  const tokenHeader = { Authorization: 'JWT ' + getToken() };
   //注册table数据
   const [registerTable, { reload }] = useTable({
     api: list,
@@ -57,7 +57,7 @@
     showIndexColumn: false,
     tableSetting: { fullScreen: true },
     beforeFetch: (params) => {
-      return Object.assign({ column: 'createTime', order: 'desc' }, params);
+      return Object.assign({ column: 'create_time', order: 'desc' }, params);
     },
     actionColumn: {
       width: 80,
@@ -81,7 +81,7 @@
       console.log('glob.onlineUrl', glob.viewUrl);
       let filePath = encodeURIComponent(record.url);
       //文档采用pdf预览高级模式
-      if(filePath.endsWith(".pdf") || filePath.endsWith(".doc") || filePath.endsWith(".docx")){
+      if (filePath.endsWith(".pdf") || filePath.endsWith(".doc") || filePath.endsWith(".docx")){
         filePath = filePath + '&officePreviewType=pdf'
       }
       let url = `${glob.viewUrl}?url=` + filePath;
@@ -146,6 +146,7 @@
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
         },
+        auth: ['system:oss:delete'],
       },
     ];
   }

@@ -2,7 +2,7 @@
   <BasicDrawer @register="registerBaseDrawer" title="角色用户" width="800" destroyOnClose>
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
-        <a-button type="primary" @click="handleCreate" v-if="!disableUserEdit"> 新增用户</a-button>
+        <a-button type="primary" @click="handleCreate"> 新增用户</a-button>
         <a-button type="primary" @click="handleSelect"> 已有用户</a-button>
 
         <a-dropdown v-if="checkedKeys.length > 0">
@@ -42,15 +42,11 @@
   import { getUserRoles } from '../../user/user.api';
 
   const emit = defineEmits(['register', 'hideUserList']);
-  const props = defineProps({
-    disableUserEdit: {type:Boolean,default:false}
-  })
-  
   const checkedKeys = ref<Array<string | number>>([]);
   const roleId = ref('');
   const [registerBaseDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
     roleId.value = data.id;
-    setProps({ searchInfo: { roleId: data.id } });
+    setProps({ searchInfo: { role_id: data.id } });
     reload();
   });
   //注册drawer
@@ -117,7 +113,7 @@
    */
   async function handleEdit(record: Recordable) {
     try {
-      const userRoles = await getUserRoles({ userid: record.id });
+      const userRoles = await getUserRoles({ user_id: record.id });
       if (userRoles && userRoles.length > 0) {
         record.selectedroles = userRoles;
       }
@@ -135,14 +131,14 @@
    * 删除事件
    */
   async function handleDelete(record) {
-    await deleteUserRole({ userId: record.id, roleId: roleId.value }, reload);
+    await deleteUserRole({ user_id: record.id, role_id: roleId.value }, reload);
   }
 
   /**
    * 批量删除事件
    */
   async function batchHandleDelete() {
-    await batchDeleteUserRole({ userIds: checkedKeys.value.join(','), roleId: roleId.value }, reload);
+    await batchDeleteUserRole({ user_ids: checkedKeys.value.join(','), role_id: roleId.value }, reload);
   }
 
   /**
@@ -161,7 +157,7 @@
    * 添加已有用户
    */
   async function selectOk(val) {
-    await addUserRole({ roleId: roleId.value, userIdList: val }, reload);
+    await addUserRole({ role_id: roleId.value, user_id_list: val }, reload);
   }
   /**
    * 操作栏
@@ -171,7 +167,6 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
-        ifShow: () => !props.disableUserEdit,
       },
       {
         label: '取消关联',

@@ -32,7 +32,6 @@
 
 <script lang="ts" setup>
   //ts语法
-  import type { ComputedRef } from 'vue';
   import { ref, computed, unref, watch, inject } from 'vue';
   import { BasicTable, TableAction } from '/@/components/Table';
   import JeecgOrderTicketModal from './components/JeecgOrderTicketModal.vue';
@@ -43,10 +42,7 @@
   import { isEmpty } from '/@/utils/is';
   import { useMessage } from '/@/hooks/web/useMessage';
   //接收主表id
-  const orderId = inject<ComputedRef<string>>(
-    'orderId',
-    computed(() => '')
-  );
+  const orderId = inject('orderId');
   //提示弹窗
   const $message = useMessage();
   //弹窗model
@@ -55,10 +51,7 @@
   // 列表页面公共参数、方法
   const { prefixCls, tableContext } = useListPage({
     tableProps: {
-      api: getTicketList,
-      tableSetting:{
-        cacheKey:'ticket'
-      },
+      api: ticketList,
       columns: ticketColumns,
       canResize: false,
       useSearchForm: false,
@@ -74,23 +67,12 @@
   });
 
   //注册table数据
-  const [registerTable, { reload, setSelectedRowKeys }, { rowSelection, selectedRowKeys }] = tableContext;
+  const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
 
   watch(orderId, () => {
     searchInfo['orderId'] = unref(orderId);
     reload();
-    // 主表id变化时，清空子表的选中状态
-    setSelectedRowKeys([]);
   });
-
-  async function getTicketList(params) {
-    let { orderId } = params;
-    // 主表Id为空时，不查询子表数据，直接返回空数组
-    if (orderId == null || isEmpty(orderId)) {
-      return [];
-    }
-    return await ticketList(params);
-  }
 
   /**
    * 新增事件

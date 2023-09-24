@@ -58,9 +58,6 @@
   const { tableContext } = useListPage({
     tableProps: {
       api: list,
-      tableSetting:{
-        cacheKey:'erp_main'
-      },
       columns: columns,
       canResize: false,
       rowSelection: { type: 'radio' },

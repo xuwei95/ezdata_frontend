@@ -3,8 +3,8 @@
   <BasicTable @register="registerTable" :rowSelection="rowSelection">
     <!--插槽:table标题-->
     <template #tableTitle>
-      <a-button type="primary" preIcon="ant-design:plus-outlined" @click="selectAddUser">添加已有用户</a-button>
-      <a-button type="primary" preIcon="ant-design:plus-outlined" @click="createUser">新建用户</a-button>
+      <a-button v-auth="['user-depart:user']" type="primary" preIcon="ant-design:plus-outlined" @click="selectAddUser">添加已有用户</a-button>
+      <a-button v-auth="['user-depart:user']" type="primary" preIcon="ant-design:plus-outlined" @click="createUser" >新建用户</a-button>
       <template v-if="selectedRowKeys.length > 0">
         <a-dropdown>
           <template #overlay>
@@ -89,7 +89,7 @@
       },
       // 请求之前对参数做处理
       beforeFetch(params) {
-        params.depId = departId.value;
+        params.depart_id = departId.value;
       },
     },
   });
@@ -164,7 +164,7 @@
       setLoading(true);
       let userIds = unref(idList).join(',');
       try {
-        await unlinkDepartUserBatch({ depId: departId.value, userIds }, confirm);
+        await unlinkDepartUserBatch({ depart_id: departId.value, user_ids: userIds }, confirm);
         return reload();
       } finally {
         setLoading(false);
@@ -206,7 +206,7 @@
    * 操作栏
    */
   function getTableAction(record): ActionItem[] {
-    return [{ label: '编辑', onClick: editUserInfo.bind(null, record) }];
+    return [{ label: '编辑', onClick: editUserInfo.bind(null, record), auth: ['user-depart:user'] }];
   }
 
   /**
@@ -214,8 +214,8 @@
    */
   function getDropDownAction(record): ActionItem[] {
     return [
-      { label: '部门角色', onClick: showDepartRole.bind(null, record) },
-      { label: '用户详情', onClick: showUserDetail.bind(null, record) },
+      { label: '部门角色', onClick: showDepartRole.bind(null, record), auth: ['user-depart:user'] },
+      { label: '用户详情', onClick: showUserDetail.bind(null, record), auth: ['user-depart:user'] },
       {
         label: '取消关联',
         color: 'error',
@@ -223,6 +223,7 @@
           title: '确认取消关联吗？',
           confirm: unlinkDepartUser.bind(null, [record.id], false),
         },
+        auth: ['user-depart:user'],
       },
     ];
   }

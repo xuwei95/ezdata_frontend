@@ -24,8 +24,8 @@
     setModalProps({ confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
     if (unref(isUpdate)) {
-      if (data.record.userIds) {
-        data.record.userIds = data.record.userIds.substring(0, data.record.userIds.length - 1);
+      if (data.record.user_ids) {
+        data.record.user_ids = data.record.user_ids.substring(0, data.record.user_ids.length - 1);
       }
       //表单赋值
       await setFieldsValue({
@@ -41,13 +41,6 @@
       let values = await validate();
       setModalProps({ confirmLoading: true });
       //提交表单
-      //update-begin-author:liusq---date:20230404--for: [issue#429]新增通知公告提交指定用户参数有undefined --- 
-      if(values.msgType==='ALL'){
-        values.userIds = '';
-      }else{
-        values.userIds += ',';
-      }
-      //update-end-author:liusq---date:20230404--for: [issue#429]新增通知公告提交指定用户参数有undefined --- 
       await saveOrUpdate(values, isUpdate.value);
       //关闭弹窗
       closeModal();

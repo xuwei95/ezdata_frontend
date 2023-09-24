@@ -3,11 +3,10 @@ import { Modal } from 'ant-design-vue';
 
 enum Api {
   list = '/sys/role/list',
-  listByTenant = '/sys/role/listByTenant',
   save = '/sys/role/add',
   edit = '/sys/role/edit',
   deleteRole = '/sys/role/delete',
-  deleteBatch = '/sys/role/deleteBatch',
+  deleteBatch = '/sys/role/delete',
   exportXls = '/sys/role/exportXls',
   importExcel = '/sys/role/importExcel',
   isRoleExist = '/sys/role/checkRoleCode',
@@ -20,7 +19,7 @@ enum Api {
   saveRoleDesign = '/joa/designform/designFormCommuse/sysRoleDesignAdd',
   userList = '/sys/user/userRoleList',
   deleteUserRole = '/sys/user/deleteUserRole',
-  batchDeleteUserRole = '/sys/user/deleteUserRoleBatch',
+  batchDeleteUserRole = '/sys/user/deleteUserRole',
   addUserRole = '/sys/user/addSysUserRole',
   saveRoleIndex = '/sys/sysRoleIndex/add',
   editRoleIndex = '/sys/sysRoleIndex/edit',
@@ -35,15 +34,10 @@ export const getExportUrl = Api.exportXls;
  */
 export const getImportUrl = Api.importExcel;
 /**
- * 系统角色列表
+ * 列表
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
-/**
- * 租户角色列表
- * @param params
- */
-export const listByTenant = (params) => defHttp.get({ url: Api.listByTenant, params });
 
 /**
  * 删除角色

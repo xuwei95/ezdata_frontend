@@ -1,24 +1,27 @@
 import { BasicColumn, FormSchema } from '/@/components/Table';
-import { rules } from '/@/utils/helper/validator';
+import { render } from '/@/utils/common/renderUtils';
+// import { rules } from '/@/utils/helper/validator';
 
 export const columns: BasicColumn[] = [
-  // {
-  //   title: '职务编码',
-  //   dataIndex: 'code',
-  //   width: 200,
-  //   align: 'left',
-  // },
+  {
+    title: '职务编码',
+    dataIndex: 'code',
+    width: 200,
+    align: 'left',
+  },
   {
     title: '职务名称',
     dataIndex: 'name',
-    align: 'left'
-    // width: 200,
+    width: 200,
   },
-  // {
-  //   title: '职务等级',
-  //   dataIndex: 'postRank_dictText',
-  //   width: 100,
-  // },
+  {
+    title: '职务等级',
+    dataIndex: 'post_rank',
+    width: 100,
+    customRender: ({ text }) => {
+      return render.renderDict(text, 'position_rank');
+    },
+  },
 ];
 
 export const searchFormSchema: FormSchema[] = [
@@ -37,35 +40,34 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
     show: false,
   },
-  // {
-  //   label: '职级',
-  //   field: 'postRank',
-  //   component: 'JDictSelectTag',
-  //   required: true,
-  //   componentProps: {
-  //     dictCode: 'position_rank',
-  //     dropdownStyle: {
-  //       maxHeight: '100vh',
-  //     },
-  //     getPopupContainer: () => document.body,
-  //   },
-  // },
+  {
+    label: '职级',
+    field: 'post_rank',
+    component: 'JDictSelectTag',
+    required: true,
+    componentProps: {
+      dictCode: 'position_rank',
+      dropdownStyle: {
+        maxHeight: '100vh',
+      },
+    },
+  },
   {
     field: 'name',
     label: '职务名称',
     component: 'Input',
     required: true,
   },
-  // {
-  //   field: 'code',
-  //   label: '职务编码',
-  //   component: 'Input',
-  //   required: true,
-  //   dynamicDisabled: ({ values }) => {
-  //     return !!values.id;
-  //   },
-  //   dynamicRules: ({ model, schema }) => {
-  //     return rules.duplicateCheckRule('sys_position', 'code', model, schema, true);
-  //   },
-  // },
+  {
+    field: 'code',
+    label: '职务编码',
+    component: 'Input',
+    required: true,
+    dynamicDisabled: ({ values }) => {
+      return !!values.id;
+    },
+    // dynamicRules: ({ model, schema }) => {
+    //   return rules.duplicateCheckRule('sys_position', 'code', model, schema, true);
+    // },
+  },
 ];

@@ -2,7 +2,6 @@ import { BasicColumn, FormSchema } from '/@/components/Table';
 import { render } from '/@/utils/common/renderUtils';
 import { duplicateCheck } from '/@/views/system/user/user.api';
 import { validateCheckRule } from '/@/views/system/checkRule/check.rule.api';
-import { array } from 'vue-types';
 
 export const columns: BasicColumn[] = [
   {

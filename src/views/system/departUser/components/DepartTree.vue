@@ -55,14 +55,14 @@
     treeData.value = [];
     queryMyDepartTreeList()
       .then((res) => {
-        if (res.success) {
-          if (Array.isArray(res.result)) {
-            treeData.value = res.result;
-            userIdentity.value = res.message;
+        if (res.code == 200) {
+          if (Array.isArray(res.data)) {
+            treeData.value = res.data;
+            userIdentity.value = res.msg;
             autoExpandParentNode();
           }
         } else {
-          createMessage.warning(res.message);
+          createMessage.warning(res.msg);
         }
       })
       .finally(() => (loading.value = false));
@@ -143,7 +143,7 @@
 </script>
 <style lang="less" scoped>
   /*升级antd3后，查询框与树贴的太近，样式优化*/
-  :deep(.jeecg-tree-header) {
+  ::v-deep(.jeecg-tree-header) {
     margin-bottom: 6px;
   }
 </style>

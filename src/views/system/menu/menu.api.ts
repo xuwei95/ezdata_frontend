@@ -6,12 +6,11 @@ enum Api {
   save = '/sys/permission/add',
   edit = '/sys/permission/edit',
   delete = '/sys/permission/delete',
-  deleteBatch = '/sys/permission/deleteBatch',
+  deleteBatch = '/sys/permission/delete',
   ruleList = '/sys/permission/queryPermissionRule',
   ruleSave = '/sys/permission/addPermissionRule',
   ruleEdit = '/sys/permission/editPermissionRule',
   ruleDelete = '/sys/permission/deletePermissionRule',
-  checkPermDuplication = '/sys/permission/checkPermDuplication',
 }
 
 /**
@@ -82,38 +81,3 @@ export const deleteRule = (params, handleSuccess) => {
  * @param params
  */
 export const ajaxGetDictItems = (params) => defHttp.get({ url: `/sys/dict/getDictItems/${params.code}` });
-
-/**
- * 唯一校验
- * @param params
- */
-export const getCheckPermDuplication = (params) => defHttp.get({ url: Api.checkPermDuplication, params }, { isTransformResponse: false });
-
-/**
- * 校验菜单是否存在
- * @param model
- * @param schema
- * @param required
- */
-export const checkPermDuplication=(model, schema, required?)=>{
-  return [
-    {
-      validator: (_, value) => {
-        if (!value && required) {
-          return Promise.reject(`请输入${schema.label}`);
-        }
-        return new Promise<void>((resolve, reject) => {
-          getCheckPermDuplication({
-            id: model.id,
-            url:model.url,
-            alwaysShow:model.alwaysShow
-          }).then((res) => {
-              res.success ? resolve() : reject(res.message || '校验失败');
-          }).catch((err) => {
-              reject(err.message || '验证失败');
-          });
-        });
-      },
-    },
-  ];
-}

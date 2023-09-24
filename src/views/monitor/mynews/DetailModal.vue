@@ -1,10 +1,9 @@
 <template>
-  <BasicModal v-bind="$attrs" @register="registerModal" title="查看详情" :minHeight="600" :showCancelBtn="false" :showOkBtn="false" :height="88" :destroyOnClose="true">
+  <BasicModal v-bind="$attrs" @register="registerModal" title="查看详情" :minHeight="600" :showCancelBtn="false" :showOkBtn="false" :height="88">
     <a-card class="daily-article">
-      <a-card-meta :title="content.titile" :description="'发布人：' + content.sender + ' 发布时间： ' + content.sendTime"> </a-card-meta>
+      <a-card-meta :title="content.titile" :description="'发布人：' + content.sender + ' 发布时间： ' + content.send_time"> </a-card-meta>
       <a-divider />
-      <span v-html="content.msgContent" class="article-content"></span>
-      
+      <span v-html="content.msg_content" class="article-content"></span>
       <div>
         <a-button v-if="hasHref" @click="jumpToHandlePage">前往办理<ArrowRightOutlined /></a-button>
       </div>
@@ -18,7 +17,7 @@
   import { useRouter } from 'vue-router'
   import xss from 'xss'
   const router = useRouter()
-  
+
   import { ref, unref } from 'vue';
   const isUpdate = ref(true);
   const content = ref({});
@@ -36,7 +35,7 @@
       showHrefButton();
     }
   });
-  
+
   const hasHref = ref(false)
   //查看消息详情可以跳转
   function showHrefButton(){
@@ -48,7 +47,7 @@
   function jumpToHandlePage(){
     let temp:any = content.value
     if(temp.busId){
-      //这个busId是 任务ID 
+      //这个busId是 任务ID
       let jsonStr = temp.msgAbstract;
       let query = {};
       try {
@@ -63,10 +62,10 @@
       }catch(e){
         console.log('参数解析异常', e)
       }
-      
+
       console.log('query', query, jsonStr)
       console.log('busId', temp.busId)
-      
+
       if(Object.keys(query).length>0){
         // taskId taskDefKey procInsId
         router.push({ path: '/task/handle/' + temp.busId, query: query })
@@ -76,7 +75,7 @@
     }
     closeModal();
   }
-  
+
 </script>
 
 <style scoped lang="less">

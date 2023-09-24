@@ -13,12 +13,12 @@ export const userInfoColumns: BasicColumn[] = [
   },
   {
     title: '用户名称',
-    dataIndex: 'realname',
+    dataIndex: 'nickname',
     width: 180,
   },
   {
     title: '部门',
-    dataIndex: 'orgCode',
+    dataIndex: 'org_code',
     width: 200,
   },
   {
@@ -46,12 +46,12 @@ export const userInfoSearchFormSchema: FormSchema[] = [
 export const departRoleColumns: BasicColumn[] = [
   {
     title: '部门角色名称',
-    dataIndex: 'roleName',
+    dataIndex: 'role_name',
     width: 100,
   },
   {
     title: '部门角色编码',
-    dataIndex: 'roleCode',
+    dataIndex: 'role_code',
     width: 100,
   },
   {
@@ -69,7 +69,7 @@ export const departRoleColumns: BasicColumn[] = [
 // 部门角色查询条件表单
 export const departRoleSearchFormSchema: FormSchema[] = [
   {
-    field: 'roleName',
+    field: 'role_name',
     label: '部门角色名称',
     component: 'Input',
   },
@@ -84,7 +84,7 @@ export const departRoleModalFormSchema: FormSchema[] = [
     show: false,
   },
   {
-    field: 'roleName',
+    field: 'role_name',
     label: '部门角色名称',
     component: 'Input',
     rules: [
@@ -93,7 +93,7 @@ export const departRoleModalFormSchema: FormSchema[] = [
     ],
   },
   {
-    field: 'roleCode',
+    field: 'role_code',
     label: '部门角色编码',
     component: 'Input',
     dynamicDisabled: ({ values }) => {
@@ -140,11 +140,11 @@ export const departRoleModalFormSchema: FormSchema[] = [
 export function useBaseInfoForm(treeData: Ref<any[]>) {
   const descItems: DescItem[] = [
     {
-      field: 'departName',
+      field: 'depart_name',
       label: '机构名称',
     },
     {
-      field: 'parentId',
+      field: 'parent_id',
       label: '上级部门',
       render(val) {
         if (val) {
@@ -155,11 +155,11 @@ export function useBaseInfoForm(treeData: Ref<any[]>) {
       },
     },
     {
-      field: 'orgCode',
+      field: 'org_code',
       label: '机构编码',
     },
     {
-      field: 'orgCategory',
+      field: 'org_category',
       label: '机构类型',
       render(val) {
         if (val === '1') {
@@ -173,7 +173,7 @@ export function useBaseInfoForm(treeData: Ref<any[]>) {
       },
     },
     {
-      field: 'departOrder',
+      field: 'sort_no',
       label: '排序',
     },
 

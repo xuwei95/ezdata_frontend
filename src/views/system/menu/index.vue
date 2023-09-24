@@ -2,7 +2,7 @@
   <div class="p-4">
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
-        <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增菜单</a-button>
+        <a-button v-auth="['sys:menu:add']" type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增菜单</a-button>
         <a-button type="primary" preIcon="ic:round-expand" @click="expandAll">展开全部</a-button>
         <a-button type="primary" preIcon="ic:round-compress" @click="collapseAll">折叠全部</a-button>
 
@@ -36,7 +36,7 @@
   import { useDrawer } from '/@/components/Drawer';
   import MenuDrawer from './MenuDrawer.vue';
   import DataRuleList from './DataRuleList.vue';
-  import { columns,searchFormSchema } from './menu.data';
+  import { columns, searchFormSchema } from './menu.data';
   import { list, deleteMenu, batchDeleteMenu } from './menu.api';
 
   const checkedKeys = ref<Array<string | number>>([]);
@@ -124,7 +124,7 @@
    */
   function handleAddSub(record) {
     openDrawer(true, {
-      record: { parentId: record.id, menuType: 1 },
+      record: { parent_id: record.id, menu_type: 1 },
       isUpdate: false,
     });
   }
@@ -167,6 +167,7 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
+        auth: ['sys:menu:edit'],
       },
     ];
   }
@@ -183,11 +184,12 @@
       {
         label: '添加下级',
         onClick: handleAddSub.bind(null, record),
+        auth: ['sys:menu:edit'],
       },
-      {
-        label: '数据规则',
-        onClick: handleDataRule.bind(null, record),
-      },
+      // {
+      //   label: '数据规则',
+      //   onClick: handleDataRule.bind(null, record),
+      // },
       {
         label: '删除',
         color: 'error',
@@ -195,6 +197,7 @@
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
         },
+        auth: ['sys:menu:delete'],
       },
     ];
   }

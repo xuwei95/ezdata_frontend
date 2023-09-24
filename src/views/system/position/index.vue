@@ -2,9 +2,9 @@
   <div>
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
-        <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleAdd">新增</a-button>
-        <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+        <a-button v-auth="['system:position:add']" type="primary" preIcon="ant-design:plus-outlined" @click="handleAdd">新增</a-button>
+<!--        <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>-->
+<!--        <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>-->
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -49,10 +49,6 @@
       formConfig: {
         schemas: searchFormSchema,
       },
-      actionColumn: {
-        width: 180,
-      },
-      showIndexColumn: true,
     },
     exportConfig: {
       name: '职务列表',
@@ -74,6 +70,7 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
+        auth: ['system:position:edit'],
       },
       {
         label: '删除',
@@ -81,6 +78,7 @@
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
         },
+        auth: ['system:position:delete'],
       },
     ];
   }

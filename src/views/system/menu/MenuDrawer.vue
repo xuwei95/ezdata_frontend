@@ -34,13 +34,14 @@
     await resetFields();
     setDrawerProps({ confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
-    menuType.value = data?.record?.menuType;
+    menuType.value = data?.record?.menu_type;
 
     //获取下拉树信息
     const treeData = await list();
+    console.log(66666, treeData);
     updateSchema([
       {
-        field: 'parentId',
+        field: 'parent_id',
         componentProps: { treeData },
       },
       {
@@ -73,7 +74,7 @@
       const values = await validate();
       // iframe兼容
       if (ComponentTypes.IFrame === values.component) {
-        values.component = values.frameSrc;
+        values.component = values.frame_src;
       }
       setDrawerProps({ confirmLoading: true });
       //提交表单
@@ -88,7 +89,6 @@
   /** url 变化时，动态设置组件名称placeholder */
   function onUrlChange(url) {
     let placeholder = '';
-    let httpUrl = url;
     if (url != null && url != '') {
       if (url.startsWith('/')) {
         url = url.substring(1);
@@ -100,13 +100,6 @@
     } else {
       placeholder = '请输入组件名称';
     }
-    updateSchema([{ field: 'componentName', componentProps: { placeholder } }]);
-    //update-begin---author:wangshuai ---date:20230204  for：[QQYUN-4058]菜单添加智能化处理------------
-    if (httpUrl != null && httpUrl != '') {
-      if (httpUrl.startsWith('http://') || httpUrl.startsWith('https://')) {
-        setFieldsValue({ component: httpUrl });
-      }
-    }
-    //update-end---author:wangshuai ---date:20230204  for：[QQYUN-4058]菜单添加智能化处理------------
+    updateSchema([{ field: 'component_name', componentProps: { placeholder } }]);
   }
 </script>

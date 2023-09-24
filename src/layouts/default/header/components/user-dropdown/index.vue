@@ -11,8 +11,8 @@
 
     <template #overlay>
       <Menu @click="handleMenuClick">
-        <MenuItem key="doc" :text="t('layout.header.dropdownItemDoc')" icon="ion:document-text-outline" v-if="getShowDoc" />
-        <MenuDivider v-if="getShowDoc" />
+        <!--        <MenuItem key="doc" :text="t('layout.header.dropdownItemDoc')" icon="ion:document-text-outline" v-if="getShowDoc" />-->
+        <!--        <MenuDivider v-if="getShowDoc" />-->
         <MenuItem key="account" :text="t('layout.header.dropdownItemSwitchAccount')" icon="ant-design:setting-outlined" />
         <MenuItem key="password" :text="t('layout.header.dropdownItemSwitchPassword')" icon="ant-design:edit-outlined" />
         <MenuItem key="depart" :text="t('layout.header.dropdownItemSwitchDepart')" icon="ant-design:cluster-outlined" />
@@ -56,7 +56,6 @@
   import { DB_DICT_DATA_KEY } from '/src/enums/cacheEnum';
   import { removeAuthCache, setAuthCache } from '/src/utils/auth';
   import { getFileAccessHttpUrl } from '/@/utils/common/compUtils';
-
   type MenuEvent = 'logout' | 'doc' | 'lock' | 'cache' | 'depart';
   const { createMessage } = useMessage();
   export default defineComponent({
@@ -79,12 +78,10 @@
       const { getShowDoc, getUseLockPage } = useHeaderSetting();
       const userStore = useUserStore();
       const go = useGo();
-
       const getUserInfo = computed(() => {
         const { realname = '', avatar, desc } = userStore.getUserInfo || {};
         return { realname, avatar: avatar || headerImg, desc };
       });
-
       const getAvatarUrl = computed(() => {
         let { avatar } = getUserInfo.value;
         if (avatar == headerImg) {
@@ -93,7 +90,6 @@
           return getFileAccessHttpUrl(avatar);
         }
       });
-
       const [register, { openModal }] = useModal();
       /**
        * 多部门弹窗逻辑
@@ -102,17 +98,14 @@
       function handleLock() {
         openModal(true);
       }
-
       //  login out
       function handleLoginOut() {
         userStore.confirmLoginOut();
       }
-
       // open doc
       function openDoc() {
         openWindow(SITE_URL);
       }
-
       // 清除缓存
       async function clearCache() {
         const result = await refreshCache();
@@ -134,7 +127,6 @@
       function updatePassword() {
         updatePasswordRef.value.show(userStore.getUserInfo.username);
       }
-
       function handleMenuClick(e: { key: MenuEvent }) {
         switch (e.key) {
           case 'logout':
@@ -157,12 +149,11 @@
             break;
           case 'account':
             //update-begin---author:wangshuai ---date:20221125  for：进入用户设置页面------------
-            go(`/system/usersetting`);
+            go(`/system/account/setting`);
             //update-end---author:wangshuai ---date:20221125  for：进入用户设置页面--------------
             break;
         }
       }
-
       return {
         prefixCls,
         t,
@@ -180,7 +171,6 @@
 </script>
 <style lang="less">
   @prefix-cls: ~'@{namespace}-header-user-dropdown';
-
   .@{prefix-cls} {
     height: @header-height;
     padding: 0 0 0 10px;
@@ -189,41 +179,33 @@
     font-size: 12px;
     cursor: pointer;
     align-items: center;
-
     img {
       width: 24px;
       height: 24px;
       margin-right: 12px;
     }
-
     &__header {
       border-radius: 50%;
     }
-
     &__name {
       font-size: 14px;
     }
-
     &--dark {
       &:hover {
         background-color: @header-dark-bg-hover-color;
       }
     }
-
     &--light {
       &:hover {
         background-color: @header-light-bg-hover-color;
       }
-
       .@{prefix-cls}__name {
         color: @text-color-base;
       }
-
       .@{prefix-cls}__desc {
         color: @header-light-desc-color;
       }
     }
-
     &-dropdown-overlay {
       .ant-dropdown-menu-item {
         min-width: 160px;

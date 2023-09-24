@@ -21,8 +21,7 @@
     :disabled="disabled"
     :columns="columns"
     :dataSource="dataSource"
-    @removed="onJVxeRemove"
-    @valueChange="handleValueChange"
+    @remove="onJVxeRemove"
   >
     <template #toolbarSuffix>
       <a-button @click="handleTableCheck">表单验证</a-button>

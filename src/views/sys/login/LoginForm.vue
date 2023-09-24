@@ -9,24 +9,24 @@
     </FormItem>
 
     <!--验证码-->
-    <ARow class="enter-x">
-      <ACol :span="12">
-        <FormItem name="inputCode" class="enter-x">
-          <Input size="large" v-model:value="formData.inputCode" :placeholder="t('sys.login.inputCode')" style="min-width: 100px" />
-        </FormItem>
-      </ACol>
-      <ACol :span="8">
-        <FormItem :style="{ 'text-align': 'right', 'margin-left': '20px' }" class="enter-x">
-          <img
-            v-if="randCodeData.requestCodeSuccess"
-            style="margin-top: 2px; max-width: initial"
-            :src="randCodeData.randCodeImage"
-            @click="handleChangeCheckCode"
-          />
-          <img v-else style="margin-top: 2px; max-width: initial" src="../../../assets/images/checkcode.png" @click="handleChangeCheckCode" />
-        </FormItem>
-      </ACol>
-    </ARow>
+<!--    <ARow class="enter-x">-->
+<!--      <ACol :span="12">-->
+<!--        <FormItem name="inputCode" class="enter-x">-->
+<!--          <Input size="large" v-model:value="formData.inputCode" :placeholder="t('sys.login.inputCode')" style="min-width: 100px" />-->
+<!--        </FormItem>-->
+<!--      </ACol>-->
+<!--      <ACol :span="8">-->
+<!--        <FormItem :style="{ 'text-align': 'right', 'margin-left': '20px' }" class="enter-x">-->
+<!--          <img-->
+<!--            v-if="randCodeData.requestCodeSuccess"-->
+<!--            style="margin-top: 2px; max-width: initial"-->
+<!--            :src="randCodeData.randCodeImage"-->
+<!--            @click="handleChangeCheckCode"-->
+<!--          />-->
+<!--          <img v-else style="margin-top: 2px; max-width: initial" src="../../../assets/images/checkcode.png" @click="handleChangeCheckCode" />-->
+<!--        </FormItem>-->
+<!--      </ACol>-->
+<!--    </ARow>-->
 
     <ARow class="enter-x">
       <ACol :span="12">
@@ -122,8 +122,8 @@
   const rememberMe = ref(false);
 
   const formData = reactive({
-    account: 'jeecg',
-    password: '123456',
+    account: 'admin',
+    password: 'qwer1234',
     inputCode: '',
   });
   const randCodeData = reactive({
@@ -175,11 +175,11 @@
   function handleChangeCheckCode() {
     formData.inputCode = '';
     //TODO 兼容mock和接口，暂时这样处理
-    randCodeData.checkKey = 1629428467008; //new Date().getTime();
-    getCodeInfo(randCodeData.checkKey).then((res) => {
-      randCodeData.randCodeImage = res;
-      randCodeData.requestCodeSuccess = true;
-    });
+    // randCodeData.checkKey = 1629428467008; //new Date().getTime();
+    // getCodeInfo(randCodeData.checkKey).then((res) => {
+    //   randCodeData.randCodeImage = res;
+    //   randCodeData.requestCodeSuccess = true;
+    // });
   }
 
   /**

@@ -94,7 +94,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
             vue: ['vue', 'vue-router'],
             'cron-parser-vendor': ['cron-parser'],
           },
-        }
+        },
       },
       // 关闭brotliSize显示可以稍微减少打包时间
       reportCompressedSize: false,
@@ -130,6 +130,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       exclude: [
         //升级vite4后，需要排除online依赖
         '@jeecg/online',
+        '@antv/x6-vue-shape',
       ],
       // 提前预加载依赖，缩短首屏访问时间
       include: [
@@ -239,6 +240,11 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         'vxe-table-plugin-antd',
         'xe-utils',
         'xss',
+        `monaco-editor/esm/vs/language/json/json.worker`,
+        `monaco-editor/esm/vs/language/css/css.worker`,
+        `monaco-editor/esm/vs/language/html/html.worker`,
+        `monaco-editor/esm/vs/language/typescript/ts.worker`,
+        `monaco-editor/esm/vs/editor/editor.worker`,
       ],
     },
   };

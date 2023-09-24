@@ -1,15 +1,15 @@
 import { defHttp } from '/@/utils/http/axios';
 
 enum Api {
-  list = '/sys/annountCement/list',
-  save = '/sys/annountCement/add',
-  edit = '/sys/annountCement/edit',
-  delete = '/sys/annountCement/delete',
-  deleteBatch = '/sys/annountCement/deleteBatch',
-  exportXls = '/sys/annountCement/exportXls',
-  importExcel = '/sys/annountCement/importExcel',
-  releaseData = '/sys/annountCement/doReleaseData',
-  reovkeData = '/sys/annountCement/doReovkeData',
+  list = '/sys/notice/list',
+  save = '/sys/notice/add',
+  edit = '/sys/notice/edit',
+  delete = '/sys/notice/delete',
+  deleteBatch = '/sys/notice/delete',
+  exportXls = '/sys/notice/exportXls',
+  importExcel = '/sys/notice/importExcel',
+  releaseData = '/sys/notice/doReleaseData',
+  reovkeData = '/sys/notice/doReovkeData',
 }
 
 /**

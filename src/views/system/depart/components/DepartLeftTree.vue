@@ -3,12 +3,12 @@
     <div class="j-table-operator" style="width: 100%">
       <a-button type="primary" preIcon="ant-design:plus-outlined" @click="onAddDepart">新增</a-button>
       <a-button type="primary" preIcon="ant-design:plus-outlined" @click="onAddChildDepart()">添加下级</a-button>
-      <a-upload name="file" :showUploadList="false" :customRequest="onImportXls">
-        <a-button type="primary" preIcon="ant-design:import-outlined">导入</a-button>
-      </a-upload>
-      <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls">导出</a-button>
-      <a-button type="primary" preIcon="ant-design:sync-outlined">同步企微?</a-button>
-      <a-button type="primary" preIcon="ant-design:sync-outlined">同步钉钉?</a-button>
+<!--      <a-upload name="file" :showUploadList="false" :customRequest="onImportXls">-->
+<!--        <a-button type="primary" preIcon="ant-design:import-outlined">导入</a-button>-->
+<!--      </a-upload>-->
+<!--      <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls">导出</a-button>-->
+<!--      <a-button type="primary" preIcon="ant-design:sync-outlined">同步企微?</a-button>-->
+<!--      <a-button type="primary" preIcon="ant-design:sync-outlined">同步钉钉?</a-button>-->
       <template v-if="checkedKeys.length > 0">
         <a-dropdown>
           <template #overlay>
@@ -162,7 +162,7 @@
         pid: treeNode.dataRef.id,
       });
       if (result.length == 0) {
-        treeNode.dataRef.isLeaf = true;
+        treeNode.dataRef.is_leaf = true;
       } else {
         treeNode.dataRef.children = result;
         if (expandedKeys.value.length > 0) {
@@ -190,7 +190,7 @@
   function autoExpandParentNode() {
     let item = treeData.value[0];
     if (item) {
-      if (!item.isLeaf) {
+      if (!item.is_leaf) {
         expandedKeys.value = [item.key];
       }
       // 默认选中第一个
@@ -231,7 +231,7 @@
       createMessage.warning('请先选择一个部门');
       return;
     }
-    const record = { parentId: data.id };
+    const record = { parent_id: data.id };
     openModal(true, { isUpdate: false, isChild: true, record });
   }
 

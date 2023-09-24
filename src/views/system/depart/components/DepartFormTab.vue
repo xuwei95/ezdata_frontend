@@ -2,7 +2,7 @@
   <a-spin :spinning="loading">
     <BasicForm @register="registerForm" />
     <div class="j-box-bottom-button offset-20" style="margin-top: 30px">
-      <div class="j-box-bottom-button-float" :class="[`${prefixCls}`]">
+      <div class="j-box-bottom-button-float">
         <a-button preIcon="ant-design:sync-outlined" @click="onReset">重置</a-button>
         <a-button type="primary" preIcon="ant-design:save-filled" @click="onSubmit">保存</a-button>
       </div>
@@ -15,15 +15,13 @@
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { saveOrUpdateDepart } from '../depart.api';
   import { useBasicFormSchema, orgCategoryOptions } from '../depart.data';
-  import { useDesign } from '/@/hooks/web/useDesign';
-
-  const { prefixCls } = useDesign('j-depart-form-content');
 
   const emit = defineEmits(['success']);
   const props = defineProps({
     data: { type: Object, default: () => ({}) },
     rootTreeData: { type: Array, default: () => [] },
   });
+  const prefixCls = inject('prefixCls');
   const loading = ref<boolean>(false);
   // 当前是否是更新模式
   const isUpdate = ref<boolean>(true);
@@ -37,7 +35,7 @@
   });
 
   const categoryOptions = computed(() => {
-    if (!!props?.data?.parentId) {
+    if (!!props?.data?.parent_id) {
       return orgCategoryOptions.child;
     } else {
       return orgCategoryOptions.root;
@@ -47,8 +45,8 @@
   onMounted(() => {
     // 禁用字段
     updateSchema([
-      { field: 'parentId', componentProps: { disabled: true } },
-      { field: 'orgCode', componentProps: { disabled: true } },
+      { field: 'parent_id', componentProps: { disabled: true } },
+      { field: 'org_code', componentProps: { disabled: true } },
     ]);
     // data 变化，重填表单
     watch(
@@ -70,7 +68,7 @@
       async () => {
         updateSchema([
           {
-            field: 'parentId',
+            field: 'parent_id',
             componentProps: { treeData: props.rootTreeData },
           },
         ]);
@@ -83,7 +81,7 @@
       async () => {
         updateSchema([
           {
-            field: 'orgCategory',
+            field: 'org_category',
             componentProps: { options: categoryOptions.value },
           },
         ]);
@@ -114,15 +112,3 @@
     }
   }
 </script>
-<style lang="less">
-  // update-begin-author:liusq date:20230625 for: [issues/563]暗色主题部分失效
-
-  @prefix-cls: ~'@{namespace}-j-depart-form-content';
-  /*begin 兼容暗夜模式*/
-  .@{prefix-cls} {
-    background: @component-background;
-    border-top: 1px solid @border-color-base;
-  }
-  /*end 兼容暗夜模式*/
-  // update-end-author:liusq date:20230625 for: [issues/563]暗色主题部分失效
-</style>

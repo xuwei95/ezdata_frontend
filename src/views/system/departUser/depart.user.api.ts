@@ -59,7 +59,7 @@ export const departUserList = (params) => defHttp.get({ url: DepartUserApi.list,
  * @param userIdList 用户ID列表
  */
 export const linkDepartUserBatch = (departId: string, userIdList: string[]) =>
-  defHttp.post({ url: DepartUserApi.link, params: { depId: departId, userIdList } });
+  defHttp.post({ url: DepartUserApi.link, params: { depart_id: departId, user_id_list: userIdList } });
 
 /**
  * 批量取消部门和用户的关联关系

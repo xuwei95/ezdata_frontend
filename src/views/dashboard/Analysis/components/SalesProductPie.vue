@@ -7,7 +7,6 @@
   import { Ref, ref, watch } from 'vue';
   import { Card } from 'ant-design-vue';
   import { useECharts } from '/@/hooks/web/useECharts';
-
   const props = defineProps({
     loading: Boolean,
     width: {
@@ -19,7 +18,6 @@
       default: '300px',
     },
   });
-
   const chartRef = ref<HTMLDivElement | null>(null);
   const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
   watch(
@@ -32,7 +30,6 @@
         tooltip: {
           trigger: 'item',
         },
-
         series: [
           {
             name: '访问来源',

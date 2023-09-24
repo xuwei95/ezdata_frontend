@@ -2,14 +2,14 @@
   <BasicDrawer v-bind="$attrs" @register="registerDrawer" title="字典列表" width="800px">
     <BasicTable @register="registerTable" :rowClassName="getRowClassName">
       <template #tableTitle>
-        <a-button type="primary" @click="handleCreate"> 新增</a-button>
+        <a-button v-auth="'system:dict:item:add'" type="primary" @click="handleCreate"> 新增</a-button>
       </template>
       <template #action="{ record }">
         <TableAction :actions="getTableAction(record)" />
       </template>
     </BasicTable>
   </BasicDrawer>
-  <DictItemModal @register="registerModal" @success="reload" :dictId="dictId" />
+  <DictItemModal @register="registerModal" @success="reload" :dict_id="dict_id" />
 </template>
 <script lang="ts" setup>
   import { ref, unref } from 'vue';
@@ -23,12 +23,12 @@
   import { ColEx } from '/@/components/Form/src/types';
 
   const { prefixCls } = useDesign('row-invalid');
-  const dictId = ref('');
+  const dict_id = ref('');
   //字典配置model
   const [registerModal, { openModal }] = useModal();
   const [registerDrawer] = useDrawerInner(async (data) => {
-    dictId.value = data.id;
-    setProps({ searchInfo: { dictId: unref(dictId) } });
+    dict_id.value = data.id;
+    setProps({ searchInfo: { dict_id: unref(dict_id) } });
     reload();
   });
   // 自适应列配置
@@ -108,6 +108,7 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
+        auth: ['system:dict:item:edit'],
       },
       {
         label: '删除',
@@ -115,6 +116,7 @@
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
         },
+        auth: ['system:dict:item:delete'],
       },
     ];
   }
@@ -125,7 +127,7 @@
 <style scoped lang="less">
   @prefix-cls: ~'@{namespace}-row-invalid';
 
-  :deep(.@{prefix-cls}) {
+  ::v-deep(.@{prefix-cls}) {
     background: #f4f4f4;
     color: #bababa;
   }

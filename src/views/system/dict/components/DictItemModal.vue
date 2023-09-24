@@ -11,7 +11,7 @@
   import { saveOrUpdateDictItem } from '../dict.api';
   // 声明Emits
   const emit = defineEmits(['success', 'register']);
-  const props = defineProps({ dictId: String });
+  const props = defineProps({ dict_id: Number });
   const isUpdate = ref(true);
   //表单配置
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
@@ -48,7 +48,7 @@
   async function handleSubmit() {
     try {
       const values = await validate();
-      values.dictId = props.dictId;
+      values.dict_id = props.dict_id;
       setModalProps({ confirmLoading: true });
       //提交表单
       await saveOrUpdateDictItem(values, isUpdate.value);

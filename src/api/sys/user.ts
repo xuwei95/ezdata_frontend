@@ -11,10 +11,10 @@ import { PageEnum } from '/@/enums/pageEnum';
 
 const { createErrorModal } = useMessage();
 enum Api {
-  Login = '/sys/login',
+  Login = '/sys/user/login', // '/sys/login',
   phoneLogin = '/sys/phoneLogin',
   Logout = '/sys/logout',
-  GetUserInfo = '/sys/user/getUserInfo',
+  GetUserInfo = '/sys/user/info', // '/sys/user/getUserInfo',
   // 获取系统权限
   // 1、查询用户拥有的按钮/表单访问权限
   // 2、所有权限
@@ -78,7 +78,7 @@ export function phoneLoginApi(params: LoginParams, mode: ErrorMessageMode = 'mod
  * @description: getUserInfo
  */
 export function getUserInfo() {
-  return defHttp.get<GetUserInfoModel>({ url: Api.GetUserInfo }, {}).catch((e) => {
+  return defHttp.get<GetUserInfoModel>({ url: Api.GetUserInfo }, { errorMessageMode: 'none' }).catch((e) => {
     // update-begin--author:zyf---date:20220425---for:【VUEN-76】捕获接口超时异常,跳转到登录界面
     if (e && (e.message.includes('timeout') || e.message.includes('401'))) {
       //接口不通时跳转到登录界面

@@ -40,7 +40,7 @@
     // 隐藏不需要展示的字段
     updateSchema([
       {
-        field: 'parentId',
+        field: 'parent_id',
         show: isChild,
         componentProps: {
           // 如果是添加子部门，就禁用该字段
@@ -49,11 +49,11 @@
         },
       },
       {
-        field: 'orgCode',
+        field: 'org_code',
         show: false,
       },
       {
-        field: 'orgCategory',
+        field: 'org_category',
         componentProps: { options: categoryOptions },
       },
     ]);
@@ -65,8 +65,8 @@
     // 赋默认值
     record = Object.assign(
       {
-        departOrder: 0,
-        orgCategory: categoryOptions[0].value,
+        sort_no: 0,
+        org_category: categoryOptions[0].value,
       },
       record
     );

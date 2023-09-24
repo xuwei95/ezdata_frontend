@@ -48,6 +48,7 @@
         activeKey,
         currentComponent,
         tabChange,
+        activeKey,
       };
     },
   });

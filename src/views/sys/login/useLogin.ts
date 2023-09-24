@@ -3,7 +3,6 @@ import type { RuleObject } from 'ant-design-vue/lib/form/interface';
 import { ref, computed, unref, Ref } from 'vue';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { checkOnlyUser } from '/@/api/sys/user';
-import { defHttp } from '/@/utils/http/axios';
 
 export enum LoginStateEnum {
   LOGIN,

@@ -1,9 +1,9 @@
 <template>
   <BasicTable @register="registerTable">
     <template #tableTitle>
-      <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
-      <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-      <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+      <a-button v-auth="['sys:role:add']" type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
+<!--      <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>-->
+<!--      <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>-->
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <template #overlay>
           <a-menu>
@@ -27,7 +27,6 @@
   <RoleUserTable @register="roleUserDrawer" />
   <!--角色编辑抽屉-->
   <RoleDrawer @register="registerDrawer" @success="reload" :showFooter="showFooter" />
-  <!--角色详情-->
   <RoleDesc @register="registerDesc"></RoleDesc>
   <!--角色菜单授权抽屉-->
   <RolePermissionDrawer @register="rolePermissionDrawer" />
@@ -50,7 +49,6 @@
   const showFooter = ref(true);
   const [roleUserDrawer, { openDrawer: openRoleUserDrawer }] = useDrawer();
   const [registerDrawer, { openDrawer }] = useDrawer();
-  const [registerModal, { openModal }] = useModal();
   const [registerIndexModal, { openModal: openIndexModal }] = useModal();
   const [rolePermissionDrawer, { openDrawer: openRolePermissionDrawer }] = useDrawer();
   const [registerDesc, { openDrawer: openRoleDesc }] = useDrawer();
@@ -59,7 +57,7 @@
   const { prefixCls, tableContext, onImportXls, onExportXls } = useListPage({
     designScope: 'role-template',
     tableProps: {
-      title: '系统角色列表',
+      title: '角色列表',
       api: list,
       columns: columns,
       formConfig: {
@@ -130,9 +128,8 @@
    * 角色授权弹窗
    */
   function handlePerssion(record) {
-    openRolePermissionDrawer(true, { roleId: record.id });
+    openRolePermissionDrawer(true, { role_id: record.id });
   }
-
   /**
    * 首页配置弹窗
    */
@@ -154,10 +151,12 @@
       {
         label: '用户',
         onClick: handleUser.bind(null, record),
+        auth: ['sys:role:user'],
       },
       {
         label: '授权',
         onClick: handlePerssion.bind(null, record),
+        auth: ['sys:role:auth'],
       },
     ];
   }
@@ -170,6 +169,7 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
+        auth: ['sys:role:edit'],
       },
       {
         label: '详情',
@@ -181,6 +181,7 @@
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
         },
+        auth: ['sys:role:delete'],
       },
       {
         label: '首页配置',

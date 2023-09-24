@@ -75,7 +75,6 @@
     openModal(true, {
       title: '新增消息模板',
       isUpdate: false,
-      showFooter: true,
       record: {},
     });
   }
@@ -89,7 +88,6 @@
       title: '修改消息模板',
       isUpdate: true,
       record: record,
-      showFooter: true,
     });
   }
 
@@ -148,9 +146,7 @@
    * 操作栏
    */
   function getTableAction(record): ActionItem[] {
-    //update-begin---author:wangshuai ---date:20221123  for：[VUEN-2807]消息模板加一个查看功能------------
-    return [{ label: '查看', onClick: handleDetail.bind(null, record)}, { label: '编辑', onClick: onEdit.bind(null, record) }];
-    //update-end---author:wangshuai ---date:20221123  for：[VUEN-2807]消息模板加一个查看功能------------
+    return [{ label: '编辑', onClick: onEdit.bind(null, record) }];
   }
 
   /**
@@ -188,18 +184,6 @@
     let param = { id: record.id, useStatus: '0' };
     await saveOrUpdate(param, true);
     await reload();
-  }
-
-  /**
-   * 查看
-   * @param record
-   */
-  function handleDetail(record) {
-    openModal(true,{
-      isUpdate: true,
-      showFooter: false,
-      record:record
-    })
   }
 </script>
 

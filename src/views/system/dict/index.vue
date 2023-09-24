@@ -3,16 +3,16 @@
   <BasicTable @register="registerTable" :rowSelection="rowSelection">
     <!--插槽:table标题-->
     <template #tableTitle>
-      <a-button type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
-      <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-      <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
-      <a-button type="primary" @click="handlerRefreshCache" preIcon="ant-design:sync-outlined"> 刷新缓存</a-button>
-      <a-button type="primary" @click="openRecycleModal(true)" preIcon="ant-design:hdd-outlined"> 回收站</a-button>
+      <a-button v-auth="'system:dict:add'" type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
+<!--      <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>-->
+<!--      <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>-->
+      <a-button v-auth="'system:dict:refresh'" type="primary" @click="handlerRefreshCache" preIcon="ant-design:sync-outlined"> 刷新缓存</a-button>
+      <a-button v-auth="'system:dict:recycle'" type="primary" @click="openRecycleModal(true)" preIcon="ant-design:hdd-outlined"> 回收站</a-button>
 
       <a-dropdown v-if="selectedRowKeys.length > 0">
         <template #overlay>
           <a-menu>
-            <a-menu-item key="1" @click="batchHandleDelete">
+            <a-menu-item v-if="hasPermission('system:dict:delete')" key="1" @click="batchHandleDelete">
               <Icon icon="ant-design:delete-outlined"></Icon>
               删除
             </a-menu-item>
@@ -51,21 +51,21 @@
   import { columns, searchFormSchema } from './dict.data';
   import { list, deleteDict, batchDeleteDict, getExportUrl, getImportUrl, refreshCache, queryAllDictItems } from './dict.api';
   import { DB_DICT_DATA_KEY } from '/src/enums/cacheEnum';
-  import { useUserStore } from '/@/store/modules/user';
-
+  import { useListPage } from '/@/hooks/system/useListPage';
+  import { usePermission } from '/@/hooks/web/usePermission';
+  const { hasPermission } = usePermission();
   const { createMessage } = useMessage();
   //字典model
   const [registerModal, { openModal }] = useModal();
   //字典配置drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
-  import { useListPage } from '/@/hooks/system/useListPage';
 
   //回收站model
   const [registerModal1, { openModal: openRecycleModal }] = useModal();
 
   // 列表页面公共参数、方法
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
-    designScope: 'dict-template',
+    designScope: 'dict',
     tableProps: {
       title: '数据字典',
       api: list,
@@ -147,10 +147,7 @@
     if (result.success) {
       const res = await queryAllDictItems();
       removeAuthCache(DB_DICT_DATA_KEY);
-      // update-begin--author:liaozhiyang---date:20230908---for：【QQYUN-6417】生产环境字典慢的问题
-      const userStore = useUserStore();
-      userStore.setAllDictItems(res.result);
-      // update-end--author:liaozhiyang---date:20230908---for：【QQYUN-6417】生产环境字典慢的问题
+      setAuthCache(DB_DICT_DATA_KEY, res.data);
       createMessage.success('刷新缓存完成！');
     } else {
       createMessage.error('刷新缓存失败！');
@@ -172,10 +169,12 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
+        auth: ['system:dict:edit'],
       },
       {
         label: '字典配置',
         onClick: handleItem.bind(null, record),
+        auth: ['system:dict:item:edit'],
       },
       {
         label: '删除',
@@ -183,6 +182,7 @@
           title: '确定删除吗?',
           confirm: handleDelete.bind(null, record),
         },
+        auth: ['system:dict:delete'],
       },
     ];
   }

@@ -14,9 +14,9 @@
           <a-tab-pane tab="用户信息" key="user-info">
             <DepartUserInfoTab :data="departData" />
           </a-tab-pane>
-          <a-tab-pane tab="部门角色" key="role-info">
-            <DepartRoleInfoTab :data="departData" />
-          </a-tab-pane>
+<!--          <a-tab-pane tab="部门角色" key="role-info">-->
+<!--            <DepartRoleInfoTab :data="departData" />-->
+<!--          </a-tab-pane>-->
         </a-tabs>
       </a-card>
     </a-col>

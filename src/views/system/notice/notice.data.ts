@@ -6,11 +6,11 @@ export const columns: BasicColumn[] = [
   {
     title: '标题',
     width: 150,
-    dataIndex: 'titile',
+    dataIndex: 'title',
   },
   {
     title: '消息类型',
-    dataIndex: 'msgCategory',
+    dataIndex: 'msg_category',
     width: 100,
     customRender: ({ text }) => {
       return render.renderDict(text, 'msg_category');
@@ -32,7 +32,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '通告对象',
-    dataIndex: 'msgType',
+    dataIndex: 'msg_type',
     width: 100,
     customRender: ({ text }) => {
       return render.renderDict(text, 'msg_type');
@@ -40,7 +40,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '发布状态',
-    dataIndex: 'sendStatus',
+    dataIndex: 'send_status',
     width: 70,
     customRender: ({ text }) => {
       const color = text == '0' ? 'red' : text == '1' ? 'green' : 'gray';
@@ -50,18 +50,18 @@ export const columns: BasicColumn[] = [
   {
     title: '发布时间',
     width: 100,
-    dataIndex: 'sendTime',
+    dataIndex: 'send_time',
   },
   {
     title: '撤销时间',
     width: 100,
-    dataIndex: 'cancelTime',
+    dataIndex: 'cancel_time',
   },
 ];
 
 export const searchFormSchema: FormSchema[] = [
   {
-    field: 'titile',
+    field: 'title',
     label: '标题',
     component: 'JInput',
     colProps: { span: 8 },
@@ -76,7 +76,7 @@ export const formSchema: FormSchema[] = [
     show: false,
   },
   {
-    field: 'msgCategory',
+    field: 'msg_category',
     label: '消息类型',
     required: true,
     component: 'JDictSelectTag',
@@ -88,7 +88,7 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
-    field: 'titile',
+    field: 'title',
     label: '标题',
     component: 'Input',
     required: true,
@@ -97,13 +97,13 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
-    field: 'msgAbstract',
+    field: 'msg_abstract',
     label: '摘要',
     component: 'InputTextArea',
     required: true,
   },
   {
-    field: 'endTime',
+    field: 'end_time',
     label: '截至日期',
     component: 'DatePicker',
     componentProps: {
@@ -114,7 +114,7 @@ export const formSchema: FormSchema[] = [
     dynamicRules: ({ model }) => rules.endTime(model.startTime, true),
   },
   {
-    field: 'msgType',
+    field: 'msg_type',
     label: '接收用户',
     defaultValue: 'ALL',
     component: 'JDictSelectTag',
@@ -126,7 +126,7 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
-    field: 'userIds',
+    field: 'user_ids',
     label: '指定用户',
     component: 'JSelectUser',
     required: true,
@@ -134,7 +134,7 @@ export const formSchema: FormSchema[] = [
       rowKey: 'id',
       labelKey: 'username',
     },
-    ifShow: ({ values }) => values.msgType == 'USER',
+    ifShow: ({ values }) => values.msg_type == 'USER',
   },
   {
     field: 'priority',
@@ -148,7 +148,7 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
-    field: 'msgContent',
+    field: 'msg_content',
     label: '内容',
     component: 'Input',
     render: render.renderTinymce,

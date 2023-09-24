@@ -6,18 +6,18 @@ enum Api {
   edit = '/sys/dict/edit',
   duplicateCheck = '/sys/duplicate/check',
   deleteDict = '/sys/dict/delete',
-  deleteBatch = '/sys/dict/deleteBatch',
+  deleteBatch = '/sys/dict/delete',
   importExcel = '/sys/dict/importExcel',
   exportXls = '/sys/dict/exportXls',
   recycleBinList = '/sys/dict/deleteList',
   putRecycleBin = '/sys/dict/back',
   deleteRecycleBin = '/sys/dict/deletePhysic',
-  itemList = '/sys/dictItem/list',
-  deleteItem = '/sys/dictItem/delete',
-  itemSave = '/sys/dictItem/add',
-  itemEdit = '/sys/dictItem/edit',
+  itemList = '/sys/dict/item/list',
+  deleteItem = '/sys/dict/item/delete',
+  itemSave = '/sys/dict/item/add',
+  itemEdit = '/sys/dict/item/edit',
   dictItemCheck = '/sys/dictItem/dictItemCheck',
-  refreshCache = '/sys/dict/refleshCache',
+  refreshCache = '/sys/dict/refreshCache',
   queryAllDictItems = '/sys/dict/queryAllDictItems',
 }
 /**
@@ -83,7 +83,7 @@ export const getRecycleBinList = (params) => defHttp.get({ url: Api.recycleBinLi
  * @param params
  */
 export const putRecycleBin = (id, handleSuccess) => {
-  return defHttp.put({ url: Api.putRecycleBin + `/${id}` }).then(() => {
+  return defHttp.put({ url: Api.putRecycleBin, data: {"id": id}}).then(() => {
     handleSuccess();
   });
 };
@@ -92,7 +92,7 @@ export const putRecycleBin = (id, handleSuccess) => {
  * @param params
  */
 export const deleteRecycleBin = (id, handleSuccess) => {
-  return defHttp.delete({ url: Api.deleteRecycleBin + `/${id}` }).then(() => {
+  return defHttp.delete({ url: Api.deleteRecycleBin, data: {"id": id}}).then(() => {
     handleSuccess();
   });
 };

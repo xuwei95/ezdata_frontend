@@ -2,9 +2,9 @@
   <div>
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <template #tableTitle>
-        <a-button preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd">新增</a-button>
-        <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>
+        <a-button v-auth="['system:notice:add']" preIcon="ant-design:plus-outlined" type="primary" @click="handleAdd">新增</a-button>
+<!--        <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>-->
+<!--        <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>-->
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -25,7 +25,8 @@
       </template>
     </BasicTable>
     <NoticeModal @register="registerModal" @success="reload" />
-    <DetailModal @register="register" :frameSrc="iframeUrl" />
+<!--    <DetailModal @register="register" :frameSrc="iframeUrl" />-->
+    <DetailModal @register="register" />
   </div>
 </template>
 <script lang="ts" name="system-notice" setup>
@@ -33,7 +34,8 @@
   import { BasicTable, TableAction } from '/@/components/Table';
   import { useModal } from '/@/components/Modal';
   import NoticeModal from './NoticeModal.vue';
-  import DetailModal from './DetailModal.vue';
+  // import DetailModal from './DetailModal.vue';
+  import DetailModal from '/@/views/monitor/mynews/DetailModal.vue';
   import { useMethods } from '/@/hooks/system/useMethods';
   import { useGlobSetting } from '/@/hooks/setting';
   import { getToken } from '/@/utils/auth';
@@ -44,7 +46,6 @@
   const [registerModal, { openModal }] = useModal();
   const [register, { openModal: openDetail }] = useModal();
   const iframeUrl = ref('');
-
   // 列表页面公共参数、方法
   const { prefixCls, onExportXls, onImportXls, tableContext, doRequest } = useListPage({
     designScope: 'notice-template',
@@ -117,8 +118,12 @@
    * 查看
    */
   function handleDetail(record) {
-    iframeUrl.value = `${glob.uploadUrl}/sys/annountCement/show/${record.id}?token=${getToken()}`;
-    openDetail(true);
+    // iframeUrl.value = `${glob.uploadUrl}/sys/notice/show/${record.id}?token=${getToken()}`;
+    // openDetail(true);
+    openDetail(true, {
+      record,
+      isUpdate: true,
+    });
   }
   /**
    * 操作列定义
@@ -127,9 +132,14 @@
   function getActions(record) {
     return [
       {
+        label: '查看',
+        onClick: handleDetail.bind(null, record),
+      },
+      {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
         ifShow: record.sendStatus == 0,
+        auth: ['system:notice:edit'],
       },
     ];
   }
@@ -145,11 +155,13 @@
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
         },
+        auth: ['sys:notice:delete'],
       },
       {
         label: '发布',
         ifShow: record.sendStatus == 0,
         onClick: handleRelease.bind(null, record.id),
+        auth: ['sys:notice:edit'],
       },
       {
         label: '撤销',
@@ -158,10 +170,7 @@
           title: '确定要撤销吗？',
           confirm: handleReovke.bind(null, record.id),
         },
-      },
-      {
-        label: '查看',
-        onClick: handleDetail.bind(null, record),
+        auth: ['sys:notice:edit'],
       },
     ];
   }

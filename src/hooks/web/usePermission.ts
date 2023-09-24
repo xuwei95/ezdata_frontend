@@ -42,7 +42,7 @@ export function usePermission() {
         }
       }
     }
-    return codeList.indexOf(code) >= 0;
+    return codeList.indexOf(code) >= 0 || code === '*';
   }
   //==================================工作流权限判断-end=========================================
 

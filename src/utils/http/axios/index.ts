@@ -49,12 +49,17 @@ const transform: AxiosTransform = {
       throw new Error(t('sys.api.apiRequestFailed'));
     }
     //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    const { code, result, message, success } = data;
+    // const { code, result, message, success } = data;
+    const code = data.code;
+    const result = data.data;
+    const message = data.msg;
+    const success = data.success || false;
+    console.log(data, code, message, result);
     // 这里逻辑可以根据项目进行修改
     const hasSuccess = data && Reflect.has(data, 'code') && (code === ResultEnum.SUCCESS || code === 200);
     if (hasSuccess) {
       if (success && message && options.successMessageMode === 'success') {
-        //信息成功提示
+        // 信息成功提示
         createMessage.success(message);
       }
       return result;
@@ -62,29 +67,34 @@ const transform: AxiosTransform = {
 
     // 在此处根据自己项目的实际情况对不同的code执行不同的操作
     // 如果不希望中断当前请求，请return数据，否则直接抛出异常即可
-    let timeoutMsg = '';
+    let errMsg = '';
+    const userStore = useUserStoreWithOut();
     switch (code) {
       case ResultEnum.TIMEOUT:
-        timeoutMsg = t('sys.api.timeoutMessage');
-        const userStore = useUserStoreWithOut();
+        errMsg = t('sys.api.timeoutMessage');
+        userStore.setToken(undefined);
+        userStore.logout(true);
+        break;
+      case ResultEnum.SERVER_FORBIDDEN:
+        errMsg = '用户授权错误';
         userStore.setToken(undefined);
         userStore.logout(true);
         break;
       default:
         if (message) {
-          timeoutMsg = message;
+          errMsg = message;
         }
     }
 
     // errorMessageMode=‘modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
     // errorMessageMode='none' 一般是调用时明确表示不希望自动弹出错误提示
     if (options.errorMessageMode === 'modal') {
-      createErrorModal({ title: t('sys.api.errorTip'), content: timeoutMsg });
+      createErrorModal({ title: t('sys.api.errorTip'), content: errMsg });
     } else if (options.errorMessageMode === 'message') {
-      createMessage.error(timeoutMsg);
+      createMessage.error(errMsg);
     }
 
-    throw new Error(timeoutMsg || t('sys.api.apiRequestFailed'));
+    throw new Error(errMsg || t('sys.api.apiRequestFailed'));
   },
 
   // 请求之前处理config
@@ -164,7 +174,7 @@ const transform: AxiosTransform = {
 
       // ========================================================================================
       // update-begin--author:sunjianlei---date:20220624--for: 添加低代码应用ID
-      let routeParams = router.currentRoute.value.params;
+      const routeParams = router.currentRoute.value.params;
       if (routeParams.appId) {
         config.headers[ConfigEnum.X_LOW_APP_ID] = routeParams.appId;
         // lowApp自定义筛选条件
@@ -173,9 +183,6 @@ const transform: AxiosTransform = {
           delete routeParams.lowAppFilter;
         }
       }
-      // update-end--author:sunjianlei---date:20220624--for: 添加低代码应用ID
-      // ========================================================================================
-
     }
     return config;
   },
@@ -234,7 +241,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
         // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
         // authentication schemes，e.g: Bearer
         // authenticationScheme: 'Bearer',
-        authenticationScheme: '',
+        authenticationScheme: 'JWT',
         timeout: 10 * 1000,
         // 基础接口地址
         // baseURL: globSetting.apiUrl,

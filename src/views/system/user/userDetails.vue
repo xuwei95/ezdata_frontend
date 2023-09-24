@@ -21,7 +21,7 @@
       label: '用户名',
     },
     {
-      field: 'nickName',
+      field: 'nickname',
       label: '昵称',
       render: (curVal, data) => {
         return `${data.username}-${curVal}`;

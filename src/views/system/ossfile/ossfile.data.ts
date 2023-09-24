@@ -4,7 +4,7 @@ import { FormSchema } from '/@/components/Table';
 export const columns: BasicColumn[] = [
   {
     title: '文件名称',
-    dataIndex: 'fileName',
+    dataIndex: 'file_name',
     width: 120,
   },
   {
@@ -17,7 +17,7 @@ export const columns: BasicColumn[] = [
 export const searchFormSchema: FormSchema[] = [
   {
     label: '文件名称',
-    field: 'fileName',
+    field: 'file_name',
     component: 'Input',
     colProps: { span: 6 },
   },

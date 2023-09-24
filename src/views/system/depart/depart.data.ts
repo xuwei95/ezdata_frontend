@@ -4,7 +4,7 @@ import { FormSchema } from '/@/components/Form';
 export function useBasicFormSchema() {
   const basicFormSchema: FormSchema[] = [
     {
-      field: 'departName',
+      field: 'depart_name',
       label: '机构名称',
       component: 'Input',
       componentProps: {
@@ -13,7 +13,7 @@ export function useBasicFormSchema() {
       rules: [{ required: true, message: '机构名称不能为空' }],
     },
     {
-      field: 'parentId',
+      field: 'parent_id',
       label: '上级部门',
       component: 'TreeSelect',
       componentProps: {
@@ -23,7 +23,7 @@ export function useBasicFormSchema() {
       },
     },
     {
-      field: 'orgCode',
+      field: 'org_code',
       label: '机构编码',
       component: 'Input',
       componentProps: {
@@ -31,13 +31,13 @@ export function useBasicFormSchema() {
       },
     },
     {
-      field: 'orgCategory',
+      field: 'org_category',
       label: '机构类型',
       component: 'RadioButtonGroup',
       componentProps: { options: [] },
     },
     {
-      field: 'departOrder',
+      field: 'sort_no',
       label: '排序',
       component: 'InputNumber',
       componentProps: {},

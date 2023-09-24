@@ -2,9 +2,11 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { Icon } from '/@/components/Icon';
-import { duplicateCheck } from '../user/user.api';
-import { ajaxGetDictItems ,checkPermDuplication } from './menu.api';
+// import { duplicateCheck } from '../user/user.api';
+import { ajaxGetDictItems } from './menu.api';
 import { render } from '/@/utils/common/renderUtils';
+// import { Select } from 'ant-design-vue';
+// import { rules } from '/@/utils/helper/validator';
 
 const isDir = (type) => type === 0;
 const isMenu = (type) => type === 1;
@@ -25,7 +27,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '菜单类型',
-    dataIndex: 'menuType',
+    dataIndex: 'menu_type',
     width: 150,
     customRender: ({ text }) => {
       return render.renderDict(text, 'menu_type');
@@ -36,6 +38,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'icon',
     width: 50,
     customRender: ({ record }) => {
+      // @ts-ignore
       return h(Icon, { icon: record.icon });
     },
   },
@@ -53,7 +56,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '排序',
-    dataIndex: 'sortNo',
+    dataIndex: 'sort_no',
     width: 50,
   },
 ];
@@ -75,7 +78,7 @@ export const formSchema: FormSchema[] = [
     show: false,
   },
   {
-    field: 'menuType',
+    field: 'menu_type',
     label: '菜单类型',
     component: 'RadioButtonGroup',
     defaultValue: 0,
@@ -102,7 +105,7 @@ export const formSchema: FormSchema[] = [
             },
           ]);
           //update-begin---author:wangshuai ---date:20220729  for：[VUEN-1834]只有一级菜单，才默认值，子菜单的时候，清空------------
-          if (isMenu(e) && !formModel.id && formModel.component=='layouts/RouteView') {
+          if (isMenu(e) && !formModel.id && formModel.component === 'layouts/RouteView') {
             formModel.component = '';
           }
           //update-end---author:wangshuai ---date:20220729  for：[VUEN-1834]只有一级菜单，才默认值，子菜单的时候，清空------------
@@ -117,7 +120,7 @@ export const formSchema: FormSchema[] = [
     required: true,
   },
   {
-    field: 'parentId',
+    field: 'parent_id',
     label: '上级菜单',
     component: 'TreeSelect',
     required: true,
@@ -132,19 +135,17 @@ export const formSchema: FormSchema[] = [
       },
       getPopupContainer: (node) => node.parentNode,
     },
-    ifShow: ({ values }) => !isDir(values.menuType),
+    ifShow: ({ values }) => !isDir(values.menu_type),
   },
   {
     field: 'url',
     label: '访问路径',
     component: 'Input',
     required: true,
-    ifShow: ({ values }) => !(values.component === ComponentTypes.IFrame && values.internalOrExternal) && values.menuType !== 2,
-    //update-begin-author:zyf date:2022-11-02 for: 聚合路由允许路径重复
-     dynamicRules: ({ model, schema }) => {
-       return checkPermDuplication(model, schema, true);
-    },
-    //update-end-author:zyf date:2022-11-02 for: 聚合路由允许路径重复
+    ifShow: ({ values }) => !(values.component === ComponentTypes.IFrame && values.internalOrExternal) && values.menu_type !== 2,
+    // dynamicRules: ({ model, schema }) => {
+    //   return rules.duplicateCheckRule('sys_permission', 'url', model, schema, true);
+    // },
   },
   {
     field: 'component',
@@ -153,12 +154,12 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       placeholder: '请输入前端组件',
     },
-    defaultValue:'layouts/RouteView',
+    defaultValue: 'layouts/RouteView',
     required: true,
-    ifShow: ({ values }) => !isButton(values.menuType),
+    ifShow: ({ values }) => !isButton(values.menu_type),
   },
   {
-    field: 'componentName',
+    field: 'component_name',
     label: '组件名称',
     component: 'Input',
     componentProps: {
@@ -171,29 +172,29 @@ export const formSchema: FormSchema[] = [
       '非必填，留空则会根据访问路径自动生成。',
     ],
     defaultValue: '',
-    ifShow: ({ values }) => !isButton(values.menuType),
+    ifShow: ({ values }) => !isButton(values.menu_type),
   },
   {
-    field: 'frameSrc',
+    field: 'frame_src',
     label: 'Iframe地址',
     component: 'Input',
     rules: [
       { required: true, message: '请输入Iframe地址' },
       { type: 'url', message: '请输入正确的url地址' },
     ],
-    ifShow: ({ values }) => !isButton(values.menuType) && values.component === ComponentTypes.IFrame,
+    ifShow: ({ values }) => !isButton(values.menu_type) && values.component === ComponentTypes.IFrame,
   },
   {
     field: 'redirect',
     label: '默认跳转地址',
     component: 'Input',
-    ifShow: ({ values }) => isDir(values.menuType),
+    ifShow: ({ values }) => isDir(values.menu_type),
   },
   {
     field: 'perms',
     label: '授权标识',
     component: 'Input',
-    ifShow: ({ values }) => isButton(values.menuType),
+    ifShow: ({ values }) => isButton(values.menu_type),
     // dynamicRules: ({ model }) => {
     //   return [
     //     {
@@ -220,7 +221,7 @@ export const formSchema: FormSchema[] = [
     // },
   },
   {
-    field: 'permsType',
+    field: 'perms_type',
     label: '授权策略',
     component: 'RadioGroup',
     defaultValue: '1',
@@ -231,7 +232,7 @@ export const formSchema: FormSchema[] = [
         { label: '可编辑', value: '2' },
       ],
     },
-    ifShow: ({ values }) => isButton(values.menuType),
+    ifShow: ({ values }) => isButton(values.menu_type),
   },
   {
     field: 'status',
@@ -244,20 +245,24 @@ export const formSchema: FormSchema[] = [
         { label: '无效', value: '0' },
       ],
     },
-    ifShow: ({ values }) => isButton(values.menuType),
+    ifShow: ({ values }) => isButton(values.menu_type),
   },
   {
     field: 'icon',
     label: '菜单图标',
-    component: 'IconPicker',
-    ifShow: ({ values }) => !isButton(values.menuType),
+    component: 'Input',
+    // component: 'IconPicker',
+    // componentProps: {
+    //   mode: 'svg',
+    // },
+    ifShow: ({ values }) => !isButton(values.menu_type),
   },
   {
-    field: 'sortNo',
+    field: 'sort_no',
     label: '排序',
     component: 'InputNumber',
     defaultValue: 1,
-    ifShow: ({ values }) => !isButton(values.menuType),
+    ifShow: ({ values }) => !isButton(values.menu_type),
   },
   {
     field: 'route',
@@ -268,7 +273,7 @@ export const formSchema: FormSchema[] = [
       checkedChildren: '是',
       unCheckedChildren: '否',
     },
-    ifShow: ({ values }) => !isButton(values.menuType),
+    ifShow: ({ values }) => !isButton(values.menu_type),
   },
   {
     field: 'hidden',
@@ -279,10 +284,10 @@ export const formSchema: FormSchema[] = [
       checkedChildren: '是',
       unCheckedChildren: '否',
     },
-    ifShow: ({ values }) => !isButton(values.menuType),
+    ifShow: ({ values }) => !isButton(values.menu_type),
   },
   {
-    field: 'hideTab',
+    field: 'hide_tab',
     label: '隐藏Tab',
     component: 'Switch',
     defaultValue: 0,
@@ -290,10 +295,10 @@ export const formSchema: FormSchema[] = [
       checkedChildren: '是',
       unCheckedChildren: '否',
     },
-    ifShow: ({ values }) => !isButton(values.menuType),
+    ifShow: ({ values }) => !isButton(values.menu_type),
   },
   {
-    field: 'keepAlive',
+    field: 'keep_alive',
     label: '是否缓存路由',
     component: 'Switch',
     defaultValue: false,
@@ -301,10 +306,10 @@ export const formSchema: FormSchema[] = [
       checkedChildren: '是',
       unCheckedChildren: '否',
     },
-    ifShow: ({ values }) => !isButton(values.menuType),
+    ifShow: ({ values }) => !isButton(values.menu_type),
   },
   {
-    field: 'alwaysShow',
+    field: 'always_show',
     label: '聚合路由',
     component: 'Switch',
     defaultValue: false,
@@ -312,10 +317,10 @@ export const formSchema: FormSchema[] = [
       checkedChildren: '是',
       unCheckedChildren: '否',
     },
-    ifShow: ({ values }) => !isButton(values.menuType),
+    ifShow: ({ values }) => !isButton(values.menu_type),
   },
   {
-    field: 'internalOrExternal',
+    field: 'internal_or_external',
     label: '打开方式',
     component: 'Switch',
     defaultValue: false,
@@ -323,37 +328,37 @@ export const formSchema: FormSchema[] = [
       checkedChildren: '外部',
       unCheckedChildren: '内部',
     },
-    ifShow: ({ values }) => !isButton(values.menuType),
+    ifShow: ({ values }) => !isButton(values.menu_type),
   },
 ];
 
 export const dataRuleColumns: BasicColumn[] = [
   {
     title: '规则名称',
-    dataIndex: 'ruleName',
+    dataIndex: 'rule_name',
     width: 150,
   },
   {
     title: '规则字段',
-    dataIndex: 'ruleColumn',
+    dataIndex: 'rule_column',
     width: 100,
   },
   {
     title: '规则值',
-    dataIndex: 'ruleValue',
+    dataIndex: 'rule_value',
     width: 100,
   },
 ];
 
 export const dataRuleSearchFormSchema: FormSchema[] = [
   {
-    field: 'ruleName',
+    field: 'rule_name',
     label: '规则名称',
     component: 'Input',
     colProps: { span: 6 },
   },
   {
-    field: 'ruleValue',
+    field: 'rule_value',
     label: '规则值',
     component: 'Input',
     colProps: { span: 6 },
@@ -368,13 +373,13 @@ export const dataRuleFormSchema: FormSchema[] = [
     show: false,
   },
   {
-    field: 'ruleName',
+    field: 'rule_name',
     label: '规则名称',
     component: 'Input',
     required: true,
   },
   {
-    field: 'ruleColumn',
+    field: 'rule_column',
     label: '规则字段',
     component: 'Input',
     ifShow: ({ values }) => {
@@ -382,7 +387,7 @@ export const dataRuleFormSchema: FormSchema[] = [
     },
   },
   {
-    field: 'ruleConditions',
+    field: 'rule_conditions',
     label: '条件规则',
     required: true,
     component: 'ApiSelect',
@@ -391,11 +396,11 @@ export const dataRuleFormSchema: FormSchema[] = [
       params: { code: 'rule_conditions' },
       labelField: 'text',
       valueField: 'value',
-      getPopupContainer: (node) => document.body,
+      getPopupContainer: () => document.body,
     },
   },
   {
-    field: 'ruleValue',
+    field: 'rule_value',
     label: '规则值',
     component: 'Input',
     required: true,

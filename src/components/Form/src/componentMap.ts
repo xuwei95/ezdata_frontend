@@ -61,6 +61,8 @@ import JRangeNumber from './jeecg/components/JRangeNumber.vue';
 import UserSelect from './jeecg/components/userSelect/index.vue';
 import JRangeDate from './jeecg/components/JRangeDate.vue'
 import JRangeTime from './jeecg/components/JRangeTime.vue'
+// 其他自定义组件
+import MonacoEditor from './components/MonacoEditor/index.vue';
 
 const componentMap = new Map<ComponentType, Component>();
 
@@ -131,7 +133,8 @@ componentMap.set('JRangeNumber', JRangeNumber);
 componentMap.set('UserSelect', UserSelect);
 componentMap.set('RangeDate', JRangeDate);
 componentMap.set('RangeTime', JRangeTime);
-
+//注册其他自定义组件
+componentMap.set('MonacoEditor', MonacoEditor);
 export function add(compName: ComponentType, component: Component) {
   componentMap.set(compName, component);
 }

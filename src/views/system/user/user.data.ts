@@ -1,6 +1,6 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
-import { getAllRolesListNoByTenant, getAllTenantList } from './user.api';
+import { getAllRolesList, getAllDepartList, getAllTenantList } from './user.api';
 import { rules } from '/@/utils/helper/validator';
 import { render } from '/@/utils/common/renderUtils';
 export const columns: BasicColumn[] = [
@@ -11,7 +11,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '用户姓名',
-    dataIndex: 'realname',
+    dataIndex: 'nickname',
     width: 100,
   },
   {
@@ -22,12 +22,9 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '性别',
-    dataIndex: 'sex',
+    dataIndex: 'sex_dictText',
     width: 80,
     sorter: true,
-    customRender: ({ text }) => {
-      return render.renderDict(text, 'sex');
-    },
   },
   {
     title: '生日',
@@ -42,12 +39,7 @@ export const columns: BasicColumn[] = [
   {
     title: '部门',
     width: 150,
-    dataIndex: 'orgCodeTxt',
-  },
-  {
-    title: '负责部门',
-    width: 150,
-    dataIndex: 'departIds_dictText',
+    dataIndex: 'depart_id_list_text',
   },
   {
     title: '状态',
@@ -64,14 +56,14 @@ export const recycleColumns: BasicColumn[] = [
   },
   {
     title: '用户姓名',
-    dataIndex: 'realname',
+    dataIndex: 'nickname',
     width: 100,
   },
   {
     title: '头像',
     dataIndex: 'avatar',
     width: 80,
-    customRender: render.renderAvatar,
+    customRender: render.renderImage,
   },
   {
     title: '性别',
@@ -92,12 +84,6 @@ export const searchFormSchema: FormSchema[] = [
     colProps: { span: 6 },
   },
   {
-    label: '名字',
-    field: 'realname',
-    component: 'JInput',
-    colProps: { span: 6 },
-  },
-  {
     label: '性别',
     field: 'sex',
     component: 'JDictSelectTag',
@@ -106,6 +92,12 @@ export const searchFormSchema: FormSchema[] = [
       placeholder: '请选择性别',
       stringToNumber: true,
     },
+    colProps: { span: 6 },
+  },
+  {
+    label: '真实名称',
+    field: 'nickname',
+    component: 'Input',
     colProps: { span: 6 },
   },
   {
@@ -138,10 +130,11 @@ export const formSchema: FormSchema[] = [
     label: '用户账号',
     field: 'username',
     component: 'Input',
+    required: true,
     dynamicDisabled: ({ values }) => {
       return !!values.id;
     },
-    dynamicRules: ({ model, schema }) => rules.duplicateCheckRule('sys_user', 'username', model, schema, true),
+    // dynamicRules: ({ model, schema }) => rules.duplicateCheckRule('sys_user', 'username', model, schema, true),
   },
   {
     label: '登录密码',
@@ -162,20 +155,20 @@ export const formSchema: FormSchema[] = [
   },
   {
     label: '用户姓名',
-    field: 'realname',
+    field: 'nickname',
     required: true,
     component: 'Input',
   },
   {
     label: '工号',
-    field: 'workNo',
+    field: 'work_no',
     required: true,
     component: 'Input',
-    dynamicRules: ({ model, schema }) => ({ ...rules.duplicateCheckRule('sys_user', 'work_no', model, schema, true), trigger: 'blur' }),
+    // dynamicRules: ({ model, schema }) => rules.duplicateCheckRule('sys_user', 'work_no', model, schema, true),
   },
   {
     label: '职务',
-    field: 'post',
+    field: 'post_id_list',
     required: false,
     component: 'JSelectPosition',
     componentProps: {
@@ -185,43 +178,54 @@ export const formSchema: FormSchema[] = [
   },
   {
     label: '角色',
-    field: 'selectedroles',
+    field: 'role_id_list',
     component: 'ApiSelect',
     componentProps: {
       mode: 'multiple',
-      api: getAllRolesListNoByTenant,
-      labelField: 'roleName',
+      api: getAllRolesList,
+      labelField: 'role_name',
       valueField: 'id',
     },
   },
   {
     label: '所属部门',
-    field: 'selecteddeparts',
-    component: 'JSelectDept',
-    componentProps: ({ formActionType, formModel }) => {
-      return {
-        sync: false,
-        checkStrictly: true,
-        defaultExpandLevel: 2,
-
-        onSelect: (options, values) => {
-          const { updateSchema } = formActionType;
-          //所属部门修改后更新负责部门下拉框数据
-          updateSchema([
-            {
-              field: 'departIds',
-              componentProps: { options },
-            },
-          ]);
-          //所属部门修改后更新负责部门数据
-          formModel.departIds && (formModel.departIds = formModel.departIds.filter((item) => values.value.indexOf(item) > -1));
-        },
-      };
+    field: 'depart_id_list',
+    component: 'ApiSelect',
+    componentProps: {
+      mode: 'multiple',
+      api: getAllDepartList,
+      labelField: 'depart_name',
+      valueField: 'id',
     },
   },
+  // {
+  //   label: '所属部门',
+  //   field: 'depart_id_list',
+  //   component: 'JSelectDept',
+  //   componentProps: ({ formActionType, formModel }) => {
+  //     return {
+  //       sync: false,
+  //       checkStrictly: true,
+  //       defaultExpandLevel: 2,
+  //
+  //       onSelect: (options, values) => {
+  //         const { updateSchema } = formActionType;
+  //         //所属部门修改后更新负责部门下拉框数据
+  //         updateSchema([
+  //           {
+  //             field: 'depart_id_list',
+  //             componentProps: { options },
+  //           },
+  //         ]);
+  //         //所属部门修改后更新负责部门数据
+  //         formModel.depart_id_list && (formModel.depart_id_list = formModel.depart_id_list.filter((item) => values.value.indexOf(item) > -1));
+  //       },
+  //     };
+  //   },
+  // },
   {
     label: '租户',
-    field: 'relTenantIds',
+    field: 'tenant_id_list',
     component: 'ApiSelect',
     componentProps: {
       mode: 'multiple',
@@ -233,7 +237,7 @@ export const formSchema: FormSchema[] = [
   },
   {
     label: '身份',
-    field: 'userIdentity',
+    field: 'user_identity',
     component: 'RadioGroup',
     defaultValue: 1,
     componentProps: ({ formModel }) => {
@@ -243,14 +247,14 @@ export const formSchema: FormSchema[] = [
           { label: '上级', value: 2, key: '2' },
         ],
         onChange: () => {
-          formModel.userIdentity == 1 && (formModel.departIds = []);
+          formModel.userIdentity == 1 && (formModel.depart_id_list = []);
         },
       };
     },
   },
   {
     label: '负责部门',
-    field: 'departIds',
+    field: 'depart_id_list',
     component: 'Select',
     componentProps: {
       mode: 'multiple',
@@ -284,40 +288,19 @@ export const formSchema: FormSchema[] = [
     label: '邮箱',
     field: 'email',
     component: 'Input',
-    dynamicRules: ({ model, schema }) => {
-      return [
-        { ...rules.duplicateCheckRule('sys_user', 'email', model, schema, true)[0], trigger: 'blur' },
-        { ...rules.rule('email', false)[0], trigger: 'blur' },
-      ];
-    },
+    rules: rules.rule('email', false),
   },
   {
     label: '手机号码',
     field: 'phone',
     component: 'Input',
-    dynamicRules: ({ model, schema }) => {
-      return [
-        { ...rules.duplicateCheckRule('sys_user', 'phone', model, schema, true)[0], trigger: 'blur' },
-        { pattern: /^1[3456789]\d{9}$/, message: '手机号码格式有误', trigger: 'blur' },
-      ];
-    },
-  },
-  {
-    label: '座机',
-    field: 'telephone',
-    component: 'Input',
-    rules: [{ pattern: /^0\d{2,3}-[1-9]\d{6,7}$/, message: '请输入正确的座机号码' }],
-  },
-  {
-    label: '工作流引擎',
-    field: 'activitiSync',
-    defaultValue: 1,
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'activiti_sync',
-      type: 'radio',
-      stringToNumber: true,
-    },
+    rules: [{ pattern: /^1[3|4|5|7|8|9][0-9]\d{8}$/, message: '手机号码格式有误' }],
+    // dynamicRules: ({ model, schema }) => {
+    //   return [
+    //     { ...rules.duplicateCheckRule('sys_user', 'phone', model, schema, true)[0] },
+    //     { pattern: /^1[3|4|5|7|8|9][0-9]\d{8}$/, message: '手机号码格式有误' },
+    //   ];
+    // },
   },
 ];
 
@@ -358,7 +341,7 @@ export const formAgentSchema: FormSchema[] = [
     show: false,
   },
   {
-    field: 'userName',
+    field: 'username',
     label: '用户名',
     component: 'Input',
     componentProps: {
@@ -386,7 +369,6 @@ export const formAgentSchema: FormSchema[] = [
       showTime: true,
       valueFormat: 'YYYY-MM-DD HH:mm:ss',
       placeholder: '请选择代理开始时间',
-      getPopupContainer: () => document.body,
     },
   },
   {
@@ -398,7 +380,6 @@ export const formAgentSchema: FormSchema[] = [
       showTime: true,
       valueFormat: 'YYYY-MM-DD HH:mm:ss',
       placeholder: '请选择代理结束时间',
-      getPopupContainer: () => document.body,
     },
   },
   {
@@ -410,139 +391,5 @@ export const formAgentSchema: FormSchema[] = [
       dictCode: 'valid_status',
       type: 'radioButton',
     },
-  },
-];
-
-export const formQuitAgentSchema: FormSchema[] = [
-  {
-    label: '',
-    field: 'id',
-    component: 'Input',
-    show: false,
-  },
-  {
-    field: 'userName',
-    label: '用户名',
-    component: 'Input',
-    componentProps: {
-      readOnly: true,
-      allowClear: false,
-    },
-  },
-  {
-    field: 'agentUserName',
-    label: '交接人员',
-    required: true,
-    component: 'JSelectUser',
-    componentProps: {
-      rowKey: 'username',
-      labelKey: 'realname',
-      maxSelectCount: 1,
-    },
-  },
-  {
-    field: 'startTime',
-    label: '交接开始时间',
-    component: 'DatePicker',
-    required: true,
-    componentProps: {
-      showTime: true,
-      valueFormat: 'YYYY-MM-DD HH:mm:ss',
-      placeholder: '请选择交接开始时间',
-      getPopupContainer: () => document.body,
-    },
-  },
-  {
-    field: 'endTime',
-    label: '交接结束时间',
-    component: 'DatePicker',
-    required: true,
-    componentProps: {
-      showTime: true,
-      valueFormat: 'YYYY-MM-DD HH:mm:ss',
-      placeholder: '请选择交接结束时间',
-      getPopupContainer: () => document.body,
-    },
-  },
-  {
-    field: 'status',
-    label: '状态',
-    component: 'JDictSelectTag',
-    defaultValue: '1',
-    componentProps: {
-      dictCode: 'valid_status',
-      type: 'radioButton',
-    },
-  },
-];
-
-//租户用户列表
-export const userTenantColumns: BasicColumn[] = [
-  {
-    title: '用户账号',
-    dataIndex: 'username',
-    width: 120,
-  },
-  {
-    title: '用户姓名',
-    dataIndex: 'realname',
-    width: 100,
-  },
-  {
-    title: '头像',
-    dataIndex: 'avatar',
-    width: 120,
-    customRender: render.renderAvatar,
-  },
-  {
-    title: '手机号',
-    dataIndex: 'phone',
-    width: 100,
-  },
-  {
-    title: '部门',
-    width: 150,
-    dataIndex: 'orgCodeTxt',
-  },
-  {
-    title: '状态',
-    dataIndex: 'status',
-    width: 80,
-    customRender: ({ text }) => {
-      if (text === '1') {
-        return '正常';
-      } else if (text === '3') {
-        return '审批中';
-      } else {
-        return '已拒绝';
-      }
-    },
-  },
-];
-
-//用户租户搜索表单
-export const userTenantFormSchema: FormSchema[] = [
-  {
-    label: '账号',
-    field: 'username',
-    component: 'Input',
-    colProps: { span: 6 },
-  },
-  {
-    label: '名字',
-    field: 'realname',
-    component: 'Input',
-    colProps: { span: 6 },
-  },
-  {
-    label: '性别',
-    field: 'sex',
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'sex',
-      placeholder: '请选择性别',
-      stringToNumber: true,
-    },
-    colProps: { span: 6 },
   },
 ];

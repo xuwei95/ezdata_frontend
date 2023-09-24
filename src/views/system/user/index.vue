@@ -4,15 +4,16 @@
     <BasicTable @register="registerTable" :rowSelection="rowSelection">
       <!--插槽:table标题-->
       <template #tableTitle>
-        <a-button type="primary" preIcon="ant-design:plus-outlined"  @click="handleCreate"> 新增</a-button>
-        <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>
-        <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls" >导入</j-upload-button>
-        <a-button type="primary" @click="openModal(true, {})" preIcon="ant-design:hdd-outlined"> 回收站</a-button>
-        <JThirdAppButton biz-type="user" :selected-row-keys="selectedRowKeys" syncToApp syncToLocal @sync-finally="onSyncFinally" />
+        <a-button v-auth="['user:add']" type="primary" preIcon="ant-design:plus-outlined" @click="handleCreate"> 新增</a-button>
+<!--        <a-button type="primary" preIcon="ant-design:export-outlined" @click="onExportXls"> 导出</a-button>-->
+<!--        <j-upload-button type="primary" preIcon="ant-design:import-outlined" @click="onImportXls">导入</j-upload-button>-->
+<!--        <a-button type="primary" @click="handleSyncUser" preIcon="ant-design:sync-outlined"> 同步流程</a-button>-->
+        <a-button v-auth="['user:recycle']" type="primary" @click="openModal(true, {})" preIcon="ant-design:hdd-outlined"> 回收站</a-button>
+<!--        <JThirdAppButton biz-type="user" :selected-row-keys="selectedRowKeys" syncToApp syncToLocal @sync-finally="onSyncFinally" />-->
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
-              <a-menu-item key="1" @click="batchHandleDelete">
+              <a-menu-item v-auth="['user:delete']" key="1" @click="batchHandleDelete">
                 <Icon icon="ant-design:delete-outlined"></Icon>
                 删除
               </a-menu-item>
@@ -45,10 +46,6 @@
     <UserAgentModal @register="registerAgentModal" @success="reload" />
     <!--回收站-->
     <UserRecycleBinModal @register="registerModal" @success="reload" />
-    <!-- 离职受理人弹窗 -->
-    <UserQuitAgentModal @register="registerQuitAgentModal" @success="reload" />
-    <!-- 离职人员列弹窗 -->
-    <UserQuitModal @register="registerQuitModal" @success="reload" />
   </div>
 </template>
 
@@ -60,19 +57,18 @@
   import UserRecycleBinModal from './UserRecycleBinModal.vue';
   import PasswordModal from './PasswordModal.vue';
   import UserAgentModal from './UserAgentModal.vue';
-  import JThirdAppButton from '/@/components/jeecg/thirdApp/JThirdAppButton.vue';
-  import UserQuitAgentModal from './UserQuitAgentModal.vue';
-  import UserQuitModal from './UserQuitModal.vue';
+  // import JThirdAppButton from '/@/components/jeecg/thirdApp/JThirdAppButton.vue';
   import { useDrawer } from '/@/components/Drawer';
   import { useListPage } from '/@/hooks/system/useListPage';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { columns, searchFormSchema } from './user.data';
-  import { listNoCareTenant, deleteUser, batchDeleteUser, getImportUrl, getExportUrl, frozenBatch } from './user.api';
-  import {usePermission} from "/@/hooks/web/usePermission";
+  import { list, deleteUser, batchDeleteUser, getImportUrl, getExportUrl, frozenBatch, syncUser } from './user.api';
+  // import { usePermission } from '/@/hooks/web/usePermission'
+  // const { hasPermission } = usePermission();
 
   const { createMessage, createConfirm } = useMessage();
-  const { isDisabledAuth } = usePermission();
+
   //注册drawer
   const [registerDrawer, { openDrawer }] = useDrawer();
   //回收站model
@@ -81,17 +77,13 @@
   const [registerPasswordModal, { openModal: openPasswordModal }] = useModal();
   //代理人model
   const [registerAgentModal, { openModal: openAgentModal }] = useModal();
-  //离职代理人model
-  const [registerQuitAgentModal, { openModal: openQuitAgentModal }] = useModal();
-  //离职用户列表model
-  const [registerQuitModal, { openModal: openQuitModal }] = useModal();
 
   // 列表页面公共参数、方法
   const { prefixCls, tableContext, onExportXls, onImportXls } = useListPage({
     designScope: 'user-list',
     tableProps: {
       title: '用户列表',
-      api: listNoCareTenant,
+      api: list,
       columns: columns,
       size: 'small',
       formConfig: {
@@ -124,7 +116,6 @@
     openDrawer(true, {
       isUpdate: false,
       showFooter: true,
-      tenantSaas: false,
     });
   }
   /**
@@ -135,7 +126,6 @@
       record,
       isUpdate: true,
       showFooter: true,
-      tenantSaas: false,
     });
   }
   /**
@@ -146,7 +136,6 @@
       record,
       isUpdate: true,
       showFooter: false,
-      tenantSaas: false,
     });
   }
   /**
@@ -222,14 +211,20 @@
   }
 
   /**
-   *同步钉钉和微信回调
+   *同步流程
    */
-  function onSyncFinally({ isToLocal }) {
-    // 同步到本地时刷新下数据
-    if (isToLocal) {
-      reload();
-    }
+  function handleSyncUser() {
+    syncUser();
   }
+  // /**
+  //  *同步钉钉和微信回调
+  //  */
+  // function onSyncFinally({ isToLocal }) {
+  //   // 同步到本地时刷新下数据
+  //   if (isToLocal) {
+  //     reload();
+  //   }
+  // }
 
   /**
    * 操作栏
@@ -239,7 +234,7 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
-        // ifShow: () => hasPermission('system:user:edit'),
+        auth: ['user:edit'],
       },
     ];
   }
@@ -254,8 +249,8 @@
       },
       {
         label: '密码',
-        //auth: 'user:changepwd',
         onClick: handleChangePassword.bind(null, record.username),
+        auth: ['user:password'],
       },
       {
         label: '删除',
@@ -263,6 +258,7 @@
           title: '是否确认删除',
           confirm: handleDelete.bind(null, record),
         },
+        auth: ['user:delete'],
       },
       {
         label: '冻结',
@@ -271,6 +267,7 @@
           title: '确定冻结吗?',
           confirm: handleFrozen.bind(null, record, 2),
         },
+        auth: ['user:frozen'],
       },
       {
         label: '解冻',
@@ -279,21 +276,13 @@
           title: '确定解冻吗?',
           confirm: handleFrozen.bind(null, record, 1),
         },
+        auth: ['user:frozen'],
       },
-      {
-        label: '代理人',
-        onClick: handleAgentSettings.bind(null, record.username),
-      },
+      // {
+      //   label: '代理人',
+      //   onClick: handleAgentSettings.bind(null, record.username),
+      // },
     ];
-  }
-
-  /**
-   * 离职
-   * @param userName
-   */
-  function handleQuit(userName) {
-    //打开离职代理人弹窗
-    openQuitAgentModal(true, { userName });
   }
 </script>
 

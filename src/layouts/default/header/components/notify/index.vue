@@ -29,7 +29,7 @@
   import md5 from 'crypto-js/md5';
 
   import SysMessageModal from '/@/views/system/message/components/SysMessageModal.vue'
-  
+
   export default defineComponent({
     components: {
       Popover,
@@ -126,8 +126,9 @@
         let userId = unref(userStore.getUserInfo).id + "_" + wsClientId;
         // WebSocket与普通的请求所用协议有所不同，ws等同于http，wss等同于https
         let url = glob.domainUrl?.replace('https://', 'wss://').replace('http://', 'ws://') + '/websocket/' + userId;
-        connectWebSocket(url);
-        onWebSocket(onWebSocketMessage);
+        // todo: websokcet
+        // connectWebSocket(url);
+        // onWebSocket(onWebSocketMessage);
       }
 
       function onWebSocketMessage(data) {

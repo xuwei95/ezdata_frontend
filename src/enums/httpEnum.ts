@@ -2,8 +2,10 @@
  * @description: Request result set
  */
 export enum ResultEnum {
-  SUCCESS = 0,
-  ERROR = 1,
+  SUCCESS = 200,
+  ERROR = 400,
+  SERVER_FORBIDDEN = 403,
+  SERVER_ERROR = 500,
   TIMEOUT = 401,
   TYPE = 'success',
 }
@@ -42,7 +44,7 @@ export enum ConfigEnum {
   // Sign
   Sign = 'X-Sign',
   // 租户id
-  TENANT_ID = 'X-Tenant-Id',
+  TENANT_ID = 'tenant-id',
   // 版本
   VERSION = 'X-Version',
   // 低代码应用ID

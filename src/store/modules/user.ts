@@ -123,10 +123,11 @@ export const useUserStore = defineStore({
       try {
         const { goHome = true, mode, ...loginParams } = params;
         const data = await loginApi(loginParams, mode);
-        const { token, userInfo } = data;
+        // const { token, userInfo } = data;
         // save token
+        const { token } = data;
         this.setToken(token);
-        this.setTenant(userInfo.loginTenantId);
+        // this.setTenant(userInfo.loginTenantId);
         return this.afterLoginAction(goHome, data);
       } catch (error) {
         return Promise.reject(error);
