@@ -155,8 +155,11 @@ export function useTableScroll(
     //   width += 60;
     // }
     // update-end--author:liaozhiyang---date:20230922---for：【QQYUN-6391】在线表单列表字段过多时,列头和数据对不齐
+    // update-begin--author:liaozhiyang---date:20230925---for：【issues/5411】BasicTable 配置maxColumnWidth 未生效
+    const { maxColumnWidth } = unref(propsRef);
     // TODO props ?? 0;
-    const NORMAL_WIDTH = 150;
+    const NORMAL_WIDTH = maxColumnWidth ?? 150;
+    // update-end--author:liaozhiyang---date:20230925---for：【issues/5411】BasicTable 配置maxColumnWidth 未生效
 
     const columns = unref(columnsRef).filter((item) => !item.defaultHidden);
     columns.forEach((item) => {
