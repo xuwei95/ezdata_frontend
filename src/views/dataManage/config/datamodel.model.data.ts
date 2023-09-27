@@ -1,5 +1,27 @@
 //表单数据
 import { FormSchema } from '/@/components/Form';
+
+export const httpSchema: FormSchema[] = [
+  {
+    label: '允许操作',
+    field: 'auth_type',
+    component: 'JCheckbox',
+    defaultValue: 'query,extract',
+    componentProps: {
+      options: [
+        {
+          label: '查询',
+          value: 'query',
+        },
+        {
+          label: '数据抽取',
+          value: 'extract',
+        },
+      ],
+    },
+  },
+];
+
 export const fileTableSchema: FormSchema[] = [
   {
     label: '允许操作',
@@ -486,6 +508,75 @@ export const influxdbTableSchema: FormSchema[] = [
         {
           label: '数据装载',
           value: 'load',
+        },
+      ],
+    },
+  },
+];
+
+export const prometheusMetricSchema: FormSchema[] = [
+  {
+    label: '指标名称',
+    field: 'name',
+    required: true,
+    component: 'Input',
+    defaultValue: '',
+  },
+  {
+    label: '允许操作',
+    field: 'auth_type',
+    component: 'JCheckbox',
+    componentProps: {
+      options: [
+        {
+          label: '查询',
+          value: 'query',
+        },
+        {
+          label: '添加数据',
+          value: 'add_data',
+        },
+        {
+          label: '数据抽取',
+          value: 'extract',
+        },
+        // {
+        //   label: '数据装载',
+        //   value: 'load',
+        // },
+      ],
+    },
+  },
+];
+
+export const prometheusPromqlSchema: FormSchema[] = [
+  {
+    label: 'promql',
+    field: 'promql',
+    required: true,
+    defaultValue: '',
+    component: 'MonacoEditor',
+    componentProps: {
+      language: 'promql',
+    },
+  },
+  {
+    label: '允许操作',
+    field: 'auth_type',
+    component: 'JCheckbox',
+    componentProps: {
+      options: [
+        {
+          label: '查询',
+          value: 'query',
+        },
+        {
+          label: '自定义查询',
+          value: 'custom_sql',
+        },
+        {
+          label: '数据抽取',
+          value: 'extract',
         },
       ],
     },

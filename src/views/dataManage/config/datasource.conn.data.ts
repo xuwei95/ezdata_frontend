@@ -1,6 +1,60 @@
 //表单数据
 import { FormSchema } from '/@/components/Form';
 
+export const httpFormSchema: FormSchema[] = [
+  {
+    label: '连接地址',
+    field: 'url',
+    required: true,
+    component: 'Input',
+  },
+  {
+    label: '请求方式',
+    field: 'method',
+    required: true,
+    component: 'JSelectInput',
+    defaultValue: 'get',
+    componentProps: {
+      options: [
+        { label: 'GET', value: 'get' },
+        { label: 'POST', value: 'post' },
+        { label: 'PUT', value: 'put' },
+        { label: 'DELETE', value: 'delete' },
+      ],
+    },
+  },
+  {
+    label: '超时时长(s)',
+    field: 'timeout',
+    required: true,
+    component: 'InputNumber',
+    defaultValue: 30,
+    componentProps: {
+      min: 0,
+    },
+  },
+  {
+    label: '请求头',
+    field: 'headers',
+    required: true,
+    defaultValue: '{}',
+    component: 'MonacoEditor',
+    componentProps: {
+      language: 'json',
+    },
+  },
+  {
+    label: '请求体',
+    field: 'req_body',
+    required: true,
+    defaultValue: '{}',
+    component: 'MonacoEditor',
+    componentProps: {
+      language: 'json',
+    },
+  },
+];
+
 export const fileFormSchema: FormSchema[] = [
   {
     label: '文件地址',
@@ -254,6 +308,15 @@ export const influxdbFormSchema: FormSchema[] = [
   {
     label: '数据库',
     field: 'database',
+    required: true,
+    component: 'Input',
+  },
+];
+
+export const prometheusFormSchema: FormSchema[] = [
+  {
+    label: '连接地址',
+    field: 'url',
     required: true,
     component: 'Input',
   },

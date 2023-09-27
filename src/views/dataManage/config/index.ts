@@ -1,4 +1,5 @@
 import {
+  httpFormSchema,
   fileFormSchema,
   minioFormSchema,
   mysqlFormSchema,
@@ -7,10 +8,13 @@ import {
   mongodbFormSchema,
   neo4jFormSchema,
   influxdbFormSchema,
+  prometheusFormSchema,
   kafkaFormSchema,
   redisFormSchema,
 } from './datasource.conn.data';
+
 import {
+  httpSchema,
   fileTableSchema,
   minioTableSchema,
   SqlSchema,
@@ -21,9 +25,12 @@ import {
   mongoCollectionSchema,
   neo4jGraphSchema,
   influxdbTableSchema,
+  prometheusMetricSchema,
+  prometheusPromqlSchema,
   kafkaTopicSchema,
   redisKeySchema,
 } from './datamodel.model.data';
+
 import {
   ckTableFieldSchema,
   esIndexFieldSchema,
@@ -35,6 +42,7 @@ import {
 
 // 数据源类型下拉选项
 export const dataSourceTypeOptions = [
+  { label: 'http请求', value: 'http' },
   { label: '文件', value: 'file' },
   { label: 'minio对象存储', value: 'minio' },
   { label: 'redis', value: 'redis' },
@@ -44,11 +52,13 @@ export const dataSourceTypeOptions = [
   { label: 'mongodb', value: 'mongodb' },
   { label: 'neo4j', value: 'neo4j' },
   { label: 'influxdb', value: 'influxdb' },
+  { label: 'prometheus', value: 'prometheus' },
   { label: 'kafka', value: 'kafka' },
 ];
 
 // 数据源连接配置表单字典
 export const ConnFormSchemaMap = {
+  http: httpFormSchema,
   file: fileFormSchema,
   minio: minioFormSchema,
   redis: redisFormSchema,
@@ -58,11 +68,16 @@ export const ConnFormSchemaMap = {
   mongodb: mongodbFormSchema,
   neo4j: neo4jFormSchema,
   influxdb: influxdbFormSchema,
+  prometheus: prometheusFormSchema,
   kafka: kafkaFormSchema,
 };
 
 // 数据源可用数据模型下拉选项字典
 export const dataModelTypeOptionsMap = {
+  http: [
+    { label: 'json api', value: 'http_json' },
+    { label: 'html', value: 'http_html' },
+  ],
   file: [
     { label: '表格文件(csv/excel)', value: 'file_table' },
     { label: 'json文件', value: 'file_json' },
@@ -98,11 +113,17 @@ export const dataModelTypeOptionsMap = {
     { label: 'influxdb数据表', value: 'influxdb_table' },
     { label: 'sql', value: 'sql' },
   ],
+  prometheus: [
+    { label: 'prometheus指标', value: 'prometheus_metric' },
+    { label: 'promql', value: 'prometheus_promql' },
+  ],
   kafka: [{ label: 'kafka topic', value: 'kafka_topic' }],
 };
 
 // 数据模型配置表单字典
 export const ModelFormSchemaMap = {
+  http_json: httpSchema,
+  http_html: httpSchema,
   file_table: fileTableSchema,
   file_json: fileTableSchema,
   file_h5: fileTableSchema,
@@ -121,6 +142,8 @@ export const ModelFormSchemaMap = {
   mongodb_collection: mongoCollectionSchema,
   neo4j_graph: neo4jGraphSchema,
   influxdb_table: influxdbTableSchema,
+  prometheus_metric: prometheusMetricSchema,
+  prometheus_promql: prometheusPromqlSchema,
   kafka_topic: kafkaTopicSchema,
 };
 
