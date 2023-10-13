@@ -19,27 +19,29 @@
               <a-descriptions-item label="worker">{{ selectedNode.worker || '' }}</a-descriptions-item>
             </a-descriptions>
           </div>
-          <div class="log-info">
-            <a-tooltip title="刷新">
-              <a-button type="primary" shape="circle" size="large" @click="fetchLogs">
-                <Icon icon="ant-design:redo-outlined" />
-              </a-button>
-            </a-tooltip>
-            系统日志前缀：<a-switch v-model:checked="show_more" />
-            <div class="log-panel">
-              <div v-if="task_logs.length > 0">
-                <li v-for="item in task_logs" :key="item._id" class="infinite-list-item">
-                  <span v-if="show_more">
-                    {{ item['asctime'] + ' ' + item.filename + ' [' + item.lineno + '] ' + item.levelname + ':' + item.message }}
-                  </span>
-                  <span v-else>
-                    {{ item.message }}
-                  </span>
-                </li>
+          <Authority value="task:log">
+            <div class="log-info">
+              <a-tooltip title="刷新">
+                <a-button type="primary" shape="circle" size="large" @click="fetchLogs">
+                  <Icon icon="ant-design:redo-outlined" />
+                </a-button>
+              </a-tooltip>
+              系统日志前缀：<a-switch v-model:checked="show_more" />
+              <div class="log-panel">
+                <div v-if="task_logs.length > 0">
+                  <li v-for="item in task_logs" :key="item._id" class="infinite-list-item">
+                    <span v-if="show_more">
+                      {{ item['asctime'] + ' ' + item.filename + ' [' + item.lineno + '] ' + item.levelname + ':' + item.message }}
+                    </span>
+                    <span v-else>
+                      {{ item.message }}
+                    </span>
+                  </li>
+                </div>
+                <div v-else>暂无数据</div>
               </div>
-              <div v-else>暂无数据</div>
             </div>
-          </div>
+          </Authority>
         </a-card>
       </a-col>
     </a-row>
@@ -53,6 +55,7 @@
   import { Graph } from '@antv/x6';
   import FlowGraph from '/@/views/task/dag_task/dag-editor/components/graph/flow-graph';
   import { dagNodeStatus, getParamsById, taskLogs } from '/@/views/task/task.api';
+  import Authority from "@/components/Authority/src/Authority.vue";
   const task_id = ref('');
   const running_id = ref('');
   const running_task_id = ref('');
@@ -60,7 +63,6 @@
   const task_logs = ref([]);
   const timer = ref();
   const show_more = ref(false);
-  const { createMessage } = useMessage();
   let graph: Graph;
   /**
    * 初始化节点点击事件

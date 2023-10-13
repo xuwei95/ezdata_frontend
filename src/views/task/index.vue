@@ -44,16 +44,20 @@
   import { useModal } from '/@/components/Modal';
   import { useDrawer } from '/@/components/Drawer';
   import { useListPage } from '/@/hooks/system/useListPage';
+  import { usePermission } from '/@/hooks/web/usePermission';
   import TaskModal from './components/TaskModal.vue';
   import TaskHistoryDrawer from './components/TaskHistoryDrawer.vue';
   import TaskLogsModal from './components/taskHistory/taskLogModal.vue';
   import { columns, searchFormSchema } from './task.data';
   import { list, deleteOne, batchDelete, UpdateStatus, getImportUrl, getExportUrl, startTask } from './task.api';
+  import { useMessage } from "@/hooks/web/useMessage";
   const checkedKeys = ref<Array<string | number>>([]);
   //注册Modal
   const [registerModal, { openModal }] = useModal();
   const [registerTaskLogModal, { openModal: openTaskLogModal }] = useModal();
   const [registerHistoryDrawer, { openDrawer: openHistoryDrawer }] = useDrawer();
+  const { createMessage } = useMessage();
+  const { hasPermission } = usePermission();
   //注册table数据
   const { prefixCls, tableContext, onImportXls, onExportXls } = useListPage({
     tableProps: {
@@ -164,11 +168,14 @@
   }
   async function handleStart(record) {
     const res = await startTask({ id: record.id, trigger: 'once' });
-    openTaskLogModal(true, {
-      data: { id: res.task_uuid },
-      isUpdate: true,
-      showFooter: true,
-    });
+    createMessage.success('任务发送成功！');
+    if (hasPermission(['task:log'])) {
+      openTaskLogModal(true, {
+        data: { id: res.task_uuid },
+        isUpdate: true,
+        showFooter: true,
+      });
+    }
   }
   /**
    * 操作栏

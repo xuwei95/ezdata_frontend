@@ -61,6 +61,7 @@
       {
         label: '查看日志',
         onClick: handleLog.bind(null, record),
+        auth: ['task:log'],
       },
     ];
   }
