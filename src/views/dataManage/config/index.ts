@@ -11,9 +11,11 @@ import {
   prometheusFormSchema,
   kafkaFormSchema,
   redisFormSchema,
+  akshareFormSchema,
 } from './datasource.conn.data';
 
 import {
+  akshareSchema,
   httpSchema,
   fileTableSchema,
   minioTableSchema,
@@ -42,6 +44,7 @@ import {
 
 // 数据源类型下拉选项
 export const dataSourceTypeOptions = [
+  { label: 'akshare公开数据接口', value: 'akshare' },
   { label: 'http请求', value: 'http' },
   { label: '文件', value: 'file' },
   { label: 'minio对象存储', value: 'minio' },
@@ -58,6 +61,7 @@ export const dataSourceTypeOptions = [
 
 // 数据源连接配置表单字典
 export const ConnFormSchemaMap = {
+  akshare: akshareFormSchema,
   http: httpFormSchema,
   file: fileFormSchema,
   minio: minioFormSchema,
@@ -74,6 +78,7 @@ export const ConnFormSchemaMap = {
 
 // 数据源可用数据模型下拉选项字典
 export const dataModelTypeOptionsMap = {
+  akshare: [{ label: 'akshare公开数据接口', value: 'akshare_api' }],
   http: [
     { label: 'json api', value: 'http_json' },
     { label: 'html', value: 'http_html' },
@@ -122,6 +127,7 @@ export const dataModelTypeOptionsMap = {
 
 // 数据模型配置表单字典
 export const ModelFormSchemaMap = {
+  akshare_api: akshareSchema,
   http_json: httpSchema,
   http_html: httpSchema,
   file_table: fileTableSchema,

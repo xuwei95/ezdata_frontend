@@ -1,5 +1,37 @@
 //表单数据
 import { FormSchema } from '/@/components/Form';
+export const akshareSchema: FormSchema[] = [
+  {
+    label: '数据接口函数',
+    field: 'method',
+    required: true,
+    component: 'JDictSelectTag',
+    componentProps: {
+      showSearch: true,
+      dictCode: 'akshare_method',
+      placeholder: '请选择数据接口函数',
+      stringToNumber: false,
+    },
+  },
+  {
+    label: '允许操作',
+    field: 'auth_type',
+    component: 'JCheckbox',
+    defaultValue: 'query,extract',
+    componentProps: {
+      options: [
+        {
+          label: '查询',
+          value: 'query',
+        },
+        {
+          label: '数据抽取',
+          value: 'extract',
+        },
+      ],
+    },
+  },
+];
 
 export const httpSchema: FormSchema[] = [
   {
@@ -38,10 +70,10 @@ export const fileTableSchema: FormSchema[] = [
           label: '数据抽取',
           value: 'extract',
         },
-        {
-          label: '数据装载',
-          value: 'load',
-        },
+        // {
+        //   label: '数据装载',
+        //   value: 'load',
+        // },
       ],
     },
   },

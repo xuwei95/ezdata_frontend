@@ -1,6 +1,6 @@
 //表单数据
 import { FormSchema } from '/@/components/Form';
-
+export const akshareFormSchema: FormSchema[] = [];
 export const httpFormSchema: FormSchema[] = [
   {
     label: '连接地址',
