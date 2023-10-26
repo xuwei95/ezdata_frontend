@@ -103,7 +103,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     },
     esbuild: {
       //清除全局的console.log和debug
-      drop: isBuild ? ['console', 'debugger'] : [],
+      // drop: isBuild ? ['console', 'debugger'] : [],
     },
     define: {
       // setting vue-i18-next
