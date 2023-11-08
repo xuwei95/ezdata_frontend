@@ -55,6 +55,7 @@ export const columns: BasicColumn[] = [
     title: '名称',
     align: 'center',
     dataIndex: 'name',
+    width: 300,
   },
   {
     title: '任务模版',
