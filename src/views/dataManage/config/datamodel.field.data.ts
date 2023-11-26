@@ -1,6 +1,40 @@
 //表单数据
 import { FormSchema } from '/@/components/Form';
 
+export const baseTableFieldSchema: FormSchema[] = [
+  {
+    label: '字段类型',
+    field: 'type',
+    required: true,
+    component: 'JSelectInput',
+    defaultValue: 'Text',
+    componentProps: {
+      options: [
+        { label: 'DateTime时间', value: 'DateTime' },
+        { label: 'TIMESTAMP时间戳', value: 'TIMESTAMP' },
+        { label: 'Float浮点数', value: 'Float' },
+        { label: 'Integer整数', value: 'Integer' },
+        { label: 'Text字符串', value: 'Text' },
+        { label: 'String有限长度字符串', value: 'String' },
+      ],
+    },
+  },
+  {
+    label: '长度',
+    field: 'length',
+    required: true,
+    component: 'InputNumber',
+    defaultValue: 0,
+  },
+  {
+    label: '默认值',
+    field: 'default',
+    required: false,
+    component: 'Input',
+    defaultValue: '',
+  },
+];
+
 export const mysqlTableFieldSchema: FormSchema[] = [
   {
     label: '字段类型',

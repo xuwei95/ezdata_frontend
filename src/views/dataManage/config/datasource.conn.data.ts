@@ -1,6 +1,7 @@
 //表单数据
 import { FormSchema } from '/@/components/Form';
 export const akshareFormSchema: FormSchema[] = [];
+export const ccxtFormSchema: FormSchema[] = [];
 export const httpFormSchema: FormSchema[] = [
   {
     label: '连接地址',
@@ -118,40 +119,7 @@ export const redisFormSchema: FormSchema[] = [
   },
 ];
 
-export const mysqlFormSchema: FormSchema[] = [
-  {
-    label: '服务器',
-    field: 'host',
-    required: true,
-    component: 'Input',
-  },
-  {
-    label: '端口',
-    field: 'port',
-    required: true,
-    component: 'InputNumber',
-  },
-  {
-    label: '用户名',
-    field: 'username',
-    required: true,
-    component: 'Input',
-  },
-  {
-    label: '密码',
-    field: 'password',
-    required: true,
-    component: 'InputPassword',
-  },
-  {
-    label: '数据库',
-    field: 'database_name',
-    required: true,
-    component: 'Input',
-  },
-];
-
-export const clickhouseFormSchema: FormSchema[] = [
+export const BaseDBFormSchema: FormSchema[] = [
   {
     label: '服务器',
     field: 'host',

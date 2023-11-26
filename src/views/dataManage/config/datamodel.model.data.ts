@@ -33,6 +33,51 @@ export const akshareSchema: FormSchema[] = [
   },
 ];
 
+export const ccxtSchema: FormSchema[] = [
+  {
+    label: '交易所',
+    field: 'exchange_id',
+    required: true,
+    component: 'Input',
+    defaultValue: 'okx',
+  },
+  {
+    label: '数据接口函数',
+    field: 'method',
+    required: true,
+    component: 'JSelectInput',
+    defaultValue: 'fetch_ohlcv',
+    componentProps: {
+      options: [
+        { label: '指定交易对和时间段的历史K线数据', value: 'fetch_ohlcv' },
+        { label: '所有市场（交易对）的详情', value: 'load_markets' },
+        { label: '指定交易对的市场行情信息', value: 'fetch_ticker' },
+        { label: '指定交易对的最近交易记录', value: 'fetch_trades' },
+        { label: '指定交易对的订单簿信息', value: 'fetch_order_book' },
+        { label: '交易所的状态信息', value: 'fetch_status' },
+      ],
+    },
+  },
+  {
+    label: '允许操作',
+    field: 'auth_type',
+    component: 'JCheckbox',
+    defaultValue: 'query,extract',
+    componentProps: {
+      options: [
+        {
+          label: '查询',
+          value: 'query',
+        },
+        {
+          label: '数据抽取',
+          value: 'extract',
+        },
+      ],
+    },
+  },
+];
+
 export const httpSchema: FormSchema[] = [
   {
     label: '允许操作',
@@ -178,7 +223,7 @@ export const SqlSchema: FormSchema[] = [
   },
 ];
 
-export const mysqlTableSchema: FormSchema[] = [
+export const baseTableSchema: FormSchema[] = [
   {
     label: '表名',
     field: 'name',

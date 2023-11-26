@@ -2,8 +2,7 @@ import {
   httpFormSchema,
   fileFormSchema,
   minioFormSchema,
-  mysqlFormSchema,
-  clickhouseFormSchema,
+  BaseDBFormSchema,
   esFormSchema,
   mongodbFormSchema,
   neo4jFormSchema,
@@ -12,15 +11,17 @@ import {
   kafkaFormSchema,
   redisFormSchema,
   akshareFormSchema,
+  ccxtFormSchema,
 } from './datasource.conn.data';
 
 import {
+  ccxtSchema,
   akshareSchema,
   httpSchema,
   fileTableSchema,
   minioTableSchema,
   SqlSchema,
-  mysqlTableSchema,
+  baseTableSchema,
   mysqlBinlogSchema,
   ckTableSchema,
   esIndexSchema,
@@ -34,23 +35,29 @@ import {
 } from './datamodel.model.data';
 
 import {
+  baseTableFieldSchema,
+  mysqlTableFieldSchema,
   ckTableFieldSchema,
   esIndexFieldSchema,
   influxdbTableFieldSchema,
   mongoCollectionFieldSchema,
-  mysqlTableFieldSchema,
   neo4jGraphFieldSchema,
 } from './datamodel.field.data';
 
 // 数据源类型下拉选项
 export const dataSourceTypeOptions = [
-  { label: 'akshare公开数据接口', value: 'akshare' },
+  { label: 'akshare财经数据接口', value: 'akshare' },
+  { label: 'ccxt加密货币数据接口', value: 'ccxt' },
   { label: 'http请求', value: 'http' },
   { label: '文件', value: 'file' },
   { label: 'minio对象存储', value: 'minio' },
   { label: 'redis', value: 'redis' },
   { label: 'mysql', value: 'mysql' },
+  { label: 'pgsql', value: 'pgsql' },
+  { label: 'sqlserver', value: 'sqlserver' },
+  { label: 'oracle', value: 'oracle' },
   { label: 'clickhouse', value: 'clickhouse' },
+  { label: 'hive', value: 'hive' },
   { label: 'elasticsearch', value: 'elasticsearch' },
   { label: 'mongodb', value: 'mongodb' },
   { label: 'neo4j', value: 'neo4j' },
@@ -62,12 +69,17 @@ export const dataSourceTypeOptions = [
 // 数据源连接配置表单字典
 export const ConnFormSchemaMap = {
   akshare: akshareFormSchema,
+  ccxt: ccxtFormSchema,
   http: httpFormSchema,
   file: fileFormSchema,
   minio: minioFormSchema,
   redis: redisFormSchema,
-  mysql: mysqlFormSchema,
-  clickhouse: clickhouseFormSchema,
+  mysql: BaseDBFormSchema,
+  pgsql: BaseDBFormSchema,
+  sqlserver: BaseDBFormSchema,
+  oracle: BaseDBFormSchema,
+  clickhouse: BaseDBFormSchema,
+  hive: BaseDBFormSchema,
   elasticsearch: esFormSchema,
   mongodb: mongodbFormSchema,
   neo4j: neo4jFormSchema,
@@ -78,7 +90,8 @@ export const ConnFormSchemaMap = {
 
 // 数据源可用数据模型下拉选项字典
 export const dataModelTypeOptionsMap = {
-  akshare: [{ label: 'akshare公开数据接口', value: 'akshare_api' }],
+  akshare: [{ label: 'akshare财经数据接口', value: 'akshare_api' }],
+  ccxt: [{ label: 'ccxt加密货币数据接口', value: 'ccxt_api' }],
   http: [
     { label: 'json api', value: 'http_json' },
     { label: 'html', value: 'http_html' },
@@ -104,8 +117,24 @@ export const dataModelTypeOptionsMap = {
     { label: 'binlog数据流', value: 'mysql_binlog' },
     { label: 'sql', value: 'sql' },
   ],
+  pgsql: [
+    { label: 'pgsql数据表', value: 'pgsql_table' },
+    { label: 'sql', value: 'sql' },
+  ],
+  sqlserver: [
+    { label: 'sqlserver数据表', value: 'sqlserver_table' },
+    { label: 'sql', value: 'sql' },
+  ],
+  oracle: [
+    { label: 'oracle数据表', value: 'oracle_table' },
+    { label: 'sql', value: 'sql' },
+  ],
   clickhouse: [
     { label: 'clickhouse数据表', value: 'clickhouse_table' },
+    { label: 'sql', value: 'sql' },
+  ],
+  hive: [
+    { label: 'hive数据表', value: 'hive_table' },
     { label: 'sql', value: 'sql' },
   ],
   elasticsearch: [{ label: 'elasticsearch索引', value: 'elasticsearch_index' }],
@@ -128,6 +157,7 @@ export const dataModelTypeOptionsMap = {
 // 数据模型配置表单字典
 export const ModelFormSchemaMap = {
   akshare_api: akshareSchema,
+  ccxt_api: ccxtSchema,
   http_json: httpSchema,
   http_html: httpSchema,
   file_table: fileTableSchema,
@@ -141,9 +171,13 @@ export const ModelFormSchemaMap = {
   redis_list_stream: redisKeySchema,
   redis_map: redisKeySchema,
   sql: SqlSchema,
-  mysql_table: mysqlTableSchema,
+  mysql_table: baseTableSchema,
   mysql_binlog: mysqlBinlogSchema,
+  pgsql_table: baseTableSchema,
+  sqlserver_table: baseTableSchema,
+  oracle_table: baseTableSchema,
   clickhouse_table: ckTableSchema,
+  hive_table: baseTableSchema,
   elasticsearch_index: esIndexSchema,
   mongodb_collection: mongoCollectionSchema,
   neo4j_graph: neo4jGraphSchema,
@@ -156,7 +190,11 @@ export const ModelFormSchemaMap = {
 // 数据模型字段配置表单字典
 export const ModelFieldSchemaMap = {
   mysql_table: mysqlTableFieldSchema,
+  pgsql_table: baseTableFieldSchema,
+  sqlserver_table: baseTableFieldSchema,
+  oracle_table: baseTableFieldSchema,
   clickhouse_table: ckTableFieldSchema,
+  hive_table: baseTableFieldSchema,
   elasticsearch_index: esIndexFieldSchema,
   mongodb_collection: mongoCollectionFieldSchema,
   neo4j_graph: neo4jGraphFieldSchema,
