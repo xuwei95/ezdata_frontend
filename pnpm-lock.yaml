@@ -19,6 +19,7 @@ specifiers:
   '@purge-icons/generated': ^0.9.0
   '@qiaoqiaoyun/drag-free': ^1.1.4
   '@rys-fe/vite-plugin-theme': ^0.8.6
+  '@traptitech/markdown-it-katex': ^3.6.0
   '@types/codemirror': ^5.60.9
   '@types/crypto-js': ^4.1.1
   '@types/fs-extra': ^11.0.1
@@ -26,6 +27,7 @@ specifiers:
   '@types/intro.js': ^5.1.1
   '@types/jest': ^29.5.4
   '@types/lodash-es': ^4.17.8
+  '@types/markdown-it-link-attributes': ^3.0.4
   '@types/mockjs': ^1.0.7
   '@types/node': ^20.5.6
   '@types/nprogress': ^0.2.0
@@ -73,6 +75,7 @@ specifiers:
   eslint-plugin-vue: ^9.17.0
   esno: ^0.17.0
   fs-extra: ^11.1.1
+  highlight.js: ^11.7.0
   http-server: ^14.1.1
   husky: ^8.0.3
   inquirer: ^9.2.10
@@ -83,6 +86,8 @@ specifiers:
   lint-staged: 14.0.1
   lodash-es: ^4.17.21
   lodash.get: ^4.4.2
+  markdown-it: ^14.0.0
+  markdown-it-link-attributes: ^4.0.1
   md5: ^2.3.0
   mockjs: ^1.1.0
   monaco-editor: ^0.41.0
@@ -156,6 +161,7 @@ dependencies:
   '@logicflow/core': 1.2.12
   '@logicflow/extension': 1.2.13_ts-node@10.9.1
   '@qiaoqiaoyun/drag-free': 1.1.4
+  '@traptitech/markdown-it-katex': 3.6.0
   '@vue/runtime-core': 3.3.4
   '@vue/shared': 3.3.4
   '@vueuse/core': 10.4.1_vue@3.3.4
@@ -174,9 +180,11 @@ dependencies:
   echarts: 5.4.3
   emoji-mart-vue-fast: 15.0.0_vue@3.3.4
   enquire.js: 2.1.6
+  highlight.js: 11.9.0
   intro.js: 7.2.0
   lodash-es: 4.17.21
   lodash.get: 4.4.2
+  markdown-it: 14.0.0
   md5: 2.3.0
   mockjs: 1.1.0
   monaco-editor: 0.41.0
@@ -220,6 +228,7 @@ devDependencies:
   '@types/intro.js': 5.1.1
   '@types/jest': 29.5.4
   '@types/lodash-es': 4.17.8
+  '@types/markdown-it-link-attributes': 3.0.4
   '@types/mockjs': 1.0.7
   '@types/node': 20.5.7
   '@types/nprogress': 0.2.0
@@ -256,6 +265,7 @@ devDependencies:
   jest: 29.6.4_ahv76ofyfu6avyfrnvm4qgcvbu
   less: 4.2.0
   lint-staged: 14.0.1
+  markdown-it-link-attributes: 4.0.1
   npm-run-all: 4.1.5
   picocolors: 1.0.0
   postcss: 8.4.28
@@ -3387,6 +3397,12 @@ packages:
     engines: {node: '>= 6'}
     dev: false
 
+  /@traptitech/markdown-it-katex/3.6.0:
+    resolution: {integrity: sha512-CnJzTWxsgLGXFdSrWRaGz7GZ1kUUi8g3E9HzJmeveX1YwVJavrKYqysktfHZQsujdnRqV5O7g8FPKEA/aeTkOQ==}
+    dependencies:
+      katex: 0.16.9
+    dev: false
+
   /@trysound/sax/0.2.0:
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
     engines: {node: '>=10.13.0'}
@@ -3552,6 +3568,10 @@ packages:
       '@types/node': 20.5.7
     dev: true
 
+  /@types/linkify-it/3.0.5:
+    resolution: {integrity: sha512-yg6E+u0/+Zjva+buc3EIb+29XEg4wltq7cSmd4Uc2EE/1nUVmxyzpX6gUXD0V8jIrG0r7YeOGVIbYRkxeooCtw==}
+    dev: true
+
   /@types/lodash-es/4.17.8:
     resolution: {integrity: sha512-euY3XQcZmIzSy7YH5+Unb3b2X12Wtk54YWINBvvGQ5SmMvwb11JQskGsfkH/5HXK77Kr8GF0wkVDIxzAisWtog==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/@types/lodash-es/-/lodash-es-4.17.8.tgz}
     dependencies:
@@ -3560,6 +3580,23 @@ packages:
 
   /@types/lodash/4.14.197:
     resolution: {integrity: sha512-BMVOiWs0uNxHVlHBgzTIqJYmj+PgCo4euloGF+5m4okL3rEYzM2EEv78mw8zWSMM57dM7kVIgJ2QDvwHSoCI5g==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/@types/lodash/-/lodash-4.14.197.tgz}
+    dev: true
+
+  /@types/markdown-it-link-attributes/3.0.4:
+    resolution: {integrity: sha512-Ky3wTFQurAF0wSfsYi+1J2yDvpZRtNBsd8CV0rwOSIgNmNX8q87FN9c9PBp+NljoQqWhJPy8eLrkQNcG86nbUQ==}
+    dependencies:
+      '@types/markdown-it': 13.0.7
+    dev: true
+
+  /@types/markdown-it/13.0.7:
+    resolution: {integrity: sha512-U/CBi2YUUcTHBt5tjO2r5QV/x0Po6nsYwQU4Y04fBS6vfoImaiZ6f8bi3CjTCxBPQSO1LMyUqkByzi8AidyxfA==}
+    dependencies:
+      '@types/linkify-it': 3.0.5
+      '@types/mdurl': 1.0.5
+    dev: true
+
+  /@types/mdurl/1.0.5:
+    resolution: {integrity: sha512-6L6VymKTzYSrEf4Nev4Xa1LCHKrlTlYCBMTlQKFuddo1CvQcE52I0mwfOJayueUC7MJuXOeHTcIU683lzd0cUA==}
     dev: true
 
   /@types/minimatch/3.0.5:
@@ -4576,13 +4613,12 @@ packages:
     resolution: {integrity: sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/arg/-/arg-4.1.3.tgz}
 
   /argparse/1.0.10:
-    resolution: {integrity: sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/argparse/-/argparse-1.0.10.tgz}
+    resolution: {integrity: sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==}
     dependencies:
       sprintf-js: 1.0.3
 
   /argparse/2.0.1:
-    resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/argparse/-/argparse-2.0.1.tgz}
-    dev: true
+    resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
 
   /arr-diff/4.0.0:
     resolution: {integrity: sha512-YVIQ82gZPGBebQV/a8dar4AitzCQs0jjXwMPZllpXMaGjXPYVUawSxQrRsjhjupyVxEvbHgUmIhKVlND+j02kA==}
@@ -4927,7 +4963,7 @@ packages:
     dev: false
 
   /base64-js/1.5.1:
-    resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/base64-js/-/base64-js-1.5.1.tgz}
+    resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
     dev: true
 
   /basic-auth/2.0.1:
@@ -5134,7 +5170,7 @@ packages:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/buffer-from/-/buffer-from-1.1.2.tgz}
 
   /buffer/5.7.1:
-    resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/buffer/-/buffer-5.7.1.tgz}
+    resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
@@ -5542,7 +5578,7 @@ packages:
       delayed-stream: 1.0.0
 
   /commander/10.0.1:
-    resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/commander/-/commander-10.0.1.tgz}
+    resolution: {integrity: sha512-y4Mg2tXshplEbSGzx7amzPwKKOCGuoSRP/CjEdwwk0FOGlUbq6lKuoyDZTNZkmxHdJtp54hdfY/JUrdL7Xfdug==}
     engines: {node: '>=14'}
     dev: true
 
@@ -5554,14 +5590,13 @@ packages:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/commander/-/commander-2.20.3.tgz}
 
   /commander/7.2.0:
-    resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/commander/-/commander-7.2.0.tgz}
+    resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==}
     engines: {node: '>= 10'}
     dev: true
 
   /commander/8.3.0:
-    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/commander/-/commander-8.3.0.tgz}
+    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
     engines: {node: '>= 12'}
-    dev: true
 
   /commander/9.5.0:
     resolution: {integrity: sha512-KRs7WVDKg86PWiuAqhDrAQnTXZKraVcCc6vFdL14qrZ/DcWwuRo7VoiYXalXO7S5GKpqYiVEwCbgFDfxNHKJBQ==}
@@ -6646,17 +6681,16 @@ packages:
     dev: false
 
   /entities/1.1.2:
-    resolution: {integrity: sha512-f2LZMYl1Fzu7YSBKg+RoROelpOaNrcGmE9AZubeDfrCEia483oW4MI4VyFd5VNHIgQ/7qm1I0wUHK1eJnn2y2w==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/entities/-/entities-1.1.2.tgz}
+    resolution: {integrity: sha512-f2LZMYl1Fzu7YSBKg+RoROelpOaNrcGmE9AZubeDfrCEia483oW4MI4VyFd5VNHIgQ/7qm1I0wUHK1eJnn2y2w==}
     dev: true
 
   /entities/2.2.0:
-    resolution: {integrity: sha512-p92if5Nz619I0w+akJrLZH0MX0Pb5DX39XOwQTtXSdQQOaYH03S1uIQp4mhOZtAXrxq4ViO67YTiLBo2638o9A==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/entities/-/entities-2.2.0.tgz}
+    resolution: {integrity: sha512-p92if5Nz619I0w+akJrLZH0MX0Pb5DX39XOwQTtXSdQQOaYH03S1uIQp4mhOZtAXrxq4ViO67YTiLBo2638o9A==}
     dev: true
 
   /entities/4.5.0:
-    resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/entities/-/entities-4.5.0.tgz}
+    resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}
     engines: {node: '>=0.12'}
-    dev: true
 
   /errno/0.1.8:
     resolution: {integrity: sha512-dJ6oBr5SQ1VSd9qkk7ByRgb/1SH4JZjCHSW/mr63/QcXO9zLVxvJ6Oy13nio03rxpSnVDDjFor75SjVeZWPW/A==}
@@ -7031,7 +7065,7 @@ packages:
     engines: {node: '>=0.8.0'}
 
   /escape-string-regexp/2.0.0:
-    resolution: {integrity: sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz}
+    resolution: {integrity: sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w==}
     engines: {node: '>=8'}
 
   /escape-string-regexp/4.0.0:
@@ -8329,6 +8363,11 @@ packages:
       tslib: 2.6.2
     dev: true
 
+  /highlight.js/11.9.0:
+    resolution: {integrity: sha512-fJ7cW7fQGCYAkgv4CPfwFHrfd/cLS4Hau96JuJ+ZTOWhjnhoeN1ub1tFmALm/+lW5z4WCAuAV9bm05AP0mS6Gw==}
+    engines: {node: '>=12.0.0'}
+    dev: false
+
   /homedir-polyfill/1.0.3:
     resolution: {integrity: sha512-eSmmWE5bZTK2Nou4g0AI3zZ9rswp7GRKoKXS1BLUkvPviOqs4YTN1djQIqrXy9k5gEtdLPy86JjRwsNM9tnDcA==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/homedir-polyfill/-/homedir-polyfill-1.0.3.tgz}
     engines: {node: '>=0.10.0'}
@@ -8504,7 +8543,7 @@ packages:
     dev: true
 
   /ieee754/1.2.1:
-    resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/ieee754/-/ieee754-1.2.1.tgz}
+    resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
     dev: true
 
   /ignore/5.2.4:
@@ -8950,7 +8989,7 @@ packages:
     dev: true
 
   /is-plain-obj/1.1.0:
-    resolution: {integrity: sha512-yvkRyxmFKEOQ4pNXCmJG5AEQNlXJS5LaONXo5/cLdTZdWvsZ1ioJEonLGAosKlMWE8lwUy/bJzMjcw8az73+Fg==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/is-plain-obj/-/is-plain-obj-1.1.0.tgz}
+    resolution: {integrity: sha512-yvkRyxmFKEOQ4pNXCmJG5AEQNlXJS5LaONXo5/cLdTZdWvsZ1ioJEonLGAosKlMWE8lwUy/bJzMjcw8az73+Fg==}
     engines: {node: '>=0.10.0'}
     dev: true
 
@@ -9092,7 +9131,7 @@ packages:
     dev: true
 
   /isarray/2.0.5:
-    resolution: {integrity: sha512-xHjhDr3cNBK0BzdUJSPXZntQUx/mwMS5Rw4A7lPJ90XGAO6ISP/ePDNuo0vhqOZU+UD5JoodwCAAoZQd3FeAKw==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/isarray/-/isarray-2.0.5.tgz}
+    resolution: {integrity: sha512-xHjhDr3cNBK0BzdUJSPXZntQUx/mwMS5Rw4A7lPJ90XGAO6ISP/ePDNuo0vhqOZU+UD5JoodwCAAoZQd3FeAKw==}
     dev: true
 
   /isexe/2.0.0:
@@ -10268,6 +10307,13 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /katex/0.16.9:
+    resolution: {integrity: sha512-fsSYjWS0EEOwvy81j3vRA8TEAhQhKiqO+FQaKWp0m39qwOzHVBgAUBIXWj1pB+O2W3fIpNa6Y9KSKCVbfPhyAQ==}
+    hasBin: true
+    dependencies:
+      commander: 8.3.0
+    dev: false
+
   /keyv/3.0.0:
     resolution: {integrity: sha512-eguHnq22OE3uVoSYG0LVWNP+4ppamWr9+zWBe1bsNcovIMy6huUJFPgy4mGwCd/rnl3vOLGW1MTlu4c57CT1xA==}
     dependencies:
@@ -10349,6 +10395,12 @@ packages:
 
   /lines-and-columns/1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/lines-and-columns/-/lines-and-columns-1.2.4.tgz}
+
+  /linkify-it/5.0.0:
+    resolution: {integrity: sha512-5aHCbzQRADcdP+ATqnDuhhJ/MRIqDkZX5pyjFHRRysS8vZ5AbqGEoFIb6pYHPZ+L/OC2Lc+xT8uHVVR5CAK/wQ==}
+    dependencies:
+      uc.micro: 2.0.0
+    dev: false
 
   /lint-staged/14.0.1:
     resolution: {integrity: sha512-Mw0cL6HXnHN1ag0mN/Dg4g6sr8uf8sn98w2Oc1ECtFto9tvRF7nkXGJRbx8gPlHyoR0pLyBr2lQHbWwmUHe1Sw==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/lint-staged/-/lint-staged-14.0.1.tgz}
@@ -10693,6 +10745,22 @@ packages:
       object-visit: 1.0.1
     dev: true
 
+  /markdown-it-link-attributes/4.0.1:
+    resolution: {integrity: sha512-pg5OK0jPLg62H4k7M9mRJLT61gUp9nvG0XveKYHMOOluASo9OEF13WlXrpAp2aj35LbedAy3QOCgQCw0tkLKAQ==}
+    dev: true
+
+  /markdown-it/14.0.0:
+    resolution: {integrity: sha512-seFjF0FIcPt4P9U39Bq1JYblX0KZCjDLFFQPHpL5AzHpqPEKtosxmdq/LTVZnjfH7tjt9BxStm+wXcDBNuYmzw==}
+    hasBin: true
+    dependencies:
+      argparse: 2.0.1
+      entities: 4.5.0
+      linkify-it: 5.0.0
+      mdurl: 2.0.0
+      punycode.js: 2.3.1
+      uc.micro: 2.0.0
+    dev: false
+
   /mathml-tag-names/2.1.3:
     resolution: {integrity: sha512-APMBEanjybaPzUrfqU0IMU5I0AswKMH7k8OTLs0vvV4KZpExkTkY87nR/zpbuTPj+gARop7aGUbl11pnDfW6xg==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/mathml-tag-names/-/mathml-tag-names-2.1.3.tgz}
     dev: true
@@ -10712,6 +10780,10 @@ packages:
   /mdn-data/2.0.30:
     resolution: {integrity: sha512-GaqWWShW4kv/G9IEucWScBx9G1/vsFZZJUO+tD26M8J8z3Kw5RDQjaoZe03YAClgeS/SWPOcb4nkFBTEi5DUEA==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/mdn-data/-/mdn-data-2.0.30.tgz}
     dev: true
+
+  /mdurl/2.0.0:
+    resolution: {integrity: sha512-Lf+9+2r+Tdp5wXDXC4PcIBjTDtq4UKjCPMQhKIuzpJNW0b96kVqSwW0bT7FhRSfmAiFYgP+SCRvdrDozfh0U5w==}
+    dev: false
 
   /memorystream/0.3.1:
     resolution: {integrity: sha512-S3UwM3yj5mtUSEfP41UZmt/0SCoVYUcU1rkXv+BQ5Ig8ndL4sPoJNBUJERafdPb5jjHJGuMgytgKvKIf58XNBw==}
@@ -11971,6 +12043,11 @@ packages:
       once: 1.4.0
     dev: true
 
+  /punycode.js/2.3.1:
+    resolution: {integrity: sha512-uxFIHU0YlHYhDQtV4R9J6a52SLx28BCjT+4ieh7IGbgwVJWO+km431c4yRlREUAsAmt/uMjQUyQHNEPf0M39CA==}
+    engines: {node: '>=6'}
+    dev: false
+
   /punycode/2.3.0:
     resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/punycode/-/punycode-2.3.0.tgz}
     engines: {node: '>=6'}
@@ -12135,7 +12212,7 @@ packages:
     dev: true
 
   /readable-stream/3.6.2:
-    resolution: {integrity: sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/readable-stream/-/readable-stream-3.6.2.tgz}
+    resolution: {integrity: sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA==}
     engines: {node: '>= 6'}
     dependencies:
       inherits: 2.0.4
@@ -12967,7 +13044,7 @@ packages:
     dev: true
 
   /string_decoder/1.3.0:
-    resolution: {integrity: sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/string_decoder/-/string_decoder-1.3.0.tgz}
+    resolution: {integrity: sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==}
     dependencies:
       safe-buffer: 5.2.1
     dev: true
@@ -13767,6 +13844,10 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
     dev: true
+
+  /uc.micro/2.0.0:
+    resolution: {integrity: sha512-DffL94LsNOccVn4hyfRe5rdKa273swqeA5DJpMOeFmEn1wCDc7nAbbB0gXlgBCL7TNzeTv6G7XVWzan7iJtfig==}
+    dev: false
 
   /ufo/1.3.0:
     resolution: {integrity: sha512-bRn3CsoojyNStCZe0BG0Mt4Nr/4KF+rhFlnNXybgqt5pXHNFRlqinSoQaTrGyzE4X8aHplSb+TorH+COin9Yxw==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/ufo/-/ufo-1.3.0.tgz}

@@ -1,40 +1,50 @@
 <template>
   <div class="query-panel">
-    <modelQuery ref="queryRef" :data="queryInfo" />
+    <ModelQuery ref="queryRef" :data="queryInfo" />
   </div>
-  <JVxeTable
-    ref="tableRef"
-    toolbar
-    resizable
-    maxHeight="600"
-    :toolbarConfig="{ btn: [] }"
-    :loading="loading"
-    :columns="columns"
-    :dataSource="dataSource"
-    :pagination="pagination"
-    @pageChange="handlePageChange"
-  >
-    <template #toolbarSuffix>
-      <a-button @click="fetchData(false)" style="float: right" preIcon="ant-design:search-outlined">查询</a-button>
-      <a-button @click="copyQuery" style="float: right" preIcon="ant-design:copy-outlined">复制查询条件</a-button>
-      <a-button :loading="loading" @click="outputData" style="float: right" preIcon="ant-design:export-outlined">导出数据</a-button>
-    </template>
-  </JVxeTable>
+  <a-tabs defaultActiveKey="data-table">
+    <a-tab-pane tab="数据表格" key="data-table" style="position: relative">
+      <JVxeTable
+        ref="tableRef"
+        toolbar
+        resizable
+        maxHeight="600"
+        :toolbarConfig="{ btn: [] }"
+        :loading="loading"
+        :columns="columns"
+        :dataSource="dataSource"
+        :pagination="pagination"
+        @pageChange="handlePageChange"
+      >
+        <template #toolbarSuffix>
+          <a-button @click="fetchData(false)" style="float: right" preIcon="ant-design:search-outlined">查询</a-button>
+          <a-button @click="copyQuery" style="float: right" preIcon="ant-design:copy-outlined">复制查询条件</a-button>
+          <a-button :loading="loading" @click="outputData" style="float: right" preIcon="ant-design:export-outlined">导出数据</a-button>
+        </template>
+      </JVxeTable>
+    </a-tab-pane>
+    <a-tab-pane tab="数据对话" key="data-chat" style="position: relative" v-if="hasPermission(['llm:data:chat'])">
+      <DataChat :genQuery="genQuery" />
+    </a-tab-pane>
+  </a-tabs>
 </template>
 
 <script lang="ts" setup>
   import { watch, ref, unref, onMounted, reactive } from 'vue';
   import { JVxeTypes, JVxeColumn, JVxeTableInstance } from '/@/components/jeecg/JVxeTable/types';
   import { queryData } from '../dataquery.api';
-  import modelQuery from './modelQuery.vue';
+  import ModelQuery from './modelQuery.vue';
+  import DataChat from './DataChat/index.vue';
   import { useCopyToClipboard } from '/@/hooks/web/useCopyToClipboard';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { cloneObject } from '/@/utils';
   import { parseTableRecords } from '/@/utils/common_utils';
   import { useMethods } from '/@/hooks/system/useMethods';
+  import { usePermission } from '@/hooks/web/usePermission';
   const { handleExportExcel } = useMethods();
   const { createMessage } = useMessage();
   const { clipboardRef, copiedRef } = useCopyToClipboard();
+  const { hasPermission } = usePermission();
   const tableRef = ref<JVxeTableInstance>();
   const queryRef = ref(null);
   const props = defineProps({
@@ -53,8 +63,8 @@
   }); // 查询配置
   const pagination = reactive({
     current: 1,
-    pageSize: 10,
-    pageSizeOptions: ['10', '20', '50', '100', '1000', '5000'],
+    pageSize: 100,
+    pageSizeOptions: ['100', '500', '1000', '2000', '5000', '10000'],
     total: 0,
   });
   // 初始化查询配置
@@ -64,14 +74,10 @@
     queryInfo.extract_rules = [];
     queryInfo.search_type_list = [];
     queryInfo.fields = [];
-    pagination.pageSize = 10;
+    pagination.pageSize = 100;
     pagination.current = 1;
   }
   /** 获取值，忽略表单验证 */
-  function handleTableGet() {
-    const values = tableRef.value!.getTableData();
-    console.log('获取值:', { values });
-  }
   // 当分页参数变化时触发的事件
   async function handlePageChange(event) {
     console.log(event);
@@ -86,12 +92,21 @@
     console.log(dataSource.value);
     handleExportExcel('数据导出结果_' + Date.now() + '.xlsx', dataSource.value);
   }
-  // 复制查询条件
-  async function copyQuery() {
-    // queryRef
+  // 获取查询结构
+  async function genQuery(include_id = true) {
     const extract_info = cloneObject(queryRef.value.genQuery());
     extract_info['page'] = pagination.current;
     extract_info['pagesize'] = pagination.pageSize;
+    if (include_id) {
+      extract_info['id'] = model.value.id;
+    }
+    console.log('query', extract_info);
+    return extract_info;
+  }
+  // 复制查询条件
+  async function copyQuery() {
+    // queryRef
+    const extract_info = await genQuery(false);
     const value = unref(JSON.stringify(extract_info));
     if (!value) {
       createMessage.warning('请输入要复制的内容！');
@@ -105,15 +120,10 @@
   // 查询模型数据
   async function fetchData(is_init = false) {
     // queryRef
-    const extract_info = queryRef.value.genQuery();
+    const extract_info = await genQuery(true);
     loading.value = true;
     try {
-      const res_data = await queryData({
-        id: model.value.id,
-        page: pagination.current,
-        pagesize: pagination.pageSize,
-        ...extract_info,
-      });
+      const res_data = await queryData(extract_info);
       if (res_data) {
         pagination.total = res_data.total;
         dataSource.value = parseTableRecords(res_data.records);
