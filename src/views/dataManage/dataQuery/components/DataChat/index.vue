@@ -14,7 +14,7 @@
     </div>
     <div class="chat-input">
       <!-- 用户输入框 -->
-      <a-textarea v-model:value="question" :autoSize="{ minRows: 1, maxRows: 8 }" @pressEnter="sendMessage" placeholder="请输入消息" />
+      <a-textarea v-model:value="question" :autoSize="{ minRows: 1, maxRows: 8 }" @pressEnter="sendMessage" placeholder="请输入问题" />
       <span style="width: 10px"></span>
       <a-button type="primary" @click="sendMessage" :disabled="loading">发送</a-button>
     </div>
@@ -26,7 +26,7 @@
   import { dataChat } from './datachat.api';
   import Message from './message.vue';
   import { useScroll } from './hooks/useScroll';
-  const { scrollRef, scrollToBottom, scrollToBottomIfAtBottom } = useScroll();
+  const { scrollRef, scrollToBottom } = useScroll();
   const props = defineProps({
     genQuery: {
       type: Function,
@@ -109,8 +109,9 @@
     padding: 20px;
   }
   .chat-messages {
-    height: 500px;
-    overflow-y: scroll;
+    min-height: 400px;
+    /*max-height: 100%;*/
+    /*overflow-y: scroll;*/
   }
   .chat-message {
     margin-bottom: 10px;

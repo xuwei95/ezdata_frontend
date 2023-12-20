@@ -1,9 +1,9 @@
 <template>
   <a-row :class="['p-4', `${prefixCls}--box`]" type="flex" :gutter="10">
-    <a-col :xl="4" :lg="6" :md="6" :sm="24" style="margin-bottom: 10px">
+    <a-col :xxl="4" :lg="6" :sm="24" style="margin-bottom: 10px">
       <DataLeftTree ref="leftTree" @select="onTreeSelect" @rootTreeData="onRootTreeData" />
     </a-col>
-    <a-col :xl="20" :lg="18" :md="18" :sm="24" style="margin-bottom: 10px">
+    <a-col :xxl="20" :lg="18" :sm="24" style="margin-bottom: 10px">
       <div style="height: 100%; background-color: white">
         <a-tabs defaultActiveKey="data-query">
           <a-tab-pane tab="基本信息" key="base-info" style="position: relative">
