@@ -22,7 +22,7 @@ export const getInfoById = (params) => defHttp.get({ url: Api.getInfoById, param
  * 数据查询接口
  * @param params
  */
-export const queryData = (params) => defHttp.post({ url: Api.queryModelData, params, timeout: 60 * 1000});
+export const queryData = (params) => defHttp.post({ url: Api.queryModelData, params, timeout: 60 * 1000 });
 /**
  * 数据集成预览接口
  * @param params

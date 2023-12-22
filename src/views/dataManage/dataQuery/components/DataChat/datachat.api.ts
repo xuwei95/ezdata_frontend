@@ -6,4 +6,4 @@ enum Api {
  * 聊天接口
  * @param params
  */
-export const dataChat = (params) => defHttp.post({ url: Api.DataChat, params: params, timeout: 180 * 1000 });
+export const dataChat = (params) => defHttp.post({ url: Api.DataChat, params, timeout: 180 * 1000 });

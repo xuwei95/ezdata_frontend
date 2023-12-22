@@ -98,6 +98,18 @@
       }
       console.log('result666', res_data);
     } else {
+      const result_msg = {
+        type: 'result',
+        time: getNowDate(),
+        message: {
+          text: 'Something went wrong, please try again later.',
+          data: [],
+          html: '',
+        },
+      };
+      messages.value.push(result_msg);
+      loading.value = false;
+      scrollToBottom();
       console.log('error', res_data);
     }
   }
