@@ -1,5 +1,6 @@
 <template>
   最大分析数据量: <a-input-number v-model:value="maxRow"></a-input-number>
+  <a-button :disabled="loading" @click="clearMessages">清空对话记录</a-button>
   <div class="chat-container">
     <div class="chat-messages" id="scrollRef" ref="scrollRef">
       <!-- 显示聊天消息的区域 -->
@@ -37,22 +38,15 @@
   const question = ref('');
   const maxRow = ref(10000);
   const loading = ref(false);
-  // 获取当前时间
-  function getNowDate() {
-    const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0'); // 月份需要补齐两位数
-    const day = currentDate.getDate().toString().padStart(2, '0'); // 日需要补齐两位数
-    const hours = currentDate.getHours().toString().padStart(2, '0'); // 小时需要补齐两位数
-    const minutes = currentDate.getMinutes().toString().padStart(2, '0'); // 分钟需要补齐两位数
-    const seconds = currentDate.getSeconds().toString().padStart(2, '0'); // 秒需要补齐两位数
-    return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+  // 清空聊天
+  async function clearMessages() {
+    messages.value = [];
   }
+  // 停止响应
   async function handleStop() {
     if (loading.value) {
       const result_msg = {
         type: 'result',
-        time: getNowDate(),
         message: {
           text: 'Something went wrong, please try again later.',
           data: [],
@@ -73,7 +67,6 @@
     const chatReq = { question: question.value, query_info: query_info };
     const user_msg = {
       type: 'user',
-      time: getNowDate(),
       message: {
         text: question.value,
         data: [],
@@ -90,7 +83,6 @@
         loading.value = false;
         const result_msg = {
           type: 'result',
-          time: getNowDate(),
           message: res_data,
         };
         messages.value.push(result_msg);
@@ -100,7 +92,6 @@
     } else {
       const result_msg = {
         type: 'result',
-        time: getNowDate(),
         message: {
           text: 'Something went wrong, please try again later.',
           data: [],
@@ -122,8 +113,8 @@
   }
   .chat-messages {
     min-height: 400px;
-    /*max-height: 100%;*/
-    /*overflow-y: scroll;*/
+    max-height: 1000px;
+    overflow-y: scroll;
   }
   .chat-message {
     margin-bottom: 10px;

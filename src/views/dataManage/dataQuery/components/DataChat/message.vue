@@ -8,7 +8,6 @@
     </div>
     <div class="chat-message__body">
       <div class="chat-message__header">
-        <span class="chat-message__time">{{ message.time }}</span>
       </div>
       <div class="text-black" :class="wrapClass">
         <div ref="textRef" class="leading-relaxed break-words">
