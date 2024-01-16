@@ -116,6 +116,16 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
+    label: '自动建模',
+    field: 'auto_gen',
+    defaultValue: '0',
+    component: 'JSwitch',
+    componentProps: {
+      options: ['1', '0'],
+    },
+    ifShow: ({ values }) => !values.id,
+  },
+  {
     label: '描述',
     field: 'description',
     required: false,

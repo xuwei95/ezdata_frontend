@@ -43,7 +43,7 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import DataSourceModal from './components/DataSourceModal.vue';
   import { columns, searchFormSchema } from './datasource.data';
-  import { list, deleteOne, batchDelete, getImportUrl, getExportUrl } from './datasource.api';
+  import { list, deleteOne, batchDelete, syncModels, getImportUrl, getExportUrl } from './datasource.api';
   const checkedKeys = ref<Array<string | number>>([]);
   //注册Modal
   const [registerModal, { openModal }] = useModal();
@@ -63,7 +63,7 @@
         fieldMapToTime: [],
       },
       actionColumn: {
-        width: 200,
+        width: 220,
         fixed: 'right',
       },
     },
@@ -121,6 +121,12 @@
     await batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
   /**
+   * 同步数据模型
+   */
+  async function handleSyncModels(record) {
+    await syncModels({ datasource_id: record.id });
+  }
+  /**
    * 成功回调
    */
   function handleSuccess() {
@@ -146,6 +152,14 @@
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),
+      },
+      {
+        label: '同步数据模型',
+        popConfirm: {
+          title: '确定同步?',
+          confirm: handleSyncModels.bind(null, record),
+        },
+        auth: ['datasource:sync_models'],
       },
       {
         label: '删除',

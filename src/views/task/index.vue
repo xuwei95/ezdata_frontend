@@ -74,7 +74,7 @@
         fieldMapToTime: [],
       },
       actionColumn: {
-        width: 200,
+        width: 260,
         fixed: 'right',
       },
     },

@@ -1,6 +1,13 @@
 <template>
-  <div class="query-panel">
+  <div class="query-panel" v-show="isExpanded">
     <ModelQuery ref="queryRef" :data="queryInfo" />
+  </div>
+  <div class="toggle-button-container">
+    <div class="toggle-button-wrapper" @mouseenter="isHover = true" @mouseleave="isHover = false" @click="isExpanded = !isExpanded; isHover=false">
+      <a-icon class="toggle-icon" v-if="!isHover" type="minus-outlined" style="font-size: 20px" />
+      <a-icon class="toggle-icon" v-if="isHover && !isExpanded" type="down-outlined" style="font-size: 20px" />
+      <a-icon class="toggle-icon" v-if="isHover && isExpanded" type="up-outlined" style="font-size: 20px" />
+    </div>
   </div>
   <a-tabs defaultActiveKey="data-table">
     <a-tab-pane tab="数据表格" key="data-table" style="position: relative">
@@ -51,6 +58,8 @@
     data: { type: Object, default: () => ({}) },
     rootTreeData: { type: Array, default: () => [] },
   });
+  const isExpanded = ref<boolean>(true);
+  const isHover = ref<boolean>(false);
   const loading = ref<boolean>(false);
   const model = ref<object>({}); // 模型数据
   const columns = ref<JVxeColumn[]>([]); // 字段列表
@@ -179,5 +188,34 @@
 <style>
   .query-panel {
     min-height: 55px;
+  }
+  .toggle-button-container {
+    text-align: center;
+  }
+  .toggle-button-wrapper {
+    /* 初始样式 */
+    display: inline-block;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .toggle-icon {
+    font-size: 24px; /* 初始字体大小 */
+  }
+
+  .toggle-button-wrapper:hover .toggle-icon {
+    /* 悬停时图标的样式 */
+    font-size: 40px; /* 放大字体 */
+    animation: pulse 1s infinite alternate; /* 应用动画 */
+  }
+
+  /* 定义动画 */
+  @keyframes pulse {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.1);
+    }
   }
 </style>

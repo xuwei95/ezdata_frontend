@@ -14,6 +14,7 @@ enum Api {
   importExcel = '/datasource/importExcel',
   exportXls = '/datasource/exportXls',
   connTest = '/datasource/connect',
+  syncModels = '/datasource/sync_models',
 }
 /**
  * 列表接口
@@ -79,4 +80,11 @@ export const getExportUrl = Api.exportXls;
  */
 export const ConnTest = (params) => {
   return defHttp.post({ url: Api.connTest, params, timeout: 60 * 1000 });
+};
+
+/**
+ * 同步数据模型
+ */
+export const syncModels = (params) => {
+  return defHttp.post({ url: Api.syncModels, params, timeout: 60 * 1000 });
 };

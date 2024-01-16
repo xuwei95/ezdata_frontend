@@ -663,7 +663,7 @@ export const prometheusPromqlSchema: FormSchema[] = [
 export const kafkaTopicSchema: FormSchema[] = [
   {
     label: '主题',
-    field: 'topic',
+    field: 'name',
     required: true,
     component: 'Input',
     defaultValue: '',

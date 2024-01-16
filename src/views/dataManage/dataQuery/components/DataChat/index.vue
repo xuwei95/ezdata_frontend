@@ -1,6 +1,8 @@
 <template>
   最大分析数据量: <a-input-number v-model:value="maxRow"></a-input-number>
-  <a-button :disabled="loading" @click="clearMessages">清空对话记录</a-button>
+  <span style="margin-left: 20px">
+    <a-button :disabled="loading" @click="clearMessages">清空对话记录</a-button>
+  </span>
   <div class="chat-container">
     <div class="chat-messages" id="scrollRef" ref="scrollRef">
       <!-- 显示聊天消息的区域 -->
@@ -27,7 +29,10 @@
   import { dataChat } from './datachat.api';
   import Message from './message.vue';
   import { useScroll } from './hooks/useScroll';
+  import { Modal } from 'ant-design-vue';
+  import { useMessage } from '@/hooks/web/useMessage';
   const { scrollRef, scrollToBottom } = useScroll();
+  const { createMessage } = useMessage();
   const props = defineProps({
     genQuery: {
       type: Function,
@@ -40,7 +45,16 @@
   const loading = ref(false);
   // 清空聊天
   async function clearMessages() {
-    messages.value = [];
+    Modal.confirm({
+      title: '清空确认',
+      content: '确认清空对话记录？',
+      okText: '确认',
+      cancelText: '取消',
+      async onOk() {
+        messages.value = [];
+        createMessage.success('清空成功！');
+      },
+    });
   }
   // 停止响应
   async function handleStop() {
