@@ -1,4 +1,12 @@
 <template>
+  <div v-if="hasPermission(['llm:data:chat'])" >
+    ai取数 <a-switch v-model:checked="ai_query" /> <br />
+    <div v-show="ai_query" style="margin: 5px">
+      <span>
+        <a-textarea v-model:value="query_prompt" :autoSize="{ minRows: 1, maxRows: 8 }" placeholder="请输入取数提示" style="width: 80%" />
+      </span>
+    </div>
+  </div>
   <div v-show="extract_rules.length > 0" class="extract-panel">
     筛选条件 <br />
     <div v-for="(item, index) in extract_rule_list">
@@ -36,7 +44,7 @@
       :options="search_type_options"
       @change="handleSearchTypeChange"
     ></a-select>
-    <monaco-editor
+    <MonacoEditor
       v-model:value="search_text"
       language="sql"
     />
@@ -47,6 +55,8 @@
   import { watch, onMounted, ref, unref, reactive } from 'vue';
   import type { SelectProps } from 'ant-design-vue';
   import { MonacoEditor } from '/@/components/Form';
+  import { usePermission } from '@/hooks/web/usePermission';
+  const { hasPermission } = usePermission();
   // Emits声明
   const emit = defineEmits(['genQuery']);
   const props = defineProps({
@@ -61,6 +71,8 @@
   const extract_rule_list = ref([]); // 筛选条件
   const search_type = ref(''); // 高级查询类型
   const search_text = ref(''); // 高级查询语句
+  const ai_query = ref(false); // ai取数
+  const query_prompt = ref(''); // ai取数prompt
   // 添加筛选规则
   function addRule() {
     extract_rule_list.value.push({
@@ -117,6 +129,8 @@
       extract_rules: extract_rule_list.value,
       search_type: search_type.value,
       search_text: search_text.value,
+      ai_query: ai_query.value,
+      query_prompt: query_prompt.value,
     };
   }
   onMounted(() => {

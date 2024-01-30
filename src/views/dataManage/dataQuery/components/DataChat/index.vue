@@ -1,8 +1,10 @@
 <template>
-  最大分析数据量: <a-input-number v-model:value="maxRow"></a-input-number>
-  <span style="margin-left: 20px">
-    <a-button :disabled="loading" @click="clearMessages">清空对话记录</a-button>
-  </span>
+  <div class="chat-head">
+    最大分析数据量: <a-input-number v-model:value="maxRow"></a-input-number>
+    <span style="margin-left: 20px">
+      <a-button :disabled="loading" @click="clearMessages">清空对话记录</a-button>
+    </span>
+  </div>
   <div class="chat-container">
     <div class="chat-messages" id="scrollRef" ref="scrollRef">
       <!-- 显示聊天消息的区域 -->
@@ -121,6 +123,9 @@
 </script>
 
 <style scoped>
+  .chat-head {
+    /*border-bottom: 1px solid rgba(144, 147, 153, 0.3);*/
+  }
   .chat-container {
     margin: 0 auto;
     padding: 20px;
