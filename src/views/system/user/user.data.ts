@@ -80,20 +80,20 @@ export const searchFormSchema: FormSchema[] = [
   {
     label: '账号',
     field: 'username',
-    component: 'JInput',
+    component: 'Input',
     colProps: { span: 6 },
   },
-  {
-    label: '性别',
-    field: 'sex',
-    component: 'JDictSelectTag',
-    componentProps: {
-      dictCode: 'sex',
-      placeholder: '请选择性别',
-      stringToNumber: true,
-    },
-    colProps: { span: 6 },
-  },
+  // {
+  //   label: '性别',
+  //   field: 'sex',
+  //   component: 'JDictSelectTag',
+  //   componentProps: {
+  //     dictCode: 'sex',
+  //     placeholder: '请选择性别',
+  //     stringToNumber: true,
+  //   },
+  //   colProps: { span: 6 },
+  // },
   {
     label: '真实名称',
     field: 'nickname',

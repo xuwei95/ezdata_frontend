@@ -92,7 +92,7 @@ export const formSchema: FormSchema[] = [
     defaultValue: 'mysql',
   },
   {
-    label: '连接配置',
+    label: '', // 连接配置
     field: 'conn_conf',
     // required: true,
     slot: 'conn_conf',

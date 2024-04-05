@@ -49,7 +49,7 @@
   const { createMessage } = useMessage();
   //表单配置
   const [registerForm, { setProps, resetFields, setFieldsValue, validate }] = useForm({
-    //labelWidth: 150,
+    labelWidth: 150,
     schemas: formSchema,
     showActionButtonGroup: false,
     baseColProps: { span: 24 },
@@ -66,6 +66,7 @@
       validate: modelConfValidate,
     },
   ] = useForm({
+    labelWidth: 150,
     schemas: [],
     showActionButtonGroup: false,
     baseColProps: { span: 24 },

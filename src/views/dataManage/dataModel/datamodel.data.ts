@@ -114,7 +114,7 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
   },
   {
-    label: '模型配置',
+    label: '',
     field: 'model_conf',
     slot: 'model_conf',
     required: false,

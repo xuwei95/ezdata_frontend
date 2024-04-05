@@ -14,7 +14,9 @@
       <template #conn_conf="">
         <BasicForm @register="registerConnForm">
           <template #formFooter>
-            <a-button :loading="loading" @click="connectTest">连通性测试</a-button>
+            <div style="width: 100%; text-align: center">
+              <a-button :loading="loading" @click="connectTest">连通性测试</a-button>
+            </div>
           </template>
         </BasicForm>
       </template>
@@ -38,8 +40,8 @@
   const loading = ref(false);
   const { createMessage } = useMessage();
   //表单配置
-  const [registerForm, { setProps, resetFields, setFieldsValue, validate }] = useForm({
-    //labelWidth: 150,
+  const [registerForm, { setProps, getFieldsValue, resetFields, setFieldsValue, validate }] = useForm({
+    labelWidth: 150,
     schemas: formSchema,
     showActionButtonGroup: false,
     baseColProps: { span: 24 },
@@ -54,6 +56,7 @@
       validate: connValidate,
     },
   ] = useForm({
+    labelWidth: 150,
     schemas: ConnFormSchemaMap['mysql'],
     showActionButtonGroup: false,
     baseColProps: { span: 24 },
@@ -112,7 +115,7 @@
   // 连通性测试
   async function connectTest(v) {
     try {
-      let values = await validate();
+      let values = getFieldsValue();
       let conn_type = values.type;
       let conn_conf = await connValidate();
       loading.value = true;

@@ -8,7 +8,7 @@ enum Api {
   getInfoById = '/algorithm/queryById',
   save = '/algorithm/add',
   edit = '/algorithm/edit',
-  statusUpdate = '/task_template/status',
+  statusUpdate = '/algorithm/status',
   deleteOne = '/algorithm/delete',
   deleteBatch = '/algorithm/deleteBatch',
   allList = '/algorithm/queryAllList',

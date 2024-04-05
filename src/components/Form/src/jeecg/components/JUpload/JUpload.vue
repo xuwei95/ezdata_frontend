@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, reactive, computed, watch, nextTick, createApp,unref } from 'vue';
+  import { ref, reactive, computed, watch, nextTick, createApp, unref } from 'vue';
   import { Icon } from '/@/components/Icon';
   import { getToken } from '/@/utils/auth';
   import { uploadUrl } from '/@/api/common/api';
@@ -70,7 +70,8 @@
   });
 
   const headers = reactive({
-    'X-Access-Token': getToken(),
+    // 'X-Access-Token': getToken(),
+    Authorization: 'JWT ' + getToken(),
   });
   const fileList = ref<any[]>([]);
   const uploadGoOn = ref<boolean>(true);
@@ -276,14 +277,15 @@
       if (info.file.response.success) {
         successFileList = fileListTemp.map((file) => {
           if (file.response) {
-            let reUrl = file.response.message;
+            // let reUrl = file.response.message;
+            let reUrl = file.response.data.url;
             file.url = getFileAccessHttpUrl(reUrl);
           }
           return file;
         });
-      }else{
-        successFileList = fileListTemp.filter(item=>{
-          return item.uid!=info.file.uid;
+      } else {
+        successFileList = fileListTemp.filter((item) => {
+          return item.uid != info.file.uid;
         });
         createMessage.error(`${info.file.name} 上传失败.`);
       }
@@ -303,11 +305,12 @@
           if (item.status === 'done') {
             let fileJson = {
               fileName: item.name,
-              filePath: item.response.message,
+              // filePath: item.response.message,
+              filePath: item.response.data.url,
               fileSize: item.size,
             };
             newFileList.push(fileJson);
-          }else{
+          } else {
             return;
           }
         }
@@ -325,7 +328,8 @@
     let pathList: string[] = [];
     for (const item of uploadFiles) {
       if (item.status === 'done') {
-        pathList.push(item.response.message);
+        pathList.push(item.response.data.url);
+        // pathList.push(item.response.message);
       } else {
         return;
       }

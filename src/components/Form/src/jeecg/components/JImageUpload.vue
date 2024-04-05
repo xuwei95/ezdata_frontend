@@ -95,7 +95,8 @@
       };
       //token
       const headers = ref<object>({
-        'X-Access-Token': getToken(),
+        // 'X-Access-Token': getToken(),
+        Authorization: 'JWT ' + getToken(),
       });
       //上传状态
       const loading = ref<boolean>(false);
@@ -189,7 +190,8 @@
               //update-begin---author:wangshuai ---date:20221121  for：[issues/248]原生表单内使用图片组件,关闭弹窗图片组件值不会被清空------------
               initTag.value = true;
               //update-end---author:wangshuai ---date:20221121  for：[issues/248]原生表单内使用图片组件,关闭弹窗图片组件值不会被清空------------
-              fileUrls.push(file.response.message);
+              // fileUrls.push(file.response.message);
+              fileUrls.push(file.response.data.url);
             }
           });
           if (file.status === 'removed') {
