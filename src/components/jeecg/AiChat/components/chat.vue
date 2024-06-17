@@ -166,7 +166,6 @@
   });
   let evtSource: any = null;
   const { VITE_GLOB_API_URL } = getAppEnvConfig();
-
   const conversationList = computed(() => props.chatData.filter((item) => !item.inversion && !!item.conversationOptions));
   const placeholder = computed(() => {
     return '来说点什么吧...（Shift + Enter = 换行）';
@@ -225,7 +224,7 @@
       if (typeof EventSource !== 'undefined') {
         const token = getToken();
         evtSource = new EventSourcePolyfill(
-          `${VITE_GLOB_API_URL}/ai/chat/send?message=${message}${options.parentMessageId ? '&topicId=' + options.parentMessageId : ''}`,
+          `${VITE_GLOB_API_URL}/llm/chat/send?message=${message}${options.parentMessageId ? '&topicId=' + options.parentMessageId : ''}`,
           {
             withCredentials: true,
             headers: {

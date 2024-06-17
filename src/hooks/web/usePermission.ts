@@ -80,24 +80,19 @@ export function usePermission() {
     if (!value) {
       return def;
     }
-    console.log(222222, value);
     const permMode = projectSetting.permissionMode;
-    console.log(33333, permMode);
     if ([PermissionModeEnum.ROUTE_MAPPING, PermissionModeEnum.ROLE].includes(permMode)) {
       if (!isArray(value)) {
         return userStore.getRoleList?.includes(value as RoleEnum);
       }
       return (intersection(value, userStore.getRoleList) as RoleEnum[]).length > 0;
     }
-    console.log(4444, PermissionModeEnum.BACK, PermissionModeEnum.BACK === permMode);
     if (PermissionModeEnum.BACK === permMode) {
       const allCodeList = permissionStore.getPermCodeList as string[];
-      console.log(55555, allCodeList);
       if (!isArray(value) && allCodeList && allCodeList.length > 0) {
         //=============================工作流权限判断-显示-begin==============================================
         if (formData) {
           let code = value as string;
-          console.log(11111111, code);
           if (hasBpmPermission(code, '1') === true) {
             return true;
           }
