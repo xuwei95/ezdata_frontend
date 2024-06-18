@@ -4,6 +4,7 @@ import { useGlobSetting } from '/@/hooks/setting';
 
 const { createMessage, createWarningModal } = useMessage();
 const glob = useGlobSetting();
+import * as XLSX from 'xlsx';
 
 /**
  * 导出文件xlsx的mime-type
@@ -51,7 +52,28 @@ export function useMethods() {
       window.URL.revokeObjectURL(url); //释放掉blob对象
     }
   }
-
+  /**
+   * 导出数据列表到excel
+   * @param name
+   * @param dataList
+   */
+  async function handleExportExcel(name, dataList) {
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(dataList); // dataArray是要导出的数据数组
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1'); // 'Sheet1'是工作表的名称
+    const buffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    if (!name || typeof name != 'string') {
+      name = '导出文件';
+    }
+    const data = new Blob([buffer], { type: 'application/octet-stream' });
+    const url = URL.createObjectURL(data);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', name);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
   /**
    * 导入xls
    * @param data 导入的数据
@@ -92,6 +114,7 @@ export function useMethods() {
   }
 
   return {
+    handleExportExcel,
     handleExportXls: (name: string, url: string, params?: object) => exportXls(name, url, params),
     handleImportXls: (data, url, success) => importXls(data, url, success),
     handleExportXlsx: (name: string, url: string, params?: object) => exportXls(name, url, params, true),

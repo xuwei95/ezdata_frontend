@@ -13,20 +13,96 @@
       <p class="date">{{ dateTime }}</p>
       <div class="msgArea">
         <chatText :text="text" :inversion="inversion" :error="error" :loading="loading"></chatText>
+        <div v-if="showTable" style="width: 100%;">
+          <JVxeTable ref="tableRef" toolbar resizable maxHeight="400" :toolbarConfig="{ btn: [] }" :columns="columns" :dataSource="dataSource">
+            <template #toolbarSuffix>
+              <a-button @click="outputData" style="float: right" preIcon="ant-design:export-outlined">导出数据</a-button>
+            </template>
+          </JVxeTable>
+        </div>
+        <div class="html-body" v-if="htmlText !== ''">
+          <a-button @click="outputChart" style="float: right" preIcon="ant-design:export-outlined">导出图表</a-button>
+          <iframe :srcdoc="htmlText" width="100%" height="100%"></iframe>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+  import { defineExpose, onMounted, ref } from 'vue';
   import chatText from './chatText.vue';
   import defaultAvatar from '../assets/avatar.jpg';
   import { useUserStore } from '/@/store/modules/user';
-  const props = defineProps(['dateTime', 'text', 'inversion', 'error', 'loading']);
+  const props = defineProps(['dateTime', 'text', 'table_data', 'html_data', 'inversion', 'error', 'loading']);
   const { userInfo } = useUserStore();
   const avatar = () => {
     return userInfo?.avatar || defaultAvatar;
   };
+  import { JVxeTypes, JVxeColumn, JVxeTableInstance } from '/@/components/jeecg/JVxeTable/types';
+  import { useMethods } from '@/hooks/system/useMethods';
+  // 数据表格相关配置
+  const tableRef = ref<JVxeTableInstance>();
+  const showTable = ref(false);
+  const columns = ref<JVxeColumn[]>([]); // 字段列表
+  const dataSource = ref<any[]>([]); // 数据列表
+  // html渲染相关配置
+  const htmlText = ref('');
+  // 数据表格 导出excel
+  const { handleExportExcel } = useMethods();
+  async function outputData() {
+    console.log(dataSource.value);
+    handleExportExcel('数据导出_' + Date.now() + '.xlsx', dataSource.value);
+  }
+  function handleTableData() {
+    const data_li = props.table_data;
+    if (data_li && data_li.length > 0) {
+      columns.value = [];
+      const fields = Object.keys(data_li[0]);
+      console.log(fields);
+      for (let i in fields) {
+        const field_key = fields[i];
+        columns.value.push({
+          title: field_key,
+          key: field_key,
+          type: JVxeTypes.normal,
+          width: 200,
+        });
+      }
+      dataSource.value = data_li;
+      showTable.value = true;
+    }
+  }
+  // 渲染html图表
+  function handleHtmlData() {
+    const html_text = props.html_data;
+    if (html_text && html_text !== '') {
+      htmlText.value = html_text;
+    }
+  }
+  // 渲染表格或html
+  function handleData() {
+    handleTableData();
+    handleHtmlData();
+    console.log(111112222);
+  }
+  async function outputChart() {
+    const output_name = '图表导出_' + Date.now() + '.html';
+    const data = new Blob([htmlText.value], { type: 'text/html' });
+    const url = URL.createObjectURL(data);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', output_name);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+  onMounted(() => {
+    handleData();
+  });
+  defineExpose({
+    handleData,
+  });
 </script>
 
 <style lang="less" scoped>
@@ -67,7 +143,7 @@
       margin-bottom: 10px;
     }
     .msgArea {
-      display: flex;
+      //display: flex;
     }
   }
 </style>

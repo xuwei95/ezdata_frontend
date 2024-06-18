@@ -56,7 +56,6 @@
     defHttp
       .get({ url: configUrl.get })
       .then((res) => {
-        console.log(11111, res);
         const { content } = res;
         if (content) {
           dataSource.value = JSON.parse(content);

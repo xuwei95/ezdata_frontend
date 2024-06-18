@@ -7,9 +7,12 @@
             <div class="chatContentArea">
               <chatMessage
                 v-for="(item, index) of chatData"
+                ref="chatMessageRefs"
                 :key="index"
                 :date-time="item.dateTime"
                 :text="item.text"
+                :table_data="item.table_data"
+                :html_data="item.html_data"
                 :inversion="item.inversion"
                 :error="item.error"
                 :loading="item.loading"
@@ -170,7 +173,7 @@
   const placeholder = computed(() => {
     return '来说点什么吧...（Shift + Enter = 换行）';
   });
-
+  const chatMessageRefs = ref([]); // 用于存储所有 ChatMessage 组件的引用
   function handleEnter(event: KeyboardEvent) {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
@@ -221,6 +224,8 @@
 
     const initEventSource = () => {
       let lastText = '';
+      let table_data = [];
+      let html_data = '';
       if (typeof EventSource !== 'undefined') {
         const token = getToken();
         evtSource = new EventSourcePolyfill(
@@ -241,7 +246,11 @@
           const data = e.data;
           // console.log(e);
           if (data === '[DONE]') {
-            updateChatSome(uuid, props.chatData.length - 1, { loading: false });
+            updateChatSome(uuid, props.chatData.length - 1, { loading: false});
+            const lastMessage = chatMessageRefs.value[chatMessageRefs.value.length - 1];
+            setTimeout(() => {
+              lastMessage.handleData();
+            }, 100);
             scrollToBottom();
             handleStop();
             evtSource.close(); // 关闭连接
@@ -249,25 +258,40 @@
             try {
               const _data = JSON.parse(data);
               const content = _data.content;
+              const _type = _data.type;
               if (content != undefined) {
-                lastText += content;
+                if (_type == 'text') {
+                  // 纯文本，直接添加
+                  lastText += content;
+                } else if (_type == 'data') {
+                  // 表格数据
+                  table_data = content;
+                } else if (_type == 'html') {
+                  // html数据
+                  html_data = content;
+                }
                 updateChat(uuid.value, props.chatData.length - 1, {
                   dateTime: new Date().toLocaleString(),
                   text: lastText,
+                  table_data: table_data,
+                  html_data: html_data,
                   inversion: false,
                   error: false,
                   loading: true,
-                  conversationOptions: e.lastEventId == '[ERR]' ? null : { conversationId: data.conversationId, parentMessageId: e.lastEventId },
-                  requestOptions: { prompt: message, options: { ...options } },
+                  conversationOptions: e.lastEventId == '[ERR]' ? null : {
+                    conversationId: data.conversationId,
+                    parentMessageId: e.lastEventId
+                  },
+                  requestOptions: {prompt: message, options: {...options}},
                 });
                 scrollToBottom();
               } else {
-                updateChatSome(uuid.value, props.chatData.length - 1, { loading: false });
+                updateChatSome(uuid.value, props.chatData.length - 1, {loading: false});
                 scrollToBottom();
                 handleStop();
               }
             } catch (error) {
-              updateChatSome(uuid.value, props.chatData.length - 1, { loading: false });
+              updateChatSome(uuid.value, props.chatData.length - 1, {loading: false});
               scrollToBottom();
               handleStop();
               evtSource.close(); // 关闭连接

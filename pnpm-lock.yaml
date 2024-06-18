@@ -136,6 +136,7 @@ specifiers:
   vxe-table: 4.5.17
   vxe-table-plugin-antd: 3.1.0
   xe-utils: 3.5.14
+  xlsx: ^0.18.5
   xss: ^1.0.14
 
 dependencies:
@@ -196,6 +197,7 @@ dependencies:
   vxe-table: 4.5.17_vue@3.4.21+xe-utils@3.5.14
   vxe-table-plugin-antd: 3.1.0_vxe-table@4.5.17
   xe-utils: 3.5.14
+  xlsx: 0.18.5
   xss: 1.0.14
 
 devDependencies:
@@ -3256,6 +3258,11 @@ packages:
     resolution: {integrity: sha512-qQLMr+8o0WC4FZGQTcJiKBVC59JylcPSrTtk6usvmIDFUOCKegapy1VHQwRbFMOFyb/inzUVqHs+eMYKDM1YeQ==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/add-stream/-/add-stream-1.0.0.tgz}
     dev: true
 
+  /adler-32/1.3.1:
+    resolution: {integrity: sha512-ynZ4w/nUUv5rrsR8UUGoe1VC9hZj6V5hU9Qw1HlMDJGEJw5S7TfTErWTjMys6M7vr0YWcPqs3qAr4ss0nDfP+A==}
+    engines: {node: '>=0.8'}
+    dev: false
+
   /ajv/6.12.6:
     resolution: {integrity: sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/ajv/-/ajv-6.12.6.tgz}
     dependencies:
@@ -3823,6 +3830,14 @@ packages:
     resolution: {integrity: sha512-BtYEK4r/iHt/txm81KBudCUcTy7t+s9emrIaHqjYurQ10x71zJ5VQ9x1dYPcz/b+pKSp4y/v1xSI67A+LzpNyg==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/caniuse-lite/-/caniuse-lite-1.0.30001574.tgz}
     dev: true
 
+  /cfb/1.2.2:
+    resolution: {integrity: sha512-KfdUZsSOw19/ObEWasvBP/Ac4reZvAGauZhs6S/gqNhXhI7cKwvlH7ulj+dOEYnca4bm4SGo8C1bTAQvnTjgQA==}
+    engines: {node: '>=0.8'}
+    dependencies:
+      adler-32: 1.3.1
+      crc-32: 1.2.2
+    dev: false
+
   /chalk/1.1.3:
     resolution: {integrity: sha512-U3lRVLMSlsCfjqYPbLyVv11M9CPW4I728d6TCKMAOJueEeB9/8o+eSsMnxPJD+Q+K909sdESg7C+tIkoH6on1A==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/chalk/-/chalk-1.1.3.tgz}
     engines: {node: '>=0.10.0'}
@@ -4001,6 +4016,11 @@ packages:
 
   /codemirror/5.65.16:
     resolution: {integrity: sha512-br21LjYmSlVL0vFCPWPfhzUCT34FM/pAdK7rRIZwa0rrtrIdotvP4Oh4GUHsu2E3IrQMCfRkL/fN3ytMNxVQvg==}
+    dev: false
+
+  /codepage/1.15.0:
+    resolution: {integrity: sha512-3g6NUTPd/YtuuGrhMnOMRjFc+LJw/bnMp3+0r/Wcz3IXUuCosKRJvMphm5+Q+bvTVGcJJuRvVLuYba+WojaFaA==}
+    engines: {node: '>=0.8'}
     dev: false
 
   /collect-v8-coverage/1.0.2:
@@ -4372,6 +4392,12 @@ packages:
       parse-json: 5.2.0
       typescript: 4.9.5
     dev: true
+
+  /crc-32/1.2.2:
+    resolution: {integrity: sha512-ROmzCKrTnOwybPcJApAA6WBWij23HVfGVNKqqrZpuyZOHqK2CwHSvpGuyt/UNNvaIjEd8X5IFGp4Mh+Ie1IHJQ==}
+    engines: {node: '>=0.8'}
+    hasBin: true
+    dev: false
 
   /create-jest/29.7.0_zluqygkncfiyicla7wwasp24ry:
     resolution: {integrity: sha512-Adz2bdH0Vq3F53KEMJOoftQFutWCukm6J24wbPWRO4k1kMY7gS7ds/uoJkNuV8wDCtWWnuwGcJwpWcih+zEW1Q==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/create-jest/-/create-jest-29.7.0.tgz}
@@ -5910,6 +5936,11 @@ packages:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.35
+
+  /frac/1.1.2:
+    resolution: {integrity: sha512-w/XBfkibaTl3YDqASwfDUqkna4Z2p9cFSr1aHDt0WoMTECnRfBOv2WArlZILlqgWlmdIlALXGpM2AOhEk5W3IA==}
+    engines: {node: '>=0.8'}
+    dev: false
 
   /fraction.js/4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/fraction.js/-/fraction.js-4.3.7.tgz}
@@ -9685,6 +9716,13 @@ packages:
     resolution: {integrity: sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/sprintf-js/-/sprintf-js-1.0.3.tgz}
     dev: true
 
+  /ssf/0.11.2:
+    resolution: {integrity: sha512-+idbmIXoYET47hH+d7dfm2epdOMUDjqcB4648sTZ+t2JwoyBFL/insLfB/racrDmsKB3diwsDA696pZMieAC5g==}
+    engines: {node: '>=0.8'}
+    dependencies:
+      frac: 1.1.2
+    dev: false
+
   /stable/0.1.8:
     resolution: {integrity: sha512-ji9qxRnOVfcuLDySj9qzhGSEFVobyt1kIOSkj1qZzYLzq7Tos/oUUWvotUPQLlrsidqsK6tBH89Bc9kL5zHA6w==}
     deprecated: 'Modern JS already guarantees Array#sort() is a stable sort, so this library is deprecated. See the compatibility table on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#browser_compatibility'
@@ -10994,10 +11032,20 @@ packages:
       isexe: 2.0.0
     dev: true
 
+  /wmf/1.0.2:
+    resolution: {integrity: sha512-/p9K7bEh0Dj6WbXg4JG0xvLQmIadrner1bi45VMJTfnbVHsc7yIajZyoSoK60/dtVBs12Fm6WkUI5/3WAVsNMw==}
+    engines: {node: '>=0.8'}
+    dev: false
+
   /word-wrap/1.2.5:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /word/0.3.0:
+    resolution: {integrity: sha512-OELeY0Q61OXpdUfTp+oweA/vtLVg5VDOXh+3he3PNzLGG/y0oylSOC1xRVj0+l4vQ3tj/bB1HVHv1ocXkQceFA==}
+    engines: {node: '>=0.8'}
+    dev: false
 
   /wordwrap/1.0.0:
     resolution: {integrity: sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/wordwrap/-/wordwrap-1.0.0.tgz}
@@ -11060,6 +11108,20 @@ packages:
 
   /xe-utils/3.5.14:
     resolution: {integrity: sha512-Xq6mS8dWwHBQsQUEBXcZYSaBV0KnNLoVWd0vRRDI3nKpbNxfs/LSCK0W21g1edLFnXYfKqg7hh5dakr3RtYY0A==, registry: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/, tarball: https://packages.aliyun.com/60e053ce4690c27532d3dfd3/npm/npm-registry/xe-utils/-/xe-utils-3.5.14.tgz}
+    dev: false
+
+  /xlsx/0.18.5:
+    resolution: {integrity: sha512-dmg3LCjBPHZnQp5/F/+nnTa+miPJxUXB6vtk42YjBBKayDNagxGEeIdWApkYPOf3Z3pm3k62Knjzp7lMeTEtFQ==}
+    engines: {node: '>=0.8'}
+    hasBin: true
+    dependencies:
+      adler-32: 1.3.1
+      cfb: 1.2.2
+      codepage: 1.15.0
+      crc-32: 1.2.2
+      ssf: 0.11.2
+      wmf: 1.0.2
+      word: 0.3.0
     dev: false
 
   /xml-name-validator/4.0.0:
