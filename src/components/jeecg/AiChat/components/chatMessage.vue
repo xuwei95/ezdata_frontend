@@ -84,7 +84,6 @@
   function handleData() {
     handleTableData();
     handleHtmlData();
-    console.log(111112222);
   }
   async function outputChart() {
     const output_name = '图表导出_' + Date.now() + '.html';
@@ -145,5 +144,9 @@
     .msgArea {
       //display: flex;
     }
+  }
+  .html-body {
+    height: 500px;
+    overflow: scroll;
   }
 </style>
