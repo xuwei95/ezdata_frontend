@@ -13,6 +13,7 @@
                 :text="item.text"
                 :table_data="item.table_data"
                 :html_data="item.html_data"
+                :chat_flow="item.chat_flow"
                 :inversion="item.inversion"
                 :error="item.error"
                 :loading="item.loading"
@@ -226,6 +227,7 @@
       let lastText = '';
       let table_data = [];
       let html_data = '';
+      let chat_flow = [];
       if (typeof EventSource !== 'undefined') {
         const token = getToken();
         evtSource = new EventSourcePolyfill(
@@ -269,12 +271,17 @@
                 } else if (_type == 'html') {
                   // html数据
                   html_data = content;
+                } else if (_type == 'flow') {
+                  // 处理流程
+                  chat_flow.push(content);
                 }
+                console.log(11111, chat_flow);
                 updateChat(uuid.value, props.chatData.length - 1, {
                   dateTime: new Date().toLocaleString(),
                   text: lastText,
                   table_data: table_data,
                   html_data: html_data,
+                  chat_flow: chat_flow,
                   inversion: false,
                   error: false,
                   loading: true,

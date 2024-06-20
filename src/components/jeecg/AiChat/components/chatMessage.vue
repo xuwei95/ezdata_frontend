@@ -34,7 +34,7 @@
   import chatText from './chatText.vue';
   import defaultAvatar from '../assets/avatar.jpg';
   import { useUserStore } from '/@/store/modules/user';
-  const props = defineProps(['dateTime', 'text', 'table_data', 'html_data', 'inversion', 'error', 'loading']);
+  const props = defineProps(['dateTime', 'text', 'table_data', 'html_data', 'chat_flow', 'inversion', 'error', 'loading']);
   const { userInfo } = useUserStore();
   const avatar = () => {
     return userInfo?.avatar || defaultAvatar;
@@ -48,6 +48,8 @@
   const dataSource = ref<any[]>([]); // 数据列表
   // html渲染相关配置
   const htmlText = ref('');
+  // chat 流程
+  const chatFlow = ref([]);
   // 数据表格 导出excel
   const { handleExportExcel } = useMethods();
   async function outputData() {
