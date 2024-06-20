@@ -155,22 +155,19 @@
   import '@/components/jeecg/AiChat/style/highlight.less';
   import '@/components/jeecg/AiChat/style/style.less';
 
-  const props = defineProps(['chatData', 'model_id']);
+  const props = defineProps(['model_id']);
   const { scrollRef, scrollToBottom, scrollToBottomIfAtBottom } = useScroll();
   const prompt = ref<string>('');
   const loading = ref<boolean>(false);
   const inputRef = ref<Ref | null>(null);
-  // const chatData = computed(() => {
-  //   return props.chatData;
-  // });
+  const chatData = ref([]);
   // 当前模式下, 发送消息会携带之前的聊天记录
   const usingContext = ref<any>(true);
-  const uuid = computed(() => {
-    return buildUUID();
-  });
+  let uid = buildUUID();
+  const uuid = ref(uid);
   let evtSource: any = null;
   const { VITE_GLOB_API_URL } = getAppEnvConfig();
-  const conversationList = computed(() => props.chatData.filter((item) => !item.inversion && !!item.conversationOptions));
+  const conversationList = computed(() => chatData.value.filter((item) => !item.inversion && !!item.conversationOptions));
   const placeholder = computed(() => {
     return '来说点什么吧...（Shift + Enter = 换行）';
   });
@@ -192,7 +189,7 @@
     loading.value = true;
     prompt.value = '';
 
-    if (props.chatData.length == 0) {
+    if (chatData.value.length == 0) {
       // const findItem = props.dataSource.history.find((item) => item.uuid === uuid.value);
       // if (findItem && findItem.title == '新建聊天') {
       //   findItem.title = message;
@@ -249,7 +246,7 @@
           const data = e.data;
           // console.log(e);
           if (data === '[DONE]') {
-            updateChatSome(uuid, props.chatData.length - 1, { loading: false });
+            updateChatSome(uuid.value, chatData.value.length - 1, { loading: false });
             const lastMessage = chatMessageRefs.value[chatMessageRefs.value.length - 1];
             setTimeout(() => {
               lastMessage.handleData();
@@ -273,7 +270,7 @@
                   // html数据
                   html_data = content;
                 }
-                updateChat(uuid.value, props.chatData.length - 1, {
+                updateChat(uuid.value, chatData.value.length - 1, {
                   dateTime: new Date().toLocaleString(),
                   text: lastText,
                   table_data: table_data,
@@ -292,12 +289,12 @@
                 });
                 scrollToBottom();
               } else {
-                updateChatSome(uuid.value, props.chatData.length - 1, { loading: false });
+                updateChatSome(uuid.value, chatData.value.length - 1, { loading: false });
                 scrollToBottom();
                 handleStop();
               }
             } catch (error) {
-              updateChatSome(uuid.value, props.chatData.length - 1, { loading: false });
+              updateChatSome(uuid.value, chatData.value.length - 1, { loading: false });
               scrollToBottom();
               handleStop();
               evtSource.close(); // 关闭连接
@@ -308,7 +305,7 @@
         evtSource.onerror = function (e) {
           // console.log(e);
           if (e.error?.message || e.statusText) {
-            updateChat(uuid.value, props.chatData.length - 1, {
+            updateChat(uuid.value, chatData.value.length - 1, {
               dateTime: new Date().toLocaleString(),
               text: e.error?.message ?? e.statusText,
               inversion: false,
@@ -320,7 +317,7 @@
             scrollToBottom();
           }
           evtSource.close(); // 关闭连接
-          updateChatSome(uuid.value, props.chatData.length - 1, { loading: false });
+          updateChatSome(uuid.value, chatData.value.length - 1, { loading: false });
           handleStop();
         };
       } else {
@@ -331,16 +328,16 @@
   }
   onUnmounted(() => {
     evtSource?.close();
-    updateChatSome(uuid.value, props.chatData.length - 1, { loading: false });
+    updateChatSome(uuid.value, chatData.value.length - 1, { loading: false });
   });
   const addChat = (uuid, data) => {
-    props.chatData.push({ ...data });
+    chatData.value.push({ ...data });
   };
   const updateChat = (uuid, index, data) => {
-    props.chatData.splice(index, 1, data);
+    chatData.value.splice(index, 1, data);
   };
   const updateChatSome = (uuid, index, data) => {
-    props.chatData[index] = { ...props.chatData[index], ...data };
+    chatData.value[index] = { ...chatData.value[index], ...data };
   };
   // 清空会话
   const handleDelSession = () => {
@@ -354,7 +351,7 @@
       async onOk() {
         try {
           return await new Promise<void>((resolve) => {
-            props.chatData.length = 0;
+            chatData.value.length = 0;
             resolve();
           });
         } catch {
@@ -370,7 +367,7 @@
     }
     if (evtSource) {
       evtSource?.close();
-      updateChatSome(uuid, props.chatData.length - 1, { loading: false });
+      updateChatSome(uuid, chatData.value.length - 1, { loading: false });
     }
   };
   // 是否使用上下文

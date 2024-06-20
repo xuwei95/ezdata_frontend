@@ -24,7 +24,7 @@
           </a-tab-pane>
           <a-tab-pane tab="数据分析" key="data-chat" style="position: relative">
             <div style="padding: 0 20px 20px; height: 100%">
-              <DataChat :model_id="modelData.id" :chat-data="[]" />
+              <DataChat :model_id="modelData.id" />
             </div>
           </a-tab-pane>
           <a-tab-pane tab="数据接口" key="data-interface">
