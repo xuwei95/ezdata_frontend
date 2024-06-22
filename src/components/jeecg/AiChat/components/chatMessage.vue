@@ -12,15 +12,31 @@
     <div class="content">
       <p class="date">{{ dateTime }}</p>
       <div class="msgArea">
+        <div v-if="chat_flow && chat_flow.length > 0">
+          <a-dropdown trigger="click">
+            <a-button type="primary" @click="showCollapse(chat_flow.length - 1)">
+              <span v-if="loading">
+                <a-icon type="loading-outlined" :spin="true" />
+              </span>
+              {{ chat_flow[chat_flow.length - 1].title }}
+              <a-icon type="down" />
+            </a-button>
+          </a-dropdown>
+          <a-collapse v-model:activeKey="activeKeys" v-if="showCollapsePanel">
+            <a-collapse-panel v-for="(item, index) in chat_flow" :key="index" :header="item.time + '  ' + item.title" :panelKey="index.toString()">
+              <chatText :text="item.content"></chatText>
+            </a-collapse-panel>
+          </a-collapse>
+        </div>
         <chatText :text="text" :inversion="inversion" :error="error" :loading="loading"></chatText>
-        <div v-if="showTable" style="width: 100%;">
+        <div v-if="showTable" style="width: 100%">
           <JVxeTable ref="tableRef" toolbar resizable maxHeight="400" :toolbarConfig="{ btn: [] }" :columns="columns" :dataSource="dataSource">
             <template #toolbarSuffix>
               <a-button @click="outputData" style="float: right" preIcon="ant-design:export-outlined">导出数据</a-button>
             </template>
           </JVxeTable>
         </div>
-        <div class="html-body" v-if="htmlText !== ''">
+        <div class="html-body" v-if="htmlText !== ''" style="width: 800px">
           <a-button @click="outputChart" style="float: right" preIcon="ant-design:export-outlined">导出图表</a-button>
           <iframe :srcdoc="htmlText" width="100%" height="100%"></iframe>
         </div>
@@ -48,8 +64,14 @@
   const dataSource = ref<any[]>([]); // 数据列表
   // html渲染相关配置
   const htmlText = ref('');
-  // chat 流程
-  const chatFlow = ref([]);
+  // 流程展示
+  const activeKeys = ref([]);
+  const showCollapsePanel = ref(false);
+  const showCollapse = (index) => {
+    showCollapsePanel.value = !showCollapsePanel.value;
+    console.log(22222, index);
+    activeKeys.value = [index.toString()];
+  };
   // 数据表格 导出excel
   const { handleExportExcel } = useMethods();
   async function outputData() {
