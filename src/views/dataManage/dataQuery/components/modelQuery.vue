@@ -3,11 +3,11 @@
     ai取数 <a-switch v-model:checked="ai_query" /> <br />
     <div v-show="ai_query" style="margin: 5px">
       <span>
-        <a-textarea v-model:value="query_prompt" :autoSize="{ minRows: 1, maxRows: 8 }" placeholder="请输入取数提示" style="width: 80%" />
+        <a-textarea v-model:value="query_prompt" :autoSize="{ minRows: 1, maxRows: 8 }" placeholder="请输入取数提示" style="width: 100%" />
       </span>
     </div>
   </div>
-  <div v-show="extract_rules.length > 0" class="extract-panel">
+  <div v-show="extract_rules.length > 0 && !ai_query" class="extract-panel">
     筛选条件 <br />
     <div v-for="(item, index) in extract_rule_list">
       <a-select
@@ -35,7 +35,7 @@
     </div>
     <Icon icon="ant-design:plus-circle-outlined" @click="addRule" v-if="extract_rule_list.length === 0" />
   </div>
-  <div v-show="search_type_list.length > 0" class="search-panel">
+  <div v-show="search_type_list.length > 0 && !ai_query" class="search-panel">
     高级查询
     <a-select
       v-model:value="search_type"

@@ -22,6 +22,11 @@
               <DataQueryTab :data="modelData" />
             </div>
           </a-tab-pane>
+          <a-tab-pane tab="数据分析" key="data-chat" style="position: relative">
+            <div style="padding: 0 20px 20px">
+              <DataChat :data="modelData" />
+            </div>
+          </a-tab-pane>
           <a-tab-pane tab="数据接口" key="data-interface">
             <div style="padding: 0 20px 20px">
               <DataInterFaceTab :data="modelData" />
@@ -40,6 +45,7 @@
   import DataLeftTree from './components/DataLeftTree.vue';
   import DataFormTab from './components/DataInfoTab.vue';
   import DataQueryTab from './components/DataQueryTab.vue';
+  import DataChat from './components/DataChat/index.vue';
   import DataInterFaceTab from './components/DataInterFaceTab/index.vue';
 
   const { prefixCls } = useDesign('model-query');

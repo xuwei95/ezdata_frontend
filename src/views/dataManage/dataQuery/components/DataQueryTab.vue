@@ -9,31 +9,24 @@
       <a-icon class="toggle-icon" v-if="isHover && isExpanded" type="up-outlined" style="font-size: 20px" />
     </div>
   </div>
-  <a-tabs defaultActiveKey="data-table">
-    <a-tab-pane tab="数据表格" key="data-table" style="position: relative">
-      <JVxeTable
-        ref="tableRef"
-        toolbar
-        resizable
-        maxHeight="600"
-        :toolbarConfig="{ btn: [] }"
-        :loading="loading"
-        :columns="columns"
-        :dataSource="dataSource"
-        :pagination="pagination"
-        @pageChange="handlePageChange"
-      >
-        <template #toolbarSuffix>
-          <a-button @click="fetchData(false)" style="float: right" preIcon="ant-design:search-outlined">查询</a-button>
-          <a-button @click="copyQuery" style="float: right" preIcon="ant-design:copy-outlined">复制查询条件</a-button>
-          <a-button :loading="loading" @click="outputData" style="float: right" preIcon="ant-design:export-outlined">导出数据</a-button>
-        </template>
-      </JVxeTable>
-    </a-tab-pane>
-    <a-tab-pane tab="数据对话" key="data-chat" style="position: relative" v-if="hasPermission(['llm:data:chat'])">
-      <DataChat :genQuery="genQuery" />
-    </a-tab-pane>
-  </a-tabs>
+  <JVxeTable
+    ref="tableRef"
+    toolbar
+    resizable
+    maxHeight="600"
+    :toolbarConfig="{ btn: [] }"
+    :loading="loading"
+    :columns="columns"
+    :dataSource="dataSource"
+    :pagination="pagination"
+    @pageChange="handlePageChange"
+  >
+    <template #toolbarSuffix>
+      <a-button @click="fetchData(false)" style="float: right" preIcon="ant-design:search-outlined">查询</a-button>
+      <a-button @click="copyQuery" style="float: right" preIcon="ant-design:copy-outlined">复制查询条件</a-button>
+      <a-button :loading="loading" @click="outputData" style="float: right" preIcon="ant-design:export-outlined">导出数据</a-button>
+    </template>
+  </JVxeTable>
 </template>
 
 <script lang="ts" setup>
@@ -41,7 +34,6 @@
   import { JVxeTypes, JVxeColumn, JVxeTableInstance } from '/@/components/jeecg/JVxeTable/types';
   import { queryData } from '../dataquery.api';
   import ModelQuery from './modelQuery.vue';
-  import DataChat from './DataChat/index.vue';
   import { useCopyToClipboard } from '/@/hooks/web/useCopyToClipboard';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { cloneObject } from '/@/utils';
