@@ -2,7 +2,6 @@ node_modules
 .DS_Store
 .github
 dist
-datas
 .npmrc
 .cache
 
@@ -23,6 +22,7 @@ pnpm-debug.log*
 
 # Editor directories and files
 .idea
+.svn
 # .vscode
 *.suo
 *.ntvs*
@@ -30,6 +30,8 @@ pnpm-debug.log*
 *.sln
 *.sw?
 /os_del.cmd
+os_del.cmd
 /.vscode/
 /.history/
 /svn clear.bat
+datas

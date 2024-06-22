@@ -27,6 +27,7 @@
           :loading="getProps.loading"
           :loading-tip="getProps.loadingTip"
           :minHeight="getProps.minHeight"
+          :maxHeight="getProps.maxHeight"
           :height="getWrapperHeight"
           :visible="visibleRef"
           :modalFooterHeight="footer !== undefined && !footer ? 0 : undefined"
@@ -64,12 +65,15 @@
   import { useFullScreen } from './hooks/useModalFullScreen';
   import { omit } from 'lodash-es';
   import { useDesign } from '/@/hooks/web/useDesign';
+  import { useAppInject } from '/@/hooks/web/useAppInject';
+
+
   export default defineComponent({
     name: 'BasicModal',
     components: { Modal, ModalWrapper, ModalClose, ModalFooter, ModalHeader },
     inheritAttrs: false,
     props: basicProps,
-    emits: ['visible-change', 'height-change', 'cancel', 'ok', 'register', 'update:visible'],
+    emits: ['visible-change', 'open-change', 'height-change', 'cancel', 'ok', 'register', 'update:visible', 'update:open', 'fullScreen'],
     setup(props, { emit, attrs , slots}) {
       const visibleRef = ref(false);
       const propsRef = ref<Partial<ModalProps> | null>(null);
@@ -93,13 +97,21 @@
       if (instance) {
         emit('register', modalMethods, instance.uid);
       }
+      const { getIsMobile } = useAppInject();
 
       // Custom title component: get title
       const getMergeProps = computed((): Recordable => {
-        return {
+        const result = {
           ...props,
           ...(unref(propsRef) as any),
         };
+        // update-begin--author:liaozhiyang---date:20240326---for：【QQYUN-8643】弹窗移动端弹窗统一全屏
+        if (getIsMobile.value) {
+          result.canFullscreen = false;
+          result.defaultFullscreen = true;
+        }
+        // update-end--author:liaozhiyang---date:20240326---for：【QQYUN-8643】弹窗移动端弹窗统一全屏
+        return result;
       });
         //update-begin-author:liusq date:2023-05-25 for:【issues/4856】Modal控件设置 :title = null 无效
         //是否未设置标题
@@ -131,16 +143,18 @@
       });
 
       const getBindValue = computed((): Recordable => {
+        // update-begin--author:liaozhiyang---date:20231218---for：【QQYUN-6366】升级到antd4.x
         const attr = {
           ...attrs,
           ...unref(getMergeProps),
-          visible: unref(visibleRef),
+          open: unref(visibleRef),
           wrapClassName: unref(getWrapClassName),
         };
         if (unref(fullScreenRef)) {
-          return omit(attr, ['height', 'title']);
+          return omit(attr, ['height', 'title', 'visible']);
         }
-        return omit(attr, 'title');
+        return omit(attr, ['title', 'visible']);
+        // update-end--author:liaozhiyang---date:20231218---for：【QQYUN-6366】升级到antd4.x
       });
 
       const getWrapperHeight = computed(() => {
@@ -150,10 +164,19 @@
 
       watchEffect(() => {
         fullScreenRef.value = !!props.defaultFullscreen;
+        // update-begin--author:liaozhiyang---date:20240326---for：【QQYUN-8643】弹窗移动端弹窗统一全屏
+        if (getIsMobile.value) {
+          fullScreenRef.value = true
+        }
+        // update-end--author:liaozhiyang---date:20240326---for：【QQYUN-8643】弹窗移动端弹窗统一全屏
       });
 
       watchEffect(() => {
         visibleRef.value = !!props.visible;
+      });
+
+      watchEffect(() => {
+        visibleRef.value = !!props.open;
       });
 
       watch(
@@ -161,6 +184,7 @@
         (v) => {
           emit('visible-change', v);
           emit('update:visible', v);
+          emit('update:open', v);
           instance && modalMethods.emitVisible?.(v, instance.uid);
           nextTick(() => {
             if (props.scrollTop && v && unref(modalWrapperRef)) {
@@ -197,8 +221,16 @@
         if (Reflect.has(props, 'visible')) {
           visibleRef.value = !!props.visible;
         }
+        if (Reflect.has(props, 'open')) {
+          visibleRef.value = !!props.open;
+        }
         if (Reflect.has(props, 'defaultFullscreen')) {
           fullScreenRef.value = !!props.defaultFullscreen;
+           // update-begin--author:liaozhiyang---date:20240326---for：【QQYUN-8643】弹窗移动端弹窗统一全屏
+          if (getIsMobile.value) {
+            fullScreenRef.value = true
+          }
+          // update-end--author:liaozhiyang---date:20240326---for：【QQYUN-8643】弹窗移动端弹窗统一全屏
         }
       }
 
@@ -234,6 +266,12 @@
       }
       //update-end-author:taoyan date:2022-7-18 for: modal支持评论 slot
 
+      // update-begin--author:liaozhiyang---date:20230804---for：【QQYUN-5866】放大行数自适应
+      watch(fullScreenRef,(val)=>{
+        emit('fullScreen',val);
+      });
+      // update-begin--author:liaozhiyang---date:20230804---for：【QQYUN-5866】放大行数自适应
+
       return {
         handleCancel,
         getBindValue,
@@ -266,7 +304,9 @@
   }
   .jeecg-modal-content{
     >.scroll-container{
-      padding: 14px;
+      //update-begin---author:wangshuai---date:2023-12-05---for:【QQYUN-7297】表单讨论弹窗放大按钮时只显示一部分---
+      padding: 6px;
+      //update-end---author:wangshuai---date:2023-12-05---for:【QQYUN-7297】表单讨论弹窗放大按钮时只显示一部分---
     }
   }
   /*update-end-author:taoyan date:2022-7-27 for:modal评论区域样式*/
@@ -275,5 +315,10 @@
   .jeecg-modal-wrapper,
   .jeecg-modal-content {
     height: 100%;
+  }
+  html[data-theme='dark'] {
+    .jeecg-comment-outer {
+      border-left: 1px solid rgba(253, 253, 253, 0.12);
+    }
   }
 </style>

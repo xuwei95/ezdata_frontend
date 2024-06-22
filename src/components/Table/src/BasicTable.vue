@@ -20,7 +20,13 @@
       <Table ref="tableElRef" v-bind="getBindValues" :rowClassName="getRowClassName" v-show="getEmptyDataIsShowTable" @resizeColumn="handleResizeColumn" @change="handleTableChange">
         <!-- antd的原生插槽直接传递 -->
         <template #[item]="data" v-for="item in slotNamesGroup.native" :key="item">
-          <slot :name="item" v-bind="data || {}"></slot>
+          <!-- update-begin--author:liaozhiyang---date:20240424---for：【issues/1146】BasicTable使用headerCell全选框出不来 -->
+          <template v-if="item === 'headerCell'">
+            <CustomSelectHeader v-if="isCustomSelection(data.column)" v-bind="selectHeaderProps" />
+            <slot v-else :name="item" v-bind="data || {}"></slot>
+          </template>
+          <slot v-else :name="item" v-bind="data || {}"></slot>
+          <!-- update-begin--author:liaozhiyang---date:20240424---for：【issues/1146】BasicTable使用headerCell全选框出不来 -->
         </template>
         <template #headerCell="{ column }">
           <!-- update-begin--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题 -->
@@ -31,7 +37,9 @@
         <!-- 增加对antdv3.x兼容 -->
         <template #bodyCell="data">
           <!-- update-begin--author:liaozhiyang---date:220230717---for：【issues-179】antd3 一些警告以及报错(针对表格) -->
+          <!-- update-begin--author:liusq---date:20230921---for：【issues/770】slotsBak异常报错的问题,增加判断column是否存在 -->
           <template v-if="data.column?.slotsBak?.customRender">
+          <!-- update-end--author:liusq---date:20230921---for：【issues/770】slotsBak异常报错的问题,增加判断column是否存在 -->
             <slot :name="data.column.slotsBak.customRender" v-bind="data || {}"></slot>
           </template>
           <template v-else>
@@ -46,7 +54,7 @@
 <script lang="ts">
   import type { BasicTableProps, TableActionType, SizeType, ColumnChangeParam, BasicColumn } from './types/table';
 
-  import { defineComponent, ref, computed, unref, toRaw, inject, watchEffect } from 'vue';
+  import { defineComponent, ref, computed, unref, toRaw, inject, watchEffect, watch, onUnmounted, onMounted, nextTick } from 'vue';
   import { Table } from 'ant-design-vue';
   import { BasicForm, useForm } from '/@/components/Form/index';
   import { PageWrapperFixedHeightKey } from '/@/components/Page/injectionKey';
@@ -258,13 +266,17 @@
         /*if (slots.expandedRowRender) {
           propsData = omit(propsData, 'scroll');
         }*/
-        //update-end---author:wangshuai ---date:20230214  for：[QQYUN-4237]代码生成 内嵌子表模式 没有滚动条------------ 
+        //update-end---author:wangshuai ---date:20230214  for：[QQYUN-4237]代码生成 内嵌子表模式 没有滚动条------------
 
         // update-begin--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题
         // 自定义选择列，需要去掉原生的
         delete propsData.rowSelection
         // update-end--author:sunjianlei---date:220230630---for：【QQYUN-5571】自封装选择列，解决数据行选择卡顿问题
 
+        // update-begin--author:liaozhiyang---date:20230919---for：【QQYUN-6387】展开写法（去掉报错）
+        !propsData.isTreeTable && delete propsData.expandIconColumnIndex;
+        propsData.expandedRowKeys === null && delete propsData.expandedRowKeys;
+        // update-end--author:liaozhiyang---date:20230919---for：【QQYUN-6387】展开写法（去掉报错）
         propsData = omit(propsData, ['class', 'onChange']);
         return propsData;
       });
@@ -364,10 +376,15 @@
         return { native, custom };
       });
       // update-end--author:sunjianlei---date:220230718---for：【issues/179】兼容新老slots写法，移除控制台警告
-
+      // update-begin--author:liaozhiyang---date:20231226---for：【issues/945】BasicTable组件设置默认展开不生效
+      nextTick(() => {
+        getProps.value.defaultExpandAllRows && expandAll();
+      })
+      // update-end--author:sunjianlei---date:20231226---for：【issues/945】BasicTable组件设置默认展开不生效
       expose(tableAction);
 
       emit('register', tableAction, formActions);
+
 
       return {
         tableElRef,
@@ -382,6 +399,7 @@
         tableAction,
         redoHeight,
         handleResizeColumn: (w, col) => {
+        console.log('col',col);
           col.width = w;
         },
         getFormProps: getFormProps as any,
@@ -414,8 +432,8 @@
     .@{prefix-cls} {
       //表格选择工具栏样式
       .alert {
-        background-color: #323232;
-        border-color: #424242;
+        // background-color: #323232;
+        // border-color: #424242;
       }
     }
   }
@@ -516,8 +534,8 @@
     //表格选择工具栏样式
     .alert {
       height: 38px;
-      background-color: #e6f7ff;
-      border-color: #91d5ff;
+      // background-color: #e6f7ff;
+      // border-color: #91d5ff;
     }
     &--inset {
       .ant-table-wrapper {

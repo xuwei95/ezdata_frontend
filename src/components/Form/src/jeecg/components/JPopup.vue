@@ -115,7 +115,10 @@
         //匹配popup设置的回调值
         let values = {};
         for (let item of fieldConfig) {
-          let val = rows.map((row) => row[item.source]).join(',');
+          let val = rows.map((row) => row[item.source]);
+          // update-begin--author:liaozhiyang---date:20230831---for：【QQYUN-7535】数组只有一个且是number类型，join会改变值的类型为string
+          val = val.length == 1 ? val[0] : val.join(',');
+          // update-begin--author:liaozhiyang---date:20230831---for：【QQYUN-7535】数组只有一个且是number类型，join会改变值的类型为string
           item.target.split(',').forEach((target) => {
             values[target] = val;
           });
@@ -125,7 +128,9 @@
         //传入赋值方法方式赋值
         props.setFieldsValue && props.setFieldsValue(values);
         // update-begin--author:liaozhiyang---date:20230831---for：【issues/5288】popup弹框，无法将选择的数据填充到自身
+        // update-begin--author:liaozhiyang---date:20230811---for：【issues/5213】JPopup抛出change事件
         emit('popUpChange', values);
+        // update-end--author:liaozhiyang---date:20230811---for：【issues/5213】JPopup抛出change事件
         // update-begin--author:liaozhiyang---date:20230831---for：【issues/5288】popup弹框，无法将选择的数据填充到自身
       }
 

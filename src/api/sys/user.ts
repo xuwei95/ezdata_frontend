@@ -11,7 +11,7 @@ import { PageEnum } from '/@/enums/pageEnum';
 
 const { createErrorModal } = useMessage();
 enum Api {
-  Login = '/sys/user/login', // '/sys/login',
+  Login = '/sys/user/login',
   phoneLogin = '/sys/phoneLogin',
   Logout = '/sys/logout',
   GetUserInfo = '/sys/user/info', // '/sys/user/getUserInfo',
@@ -85,7 +85,17 @@ export function getUserInfo() {
       const userStore = useUserStoreWithOut();
       userStore.setToken('');
       setAuthCache(TOKEN_KEY, null);
-      router.push(PageEnum.BASE_LOGIN);
+
+      // update-begin-author:sunjianlei date:20230306 for: 修复登录成功后，没有正确重定向的问题
+      router.push({
+        path: PageEnum.BASE_LOGIN,
+        query: {
+          // 传入当前的路由，登录成功后跳转到当前路由
+          redirect: router.currentRoute.value.fullPath,
+        }
+      });
+      // update-end-author:sunjianlei date:20230306 for: 修复登录成功后，没有正确重定向的问题
+
     }
     // update-end--author:zyf---date:20220425---for:【VUEN-76】捕获接口超时异常,跳转到登录界面
   });
@@ -116,6 +126,9 @@ export function getCaptcha(params) {
         createErrorModal({ title: '错误提示', content: res.message || '未知问题' });
         reject();
       }
+    }).catch((res)=>{
+      createErrorModal({ title: '错误提示', content: res.message || '未知问题' });
+      reject();
     });
   });
 }
@@ -146,9 +159,15 @@ export const passwordChange = (params) => defHttp.get({ url: Api.passwordChange,
  * @description: 第三方登录
  */
 export function thirdLogin(params, mode: ErrorMessageMode = 'modal') {
+  //==========begin 第三方登录/auth2登录需要传递租户id===========
+  let tenantId = "0";
+  if(!params.tenantId){
+    tenantId = params.tenantId;
+  }
+  //==========end 第三方登录/auth2登录需要传递租户id===========
   return defHttp.get<LoginResultModel>(
     {
-      url: `${Api.thirdLogin}/${params.token}/${params.thirdType}`,
+      url: `${Api.thirdLogin}/${params.token}/${params.thirdType}/${tenantId}`,
     },
     {
       errorMessageMode: mode,

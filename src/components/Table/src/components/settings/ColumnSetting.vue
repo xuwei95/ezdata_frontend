@@ -1,13 +1,13 @@
 <template>
-  <Tooltip placement="top" v-bind="getBindProps">
+  <Tooltip placement="top" v-bind="getBindProps" >
     <template #title>
       <span>{{ t('component.table.settingColumn') }}</span>
     </template>
     <Popover
-      v-model:visible="popoverVisible"
+      v-model:open="popoverVisible"
       placement="bottomLeft"
       trigger="click"
-      @visible-change="handleVisibleChange"
+      @open-change="handleVisibleChange"
       :overlayClassName="`${prefixCls}__cloumn-list`"
       :getPopupContainer="getPopupContainer"
     >
@@ -174,7 +174,7 @@
       const getBindProps = computed(() => {
         let obj = {};
         if (props.isMobile) {
-          obj['visible'] = false;
+          obj['open'] = false;
         }
         return obj;
       });
@@ -289,7 +289,15 @@
 
       // reset columns
       function reset() {
-        state.checkedList = [...state.defaultCheckList];
+        // state.checkedList = [...state.defaultCheckList];
+        // update-begin--author:liaozhiyang---date:20231103---for：【issues/825】tabel的列设置隐藏列保存后切换路由问题[重置没勾选]
+        state.checkedList = table
+          .getColumns({ ignoreAction: true })
+          .map((item) => {
+            return item.dataIndex || item.title;
+          })
+          .filter(Boolean) as string[];
+        // update-end--author:liaozhiyang---date:20231103---for：【issues/825】tabel的列设置隐藏列保存后切换路由问题[重置没勾选]
         state.checkAll = true;
         plainOptions.value = unref(cachePlainOptions);
         plainSortOptions.value = unref(cachePlainOptions);
@@ -500,8 +508,11 @@
       }
 
       .ant-checkbox-group {
-        width: 100%;
+        // update-begin--author:liaozhiyang---date:20240118---for：【QQYUN-7887】表格列设置宽度过长
+        // width: 100%;
         min-width: 260px;
+        max-width: min-content;
+        // update-end--author:liaozhiyang---date:20240118---for：【QQYUN-7887】表格列设置宽度过长
         // flex-wrap: wrap;
       }
 

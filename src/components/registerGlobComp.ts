@@ -1,10 +1,12 @@
 import type { App } from 'vue';
 import { Icon } from './Icon';
 import AIcon from '/@/components/jeecg/AIcon.vue';
-import { Button, JUploadButton } from './Button';
-//Tinymce富文本
-import Editor from '/@/components/Tinymce/src/Editor.vue'
+// //Tinymce富文本
+// import Editor from '/@/components/Tinymce/src/Editor.vue'
 
+import { Button, JUploadButton } from './Button';
+
+// 按需注册antd的组件
 import {
   // Need
   Button as AntButton,
@@ -55,24 +57,26 @@ import {
   Skeleton,
   Cascader,
   Rate,
+  Progress
 } from 'ant-design-vue';
-
 const compList = [AntButton.Group, Icon, AIcon, JUploadButton];
 
-//敲敲云—仪表盘设计器（拖拽设计）
-import DragEngine from '@qiaoqiaoyun/drag-free';
-if (import.meta.env.DEV) {
-  import('@qiaoqiaoyun/drag-free/lib/index.css');
-}
-console.log('---初始化---， 全局注册仪表盘--------------');
+import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
 
 export function registerGlobComp(app: App) {
   compList.forEach((comp) => {
     app.component(comp.name || comp.displayName, comp);
   });
+  
   //仪表盘依赖Tinymce，需要提前加载（没办法按需加载了）
-  app.component(Editor.name, Editor)
-
+  //app.component(Editor.name, Editor);
+  app.component(
+    'Tinymce',
+    createAsyncComponent(() => import('./Tinymce/src/Editor.vue'), {
+      loading: true,
+    })
+  );
+  
   app.use(Select)
     .use(Alert)
     .use(Button)
@@ -118,9 +122,9 @@ export function registerGlobComp(app: App) {
     .use(InputNumber)
     .use(Carousel)
     .use(Popconfirm)
-    .use(DragEngine)
     .use(Skeleton)
     .use(Cascader)
-    .use(Rate);
-  console.log("注册antd组件完成！");
+    .use(Rate)
+    .use(Progress);
+    console.log("---初始化---全局注册Antd等组件--------------")
 }

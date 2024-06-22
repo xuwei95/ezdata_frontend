@@ -5,7 +5,7 @@
       v-bind="$attrs"
       @register="register"
       :title="modalTitle"
-      width="900px"
+      width="1100px"
       wrapClassName="j-user-select-modal"
       @ok="handleOk"
       destroyOnClose
@@ -78,7 +78,8 @@
         canResize: false,
         bordered: true,
         size: 'small',
-        rowKey: 'code',
+        //改成读取rowKey,自定义传递参数
+        rowKey: props.rowKey,
       };
       const getBindValue = Object.assign({}, unref(props), unref(attrs), config);
       const [{ rowSelection, visibleChange, indexColumnProps, getSelectResult, handleDeleteSelected, selectRows }] = useSelectBiz(
@@ -89,7 +90,7 @@
       //查询form
       const formConfig = {
         labelCol: {
-          span: 8,
+          span: 4,
         },
         baseColProps: {
           xs: 24,
@@ -99,6 +100,16 @@
           xl: 10,
           xxl: 10,
         },
+        //update-begin-author:liusq date:2023-10-30 for: [issues/5514]组件页面显示错位
+        actionColOptions: {
+            xs: 24,
+            sm: 8,
+            md: 8,
+            lg: 8,
+            xl: 8,
+            xxl: 8,
+        },
+        //update-end-author:liusq date:2023-10-30 for: [issues/5514]组件页面显示错位
         schemas: [
           {
             label: '职务名称',
@@ -176,6 +187,7 @@
         selectedTable,
         selectRows,
         handleDeleteSelected,
+        searchInfo,
       };
     },
   });

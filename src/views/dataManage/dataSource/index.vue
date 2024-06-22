@@ -140,7 +140,7 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
-        auth: ['datasource:edit'],
+        auth: 'datasource:edit',
       },
     ];
   }

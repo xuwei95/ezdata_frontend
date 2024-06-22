@@ -1,6 +1,14 @@
+/**
+ * 目前实现了异步加载的组件清单 ：
+ * JAreaLinkage
+ * JEditor
+ * JMarkdownEditor
+ * JCodeEditor
+ * JEasyCron
+ */
 import type { Component } from 'vue';
 import type { ComponentType } from './types/index';
-
+import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
 /**
  * Component list, register here to setting it in the form
  */
@@ -29,7 +37,7 @@ import { StrengthMeter } from '/@/components/StrengthMeter';
 import { IconPicker } from '/@/components/Icon';
 import { CountdownInput } from '/@/components/CountDown';
 //自定义组件
-import JAreaLinkage from './jeecg/components/JAreaLinkage.vue';
+// import JAreaLinkage from './jeecg/components/JAreaLinkage.vue';
 import JSelectUser from './jeecg/components/JSelectUser.vue';
 import JSelectPosition from './jeecg/components/JSelectPosition.vue';
 import JSelectRole from './jeecg/components/JSelectRole.vue';
@@ -37,17 +45,20 @@ import JImageUpload from './jeecg/components/JImageUpload.vue';
 import JDictSelectTag from './jeecg/components/JDictSelectTag.vue';
 import JSelectDept from './jeecg/components/JSelectDept.vue';
 import JAreaSelect from './jeecg/components/JAreaSelect.vue';
-import JEditor from './jeecg/components/JEditor.vue';
-import JMarkdownEditor from './jeecg/components/JMarkdownEditor.vue';
+// import JEditor from './jeecg/components/JEditor.vue';
+// import JMarkdownEditor from './jeecg/components/JMarkdownEditor.vue';
 import JSelectInput from './jeecg/components/JSelectInput.vue';
-import JCodeEditor from './jeecg/components/JCodeEditor.vue';
+// import JCodeEditor from './jeecg/components/JCodeEditor.vue';
 import JCategorySelect from './jeecg/components/JCategorySelect.vue';
 import JSelectMultiple from './jeecg/components/JSelectMultiple.vue';
 import JPopup from './jeecg/components/JPopup.vue';
+// update-begin--author:liaozhiyang---date:20240130---for：【QQYUN-7961】popupDict字典
+import JPopupDict from './jeecg/components/JPopupDict.vue';
+// update-end--author:liaozhiyang---date:20240130---for：【QQYUN-7961】popupDict字典
 import JSwitch from './jeecg/components/JSwitch.vue';
 import JTreeDict from './jeecg/components/JTreeDict.vue';
 import JInputPop from './jeecg/components/JInputPop.vue';
-import { JEasyCron } from './jeecg/components/JEasyCron';
+// import { JEasyCron } from './jeecg/components/JEasyCron';
 import JCheckbox from './jeecg/components/JCheckbox.vue';
 import JInput from './jeecg/components/JInput.vue';
 import JTreeSelect from './jeecg/components/JTreeSelect.vue';
@@ -61,6 +72,7 @@ import JRangeNumber from './jeecg/components/JRangeNumber.vue';
 import UserSelect from './jeecg/components/userSelect/index.vue';
 import JRangeDate from './jeecg/components/JRangeDate.vue'
 import JRangeTime from './jeecg/components/JRangeTime.vue'
+import RoleSelectInput from './jeecg/components/roleSelect/RoleSelectInput.vue';
 // 其他自定义组件
 import MonacoEditor from './components/MonacoEditor/index.vue';
 
@@ -102,7 +114,10 @@ componentMap.set('Upload', BasicUpload);
 componentMap.set('Divider', Divider);
 
 //注册自定义组件
-componentMap.set('JAreaLinkage', JAreaLinkage);
+componentMap.set(
+  'JAreaLinkage',
+  createAsyncComponent(() => import('./jeecg/components/JAreaLinkage.vue'))
+);
 componentMap.set('JSelectPosition', JSelectPosition);
 componentMap.set('JSelectUser', JSelectUser);
 componentMap.set('JSelectRole', JSelectRole);
@@ -110,17 +125,32 @@ componentMap.set('JImageUpload', JImageUpload);
 componentMap.set('JDictSelectTag', JDictSelectTag);
 componentMap.set('JSelectDept', JSelectDept);
 componentMap.set('JAreaSelect', JAreaSelect);
-componentMap.set('JEditor', JEditor);
-componentMap.set('JMarkdownEditor', JMarkdownEditor);
+componentMap.set(
+  'JEditor',
+  createAsyncComponent(() => import('./jeecg/components/JEditor.vue'))
+);
+componentMap.set(
+  'JMarkdownEditor',
+  createAsyncComponent(() => import('./jeecg/components/JMarkdownEditor.vue'))
+);
 componentMap.set('JSelectInput', JSelectInput);
-componentMap.set('JCodeEditor', JCodeEditor);
+componentMap.set(
+  'JCodeEditor',
+  createAsyncComponent(() => import('./jeecg/components/JCodeEditor.vue'))
+);
 componentMap.set('JCategorySelect', JCategorySelect);
 componentMap.set('JSelectMultiple', JSelectMultiple);
 componentMap.set('JPopup', JPopup);
+// update-begin--author:liaozhiyang---date:20240130---for：【QQYUN-7961】popupDict字典
+componentMap.set('JPopupDict', JPopupDict);
+// update-end--author:liaozhiyang---date:20240130---for：【QQYUN-7961】popupDict字典
 componentMap.set('JSwitch', JSwitch);
 componentMap.set('JTreeDict', JTreeDict);
 componentMap.set('JInputPop', JInputPop);
-componentMap.set('JEasyCron', JEasyCron);
+componentMap.set(
+  'JEasyCron',
+  createAsyncComponent(() => import('./jeecg/components/JEasyCron/EasyCronInput.vue'))
+);
 componentMap.set('JCheckbox', JCheckbox);
 componentMap.set('JInput', JInput);
 componentMap.set('JTreeSelect', JTreeSelect);
@@ -133,8 +163,11 @@ componentMap.set('JRangeNumber', JRangeNumber);
 componentMap.set('UserSelect', UserSelect);
 componentMap.set('RangeDate', JRangeDate);
 componentMap.set('RangeTime', JRangeTime);
+componentMap.set('RoleSelect', RoleSelectInput);
 //注册其他自定义组件
 componentMap.set('MonacoEditor', MonacoEditor);
+
+
 export function add(compName: ComponentType, component: Component) {
   componentMap.set(compName, component);
 }

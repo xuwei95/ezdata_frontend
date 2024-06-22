@@ -108,6 +108,8 @@ export const basicProps = {
   },
   minHeight: propTypes.number,
   maxHeight: propTypes.number,
+  // 统一设置列最大宽度
+  maxColumnWidth: propTypes.number,
   dataSource: {
     type: Array as PropType<Recordable[]>,
     default: null,
@@ -126,7 +128,9 @@ export const basicProps = {
     type: Function as PropType<(record: TableCustomRecord<any>, index: number) => string>,
   },
   scroll: {
-    type: Object as PropType<{ x: number | true; y: number }>,
+    // update-begin--author:liaozhiyang---date:20240424---for：【issues/1188】BasicTable加上scrollToFirstRowOnChange类型定义
+    type: Object as PropType<{ x?: number | true; y?: number; scrollToFirstRowOnChange?: boolean }>,
+    // update-end--author:liaozhiyang---date:20240424---for：【issues/1188】BasicTable加上scrollToFirstRowOnChange类型定义
     default: null,
   },
   beforeEditSubmit: {
@@ -135,5 +139,9 @@ export const basicProps = {
   size: {
     type: String as PropType<SizeType>,
     default: DEFAULT_SIZE,
+  },
+  expandedRowKeys: {
+    type: Array,
+    default: null,
   },
 };

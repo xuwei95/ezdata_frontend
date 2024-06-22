@@ -25,19 +25,19 @@
         </a-button>
       </div>
     </a-upload>
-    <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel()">
+    <a-modal :open="previewVisible" :footer="null" @cancel="handleCancel()">
       <img alt="example" style="width: 100%" :src="previewImage" />
     </a-modal>
   </div>
 </template>
 <script lang="ts">
-  import { defineComponent, PropType, ref, reactive, watchEffect, computed, unref, watch, onMounted } from 'vue';
+  import { defineComponent, PropType, ref, reactive, watchEffect, computed, unref, watch, onMounted, nextTick } from 'vue';
   import { LoadingOutlined, UploadOutlined } from '@ant-design/icons-vue';
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
   import { propTypes } from '/@/utils/propTypes';
   import { useAttrs } from '/@/hooks/core/useAttrs';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { getFileAccessHttpUrl, getRandom } from '/@/utils/common/compUtils';
+  import { getFileAccessHttpUrl, getHeaders, getRandom } from '/@/utils/common/compUtils';
   import { uploadUrl } from '/@/api/common/api';
   import { getToken } from '/@/utils/auth';
 
@@ -94,10 +94,7 @@
         return path.substring(path.lastIndexOf('/') + 1);
       };
       //token
-      const headers = ref<object>({
-        // 'X-Access-Token': getToken(),
-        Authorization: 'JWT ' + getToken(),
-      });
+      const headers = getHeaders();
       //上传状态
       const loading = ref<boolean>(false);
       //是否是初始化加载
@@ -178,29 +175,36 @@
        */
       function handleChange({ file, fileList, event }) {
         initTag.value = false;
-        uploadFileList.value = fileList;
+        // update-begin--author:liaozhiyang---date:20231116---for：【issues/846】上传多个列表只显示一个
+        // uploadFileList.value = fileList;
         if (file.status === 'error') {
           createMessage.error(`${file.name} 上传失败.`);
         }
         let fileUrls = [];
-        //上传完成
+        let noUploadingFileCount = 0;
         if (file.status != 'uploading') {
           fileList.forEach((file) => {
             if (file.status === 'done') {
-              //update-begin---author:wangshuai ---date:20221121  for：[issues/248]原生表单内使用图片组件,关闭弹窗图片组件值不会被清空------------
-              initTag.value = true;
-              //update-end---author:wangshuai ---date:20221121  for：[issues/248]原生表单内使用图片组件,关闭弹窗图片组件值不会被清空------------
-              // fileUrls.push(file.response.message);
               fileUrls.push(file.response.data.url);
+            }
+            if (file.status != 'uploading') {
+              noUploadingFileCount++;
             }
           });
           if (file.status === 'removed') {
             handleDelete(file);
           }
+          if (noUploadingFileCount == fileList.length) {
+            state.value = fileUrls.join(',');
+            emit('update:value', fileUrls.join(','));
+            // update-begin---author:wangshuai ---date:20221121  for：[issues/248]原生表单内使用图片组件,关闭弹窗图片组件值不会被清空------------
+            nextTick(() => {
+              initTag.value = true;
+            });
+            // update-end---author:wangshuai ---date:20221121  for：[issues/248]原生表单内使用图片组件,关闭弹窗图片组件值不会被清空------------
+          }
         }
-        // emitData.value = fileUrls.join(',');
-        state.value = fileUrls.join(',');
-        emit('update:value', fileUrls.join(','));
+        // update-end--author:liaozhiyang---date:20231116---for：【issues/846】上传多个列表只显示一个
       }
 
       /**

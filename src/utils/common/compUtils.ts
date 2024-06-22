@@ -2,6 +2,12 @@ import { useGlobSetting } from '/@/hooks/setting';
 import { merge, random } from 'lodash-es';
 import { isArray } from '/@/utils/is';
 import { FormSchema } from '/@/components/Form';
+import { reactive } from "vue";
+import { getTenantId, getToken } from "/@/utils/auth";
+import { useUserStoreWithOut } from "/@/store/modules/user";
+
+import { Modal } from "ant-design-vue";
+import { defHttp } from "@/utils/http/axios";
 
 const globSetting = useGlobSetting();
 const baseApiUrl = globSetting.domainUrl;
@@ -137,7 +143,12 @@ export function mapTableTotalSummary(tableData: Recordable[], fieldKeys: string[
   let totals: any = { _row: '合计', _index: '合计' };
   fieldKeys.forEach((key) => {
     totals[key] = tableData.reduce((prev, next) => {
-      prev += next[key];
+      // update-begin--author:liaozhiyang---date:20240118---for：【QQYUN-7891】PR 合计工具方法，转换为Nuber类型再计算
+      const value = Number(next[key]);
+      if (!Number.isNaN(value)) {
+        prev += value;
+      }
+      // update-end--author:liaozhiyang---date:20240118---for：【QQYUN-7891】PR 合计工具方法，转换为Nuber类型再计算
       return prev;
     }, 0);
   });
@@ -364,4 +375,151 @@ export  function checkChildrenHidden(menuTreeItem){
     return false
   }
   return menuTreeItem.children?.find((item) => item.hideMenu == false) != null;
+}
+
+/**
+ * 计算文件大小
+ * @param fileSize
+ * @param unit
+ * @return 返回大小及后缀
+ */
+export function calculateFileSize(fileSize, unit?) {
+  let unitArr = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  if (unit && unit.length > 0) {
+    unitArr = unit;
+  }
+  let size = fileSize;
+  let unitIndex = 0;
+  while (size >= 1024 && unitIndex < unitArr.length - 1) {
+    size /= 1024;
+    unitIndex++;
+  }
+  //保留两位小数，四舍五入
+  size = Math.round(size * 100) / 100;
+  return size + unitArr[unitIndex];
+}
+
+/**
+ * 获取上传header
+ */
+export function getHeaders() {
+  let tenantId = getTenantId();
+  return reactive({
+    Authorization: 'JWT ' + getToken(),
+    // 'X-Access-Token': getToken(),
+    // 'X-Tenant-Id': tenantId ? tenantId : '0',
+  });
+}
+
+/** 根据表达式获取相应的用户信息 */
+export function getUserInfoByExpression(expression) {
+  if (!expression) {
+    return expression;
+  }
+  const userStore = useUserStoreWithOut();
+  let userInfo = userStore.getUserInfo;
+  if (userInfo) {
+    switch (expression) {
+      case 'sysUserId':
+        return userInfo.id;
+      // 当前登录用户登录账号
+      case 'sysUserCode':
+      case 'sys_user_code':
+        return userInfo.username;
+      // 当前登录用户真实名称
+      case 'sysUserName':
+        return userInfo.realname;
+      // 当前登录用户部门编号
+      case 'sysOrgCode':
+      case 'sys_org_code':
+        return userInfo.orgCode;
+    }
+  }
+  return expression;
+}
+
+/**
+ * 替换表达式（#{xxx}）为用户信息
+ * @param expression
+ */
+export function replaceUserInfoByExpression(expression: string | any[]) {
+  if (!expression) {
+    return expression;
+  }
+  const isString = typeof expression === 'string';
+  const isArray = Array.isArray(expression)
+  if (!isString && !isArray) {
+    return expression;
+  }
+  const reg = /#{(.*?)}/g;
+  const replace = (str) => {
+    if (typeof str !== 'string') {
+      return str;
+    }
+    let result = str.match(reg);
+    if (result && result.length > 0) {
+      result.forEach((item) => {
+        let userInfo = getUserInfoByExpression(item.substring(2, item.length - 1));
+        str = str.replace(item, userInfo);
+      });
+    }
+    return str;
+  };
+  // @ts-ignore
+  return isString ? replace(expression) : expression.map(replace);
+}
+
+/**
+ * 设置租户缓存，当租户退出的时候
+ *
+ * @param tenantId
+ */
+export async function userExitChangeLoginTenantId(tenantId){
+  const userStore = useUserStoreWithOut();
+  //step 1 获取用户租户
+  const url = '/sys/tenant/getCurrentUserTenant'
+  let currentTenantId = null;
+  const data = await defHttp.get({ url });
+  if(data && data.list){
+    let arr = data.list;
+    if(arr.length>0){
+      //step 2.判断当前id是否存在用户租户中
+      let filterTenantId = arr.filter((item) => item.id == tenantId);
+      //存在说明不是退出的不是当前租户，还用用来的租户即可
+      if(filterTenantId && filterTenantId.length>0){
+        currentTenantId = tenantId;
+      }else{
+        //不存在默认第一个
+        currentTenantId = arr[0].id
+      }
+    }
+  }
+  let loginTenantId = getTenantId();
+  userStore.setTenant(currentTenantId);
+
+  //update-begin---author:wangshuai---date:2023-11-07---for:【QQYUN-7005】退租户，判断退出的租户ID与当前租户ID一致，再刷新---
+  //租户为空，说明没有租户了，需要刷新页面。或者当前租户和退出的租户一致则需要刷新浏览器
+  if(!currentTenantId || tenantId == loginTenantId){
+    window.location.reload();
+  }
+  //update-end---author:wangshuai---date:2023-11-07---for:【QQYUN-7005】退租户，判断退出的租户ID与当前租户ID一致，再刷新---
+}
+
+/**
+ * 我的租户模块需要开启多租户提示
+ *
+ * @param title 标题
+ */
+export function tenantSaasMessage(title){
+  let tenantId = getTenantId();
+  if(!tenantId){
+    Modal.confirm({
+      title:title,
+      content: '此菜单需要在多租户模式下使用，否则数据会出现混乱',
+      okText: '确认',
+      okType: 'danger',
+      // @ts-ignore
+      cancelButtonProps: { style: { display: 'none' } },
+    })
+  }
 }

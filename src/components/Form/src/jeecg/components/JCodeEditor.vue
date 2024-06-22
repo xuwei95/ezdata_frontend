@@ -1,5 +1,5 @@
 <template>
-  <div v-bind="boxBindProps">
+  <div ref="containerRef" v-bind="boxBindProps">
     <!-- 全屏按钮 -->
     <a-icon v-if="fullScreen" class="full-screen-icon" :type="fullScreenIcon" @click="onToggleFullScreen" />
     <textarea ref="textarea" v-bind="getBindValue"></textarea>
@@ -45,6 +45,8 @@
   import { useAttrs } from '/@/hooks/core/useAttrs';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { isJsonObjectString } from '/@/utils/is.ts';
+  // 代码提示
+  import { useCodeHinting } from '../hooks/useCodeHinting';
 
   export default defineComponent({
     name: 'JCodeEditor',
@@ -58,12 +60,15 @@
       // 是否显示全屏按钮
       fullScreen: propTypes.bool.def(false),
       // 全屏以后的z-index
-      zIndex: propTypes.any.def(999),
+      zIndex: propTypes.any.def(1500),
       theme: propTypes.string.def('idea'),
       language: propTypes.string.def(''),
+      // 代码提示
+      keywords: propTypes.array.def([]),
     },
     emits: ['change', 'update:value'],
     setup(props, { emit }) {
+      const containerRef = ref(null);
       const { prefixCls } = useDesign('code-editer');
       const CodeMirror = window.CodeMirror || _CodeMirror;
       const emitData = ref<object>();
@@ -89,6 +94,9 @@
         // 启用代码折叠相关功能:结束
         // 光标行高亮
         styleActiveLine: true,
+        // update-begin--author:liaozhiyang---date:20231201---for：【issues/869】JCodeEditor组件初始化时没有设置mode
+        mode: props.language,
+        // update-begin--author:liaozhiyang---date:20231201---for：【issues/869】JCodeEditor组件初始化时没有设置mode
         //代码格式化
         extraKeys: {
           Tab: function autoFormat(editor) {
@@ -121,6 +129,10 @@
         }
         return _props;
       });
+      // update-begin--author:liaozhiyang---date:20230904---for：【QQYUN-5955】online js增强，加入代码提示
+      const { codeHintingMount, codeHintingRegistry } = useCodeHinting(CodeMirror, props.keywords, props.language);
+      codeHintingRegistry();
+      // update-end--author:liaozhiyang---date:20230904---for：【QQYUN-5955】online js增强，加入代码提示
       /**
        * 监听组件值
        */
@@ -171,6 +183,9 @@
         coder.on('change', onChange);
         // 初始化成功时赋值一次
         setValue(innerValue, false);
+        // update-begin--author:liaozhiyang---date:20230904---for：【QQYUN-5955】online js增强，加入代码提示
+        codeHintingMount(coder);
+        // update-end--author:liaozhiyang---date:20230904---for：【QQYUN-5955】online js增强，加入代码提示
       }
 
       // 切换全屏状态
@@ -205,7 +220,8 @@
         }
       }
       //update-end-author:taoyan date:2022-10-18 for: VUEN-2480【严重bug】online vue3测试的问题 8、online js增强样式问题
-      
+
+
       return {
         state,
         textarea,
@@ -215,7 +231,8 @@
         isFullScreen,
         fullScreenIcon,
         onToggleFullScreen,
-        refresh
+        refresh,
+        containerRef,
       };
     },
   });
@@ -294,5 +311,10 @@
     .CodeMirror{
       border: 1px solid #ddd;
     }
+  }
+  .CodeMirror-hints.idea {
+    z-index: 1001;
+    max-width: 600px;
+    max-height: 300px;
   }
 </style>

@@ -9,6 +9,7 @@ import { isArray, isEmpty, isNull, isString } from '/@/utils/is';
 import { useLinkage } from './useLinkage';
 import { useWebSocket } from './useWebSocket';
 import { getPrefix, getJVxeAuths } from '../utils/authUtils';
+import { excludeKeywords } from '../componentMap';
 
 export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps, refs: JVxeRefs, instanceRef: Ref) {
   let xTableTemp: VxeTableInstance & VxeTablePrivateMethods;
@@ -201,9 +202,14 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
   /**
    * 判断是否是禁用行
    * @param row 行数据
+   * @param rowIndex 行号
    * @param force 是否强制判断
    */
-  function isDisabledRow(row, force = true) {
+  function isDisabledRow(row, rowIndex: number | boolean = -1, force = true) {
+    if(typeof rowIndex === 'boolean'){
+      force = rowIndex;
+      rowIndex = -1;
+    }
     if (!force) {
       return !data.disabledRowIds.includes(row.id);
     }
@@ -215,12 +221,17 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
     for (const key of keys) {
       // 判断是否有该属性
       if (row.hasOwnProperty(key)) {
+        let value = row[key];
         let temp: any = props.disabledRows![key];
-        // 禁用规则可以是一个数组
-        if (isArray(temp)) {
-          disabled = temp.includes(row[key]);
+        // 禁用规则可以是一个函数
+        if (typeof temp === 'function') {
+          disabled = temp(value, row, rowIndex);
+        } else if (isArray(temp)) {
+          // 禁用规则可以是一个数组
+          disabled = temp.includes(value);
         } else {
-          disabled = temp === row[key];
+          // 禁用规则可以是一个具体值
+          disabled = temp === value;
         }
         if (disabled) {
           break;
@@ -235,9 +246,9 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
     let xTable = getXTable();
     data.disabledRowIds = [];
     const { tableFullData } = xTable.internalData;
-    tableFullData.forEach((row) => {
+    tableFullData.forEach((row, rowIndex) => {
       // 判断是否是禁用行
-      if (isDisabledRow(row)) {
+      if (isDisabledRow(row, rowIndex)) {
         data.disabledRowIds.push(row.id);
       }
     });
@@ -308,7 +319,8 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
     // 添加默认值
     xTable.internalData.tableFullColumn.forEach((column) => {
       let col = column.params;
-      if (col) {
+      // 不能被注册的列不获取增强
+      if (col && !excludeKeywords.includes(col.type)) {
         if (col.key && (record[col.key] == null || record[col.key] === '')) {
           // 设置默认值
           let createValue = getEnhanced(col.type).createValue;
@@ -627,13 +639,45 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
   }
 
   /** 删除一行或多行数据 */
-  async function removeRows(rows) {
+  async function removeRows(rows, asyncRemove = false) {
+    // update-begin--author:liaozhiyang---date:20231123---for：vxe-table removeRows方法加上异步删除
     const xTable = getXTable();
-    const res = await xTable.remove(rows);
-    let removeEvent: any = { deleteRows: rows, $table: xTable };
-    trigger('removed', removeEvent);
-    await recalcSortNumber();
-    return res;
+    const removeEvent: any = { deleteRows: rows, $table: xTable };
+    if (asyncRemove) {
+      const selectedRows = Array.isArray(rows) ? rows : [rows];
+      const deleteOldRows = filterNewRows(selectedRows);
+      if (deleteOldRows.length) {
+        return new Promise((resolve) => {
+          // 确认删除，只有调用这个方法才会真删除
+          removeEvent.confirmRemove = async () => {
+            const insertRecords = xTable.getInsertRecords();
+            selectedRows.forEach((item) => {
+              // 删除新添加的数据id
+              if (insertRecords.includes(item)) {
+                delete item.id;
+              }
+            });
+            const res = await xTable.remove(rows);
+            await recalcSortNumber();
+            resolve(res);
+          };
+          trigger('removed', removeEvent);
+        });
+      } else {
+        // 全新的行立马删除，不等待。
+        const res = await xTable.remove(rows);
+        removeEvent.confirmRemove = () => {};
+        trigger('removed', removeEvent);
+        await recalcSortNumber();
+        return res;
+      }
+    } else {
+      const res = await xTable.remove(rows);
+      trigger('removed', removeEvent);
+      await recalcSortNumber();
+      return res;
+    }
+    // update-end--author:liaozhiyang---date:20231123---for：vxe-table removeRows方法加上异步删除
   }
 
   /** 根据id删除一行或多行 */
@@ -682,10 +726,12 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
       let sortKey = props.sortKey ?? 'orderNum';
       let sortBegin = props.sortBegin ?? 0;
       xTable.internalData.tableFullData.forEach((data) => (data[sortKey] = sortBegin++));
+      // update-begin--author:liaozhiyang---date:20231011---for：【QQYUN-5133】JVxeTable 行编辑升级
       // 4.1.0
-      await xTable.updateCache();
+      //await xTable.updateCache();
       // 4.1.1
-      // await xTable.cacheRowMap()
+      await xTable.cacheRowMap()
+      // update-end--author:liaozhiyang---date:20231011---for：【QQYUN-5133】JVxeTable 行编辑升级
       return await xTable.updateData();
     }
   }
@@ -766,7 +812,6 @@ export function useMethods(props: JVxeTableProps, { emit }, data: JVxeDataProps,
     event.target = instanceRef.value;
     emit(name, event);
   }
-
 
   /**
    * 获取选中的行-和 getSelectionData 区别在于对于新增的行也会返回ID

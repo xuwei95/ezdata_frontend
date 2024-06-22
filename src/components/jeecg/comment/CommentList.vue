@@ -15,7 +15,7 @@
                 <template v-if="item.toUserId">
                   <span>回复</span>
                   <span>{{ item.toUserId_dictText }}</span>
-                  <Tooltip class="comment-last-content" @visibleChange="(v)=>visibleChange(v, item)">
+                  <Tooltip class="comment-last-content" @openChange="(v)=>visibleChange(v, item)">
                     <template #title>
                       <div v-html="getHtml(item.commentId_dictText)"></div>
                     </template>
@@ -107,7 +107,9 @@
     props: {
       tableName: propTypes.string.def(''),
       dataId: propTypes.string.def(''),
-      datetime:  propTypes.number.def(1)
+      datetime:  propTypes.number.def(1),
+      // 其他需要减去的高度
+      otherHeight: propTypes.number.def(0),
     },
     setup(props) {
       const { createMessage } = useMessage();
@@ -163,8 +165,9 @@
       const commentHeight = ref(300);
       const allHeight = ref(300);
       onMounted(() => {
-        commentHeight.value = window.innerHeight - 57 - 46 - 70 - 160;
-        allHeight.value = window.innerHeight - 57 - 46 - 53 -20;
+        let otherHeight = props.otherHeight || 0;
+        commentHeight.value = window.innerHeight - 57 - 46 - 70 - 160 - otherHeight;
+        allHeight.value = window.innerHeight - 57 - 46 - 53 -20 - otherHeight;
       });
 
       /**
@@ -247,7 +250,7 @@
         }
       });
 
-      // const storageEmojiIndex = inject('$globalEmojiIndex')
+      //const storageEmojiIndex = inject('$globalEmojiIndex')
       const storageEmojiIndex = getGloablEmojiIndex()
       const { getHtml } = useEmojiHtml(storageEmojiIndex);
       const bottomCommentRef = ref()
@@ -317,7 +320,7 @@
     .comment-last-content {
       margin-left: 5px;
       &:hover{
-        color: #1890ff;
+        color: @primary-color;
       }
     }
   }

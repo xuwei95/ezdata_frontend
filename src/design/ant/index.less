@@ -1,6 +1,8 @@
 @import './pagination.less';
 @import './input.less';
+// update-begin--author:liaozhiyang---date:20240130---for：【issues/5857】Button color类型颜色失效
 @import './btn.less';
+// update-end--author:liaozhiyang---date:20240130---for：【issues/5857】Button color类型颜色失效
 // @import './table.less';
 
 // TODO beta.11 fix
@@ -13,11 +15,11 @@
     display: unset;
   }
 }
-//update-begin---author:scott ---date:2023-08-28  for����QQYUN-6374��UnoCSS���windicss����Ӧ����ʽ����--
+//update-begin---author:scott ---date:2023-08-28  for����QQYUN-6374��UnoCSS���windicss����Ӧ����ʽ����--
 /*span.anticon:not(.app-iconify) {
   vertical-align: 0.125em !important;
 }*/
-//update-end---author:scott ---date::2023-08-28  for����QQYUN-6374��UnoCSS���windicss����Ӧ����ʽ����--
+//update-end---author:scott ---date::2023-08-28  for����QQYUN-6374��UnoCSS���windicss����Ӧ����ʽ����--
 
 .ant-back-top {
   right: 20px;
@@ -64,3 +66,113 @@
   border-top: 0 !important;
   border-left: 0 !important;
 }
+
+// update-begin--author:liaozhiyang---date:20231218---for：【QQYUN-6366】升级到antd4.x
+.ant-modal {
+  .ant-modal-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: auto;
+    height: auto;
+  }
+  .ant-modal-content {
+    padding: 0;
+  }
+}
+
+.ant-input-affix-wrapper > input.ant-input {
+  font-size: 14px;
+}
+
+.ant-pagination-options-size-changer.ant-select {
+  display: inline-block;
+  width: auto;
+}
+
+.ant-tree-select-dropdown .ant-select-tree .ant-select-tree-list-holder-inner {
+  align-items: stretch;
+}
+
+.ant-list .ant-list-item {padding-left: 0;padding-right: 0;}
+
+
+.ant-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  color: #000000d9;
+}
+/** anticon-down跟3.x保持一致*/ 
+.ant-dropdown-trigger>.anticon.anticon-down, .ant-dropdown-link>.anticon.anticon-down, .ant-dropdown-button>.anticon.anticon-down {
+  font-size: 10px;
+  vertical-align: baseline;
+}
+/** 表格排序箭头尺寸保持跟3.x一致 */ 
+.ant-table-wrapper .ant-table-column-sorter-up, .ant-table-wrapper .ant-table-column-sorter-down {
+  font-size: 11px;
+}
+ /** 表格头部文字颜色跟3.x版本保持一致 */
+.ant-table-wrapper .ant-table-thead >tr>th, .ant-table-wrapper .ant-table-thead >tr>td {
+  color: #000000d9;
+  font-weight: 500;
+}
+html[data-theme='dark'] .ant-table-wrapper .ant-table-thead >tr>th, .ant-table-wrapper .ant-table-thead >tr>td {
+  color:rgba(255,255,255,.65);
+}
+ /** 下拉菜单文字和图标折叠了 */
+.ant-dropdown .ant-dropdown-menu .ant-dropdown-menu-title-content, .ant-dropdown-menu-submenu .ant-dropdown-menu .ant-dropdown-menu-title-content{
+  flex: auto;
+  white-space:nowrap;
+}
+// update-end--author:liaozhiyang---date:20231218---for：【QQYUN-6366】升级到antd4.x
+
+// update-end--author:liaozhiyang---date:20230105---for：【QQYUN-7493】多行文本内容过多时内容会覆盖掉清空按钮
+.ant-input-affix-wrapper-textarea-with-clear-btn {
+  .ant-input-clear-icon {
+    background-color: #fff;
+  }
+}
+html[data-theme='dark'] .ant-input-affix-wrapper-textarea-with-clear-btn {
+  .ant-input-clear-icon {
+    background-color: #141414;
+  }
+}
+// update-end--author:liaozhiyang---date:20230105---for：【QQYUN-7493】多行文本内容过多时内容会覆盖掉清空按钮
+
+// update-begin--author:liaozhiyang---date:20230108---for：【QQYUN-7855】table页码同步3.x页面效果
+.ant-table-pagination.ant-pagination {
+  .ant-pagination-item-active,
+  .ant-pagination-item-active:hover {
+    background-color: @primary-color;
+    border-color: transparent;
+    a {
+      color: #fff;
+    }
+  }
+  .ant-pagination-item:not(.ant-pagination-item-active) {
+    background-color: transparent !important;
+    border-color: transparent;
+  }
+  .ant-pagination-prev,
+  .ant-pagination-next,
+  .ant-pagination-item {
+    margin: 0 4px;
+  }
+}
+// update-end--author:liaozhiyang---date:20230108---for：【QQYUN-7855】table页码同步3.x页面效果
+
+//update-begin--author:wangshuai---date:20240429---for：修改tinymce段落下拉框的字体和样式
+.tox .tox-tbtn__select-label{
+  font-size: 14px;
+}
+
+.tox .tox-tbtn--select{
+  width: 80px !important;
+}
+
+.tox .tox-collection__item-label {
+  font-size: 14px !important;
+}
+//update-end--author:wangshuai---date:20240429---for：修改tinymce段落下拉框的字体和样式

@@ -11,8 +11,8 @@
 
     <template #overlay>
       <Menu @click="handleMenuClick">
-        <!--        <MenuItem key="doc" :text="t('layout.header.dropdownItemDoc')" icon="ion:document-text-outline" v-if="getShowDoc" />-->
-        <!--        <MenuDivider v-if="getShowDoc" />-->
+<!--        <MenuItem key="doc" :text="t('layout.header.dropdownItemDoc')" icon="ion:document-text-outline" v-if="getShowDoc" />-->
+<!--        <MenuDivider v-if="getShowDoc" />-->
         <MenuItem key="account" :text="t('layout.header.dropdownItemSwitchAccount')" icon="ant-design:setting-outlined" />
         <MenuItem key="password" :text="t('layout.header.dropdownItemSwitchPassword')" icon="ant-design:edit-outlined" />
         <MenuItem key="depart" :text="t('layout.header.dropdownItemSwitchDepart')" icon="ant-design:cluster-outlined" />
@@ -27,9 +27,9 @@
       </Menu>
     </template>
   </Dropdown>
-  <LockAction @register="register" />
+  <LockAction v-if="lockActionVisible" ref="lockActionRef" @register="register" />
   <DepartSelect ref="loginSelectRef" />
-  <UpdatePassword ref="updatePasswordRef" />
+  <UpdatePassword v-if="passwordVisible" ref="updatePasswordRef" />
 </template>
 <script lang="ts">
   // components
@@ -56,6 +56,8 @@
   import { DB_DICT_DATA_KEY } from '/src/enums/cacheEnum';
   import { removeAuthCache, setAuthCache } from '/src/utils/auth';
   import { getFileAccessHttpUrl } from '/@/utils/common/compUtils';
+  import { getRefPromise } from '/@/utils/index';
+
   type MenuEvent = 'logout' | 'doc' | 'lock' | 'cache' | 'depart';
   const { createMessage } = useMessage();
   export default defineComponent({
@@ -78,10 +80,15 @@
       const { getShowDoc, getUseLockPage } = useHeaderSetting();
       const userStore = useUserStore();
       const go = useGo();
+      const passwordVisible = ref(false);
+      const lockActionVisible = ref(false);
+      const lockActionRef = ref(null);
+
       const getUserInfo = computed(() => {
         const { realname = '', avatar, desc } = userStore.getUserInfo || {};
         return { realname, avatar: avatar || headerImg, desc };
       });
+
       const getAvatarUrl = computed(() => {
         let { avatar } = getUserInfo.value;
         if (avatar == headerImg) {
@@ -90,22 +97,28 @@
           return getFileAccessHttpUrl(avatar);
         }
       });
+
       const [register, { openModal }] = useModal();
       /**
        * 多部门弹窗逻辑
        */
       const loginSelectRef = ref();
-      function handleLock() {
+      // update-begin--author:liaozhiyang---date:20230901---for：【QQYUN-6333】空路由问题—首次访问资源太大
+      async function handleLock() {
+        await getRefPromise(lockActionRef);
         openModal(true);
       }
+      // update-end--author:liaozhiyang---date:20230901---for：【QQYUN-6333】空路由问题—首次访问资源太大
       //  login out
       function handleLoginOut() {
         userStore.confirmLoginOut();
       }
+
       // open doc
       function openDoc() {
         openWindow(SITE_URL);
       }
+
       // 清除缓存
       async function clearCache() {
         const result = await refreshCache();
@@ -113,9 +126,13 @@
           const res = await queryAllDictItems();
           removeAuthCache(DB_DICT_DATA_KEY);
           setAuthCache(DB_DICT_DATA_KEY, res.result);
-          createMessage.success('刷新缓存完成！');
+          // update-begin--author:liaozhiyang---date:20240124---for：【QQYUN-7970】国际化
+          createMessage.success(t('layout.header.refreshCacheComplete'));
+          // update-end--author:liaozhiyang---date:20240124---for：【QQYUN-7970】国际化
         } else {
-          createMessage.error('刷新缓存失败！');
+          // update-begin--author:liaozhiyang---date:20240124---for：【QQYUN-7970】国际化
+          createMessage.error(t('layout.header.refreshCacheFailure'));
+          // update-end--author:liaozhiyang---date:20240124---for：【QQYUN-7970】国际化
         }
       }
       // 切换部门
@@ -124,9 +141,13 @@
       }
       // 修改密码
       const updatePasswordRef = ref();
-      function updatePassword() {
+      // update-begin--author:liaozhiyang---date:20230901---for：【QQYUN-6333】空路由问题—首次访问资源太大
+      async function updatePassword() {
+        passwordVisible.value = true;
+        await getRefPromise(updatePasswordRef);
         updatePasswordRef.value.show(userStore.getUserInfo.username);
       }
+      // update-end--author:liaozhiyang---date:20230901---for：【QQYUN-6333】空路由问题—首次访问资源太大
       function handleMenuClick(e: { key: MenuEvent }) {
         switch (e.key) {
           case 'logout':
@@ -154,6 +175,7 @@
             break;
         }
       }
+
       return {
         prefixCls,
         t,
@@ -165,12 +187,15 @@
         getUseLockPage,
         loginSelectRef,
         updatePasswordRef,
+        passwordVisible,
+        lockActionVisible,
       };
     },
   });
 </script>
 <style lang="less">
   @prefix-cls: ~'@{namespace}-header-user-dropdown';
+
   .@{prefix-cls} {
     height: @header-height;
     padding: 0 0 0 10px;
@@ -179,34 +204,45 @@
     font-size: 12px;
     cursor: pointer;
     align-items: center;
+
     img {
       width: 24px;
       height: 24px;
       margin-right: 12px;
     }
+
     &__header {
       border-radius: 50%;
     }
+
     &__name {
       font-size: 14px;
     }
+
     &--dark {
       &:hover {
         background-color: @header-dark-bg-hover-color;
       }
     }
+
     &--light {
       &:hover {
         background-color: @header-light-bg-hover-color;
       }
+
       .@{prefix-cls}__name {
         color: @text-color-base;
       }
+
       .@{prefix-cls}__desc {
         color: @header-light-desc-color;
       }
     }
+
     &-dropdown-overlay {
+      // update-begin--author:liaozhiyang---date:20231226---for：【QQYUN-7512】顶部账号划过首次弹出时位置会变更一下
+      width: 160px;
+      // update-end--author:liaozhiyang---date:20231226---for：【QQYUN-7512】顶部账号划过首次弹出时位置会变更一下
       .ant-dropdown-menu-item {
         min-width: 160px;
       }

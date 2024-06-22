@@ -3,11 +3,17 @@
     <template #renderItem="{ item }">
       <a-list-item style="padding: 3px 0">
         <div class="user-select-user-info" @click="(e) => onClickUser(e, item)">
-          <div>
-            <a-checkbox v-model:checked="checkStatus[item.id]" />
+          <div style="margin-left: 10px">
+            <a-checkbox v-model:checked="checkStatus[item.id]" v-if="multi" />
+            <a-radio v-model:checked="checkStatus[item.id]" v-else />
           </div>
           <div>
             <a-avatar v-if="item.avatar" :src="getFileAccessHttpUrl(item.avatar)"></a-avatar>
+            <a-avatar v-else-if="item.avatarIcon" class="ant-btn-primary">
+              <template #icon>
+                <Icon :icon=" 'ant-design:'+item.avatarIcon " style="margin-top: 4px;font-size: 24px;"/>
+              </template>
+            </a-avatar>
             <a-avatar v-else>
               <template #icon><UserOutlined /></template>
             </a-avatar>
@@ -15,9 +21,10 @@
           <div :style="nameStyle">
             {{ item.realname }}
           </div>
-          <div :style="departStyle">
+          <div :style="departStyle" class="ellipsis" :title="item.orgCodeTxt">
             {{ item.orgCodeTxt }}
           </div>
+          <div style="width: 1px"></div>
         </div>
       </a-list-item>
     </template>
@@ -32,6 +39,10 @@
   export default {
     name: 'UserList',
     props: {
+      multi: {
+        type: Boolean,
+        default: false,
+      },
       dataList: {
         type: Array,
         default: () => [],
@@ -126,8 +137,8 @@
         e.preventDefault();
         e.stopPropagation();
       }
-
-      function records2DataList() {
+//update-begin---author:wangshuai---date:2024-02-02---for:【QQYUN-8239】用户角色，添加用户 返回2页数据，实际只显示一页---
+/*      function records2DataList() {
         let arr:any[] = [];
         let excludeList = props.excludeUserIdList;
         let records = props.dataList;
@@ -139,13 +150,14 @@
           }
         }
         return arr;
-      }
+      }*/
       
       const showDataList = computed(()=>{
-        let excludeList = props.excludeUserIdList;
+/*        let excludeList = props.excludeUserIdList;
         if(excludeList && excludeList.length>0){
           return records2DataList();
-        }
+        }*/
+//update-end---author:wangshuai---date:2024-02-02---for:【QQYUN-8239】用户角色，添加用户 返回2页数据，实际只显示一页---
         return props.dataList;
       });
 
@@ -166,10 +178,16 @@
 <style lang="less">
   .user-select-user-info {
     display: flex;
+    width: 100%;
     > div {
       height: 36px;
       line-height: 36px;
       margin-right: 10px;
+    }
+    .ellipsis {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
   }
 </style>

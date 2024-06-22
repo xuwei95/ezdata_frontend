@@ -18,7 +18,8 @@
     useWrapper: { type: Boolean, default: true },
     modalHeaderHeight: { type: Number, default: 57 },
     modalFooterHeight: { type: Number, default: 74 },
-    minHeight: { type: Number, default: 200 },
+    minHeight: { type: Number, default: null },
+    maxHeight: { type: Number, default: null },
     height: { type: Number },
     footerOffset: { type: Number, default: 0 },
     visible: { type: Boolean },
@@ -44,26 +45,70 @@
 
       useWindowSizeFn(setModalHeight.bind(null, false));
 
-      useMutationObserver(
-        spinRef,
-        () => {
-          setModalHeight();
-        },
-        {
-          attributes: true,
-          subtree: true,
-        }
-      );
+      // update-begin--author:liaozhiyang---date:2024-04-18---for：【QQYUN-9035】basicModal不设置maxHeight或height会一直执行setModalHeight，需即使销毁MutationObserver
+      let observer,
+        recordCount: any = {};
+      if (!(props.maxHeight || props.height)) {
+        observer = useMutationObserver(
+          spinRef,
+          () => {
+            setModalHeight({
+              source: 'muob',
+              callBack: (height) => {
+                const count = recordCount[height];
+                if (count) {
+                  recordCount[height] = ++recordCount[height];
+                  if (count > 5) {
+                    observer.stop();
+                    recordCount = null;
+                  }
+                } else {
+                  recordCount[height] = 1;
+                }
+              },
+            });
+          },
+          {
+            attributes: true,
+            subtree: true,
+          }
+        );
+      }
+      // update-end--author:liaozhiyang---date:2024-04-18---for：【QQYUN-9035】basicModal不设置maxHeight或height会一直执行setModalHeight，需即使销毁MutationObserver
 
       createModalContext({
         redoModalHeight: setModalHeight,
       });
 
       const spinStyle = computed((): CSSProperties => {
-        return {
-          minHeight: `${props.minHeight}px`,
-          [props.fullScreen ? 'height' : 'maxHeight']: `${unref(realHeightRef)}px`,
-        };
+        // update-begin--author:liaozhiyang---date:20231205---for：【QQYUN-7147】Model的高度设置不生效
+        if (props.fullScreen) {
+          return {
+            height: `${unref(realHeightRef)}px`,
+          };
+        } else {
+          const defaultMiniHeight = 200;
+          if (props.height != undefined) {
+            let height: number = props.height;
+            if (props.minHeight === null) {
+              return {
+                height: `${height}px`,
+              };
+            } else {
+              return {
+                height: `${props.minHeight > height ? props.minHeight : height}px`,
+              };
+            }
+          } else {
+            return {
+              minHeight: `${props.minHeight === null ? defaultMiniHeight : props.minHeight}px`,
+              // update-begin--author:liaozhiyang---date:20231219---for：【QQYUN-7641】basicModal组件添加MaxHeight属性
+              maxHeight: `${props.maxHeight ? props.maxHeight : unref(realHeightRef)}px`,
+              // update-end--author:liaozhiyang---date:20231219---for：【QQYUN-7641】basicModal组件添加MaxHeight属性
+            };
+          }
+        }
+        // update-end--author:liaozhiyang---date:20231205---for：【QQYUN-7147】Model的高度设置不生效
       });
 
       watchEffect(() => {
@@ -99,16 +144,21 @@
         });
       }
 
-      async function setModalHeight() {
+      async function setModalHeight(option?) {
+        console.log("---------性能监控--------setModalHeight----------")
+        const options = option || {};
+        const source = options.source;
+        const callBack = options.callBack;
         // 解决在弹窗关闭的时候监听还存在,导致再次打开弹窗没有高度
         // 加上这个,就必须在使用的时候传递父级的visible
         if (!props.visible) return;
         const wrapperRefDom = unref(wrapperRef);
         if (!wrapperRefDom) return;
-
-        const bodyDom = wrapperRefDom.$el.parentElement;
+        // update-begin--author:liaozhiyang---date:20240320---for：【QQYUN-8573】BasicModal组件在非全屏的情况下最大高度获取异常，不论内容高度是否超出屏幕高度，都等于内容高度
+        const bodyDom = wrapperRefDom.$el.parentElement?.parentElement?.parentElement;
+        // update-end--author:liaozhiyang---date:20240320---for：BasicModal组件在非全屏的情况下最大高度获取异常，不论内容高度是否超出屏幕高度，都等于内容高度
         if (!bodyDom) return;
-        bodyDom.style.padding = '0';
+        // bodyDom.style.padding = '0';
         await nextTick();
 
         try {
@@ -137,6 +187,12 @@
           } else {
             realHeightRef.value = props.height ? props.height : realHeight > maxHeight ? maxHeight : realHeight;
           }
+          // update-begin--author:liaozhiyang---date:2024-04-18---for：【QQYUN-9035】basicModal不设置maxHeight或height会一直执行setModalHeight，需即使销毁MutationObserver
+          if (source == 'muob') {
+            callBack(realHeightRef.value);
+          }
+          // update-end--author:liaozhiyang---date:2024-04-18---for：【QQYUN-9035】basicModal不设置maxHeight或height会一直执行setModalHeight，需即使销毁MutationObserver
+          
           emit('height-change', unref(realHeightRef));
         } catch (error) {
           console.log(error);

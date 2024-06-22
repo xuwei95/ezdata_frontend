@@ -1,5 +1,5 @@
 <template>
-  <BasicModal v-bind="config" :title="currTitle" v-model:visible="visible" wrapClassName="loginSelectModal">
+  <BasicModal v-bind="config" :maxHeight="500" :title="currTitle" v-model:visible="visible" wrapClassName="loginSelectModal">
     <a-form ref="formRef" v-bind="layout" :colon="false" class="loginSelectForm">
       <a-form-item v-if="isMultiTenant" :validate-status="validate_status">
         <!--label内容-->
@@ -50,13 +50,14 @@
   </BasicModal>
 </template>
 <script lang="ts" setup>
-  import { ref, computed, watch, unref, defineExpose } from 'vue';
+  import { ref, computed, watch, unref } from 'vue';
   import { Avatar } from 'ant-design-vue';
   import { BasicModal } from '/@/components/Modal';
   import { getUserDeparts, selectDepart } from '/@/views/system/depart/depart.api';
   import { getUserTenants } from '/@/views/system/tenant/tenant.api';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useUserStore } from '/@/store/modules/user';
+
   const userStore = useUserStore();
   const { createMessage, notification } = useMessage();
   const props = defineProps({
@@ -64,10 +65,12 @@
     closable: { type: Boolean, default: false },
     username: { type: String, default: '' },
   });
+
   const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 18 },
   };
+
   const config = {
     maskClosable: false,
     closable: false,
@@ -77,11 +80,13 @@
     maxHeight: 20,
   };
   const currTitle = ref('');
+
   const isMultiTenant = ref(false);
   const currentTenantName = ref('');
   const tenantSelected = ref();
   const tenantList = ref([]);
   const validate_status = ref('');
+
   const isMultiDepart = ref(false);
   const currentDepartName = ref('');
   const departSelected = ref('');
@@ -141,11 +146,12 @@
     tenantSelected.value = tenantId;
     isMultiTenant.value = true;
   }
+
   /**
    * 提交数据
    */
   async function handleSubmit() {
-    if (unref(isMultiTenant) && !unref(tenantSelected)) {
+    if (unref(isMultiTenant) && unref(tenantSelected)) {
       validate_status.value = 'error';
       return false;
     }
@@ -159,6 +165,9 @@
           userStore.setTenant(unref(tenantSelected));
         }
         createMessage.success('切换成功');
+
+        // //切换租户后要刷新首页
+        // window.location.reload();
       })
       .catch((e) => {
         console.log('登录选择出现问题', e);
@@ -233,8 +242,10 @@
     departSelected.value = '';
     departList.value = [];
     validate_status1.value = '';
+
     visible.value = false;
   }
+
   /**
    * 监听username
    */
@@ -244,6 +255,7 @@
       value && loadDepartList();
     }
   );
+
   defineExpose({
     show,
   });
@@ -252,9 +264,11 @@
   .loginSelectForm {
     margin-bottom: -20px;
   }
+
   .loginSelectModal {
     top: 20px;
   }
+
   .valid-error .ant-select-selection__placeholder {
     color: #f5222d;
   }

@@ -57,7 +57,9 @@
         if (!isFunction(summaryFunc)) {
           return [];
         }
-        let dataSource = toRaw(unref(table.getDataSource()));
+        // update-begin--author:liaozhiyang---date:20230227---for：【QQYUN-8172】可编辑单元格编辑完以后不更新合计值
+        let dataSource = cloneDeep(unref(table.getDataSource()));
+        // update-end--author:liaozhiyang---date:20230227---for：【QQYUN-8172】可编辑单元格编辑完以后不更新合计值
         dataSource = summaryFunc(dataSource);
         dataSource.forEach((item, i) => {
           item[props.rowKey] = `${i}`;
@@ -67,7 +69,10 @@
 
       const getColumns = computed(() => {
         const dataSource = unref(getDataSource);
-        const columns: BasicColumn[] = cloneDeep(table.getColumns());
+        let columns: BasicColumn[] = cloneDeep(table.getColumns());
+        // update-begin--author:liaozhiyang---date:220230804---for：【issues/638】表格合计，列自定义隐藏或展示时，合计栏会错位
+        columns = columns.filter((item) => !item.defaultHidden);
+        // update-begin--author:liaozhiyang---date:220230804---for：【issues/638】表格合计，列自定义隐藏或展示时，合计栏会错位
         const index = columns.findIndex((item) => item.flag === INDEX_COLUMN_FLAG);
         const hasRowSummary = dataSource.some((item) => Reflect.has(item, SUMMARY_ROW_KEY));
         const hasIndexSummary = dataSource.some((item) => Reflect.has(item, SUMMARY_INDEX_KEY));
@@ -88,7 +93,9 @@
         }
 
         if (hasSelection) {
-          const isFixed = columns.some((col) => col.fixed === 'left');
+          // update-begin--author:liaozhiyang---date:20231009---for：【issues/776】显示100条/页，复选框只能显示3个的问题(fixed也有可能设置true)
+          const isFixed = columns.some((col) => col.fixed === 'left' || col.fixed === true);
+          // update-begin--author:liaozhiyang---date:20231009---for：【issues/776】显示100条/页，复选框只能显示3个的问题(fixed也有可能设置true)
           columns.unshift({
             width: 50,
             title: 'selection',
@@ -116,3 +123,12 @@
     },
   });
 </script>
+<style lang="less" scoped>
+  // update-begin--author:liaozhiyang---date:20231009---for：【issues/776】显示100条/页，复选框只能显示3个的问题(隐藏合计的滚动条)
+  .ant-table-wrapper {
+    :deep(.ant-table-body) {
+      overflow-x: hidden !important;
+    }
+  }
+  // update-end--author:liaozhiyang---date:20231009---for：【issues/776】显示100条/页，复选框只能显示3个的问题(隐藏合计的滚动条)
+</style>

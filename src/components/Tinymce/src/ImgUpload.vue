@@ -24,7 +24,7 @@
   import { useGlobSetting } from '/@/hooks/setting';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { getToken } from '/@/utils/auth';
-  import { getFileAccessHttpUrl } from '/@/utils/common/compUtils';
+  import { getFileAccessHttpUrl, getHeaders } from '/@/utils/common/compUtils';
 
   export default defineComponent({
     name: 'TinymceImageUpload',
@@ -44,7 +44,7 @@
 
       //update-begin-author:taoyan date:2022-5-13 for: 富文本上传图片不支持
       function getheader() {
-        return { 'X-Access-Token': getToken() };
+        return getHeaders();
       }
 
       function getBizData() {
@@ -106,7 +106,7 @@
 
   .@{prefix-cls} {
     position: absolute;
-    top: 4px;
+    top: 8px;
     right: 10px;
     z-index: 20;
 
@@ -114,5 +114,12 @@
       position: fixed;
       z-index: 10000;
     }
+    // update-begin--author:liaozhiyang---date:20230326---for：【QQYUN-8647】online tinymce组件上传图片按遮挡了控件栏的全屏按钮
+    .ant-btn {
+      padding: 2px 4px;
+      font-size: 12px;
+      height: 24px;
+    }
+    // update-end--author:liaozhiyang---date:20230326---for：【QQYUN-8647】online tinymce组件上传图片按遮挡了控件栏的全屏按钮
   }
 </style>

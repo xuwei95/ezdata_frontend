@@ -21,6 +21,11 @@
     </template>
     <Dropdown :trigger="['hover']" :dropMenuList="getDropdownList" popconfirm v-if="dropDownActions && getDropdownList.length > 0">
       <slot name="more"></slot>
+      <!--  设置插槽   -->
+      <template v-slot:[item.slot] v-for="(item, index) in getDropdownSlotList" :key="`${index}-${item.label}`">
+        <slot :name="item.slot"></slot>
+      </template>
+
       <a-button type="link" size="small" v-if="!$slots.more"> 更多 <Icon icon="mdi-light:chevron-down"></Icon> </a-button>
     </Dropdown>
   </div>
@@ -85,13 +90,21 @@
           })
           .map((action) => {
             const { popConfirm } = action;
+            // update-begin--author:liaozhiyang---date:20240105---for：【issues/951】table删除记录时按钮显示错位
+            if (popConfirm) {
+              const overlayClassName = popConfirm.overlayClassName;
+              popConfirm.overlayClassName = `${overlayClassName ? overlayClassName : ''} ${prefixCls}-popconfirm`;
+            }
+            // update-end--author:liaozhiyang---date:20240105---for：【issues/951】table删除记录时按钮显示错位
             return {
               getPopupContainer: () => unref((table as any)?.wrapRef.value) ?? document.body,
               type: 'link',
               size: 'small',
               ...action,
               ...(popConfirm || {}),
-              onConfirm: popConfirm?.confirm,
+              // update-begin--author:liaozhiyang---date:20240108---for：【issues/936】表格操作栏删除当接口失败时，气泡确认框不会消失
+              onConfirm: handelConfirm(popConfirm?.confirm),
+              // update-end--author:liaozhiyang---date:20240108---for：【issues/936】表格操作栏删除当接口失败时，气泡确认框不会消失
               onCancel: popConfirm?.cancel,
               enable: !!popConfirm,
             };
@@ -105,17 +118,55 @@
         });
         return list.map((action, index) => {
           const { label, popConfirm } = action;
+          // update-begin--author:liaozhiyang---date:20240105---for：【issues/951】table删除记录时按钮显示错位
+          if (popConfirm) {
+            const overlayClassName = popConfirm.overlayClassName;
+            popConfirm.overlayClassName = `${overlayClassName ? overlayClassName : ''} ${prefixCls}-popconfirm`;
+          }
+          // update-end--author:liaozhiyang---date:20240105---for：【issues/951】table删除记录时按钮显示错位
+          // update-begin--author:liaozhiyang---date:20240108---for：【issues/936】表格操作栏删除当接口失败时，气泡确认框不会消失
+          if (popConfirm) {
+            popConfirm.confirm = handelConfirm(popConfirm?.confirm);
+          }
+          // update-end--author:liaozhiyang---date:20240108---for：【issues/936】表格操作栏删除当接口失败时，气泡确认框不会消失
           return {
             ...action,
             ...popConfirm,
-            onConfirm: popConfirm?.confirm,
+            onConfirm: handelConfirm(popConfirm?.confirm),
             onCancel: popConfirm?.cancel,
             text: label,
             divider: index < list.length - 1 ? props.divider : false,
           };
         });
       });
-
+      /*
+      2023-01-08
+      liaozhiyang
+      给传进来的函数包一层promise
+      */
+      const handelConfirm = (fn) => {
+        if (typeof fn !== 'function') return fn;
+        const anyc = () => {
+          return new Promise<void>((resolve) => {
+            const result = fn();
+            if (Object.prototype.toString.call(result) === '[object Promise]') {
+              result
+                .finally(() => {
+                  resolve();
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            } else {
+              resolve();
+            }
+          });
+        };
+        return anyc;
+      };
+      const getDropdownSlotList = computed((): any[] => {
+        return unref(getDropdownList).filter((item) => item.slot);
+      });
       const getAlign = computed(() => {
         const columns = (table as TableActionType)?.getColumns?.() || [];
         const actionColumn = columns.find((item) => item.flag === ACTION_COLUMN_FLAG);
@@ -139,7 +190,7 @@
         isInButton && e.stopPropagation();
       }
 
-      return { prefixCls, getActions, getDropdownList, getAlign, onCellClick, getTooltip };
+      return { prefixCls, getActions, getDropdownList, getDropdownSlotList, getAlign, onCellClick, getTooltip };
     },
   });
 </script>
@@ -152,7 +203,7 @@
     /* update-begin-author:taoyan date:2022-11-18 for: 表格默认行高比官方示例多出2px*/
     height: 22px;
     /* update-end-author:taoyan date:2022-11-18 for: 表格默认行高比官方示例多出2px*/
-    
+
     .action-divider {
       display: table;
     }
@@ -195,6 +246,16 @@
       svg {
         font-size: 1.1em;
         font-weight: 700;
+      }
+    }
+    &-popconfirm {
+      .ant-popconfirm-buttons {
+        min-width: 120px;
+        // update-begin--author:liaozhiyang---date:20240124---for：【issues/1019】popConfirm确认框待端后端返回过程中（处理中）样式错乱
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        // update-end--author:liaozhiyang---date:20240124---for：【issues/1019】popConfirm确认框待端后端返回过程中（处理中）样式错乱
       }
     }
   }

@@ -152,6 +152,7 @@ export interface BasicTableProps<T = any> {
   inset?: boolean;
   // 显示表格设置
   showTableSetting?: boolean;
+  // 表格上方操作按钮设置
   tableSetting?: TableSetting;
   // 斑马纹
   striped?: boolean;
@@ -189,6 +190,8 @@ export interface BasicTableProps<T = any> {
   formConfig?: Partial<FormProps>;
   // 列配置
   columns: BasicColumn[];
+  // 统一设置列最大宽度
+  maxColumnWidth?: number;
   // 是否显示序号列
   showIndexColumn?: boolean;
   // 序号列配置
@@ -203,7 +206,6 @@ export interface BasicTableProps<T = any> {
   canResize?: boolean;
   // 自适应高度偏移， 计算结果-偏移量
   resizeHeightOffset?: number;
-
   // 在分页改变的时候清空选项
   clearSelectOnPageChange?: boolean;
   //
@@ -317,7 +319,9 @@ export interface BasicTableProps<T = any> {
    * you need to add style .ant-table td { white-space: nowrap; }.
    * @type object
    */
-  scroll?: { x?: number | true; y?: number };
+  // update-begin--author:liaozhiyang---date:20240424---for：【issues/1188】BasicTable加上scrollToFirstRowOnChange类型定义
+  scroll?: { x?: number | true | 'max-content'; y?: number; scrollToFirstRowOnChange?: boolean };
+  // update-end--author:liaozhiyang---date:20240424---for：【issues/1188】BasicTable加上scrollToFirstRowOnChange类型定义
 
   /**
    * Whether to show table header
@@ -412,7 +416,7 @@ export interface BasicTableProps<T = any> {
 export type CellFormat = string | ((text: string, record: Recordable, index: number) => string | number) | Map<string | number, any>;
 
 // @ts-ignore
-export interface BasicColumn extends ColumnProps {
+export interface BasicColumn extends ColumnProps<Recordable> {
   children?: BasicColumn[];
   filters?: {
     text: string;

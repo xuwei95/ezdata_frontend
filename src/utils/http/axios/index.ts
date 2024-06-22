@@ -59,7 +59,7 @@ const transform: AxiosTransform = {
     const hasSuccess = data && Reflect.has(data, 'code') && (code === ResultEnum.SUCCESS || code === 200);
     if (hasSuccess) {
       if (success && message && options.successMessageMode === 'success') {
-        // 信息成功提示
+        //信息成功提示
         createMessage.success(message);
       }
       return result;
@@ -67,10 +67,13 @@ const transform: AxiosTransform = {
 
     // 在此处根据自己项目的实际情况对不同的code执行不同的操作
     // 如果不希望中断当前请求，请return数据，否则直接抛出异常即可
+    // let timeoutMsg = '';
     let errMsg = '';
     const userStore = useUserStoreWithOut();
     switch (code) {
       case ResultEnum.TIMEOUT:
+        // timeoutMsg = t('sys.api.timeoutMessage');
+        // const userStore = useUserStoreWithOut();
         errMsg = t('sys.api.timeoutMessage');
         userStore.setToken(undefined);
         userStore.logout(true);
@@ -82,6 +85,7 @@ const transform: AxiosTransform = {
         break;
       default:
         if (message) {
+          // timeoutMsg = message;
           errMsg = message;
         }
     }
@@ -89,25 +93,36 @@ const transform: AxiosTransform = {
     // errorMessageMode=‘modal’的时候会显示modal错误弹窗，而不是消息提示，用于一些比较重要的错误
     // errorMessageMode='none' 一般是调用时明确表示不希望自动弹出错误提示
     if (options.errorMessageMode === 'modal') {
+      // createErrorModal({ title: t('sys.api.errorTip'), content: timeoutMsg });
       createErrorModal({ title: t('sys.api.errorTip'), content: errMsg });
     } else if (options.errorMessageMode === 'message') {
+      // createMessage.error(timeoutMsg);
       createMessage.error(errMsg);
     }
-
     throw new Error(errMsg || t('sys.api.apiRequestFailed'));
+    // throw new Error(timeoutMsg || t('sys.api.apiRequestFailed'));
   },
 
   // 请求之前处理config
   beforeRequestHook: (config, options) => {
     const { apiUrl, joinPrefix, joinParamsToUrl, formatDate, joinTime = true, urlPrefix } = options;
 
-    if (joinPrefix) {
+    //update-begin---author:scott ---date:2024-02-20  for：以http开头的请求url，不拼加前缀--
+    // http开头的请求url，不加前缀
+    let isStartWithHttp = false;
+    const requestUrl = config.url;
+    if(requestUrl!=null && (requestUrl.startsWith("http:") || requestUrl.startsWith("https:"))){
+      isStartWithHttp = true;
+    }
+    if (!isStartWithHttp && joinPrefix) {
       config.url = `${urlPrefix}${config.url}`;
     }
 
-    if (apiUrl && isString(apiUrl)) {
+    if (!isStartWithHttp && apiUrl && isString(apiUrl)) {
       config.url = `${apiUrl}${config.url}`;
     }
+    //update-end---author:scott ---date::2024-02-20  for：以http开头的请求url，不拼加前缀--
+
     const params = config.params || {};
     const data = config.data || false;
     formatDate && data && !isString(data) && formatRequestDate(data);
@@ -149,7 +164,7 @@ const transform: AxiosTransform = {
   requestInterceptors: (config: Recordable, options) => {
     // 请求之前处理config
     const token = getToken();
-    let tenantid = getTenantId();
+    let tenantId: string | number = getTenantId();
     if (token && (config as Recordable)?.requestOptions?.withToken !== false) {
       // jwt token
       config.headers.Authorization = options.authenticationScheme ? `${options.authenticationScheme} ${token}` : token;
@@ -163,10 +178,20 @@ const transform: AxiosTransform = {
       config.headers[ConfigEnum.Sign] = signMd5Utils.getSign(config.url, config.params);
       //--update-end--author:liusq---date:20210831---for:将签名和时间戳，添加在请求接口 Header
       //--update-begin--author:liusq---date:20211105---for: for:将多租户id，添加在请求接口 Header
-      if (!tenantid) {
-        tenantid = 0;
+      if (!tenantId) {
+        tenantId = 0;
       }
-      config.headers[ConfigEnum.TENANT_ID] = tenantid;
+
+      // update-begin--author:sunjianlei---date:220230428---for：【QQYUN-5279】修复分享的应用租户和当前登录租户不一致时，提示404的问题
+      const userStore = useUserStoreWithOut();
+      // 判断是否有临时租户id
+      if (userStore.hasShareTenantId && userStore.shareTenantId !== 0) {
+        // 临时租户id存在，使用临时租户id
+        tenantId = userStore.shareTenantId!;
+      }
+      // update-end--author:sunjianlei---date:220230428---for：【QQYUN-5279】修复分享的应用租户和当前登录租户不一致时，提示404的问题
+
+      config.headers[ConfigEnum.TENANT_ID] = tenantId;
       //--update-begin--author:liusq---date:20220325---for: 增加vue3标记
       config.headers[ConfigEnum.VERSION] = 'v3';
       //--update-end--author:liusq---date:20220325---for:增加vue3标记
@@ -174,7 +199,9 @@ const transform: AxiosTransform = {
 
       // ========================================================================================
       // update-begin--author:sunjianlei---date:20220624--for: 添加低代码应用ID
+      // let routeParams = router.currentRoute.value.params;
       const routeParams = router.currentRoute.value.params;
+
       if (routeParams.appId) {
         config.headers[ConfigEnum.X_LOW_APP_ID] = routeParams.appId;
         // lowApp自定义筛选条件
@@ -183,6 +210,9 @@ const transform: AxiosTransform = {
           delete routeParams.lowAppFilter;
         }
       }
+      // update-end--author:sunjianlei---date:20220624--for: 添加低代码应用ID
+      // ========================================================================================
+
     }
     return config;
   },
@@ -242,6 +272,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
         // authentication schemes，e.g: Bearer
         // authenticationScheme: 'Bearer',
         authenticationScheme: 'JWT',
+        //接口超时设置
         timeout: 60 * 1000,
         // 基础接口地址
         // baseURL: globSetting.apiUrl,

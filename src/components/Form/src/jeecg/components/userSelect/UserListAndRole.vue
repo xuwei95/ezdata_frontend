@@ -2,12 +2,16 @@
   <a-row>
     <a-col :span="12">
       <div :style="containerStyle">
-        <a-tree v-if="treeData.length > 0" showIcon :treeData="treeData" :selectedKeys="selectedKeys" @select="onSelect"> </a-tree>
+        <a-tree v-if="treeData.length > 0" showIcon :treeData="treeData" :selectedKeys="selectedKeys" @select="onSelect">
+          <template #title="{ title, key }">
+            <UserOutlined style="color: #9e9e9e"/><span style="margin-left: 5px">{{ title }}</span>
+          </template>
+        </a-tree>
       </div>
     </a-col>
     <a-col :span="12" style="padding-left: 10px">
       <div :style="containerStyle">
-        <user-list :excludeUserIdList="excludeUserIdList" :dataList="userDataList" :selectedIdList="selectedIdList" @selected="onSelectUser" @unSelect="unSelectUser" />
+        <user-list :multi="multi" :excludeUserIdList="excludeUserIdList" :dataList="userDataList" :selectedIdList="selectedIdList" @selected="onSelectUser" @unSelect="unSelectUser" />
       </div>
     </a-col>
   </a-row>
@@ -17,11 +21,13 @@
   import { computed, ref, watch } from 'vue';
   import { defHttp } from '/@/utils/http/axios';
   import UserList from './UserList.vue';
+  import { UserOutlined } from '@ant-design/icons-vue';
 
   export default {
     name: 'RoleUserList',
     components: {
       UserList,
+      UserOutlined
     },
     props: {
       searchText: {
@@ -35,6 +41,10 @@
       excludeUserIdList:{
         type: Array,
         default: () => [],
+      },
+      multi: {
+        type: Boolean,
+        default: false,
       }
     },
     emits: ['selected', 'unSelect'],
@@ -80,7 +90,7 @@
         const url = '/sys/user/selectUserList';
         let params = {
           pageNo: 1,
-          pageSize: 10,
+          pageSize: 99,
         };
         if (props.searchText) {
           params['keyword'] = props.searchText;
@@ -88,6 +98,11 @@
         if (selectedRoleId.value) {
           params['roleId'] = selectedRoleId.value;
         }
+        //update-begin---author:wangshuai---date:2024-02-02---for:【QQYUN-8239】用户角色，添加用户 返回2页数据，实际只显示一页---
+        if(props.excludeUserIdList && props.excludeUserIdList.length>0){
+          params['excludeUserIdList'] = props.excludeUserIdList.join(",");
+        }
+        //update-end---author:wangshuai---date:2024-02-02---for:【QQYUN-8239】用户角色，添加用户 返回2页数据，实际只显示一页---
         const data = await defHttp.get({ url, params }, { isTransformResponse: false });
         if (data.success) {
           const { records } = data.result;

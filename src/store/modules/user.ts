@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 import { store } from '/@/store';
 import { RoleEnum } from '/@/enums/roleEnum';
 import { PageEnum } from '/@/enums/pageEnum';
-import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY, LOGIN_INFO_KEY, DB_DICT_DATA_KEY, TENANT_ID } from '/@/enums/cacheEnum';
+import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY, LOGIN_INFO_KEY, DB_DICT_DATA_KEY, TENANT_ID, OAUTH2_THIRD_LOGIN_TENANT_ID } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache, removeAuthCache } from '/@/utils/auth';
 import { GetUserInfoModel, LoginParams, ThirdLoginParams } from '/@/api/sys/model/userModel';
 import { doLogout, getUserInfo, loginApi, phoneLoginApi, thirdLogin } from '/@/api/sys/user';
@@ -18,14 +18,20 @@ import { isArray } from '/@/utils/is';
 import { useGlobSetting } from '/@/hooks/setting';
 import { JDragConfigEnum } from '/@/enums/jeecgEnum';
 import { useSso } from '/@/hooks/web/useSso';
+import { isOAuth2AppEnv } from "/@/views/sys/login/useLogin";
+import { getUrlParam } from "@/utils";
+interface dictType {
+  [key: string]: any;
+}
 interface UserState {
   userInfo: Nullable<UserInfo>;
   token?: string;
   roleList: RoleEnum[];
-  dictItems?: [];
+  dictItems?: dictType | null;
   sessionTimeout?: boolean;
   lastUpdateTime: number;
   tenantid?: string | number;
+  shareTenantId?: Nullable<string | number>;
   loginInfo?: Nullable<LoginInfo>;
 }
 
@@ -39,18 +45,24 @@ export const useUserStore = defineStore({
     // 角色列表
     roleList: [],
     // 字典
-    dictItems: [],
+    dictItems: null,
     // session过期时间
     sessionTimeout: false,
     // Last fetch time
     lastUpdateTime: 0,
     //租户id
     tenantid: '',
+    // 分享租户ID
+    // 用于分享页面所属租户与当前用户登录租户不一致的情况
+    shareTenantId: null,
     //登录返回信息
     loginInfo: null,
   }),
   getters: {
     getUserInfo(): UserInfo {
+      if(this.userInfo == null){
+        this.userInfo = getAuthCache<UserInfo>(USER_INFO_KEY)!=null ? getAuthCache<UserInfo>(USER_INFO_KEY) : null;
+      }
       return this.userInfo || getAuthCache<UserInfo>(USER_INFO_KEY) || {};
     },
     getLoginInfo(): LoginInfo {
@@ -73,6 +85,10 @@ export const useUserStore = defineStore({
     },
     getTenant(): string | number {
       return this.tenantid || getAuthCache<string | number>(TENANT_ID);
+    },
+    // 是否有分享租户id
+    hasShareTenantId(): boolean {
+      return this.shareTenantId != null && this.shareTenantId !== '';
     },
   },
   actions: {
@@ -97,16 +113,29 @@ export const useUserStore = defineStore({
       this.dictItems = dictItems;
       setAuthCache(DB_DICT_DATA_KEY, dictItems);
     },
+    setAllDictItemsByLocal() {
+      // update-begin--author:liaozhiyang---date:20240321---for：【QQYUN-8572】表格行选择卡顿问题（customRender中字典引起的）
+      if (!this.dictItems) {
+        const allDictItems = getAuthCache(DB_DICT_DATA_KEY);
+        if (allDictItems) {
+          this.dictItems = allDictItems;
+        }
+      }
+      // update-end--author:liaozhiyang---date:20240321---for：【QQYUN-8572】表格行选择卡顿问题（customRender中字典引起的）
+    },
     setTenant(id) {
       this.tenantid = id;
       setAuthCache(TENANT_ID, id);
+    },
+    setShareTenantId(id: NonNullable<typeof this.shareTenantId>) {
+      this.shareTenantId = id;
     },
     setSessionTimeout(flag: boolean) {
       this.sessionTimeout = flag;
     },
     resetState() {
       this.userInfo = null;
-      this.dictItems = [];
+      this.dictItems = null;
       this.token = '';
       this.roleList = [];
       this.sessionTimeout = false;
@@ -123,9 +152,8 @@ export const useUserStore = defineStore({
       try {
         const { goHome = true, mode, ...loginParams } = params;
         const data = await loginApi(loginParams, mode);
-        // const { token, userInfo } = data;
-        // save token
         const { token } = data;
+        // save token
         this.setToken(token);
         // this.setTenant(userInfo.loginTenantId);
         return this.afterLoginAction(goHome, data);
@@ -157,20 +185,54 @@ export const useUserStore = defineStore({
       if (sessionTimeout) {
         this.setSessionTimeout(false);
       } else {
-        const permissionStore = usePermissionStore();
-        if (!permissionStore.isDynamicAddedRoute) {
-          const routes = await permissionStore.buildRoutesAction();
-          routes.forEach((route) => {
-            router.addRoute(route as unknown as RouteRecordRaw);
-          });
-          router.addRoute(PAGE_NOT_FOUND_ROUTE as unknown as RouteRecordRaw);
-          permissionStore.setDynamicAddedRoute(true);
-        }
+        //update-begin---author:scott ---date::2024-02-21  for：【QQYUN-8326】登录不需要构建路由，进入首页有构建---
+        // // 构建后台菜单路由
+        // const permissionStore = usePermissionStore();
+        // if (!permissionStore.isDynamicAddedRoute) {
+        //   const routes = await permissionStore.buildRoutesAction();
+        //   routes.forEach((route) => {
+        //     router.addRoute(route as unknown as RouteRecordRaw);
+        //   });
+        //   router.addRoute(PAGE_NOT_FOUND_ROUTE as unknown as RouteRecordRaw);
+        //   permissionStore.setDynamicAddedRoute(true);
+        // }
+        //update-end---author:scott ---date::2024-02-21  for：【QQYUN-8326】登录不需要构建路由，进入首页有构建---
+
         await this.setLoginInfo({ ...data, isLogin: true });
         //update-begin-author:liusq date:2022-5-5 for:登录成功后缓存拖拽模块的接口前缀
         localStorage.setItem(JDragConfigEnum.DRAG_BASE_URL, useGlobSetting().domainUrl);
         //update-end-author:liusq date:2022-5-5 for: 登录成功后缓存拖拽模块的接口前缀
-        goHome && (await router.replace((userInfo && userInfo.homePath) || PageEnum.BASE_HOME));
+
+        // update-begin-author:sunjianlei date:20230306 for: 修复登录成功后，没有正确重定向的问题
+        let redirect = router.currentRoute.value?.query?.redirect as string;
+        // 判断是否有 redirect 重定向地址
+        //update-begin---author:wangshuai ---date:20230424  for：【QQYUN-5195】登录之后直接刷新页面导致没有进入创建组织页面------------
+        if (redirect && goHome) {
+        //update-end---author:wangshuai ---date:20230424  for：【QQYUN-5195】登录之后直接刷新页面导致没有进入创建组织页面------------
+          // update-begin--author:liaozhiyang---date:20240104---for：【QQYUN-7804】部署生产环境，登录跳转404问题
+          let publicPath = import.meta.env.VITE_PUBLIC_PATH;
+          if (publicPath && publicPath != '/') {
+            // update-begin--author:liaozhiyang---date:20240509---for：【issues/1147】登录跳转时去掉发布路径的最后一个/以解决404问题
+            if (publicPath.endsWith('/')) {
+              publicPath = publicPath.slice(0, -1);
+            }
+            redirect = publicPath + redirect;
+          }
+          // update-end--author:liaozhiyang---date:20240509---for：【issues/1147】登录跳转时去掉发布路径的最后一个/以解决404问题
+          // 当前页面打开
+          window.open(redirect, '_self')
+          return data;
+        }
+        // update-end-author:sunjianlei date:20230306 for: 修复登录成功后，没有正确重定向的问题
+
+        //update-begin---author:wangshuai---date:2024-04-03---for:【issues/1102】设置单点登录后页面，进入首页提示404，也没有绘制侧边栏 #1102---
+        let ticket = getUrlParam('ticket');
+        if(ticket){
+          goHome && (window.location.replace((userInfo && userInfo.homePath) || PageEnum.BASE_HOME));
+        }else{
+          goHome && (await router.replace((userInfo && userInfo.homePath) || PageEnum.BASE_HOME));
+        }
+        //update-end---author:wangshuai---date:2024-04-03---for:【issues/1102】设置单点登录后页面，进入首页提示404，也没有绘制侧边栏 #1102---
       }
       return data;
     },
@@ -249,6 +311,7 @@ export const useUserStore = defineStore({
       this.setUserInfo(null);
       this.setLoginInfo(null);
       this.setTenant(null);
+      this.setAllDictItems(null);
       //update-begin-author:liusq date:2022-5-5 for:退出登录后清除拖拽模块的接口前缀
       localStorage.removeItem(JDragConfigEnum.DRAG_BASE_URL);
       //update-end-author:liusq date:2022-5-5 for: 退出登录后清除拖拽模块的接口前缀
@@ -258,8 +321,25 @@ export const useUserStore = defineStore({
       if (openSso == 'true') {
         await useSso().ssoLoginOut();
       }
+      //update-begin---author:wangshuai ---date:20230224  for：[QQYUN-3440]新建企业微信和钉钉配置表，通过租户模式隔离------------
+      //退出登录的时候需要用的应用id
+      if(isOAuth2AppEnv()){
+        let tenantId = getAuthCache(OAUTH2_THIRD_LOGIN_TENANT_ID);
+        removeAuthCache(OAUTH2_THIRD_LOGIN_TENANT_ID);
+        goLogin && await router.push({ name:"Login",query:{ tenantId:tenantId }})
+      }else{
+        // update-begin-author:sunjianlei date:20230306 for: 修复登录成功后，没有正确重定向的问题
+        goLogin && (await router.push({
+          path: PageEnum.BASE_LOGIN,
+          query: {
+            // 传入当前的路由，登录成功后跳转到当前路由
+            redirect: router.currentRoute.value.fullPath,
+          }
+        }));
+        // update-end-author:sunjianlei date:20230306 for: 修复登录成功后，没有正确重定向的问题
 
-      goLogin && (await router.push(PageEnum.BASE_LOGIN));
+      }
+      //update-end---author:wangshuai ---date:20230224  for：[QQYUN-3440]新建企业微信和钉钉配置表，通过租户模式隔离------------
     },
     /**
      * 登录事件

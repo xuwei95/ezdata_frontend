@@ -65,6 +65,7 @@
       actionSpan: propTypes.number.def(6),
       isAdvanced: propTypes.bool,
       hideAdvanceBtn: propTypes.bool,
+      layout: propTypes.oneOf(['horizontal', 'vertical', 'inline']).def('horizontal'),
     },
     emits: ['toggle-advanced'],
     setup(props, { emit }) {
@@ -74,12 +75,18 @@
         const { showAdvancedButton, actionSpan: span, actionColOptions } = props;
         const actionSpan = 24 - span;
         const advancedSpanObj = showAdvancedButton ? { span: actionSpan < 6 ? 24 : actionSpan } : {};
+        // update-begin--author:liaozhiyang---date:20240105---for：【QQYUN-6566】BasicForm支持一行显示(inline)
+        const defaultSpan = props.layout == 'inline' ? {} : { span: showAdvancedButton ? 6 : 4 };
+        // update-end--author:liaozhiyang---date:20240105---for：【QQYUN-6566】BasicForm支持一行显示(inline)
         const actionColOpt: Partial<ColEx> = {
           style: { textAlign: 'right' },
-          span: showAdvancedButton ? 6 : 4,
+          ...defaultSpan,
           ...advancedSpanObj,
           ...actionColOptions,
         };
+        
+        
+        
         return actionColOpt;
       });
 
