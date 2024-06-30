@@ -6,7 +6,7 @@
         <a-table bordered :columns="active_columns" :data-source="workerInfo.active">
           <template #bodyCell="{ column, text, record }">
             <template v-if="column.key === 'time_start'">
-              {{ parseInt(record.time_start) }}
+              {{ record.start_time }}
             </template>
             <template v-else-if="column.key === 'kwargs'">
               {{ record.kwargs }}

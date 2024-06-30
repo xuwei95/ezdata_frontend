@@ -1,5 +1,5 @@
 import { BasicColumn, FormSchema } from '/@/components/Table';
-import { render } from "/@/utils/common/renderUtils";
+import { render } from '/@/utils/common/renderUtils';
 //列表数据
 export const columns: BasicColumn[] = [
   {
@@ -45,6 +45,9 @@ export const columns: BasicColumn[] = [
     title: '任务组件',
     align: 'center',
     dataIndex: 'component',
+    customRender: ({ text }) => {
+      return render.renderDict(text, 'task_components');
+    },
   },
   {
     title: '状态',
