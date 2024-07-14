@@ -5,19 +5,23 @@
         <div id="scrollRef" ref="scrollRef" class="scrollArea">
           <template v-if="chatData.length">
             <div class="chatContentArea">
-              <chatMessage
-                v-for="(item, index) of chatData"
-                ref="chatMessageRefs"
-                :key="index"
-                :date-time="item.dateTime"
-                :text="item.text"
-                :table_data="item.table_data"
-                :html_data="item.html_data"
-                :chat_flow="item.chat_flow"
-                :inversion="item.inversion"
-                :error="item.error"
-                :loading="item.loading"
-              />
+              <div v-for="(item, index) of chatData">
+                <chatMessage
+                  ref="chatMessageRefs"
+                  :key="index"
+                  :date-time="item.dateTime"
+                  :text="item.text"
+                  :table_data="item.table_data"
+                  :html_data="item.html_data"
+                  :chat_flow="item.chat_flow"
+                  :inversion="item.inversion"
+                  :error="item.error"
+                  :loading="item.loading"
+                />
+                <div v-if="!item.inversion && !item.error && !item.loading">
+                  <a-rate :value="item.star_flag == '1' ? 1 : 0" :count="1" @click="starQa(index)" style="cursor: pointer" disabled />
+                </div>
+              </div>
             </div>
             <div v-if="loading" class="stopArea">
               <a-button type="primary" danger @click="handleStop" class="stopBtn">
@@ -155,6 +159,7 @@
   import '@/components/jeecg/AiChat/style/github-markdown.less';
   import '@/components/jeecg/AiChat/style/highlight.less';
   import '@/components/jeecg/AiChat/style/style.less';
+  import { starQaData } from '@/views/dataManage/dataQuery/dataquery.api';
 
   const props = defineProps(['model_id']);
   const { scrollRef, scrollToBottom, scrollToBottomIfAtBottom } = useScroll();
@@ -181,6 +186,30 @@
   }
   function handleSubmit() {
     onConversation();
+  }
+  async function starQa(index) {
+    console.log('star66666', chatData.value[index - 1], chatData.value[index]);
+    if (chatData.value[index].star_flag != '1'){
+      Modal.confirm({
+        title: '标记确认',
+        content: '确认标记此回答为正确答案？',
+        okText: '确认',
+        cancelText: '取消',
+        async onOk() {
+          const chatInfo = chatData.value[index];
+          const qaInfo = {
+            question: chatData.value[index - 1].text,
+            answer: chatInfo.answer,
+            metadata: {
+              datamodel_id: chatInfo.datamodel_id,
+              star_flag: 1,
+            },
+          };
+          await starQaData(qaInfo);
+          chatData.value[index].star_flag = '1';
+        },
+      });
+    }
   }
   async function onConversation() {
     let message = prompt.value;
@@ -226,6 +255,7 @@
       let table_data = [];
       let html_data = '';
       let chat_flow = [];
+      let answer = '';
       if (typeof EventSource !== 'undefined') {
         const token = getToken();
         evtSource = new EventSourcePolyfill(
@@ -274,6 +304,10 @@
                 } else if (_type == 'flow') {
                   // 处理流程
                   chat_flow.push(content);
+                  const title = content.title;
+                  if (title == '处理代码生成成功' || title == '修复处理代码成功') {
+                    answer = content.content;
+                  }
                 }
                 console.log(11111, chat_flow);
                 updateChat(uuid.value, chatData.value.length - 1, {
@@ -282,6 +316,9 @@
                   table_data: table_data,
                   html_data: html_data,
                   chat_flow: chat_flow,
+                  answer: answer,
+                  datamodel_id: props.model_id,
+                  star_flag: '0',
                   inversion: false,
                   error: false,
                   loading: true,

@@ -5,6 +5,7 @@ export enum Api {
   getInfoById = '/datamodel/getInfoById',
   queryModelData = '/datamodel/query',
   previewEtl = '/datamodel/etl_preview',
+  starQa = '/rag/chunk/qa/star',
 }
 
 /**
@@ -28,3 +29,8 @@ export const queryData = (params) => defHttp.post({ url: Api.queryModelData, par
  * @param params
  */
 export const previewEtlData = (params) => defHttp.post({ url: Api.previewEtl, params });
+/**
+ * 对话标记接口
+ * @param params
+ */
+export const starQaData = (params) => defHttp.post({ url: Api.starQa, params });
