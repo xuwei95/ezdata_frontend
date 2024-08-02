@@ -1,6 +1,7 @@
 import { BasicColumn, FormSchema } from '/@/components/Table';
 import { allTemplateList } from '/@/views/task/task_template/task_template.api';
 import { allAlertStrategyList } from '/@/views/alert/alert_strategy/alert_strategy.api';
+import { render } from '@/utils/common/renderUtils';
 //列表数据
 export const instanceColumns: BasicColumn[] = [
   {
@@ -13,13 +14,8 @@ export const instanceColumns: BasicColumn[] = [
     align: 'center',
     dataIndex: 'status',
     customRender: ({ text }) => {
-      return text;
+      return render.renderDict(text, 'task_status');
     },
-  },
-  {
-    title: '任务进度',
-    align: 'center',
-    dataIndex: 'progress',
   },
   {
     title: '开始时间',

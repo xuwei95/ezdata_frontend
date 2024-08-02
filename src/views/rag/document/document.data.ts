@@ -1,5 +1,58 @@
 import { BasicColumn, FormSchema } from '/@/components/Table';
 import { render } from '/@/utils/common/renderUtils';
+import { allList as allDataSetList } from '../dataset/dataset.api';
+// 定义映射变量
+let dataSetMap: Map<string, string>;
+// 获取映射
+Promise.all([allDataSetList({})])
+  .then(([dataSetList]) => {
+    dataSetMap = new Map(dataSetList.map((item) => [item.id, item.name]));
+  })
+  .catch((error) => {
+    console.error('Failed to fetch mappings:', error);
+  });
+
+// 数据源类型下拉选项
+export const documentTypeOptions = [
+  { label: '上传文件', value: 'upload_file' },
+  { label: '网络抓取', value: 'website_crawl' },
+  // { label: 'notion导入', value: 'notion_import' },
+];
+const uploadFileFormSchema: FormSchema[] = [
+  {
+    label: '文件地址',
+    field: 'upload_file',
+    required: true,
+    component: 'JUpload',
+    componentProps: {
+      fileMax: 1,
+    },
+  },
+];
+
+const websiteCrawlFormSchema: FormSchema[] = [
+  {
+    label: 'url地址',
+    field: 'path',
+    required: true,
+    component: 'Input',
+  },
+];
+const notionImportFormSchema: FormSchema[] = [
+  {
+    label: 'notion地址',
+    field: 'path',
+    required: true,
+    component: 'Input',
+  },
+];
+// 数据源连接配置表单字典
+export const metaDataFormSchemaMap = {
+  upload_file: uploadFileFormSchema,
+  website_crawl: websiteCrawlFormSchema,
+  notion_import: notionImportFormSchema,
+};
+
 //列表数据
 export const columns: BasicColumn[] = [
   {
@@ -10,27 +63,25 @@ export const columns: BasicColumn[] = [
     width: 300,
   },
   {
+    title: '名称',
+    align: 'center',
+    dataIndex: 'name',
+  },
+  {
     title: '所属数据集',
     align: 'center',
     dataIndex: 'dataset_id',
+    customRender: ({ text }) => {
+      return dataSetMap?.get(text) || text;
+    },
   },
   {
     title: '文档类型',
     align: 'center',
     dataIndex: 'document_type',
     customRender: ({ text }) => {
-      return render.renderDict(text, 'datamodel_type');
+      return render.renderDict(text, 'document_type');
     },
-  },
-  {
-    title: '名称',
-    align: 'center',
-    dataIndex: 'name',
-  },
-  {
-    title: '元数据信息',
-    align: 'center',
-    dataIndex: 'meta_data',
   },
   {
     title: '状态',
@@ -68,101 +119,3 @@ export const columns: BasicColumn[] = [
     width: 200,
   },
 ];
-//查询数据
-export const searchFormSchema: FormSchema[] = [
-  {
-    label: '名称',
-    field: 'name',
-    component: 'Input',
-  },
-  {
-    label: '文档类型',
-    field: 'document_type',
-    component: 'JSelectInput',
-  },
-  {
-    label: '所属数据集',
-    field: 'dataset_id',
-    component: 'Input',
-  },
-  {
-    label: '状态',
-    field: 'status',
-    component: 'JSelectInput',
-    // defaultValue: 1,
-    componentProps: {
-      options: [
-        { label: '启用', value: 1 },
-        { label: '禁用', value: 0 },
-      ],
-    },
-  },
-];
-//表单数据
-export const formSchema: FormSchema[] = [
-  {
-    label: '所属数据集',
-    field: 'dataset_id',
-    required: false,
-    component: 'ApiSelect',
-  },
-  {
-    label: '文档类型',
-    field: 'document_type',
-    required: false,
-    component: 'JSelectInput',
-  },
-  {
-    label: '名称',
-    field: 'name',
-    required: false,
-    component: 'Input',
-  },
-  {
-    label: '元数据信息',
-    field: 'meta_data',
-    required: false,
-    component: 'InputTextArea',
-  },
-  {
-    label: '分段策略',
-    field: 'chunk_strategy',
-    required: false,
-    component: 'Input',
-  },
-  {
-    label: '状态',
-    field: 'status',
-    required: true,
-    component: 'RadioGroup',
-    defaultValue: 1,
-    componentProps: {
-      options: [
-        { label: '启用', value: 1 },
-        { label: '禁用', value: 0 },
-      ],
-    },
-  },
-  {
-    label: '简介描述',
-    field: 'description',
-    required: false,
-    component: 'InputTextArea',
-  },
-  // TODO 主键隐藏字段，目前写死为ID
-  {
-    label: '',
-    field: 'id',
-    component: 'Input',
-    show: false,
-  },
-];
-
-/**
- * 流程表单调用这个方法获取formSchema
- * @param param
- */
-export function getBpmFormSchema(_formData): FormSchema[] {
-  // 默认和原始表单保持一致 如果流程中配置了权限数据，这里需要单独处理formSchema
-  return formSchema;
-}

@@ -42,6 +42,8 @@
   import DatasetModal from './components/DatasetModal.vue';
   import { columns, searchFormSchema } from './dataset.data';
   import { list, deleteOne, batchDelete } from './dataset.api';
+  import { useRouter } from 'vue-router';
+  const router = useRouter();
   const checkedKeys = ref<Array<string | number>>([]);
   //注册Modal
   const [registerModal, { openModal }] = useModal();
@@ -102,11 +104,7 @@
    * 管理文档
    */
   function handleDocument(record: Recordable) {
-    openModal(true, {
-      record,
-      isUpdate: true,
-      showFooter: false,
-    });
+    router.push('/rag/document?dataset_id=' + record.id);
   }
   /**
    * 删除事件

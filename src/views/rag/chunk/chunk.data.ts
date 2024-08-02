@@ -2,20 +2,25 @@ import { BasicColumn, FormSchema } from '/@/components/Table';
 import { allList as allDataSourceList } from '@/views/dataManage/dataSource/datasource.api';
 import { allList as allDataModelList } from '@/views/dataManage/dataModel/datamodel.api';
 import { allList as allDocumentList } from '../document/document.api';
-import { allList as allDataSetList } from '../document/document.api';
+import { allList as allDataSetList } from '../dataset/dataset.api';
 
-// 定义一个函数来获取映射
-const [dataSourceList, dataModelList, documentList, dataSetList] = await Promise.all([
-  allDataSourceList({}),
-  allDataModelList({}),
-  allDocumentList({}),
-  allDataSetList({}),
-]);
+// 定义映射变量
+let dataSourceMap: Map<string, string>;
+let dataModelMap: Map<string, string>;
+let documentMap: Map<string, string>;
+let dataSetMap: Map<string, string>;
 
-const dataSourceMap = new Map(dataSourceList.map((item) => [item.id, item.name]));
-const dataModelMap = new Map(dataModelList.map((item) => [item.id, item.name]));
-const documentMap = new Map(documentList.map((item) => [item.id, item.name]));
-const dataSetMap = new Map(dataSetList.map((item) => [item.id, item.name]));
+// 获取映射
+Promise.all([allDataSourceList({}), allDataModelList({}), allDocumentList({}), allDataSetList({})])
+  .then(([dataSourceList, dataModelList, documentList, dataSetList]) => {
+    dataSourceMap = new Map(dataSourceList.map((item) => [item.id, item.name]));
+    dataModelMap = new Map(dataModelList.map((item) => [item.id, item.name]));
+    documentMap = new Map(documentList.map((item) => [item.id, item.name]));
+    dataSetMap = new Map(dataSetList.map((item) => [item.id, item.name]));
+  })
+  .catch((error) => {
+    console.error('Failed to fetch mappings:', error);
+  });
 
 // 定义列
 export const columns: BasicColumn[] = [
@@ -45,7 +50,7 @@ export const columns: BasicColumn[] = [
     align: 'center',
     dataIndex: 'dataset_id',
     customRender: ({ text }) => {
-      return dataSetMap.get(text) || text;
+      return dataSetMap?.get(text) || text;
     },
   },
   {
@@ -53,7 +58,7 @@ export const columns: BasicColumn[] = [
     align: 'center',
     dataIndex: 'document_id',
     customRender: ({ text }) => {
-      return documentMap.get(text) || text;
+      return documentMap?.get(text) || text;
     },
   },
   {
@@ -61,7 +66,7 @@ export const columns: BasicColumn[] = [
     align: 'center',
     dataIndex: 'datasource_id',
     customRender: ({ text }) => {
-      return dataSourceMap.get(text) || text;
+      return dataSourceMap?.get(text) || text;
     },
   },
   {
@@ -69,7 +74,7 @@ export const columns: BasicColumn[] = [
     align: 'center',
     dataIndex: 'datamodel_id',
     customRender: ({ text }) => {
-      return dataModelMap.get(text) || text;
+      return dataModelMap?.get(text) || text;
     },
   },
   {
@@ -115,47 +120,49 @@ export const columns: BasicColumn[] = [
   },
 ];
 
-//查询数据
-export const searchFormSchema: FormSchema[] = [
+//检索数据
+export const retrievalFormSchema: FormSchema[] = [
   {
-    label: '关键词',
-    field: 'content',
+    label: '提示词',
+    field: 'query',
     component: 'Input',
+    colProps: { span: 12 },
   },
   {
-    label: '类型',
-    field: 'chunk_type',
-    component: 'JSelectInput',
-    // defaultValue: '知识段',
+    label: '分数过滤',
+    field: 'score_threshold',
+    component: 'InputNumber',
+    defaultValue: 0.1,
     componentProps: {
-      options: [
-        { label: '知识段', value: 'chunk' },
-        { label: '问答对', value: 'qa' },
-      ],
+      min: 0,
+      //数值精度
+      precision: 2,
+      //步数
+      step: 0.1,
     },
+    colProps: { span: 6 },
   },
   {
-    label: '状态',
-    field: 'status',
-    component: 'JSelectInput',
-    // defaultValue: 1,
+    label: '召回数量',
+    field: 'k',
+    component: 'InputNumber',
+    defaultValue: 5,
     componentProps: {
-      options: [
-        { label: '已同步', value: 1 },
-        { label: '未同步', value: 0 },
-      ],
+      min: 1,
     },
+    colProps: { span: 6 },
   },
   {
-    label: '所属文档',
-    field: 'document_id',
+    label: '所属数据集',
+    field: 'dataset_id',
     component: 'ApiSelect',
     componentProps: {
-      api: allDocumentList,
+      api: allDataSetList,
       params: {},
       labelField: 'name',
       valueField: 'id',
     },
+    colProps: { span: 6 },
   },
   {
     label: '所属数据模型',
@@ -167,123 +174,57 @@ export const searchFormSchema: FormSchema[] = [
       labelField: 'name',
       valueField: 'id',
     },
+    colProps: { span: 6 },
   },
-];
-//表单数据
-export const formSchema: FormSchema[] = [
   {
-    label: '所属文档',
-    field: 'document_id',
-    required: false,
-    component: 'ApiSelect',
-    dynamicDisabled: ({ values }) => {
-      return !!values.id;
-    },
+    label: '启用rerank',
+    field: 'rerank',
+    defaultValue: '0',
+    component: 'JSwitch',
     componentProps: {
-      api: allDocumentList,
-      params: {},
-      labelField: 'name',
-      valueField: 'id',
+      options: ['1', '0'],
     },
-  },
-  {
-    label: '所属数据模型',
-    field: 'datamodel_id',
-    required: false,
-    component: 'ApiSelect',
-    dynamicDisabled: ({ values }) => {
-      return !!values.id;
-    },
-    componentProps: {
-      api: allDataModelList,
-      params: {},
-      labelField: 'name',
-      valueField: 'id',
-    },
-  },
-  {
-    label: '类型',
-    field: 'chunk_type',
-    required: true,
-    component: 'RadioGroup',
-    defaultValue: 'chunk',
-    dynamicDisabled: ({ values }) => {
-      return !!values.id;
-    },
-    componentProps: {
-      options: [
-        { label: '知识段', value: 'chunk' },
-        { label: '问答对', value: 'qa' },
-      ],
-    },
-  },
-  {
-    label: '问题',
-    field: 'question',
-    required: true,
-    component: 'Input',
-    ifShow: ({ values }) => values.chunk_type == 'qa',
-  },
-  {
-    label: '回答',
-    field: 'answer',
-    required: true,
-    component: 'JMarkdownEditor',
-    ifShow: ({ values }) => values.chunk_type == 'qa',
-  },
-  {
-    label: '内容',
-    field: 'content',
-    required: true,
-    component: 'JMarkdownEditor',
-    ifShow: ({ values }) => values.chunk_type != 'qa',
-  },
-  {
-    label: '状态',
-    field: 'status',
-    required: true,
-    component: 'RadioGroup',
-    defaultValue: 1,
-    componentProps: {
-      options: [
-        { label: '已同步', value: 1 },
-        { label: '未同步', value: 0 },
-      ],
-    },
-  },
-  {
-    label: '标记状态',
-    field: 'star_flag',
-    required: true,
-    component: 'RadioGroup',
-    defaultValue: 0,
-    componentProps: {
-      options: [
-        { label: '已标记', value: 1 },
-        { label: '未标记', value: 0 },
-      ],
-    },
-  },
-  {
-    label: '简介描述',
-    field: 'description',
-    required: false,
-    component: 'InputTextArea',
-  },
-  // TODO 主键隐藏字段，目前写死为ID
-  {
-    label: '',
-    field: 'id',
-    component: 'Input',
-    show: false,
+    colProps: { span: 4 },
   },
 ];
 
-/**
- * 流程表单调用这个方法获取formSchema
- * @param param
- */
-export function getBpmFormSchema(_formData): FormSchema[] {
-  // 默认和原始表单保持一致 如果流程中配置了权限数据，这里需要单独处理formSchema
-  return formSchema;
-}
+export const retrievalColumns: BasicColumn[] = [
+  {
+    title: '内容',
+    align: 'center',
+    dataIndex: 'page_content',
+    width: 800,
+  },
+  {
+    title: '所属数据集',
+    align: 'center',
+    dataIndex: 'dataset_id',
+    customRender: ({ text }) => {
+      return dataSetMap?.get(text) || text;
+    },
+  },
+  {
+    title: '所属文档',
+    align: 'center',
+    dataIndex: 'document_id',
+    customRender: ({ text }) => {
+      return documentMap?.get(text) || text;
+    },
+  },
+  {
+    title: '所属数据源',
+    align: 'center',
+    dataIndex: 'datasource_id',
+    customRender: ({ text }) => {
+      return dataSourceMap?.get(text) || text;
+    },
+  },
+  {
+    title: '所属数据模型',
+    align: 'center',
+    dataIndex: 'datamodel_id',
+    customRender: ({ text }) => {
+      return dataModelMap?.get(text) || text;
+    },
+  },
+];

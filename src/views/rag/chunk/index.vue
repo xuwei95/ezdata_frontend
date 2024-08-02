@@ -5,7 +5,6 @@
       <!--插槽:table标题-->
       <template #tableTitle>
         <a-button type="primary" @click="handleAdd" preIcon="ant-design:plus-outlined"> 新增</a-button>
-        <a-button type="primary" @click="handleRetrieval"> 知识检索</a-button>
         <a-dropdown v-if="selectedRowKeys.length > 0">
           <template #overlay>
             <a-menu>
@@ -32,21 +31,83 @@
     </BasicTable>
     <!-- 表单区域 -->
     <ChunkModal @register="registerModal" @success="handleSuccess" />
-<!--    <ChunkRetrievalModal @register="registerRetrievalModal" @success="handleSuccess" />-->
   </div>
 </template>
 
 <script lang="ts" name="chunk-Chunk" setup>
-  import { ref, computed, unref } from 'vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { ref, computed, unref, onMounted } from 'vue';
+  import { useRoute } from 'vue-router';
+  import { BasicTable, FormSchema, TableAction } from "/@/components/Table";
   import { useModal } from '/@/components/Modal';
   import { useListPage } from '/@/hooks/system/useListPage';
   import ChunkModal from './components/ChunkModal.vue';
-  import { columns, searchFormSchema } from './chunk.data';
+  import { columns } from './chunk.data';
   import { list, deleteOne, batchDelete } from './chunk.api';
+  import { allList as allDocumentList } from '@/views/rag/document/document.api';
+  import { allList as allDataModelList } from '@/views/dataManage/dataModel/datamodel.api';
   const checkedKeys = ref<Array<string | number>>([]);
+  const urlParams = new URLSearchParams(window.location.search);
+  const defaultDocumentId = urlParams.get('document_id') || '';
   //注册Modal
   const [registerModal, { openModal }] = useModal();
+  //查询数据
+  const searchFormSchema: FormSchema[] = [
+    {
+      label: '关键词',
+      field: 'content',
+      component: 'Input',
+    },
+    {
+      label: '类型',
+      field: 'chunk_type',
+      component: 'JSelectInput',
+      // defaultValue: '知识段',
+      componentProps: {
+        options: [
+          { label: '知识段', value: 'chunk' },
+          { label: '问答对', value: 'qa' },
+        ],
+      },
+    },
+    {
+      label: '状态',
+      field: 'status',
+      component: 'JSelectInput',
+      // defaultValue: 1,
+      componentProps: {
+        options: [
+          { label: '已同步', value: 1 },
+          { label: '未同步', value: 0 },
+        ],
+      },
+    },
+    {
+      label: '所属文档',
+      field: 'document_id',
+      component: 'ApiSelect',
+      defaultValue: defaultDocumentId,
+      dynamicDisabled: ({ values }) => {
+        return !!values.id || defaultDocumentId != '';
+      },
+      componentProps: {
+        api: allDocumentList,
+        params: {},
+        labelField: 'name',
+        valueField: 'id',
+      },
+    },
+    {
+      label: '所属数据模型',
+      field: 'datamodel_id',
+      component: 'ApiSelect',
+      componentProps: {
+        api: allDataModelList,
+        params: {},
+        labelField: 'name',
+        valueField: 'id',
+      },
+    },
+  ];
   //注册table数据
   const { prefixCls, tableContext } = useListPage({
     tableProps: {
@@ -67,19 +128,9 @@
         fixed: 'right',
       },
     },
-
   });
 
   const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
-  /**
-   * 检索事件
-   */
-  function handleRetrieval() {
-    openModal(true, {
-      isUpdate: false,
-      showFooter: true,
-    });
-  }
   /**
    * 新增事件
    */

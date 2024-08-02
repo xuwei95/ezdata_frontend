@@ -193,6 +193,10 @@
         onClick: handleModel.bind(null, record, 'status'),
       },
       {
+        label: '训练知识库',
+        onClick: handleModel.bind(null, record, 'train'),
+      },
+      {
         label: '创建模型',
         popConfirm: {
           title: '确定创建?',

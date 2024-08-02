@@ -9,7 +9,7 @@ enum Api {
   getInfoById = '/rag/document/queryById',
   save = '/rag/document/add',
   edit = '/rag/document/edit',
-  deleteOne = '/rag/ocument/delete',
+  deleteOne = '/rag/document/delete',
   deleteBatch = '/rag/document/deleteBatch',
 }
 /**

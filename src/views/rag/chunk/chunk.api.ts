@@ -4,6 +4,7 @@ import { useMessage } from '/@/hooks/web/useMessage';
 const { createConfirm } = useMessage();
 
 enum Api {
+  retrieval = '/rag/chunk/retrieval',
   list = '/rag/chunk/list',
   getInfoById = '/rag/chunk/queryById',
   save = '/rag/chunk/add',
@@ -11,6 +12,11 @@ enum Api {
   deleteOne = '/rag/chunk/delete',
   deleteBatch = '/rag/chunk/deleteBatch',
 }
+/**
+ * 检索接口
+ * @param params
+ */
+export const retrieval = (params) => defHttp.get({ url: Api.retrieval, params });
 /**
  * 列表接口
  * @param params

@@ -35,16 +35,65 @@
 </template>
 
 <script lang="ts" name="document-Document" setup>
-  import { ref, computed, unref } from 'vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { ref } from 'vue';
+  import { BasicTable, TableAction, FormSchema } from '/@/components/Table';
   import { useModal } from '/@/components/Modal';
   import { useListPage } from '/@/hooks/system/useListPage';
   import DocumentModal from './components/DocumentModal.vue';
-  import { columns, searchFormSchema } from './document.data';
+  import { columns } from './document.data';
   import { list, deleteOne, batchDelete } from './document.api';
+  import { useRouter } from 'vue-router';
+  import { allList as allDataSetList } from '@/views/rag/dataset/dataset.api';
+  const router = useRouter();
   const checkedKeys = ref<Array<string | number>>([]);
   //注册Modal
   const [registerModal, { openModal }] = useModal();
+  const urlParams = new URLSearchParams(window.location.search);
+  const defaultDatasetId = urlParams.get('dataset_id') || '';
+  const searchFormSchema: FormSchema[] = [
+    {
+      label: '名称',
+      field: 'name',
+      component: 'Input',
+    },
+    {
+      label: '所属数据集',
+      field: 'dataset_id',
+      component: 'ApiSelect',
+      defaultValue: defaultDatasetId,
+      dynamicDisabled: ({ values }) => {
+        return !!values.id || defaultDatasetId != '';
+      },
+      componentProps: {
+        api: allDataSetList,
+        params: {},
+        labelField: 'name',
+        valueField: 'id',
+      },
+    },
+    {
+      label: '文档类型',
+      field: 'document_type',
+      component: 'JDictSelectTag',
+      componentProps: {
+        dictCode: 'document_type',
+        placeholder: '请选择文档类型',
+        stringToNumber: false,
+      },
+    },
+    {
+      label: '状态',
+      field: 'status',
+      component: 'JSelectInput',
+      // defaultValue: 1,
+      componentProps: {
+        options: [
+          { label: '启用', value: 1 },
+          { label: '禁用', value: 0 },
+        ],
+      },
+    },
+  ];
   //注册table数据
   const { prefixCls, tableContext } = useListPage({
     tableProps: {
@@ -65,7 +114,6 @@
         fixed: 'right',
       },
     },
-
   });
 
   const [registerTable, { reload }, { rowSelection, selectedRowKeys }] = tableContext;
@@ -88,6 +136,12 @@
       isUpdate: true,
       showFooter: true,
     });
+  }
+  /**
+   * 编辑知识段事件
+   */
+  function handleEditChunks(record: Recordable) {
+    router.push('/rag/chunk?document_id=' + record.id);
   }
   /**
    * 详情
@@ -125,6 +179,10 @@
       {
         label: '编辑',
         onClick: handleEdit.bind(null, record),
+      },
+      {
+        label: '知识段编辑',
+        onClick: handleEditChunks.bind(null, record),
       },
     ];
   }

@@ -74,7 +74,7 @@ export const formSchema: FormSchema[] = [
   {
     label: '名称',
     field: 'name',
-    required: false,
+    required: true,
     component: 'Input',
   },
   {

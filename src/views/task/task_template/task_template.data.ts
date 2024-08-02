@@ -154,7 +154,7 @@ export const formSchema: FormSchema[] = [
     defaultValue: 'PythonTask',
     componentProps: {
       dictCode: 'task_components',
-      placeholder: '请选择数据源类型',
+      placeholder: '请选择任务组件类型',
       stringToNumber: false,
     },
     ifShow: ({ values }) => values.type == 1,

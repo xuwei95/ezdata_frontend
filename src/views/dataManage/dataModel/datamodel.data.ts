@@ -122,15 +122,15 @@ export const formSchema: FormSchema[] = [
     component: 'InputTextArea',
   },
   {
-    label: '封装查询接口',
+    label: '查询接口',
     field: 'can_interface',
     defaultValue: 0,
     required: true,
     component: 'RadioGroup',
     componentProps: {
       options: [
-        { label: '允许', value: 1 },
-        { label: '不允许', value: 0 },
+        { label: '开启', value: 1 },
+        { label: '关闭', value: 0 },
       ],
     },
   },

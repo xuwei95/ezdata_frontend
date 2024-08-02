@@ -5,6 +5,7 @@ const { createConfirm } = useMessage();
 
 enum Api {
   list = '/rag/dataset/list',
+  allList = '/rag/dataset/queryAllList',
   getInfoById = '/rag/dataset/queryById',
   save = '/rag/dataset/add',
   edit = '/rag/dataset/edit',
@@ -16,6 +17,12 @@ enum Api {
  * @param params
  */
 export const list = (params) => defHttp.get({ url: Api.list, params });
+/**
+ * 全量列表接口
+ * @param params
+ */
+export const allList = (params) => defHttp.get({ url: Api.allList, params });
+
 /**
  * 详情接口
  * @param params
