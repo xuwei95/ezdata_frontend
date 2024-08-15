@@ -35,7 +35,7 @@ export const columns: BasicColumn[] = [
     title: '内容',
     align: 'center',
     dataIndex: 'content',
-    width: 600,
+    width: 1000,
   },
   {
     title: '类型',
@@ -129,6 +129,31 @@ export const retrievalFormSchema: FormSchema[] = [
     colProps: { span: 12 },
   },
   {
+    label: '召回数量',
+    field: 'k',
+    component: 'InputNumber',
+    defaultValue: 5,
+    componentProps: {
+      min: 1,
+    },
+    colProps: { span: 4 },
+  },
+  {
+    label: '检索模式',
+    field: 'retrieval_type',
+    component: 'JSelectInput',
+    defaultValue: 'vector',
+    componentProps: {
+      options: [
+        { label: '语义', value: 'vector' },
+        { label: '全文', value: 'keyword' },
+        { label: '混合', value: 'all' },
+      ],
+    },
+    // labelWidth: 110,
+    colProps: { span: 4 },
+  },
+  {
     label: '分数过滤',
     field: 'score_threshold',
     component: 'InputNumber',
@@ -140,17 +165,7 @@ export const retrievalFormSchema: FormSchema[] = [
       //步数
       step: 0.1,
     },
-    colProps: { span: 6 },
-  },
-  {
-    label: '召回数量',
-    field: 'k',
-    component: 'InputNumber',
-    defaultValue: 5,
-    componentProps: {
-      min: 1,
-    },
-    colProps: { span: 6 },
+    colProps: { span: 4 },
   },
   {
     label: '所属数据集',
@@ -158,6 +173,7 @@ export const retrievalFormSchema: FormSchema[] = [
     component: 'ApiSelect',
     componentProps: {
       api: allDataSetList,
+      mode: 'multiple',
       params: {},
       labelField: 'name',
       valueField: 'id',
@@ -170,6 +186,7 @@ export const retrievalFormSchema: FormSchema[] = [
     component: 'ApiSelect',
     componentProps: {
       api: allDataModelList,
+      mode: 'multiple',
       params: {},
       labelField: 'name',
       valueField: 'id',
@@ -177,7 +194,7 @@ export const retrievalFormSchema: FormSchema[] = [
     colProps: { span: 6 },
   },
   {
-    label: '启用rerank',
+    label: '结果重排',
     field: 'rerank',
     defaultValue: '0',
     component: 'JSwitch',
@@ -185,6 +202,21 @@ export const retrievalFormSchema: FormSchema[] = [
       options: ['1', '0'],
     },
     colProps: { span: 4 },
+  },
+  {
+    label: '结果重排分数过滤',
+    field: 'rerank_score_threshold',
+    component: 'InputNumber',
+    defaultValue: 0,
+    componentProps: {
+      min: 0,
+      //数值精度
+      precision: 2,
+      //步数
+      step: 0.1,
+    },
+    colProps: { span: 4 },
+    ifShow: ({ values }) => values.rerank == '1',
   },
 ];
 
@@ -194,6 +226,12 @@ export const retrievalColumns: BasicColumn[] = [
     align: 'center',
     dataIndex: 'page_content',
     width: 800,
+  },
+  {
+    title: '分数',
+    align: 'center',
+    dataIndex: 'score',
+    width: 100,
   },
   {
     title: '所属数据集',

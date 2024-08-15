@@ -83,19 +83,6 @@
     //   component: 'Input',
     // },
     {
-      label: '状态',
-      field: 'status',
-      required: true,
-      component: 'RadioGroup',
-      defaultValue: 1,
-      componentProps: {
-        options: [
-          { label: '启用', value: 1 },
-          { label: '禁用', value: 0 },
-        ],
-      },
-    },
-    {
       label: '简介描述',
       field: 'description',
       required: false,

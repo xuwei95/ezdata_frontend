@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="rightArea" :class="[expand ? 'expand' : 'shrink']">
-        <chat v-if="uuid && chatVisible" :uuid="uuid" :chatData="chatData" :dataSource="dataSource"></chat>
+        <chat v-if="uuid && chatVisible" :uuid="uuid" :chatData="chatData" :dataSource="dataSource" :chatConfig="chatConfig" @updateChatConfig="handleChatConfigUpdate"></chat>
       </div>
     </template>
     <Spin v-else :spinning="true"></Spin>
@@ -32,6 +32,8 @@
   import { useUserStore } from '/@/store/modules/user';
   import { JEECG_CHAT_KEY } from '/@/enums/cacheEnum';
   import { defHttp } from '/@/utils/http/axios';
+  import { defaultChatConfig } from '@/components/jeecg/AiChat/data';
+
   const configUrl = {
     get: '/llm/chat/history/get',
     save: '/llm/chat/history/save',
@@ -43,6 +45,7 @@
   let unwatch02: any = null;
   const dataSource = ref<any>(null);
   const uuid = ref(null);
+  const chatConfig = ref(defaultChatConfig);
   const chatData = ref([]);
   const expand = ref<any>(true);
   const chatVisible = ref(true);
@@ -64,7 +67,7 @@
             active: 1002,
             usingContext: true,
             history: [{ uuid: 1002, title: '新建聊天', isEdit: false }],
-            chat: [{ uuid: 1002, data: [] }],
+            chat: [{ uuid: 1002, data: [], config: defaultChatConfig }],
           };
         }
         !unwatch01 && execute();
@@ -73,6 +76,9 @@
   };
   const save = (content) => {
     defHttp.post({ url: configUrl.save, params: { content: JSON.stringify(content) } }, { isTransformResponse: false });
+  };
+  const handleChatConfigUpdate = (newConfig) => {
+    chatConfig.value = newConfig;
   };
   // 监听dataSource变化执行操作
   const execute = () => {
@@ -84,6 +90,7 @@
           if (findItem) {
             uuid.value = findItem.uuid;
             chatData.value = findItem.data;
+            chatConfig.value = findItem.config || defaultChatConfig;
           }
           chatVisible.value = false;
           nextTick(() => {
@@ -96,6 +103,10 @@
     unwatch02 = watch(dataSource.value, () => {
       clearInterval(timer);
       timer = setTimeout(() => {
+        const findItem = dataSource.value.chat.find((item) => item.uuid === uuid.value); // 保存chatConfig
+        if (findItem) {
+          findItem.config = chatConfig.value;
+        }
         save(dataSource.value);
       }, 2e3);
     });

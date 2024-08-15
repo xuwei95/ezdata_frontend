@@ -33,9 +33,22 @@ const uploadFileFormSchema: FormSchema[] = [
 const websiteCrawlFormSchema: FormSchema[] = [
   {
     label: 'url地址',
-    field: 'path',
+    field: 'url',
     required: true,
     component: 'Input',
+  },
+  {
+    label: '抓取方式',
+    field: 'provider',
+    required: true,
+    component: 'JSelectInput',
+    defaultValue: 'base',
+    componentProps: {
+      options: [
+        { label: '普通模式', value: 'base' },
+        { label: 'firecrawl', value: 'firecrawl' },
+      ],
+    },
   },
 ];
 const notionImportFormSchema: FormSchema[] = [
@@ -88,7 +101,15 @@ export const columns: BasicColumn[] = [
     align: 'center',
     dataIndex: 'status',
     customRender: ({ text }) => {
-      return text == 1 ? '启用' : '禁用';
+      if (text == 1) {
+        return '待训练';
+      } else if (text == 2) {
+        return '训练中';
+      } else if (text == 3) {
+        return '训练成功';
+      } else if (text == 4) {
+        return '训练失败';
+      }
     },
   },
   {

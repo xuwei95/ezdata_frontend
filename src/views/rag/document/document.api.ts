@@ -11,6 +11,7 @@ enum Api {
   edit = '/rag/document/edit',
   deleteOne = '/rag/document/delete',
   deleteBatch = '/rag/document/deleteBatch',
+  train = '/rag/document/train',
 }
 /**
  * 列表接口
@@ -60,4 +61,13 @@ export const batchDelete = (params, handleSuccess) => {
 export const saveOrUpdate = (params, isUpdate) => {
   const url = isUpdate ? Api.edit : Api.save;
   return defHttp.post({ url: url, params });
+};
+/**
+ * 训练知识库
+ * @param params
+ */
+export const train = (params, handleSuccess) => {
+  return defHttp.post({ url: Api.train, params }).then(() => {
+    handleSuccess();
+  });
 };

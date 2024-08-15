@@ -41,7 +41,7 @@
   import { useListPage } from '/@/hooks/system/useListPage';
   import DocumentModal from './components/DocumentModal.vue';
   import { columns } from './document.data';
-  import { list, deleteOne, batchDelete } from './document.api';
+  import { list, deleteOne, batchDelete, train } from './document.api';
   import { useRouter } from 'vue-router';
   import { allList as allDataSetList } from '@/views/rag/dataset/dataset.api';
   const router = useRouter();
@@ -88,8 +88,10 @@
       // defaultValue: 1,
       componentProps: {
         options: [
-          { label: '启用', value: 1 },
-          { label: '禁用', value: 0 },
+          { label: '待训练', value: 1 },
+          { label: '训练中', value: 2 },
+          { label: '训练成功', value: 3 },
+          { label: '训练失败', value: 4 },
         ],
       },
     },
@@ -142,6 +144,12 @@
    */
   function handleEditChunks(record: Recordable) {
     router.push('/rag/chunk?document_id=' + record.id);
+  }
+  /**
+   * 训练知识库
+   */
+  async function handleTrain(record: Recordable) {
+    await train({ id: record.id }, handleSuccess);
   }
   /**
    * 详情
@@ -200,6 +208,13 @@
         popConfirm: {
           title: '确定删除吗?',
           confirm: handleDelete.bind(null, record),
+        },
+      },
+      {
+        label: '重新训练',
+        popConfirm: {
+          title: '确定重新训练?',
+          confirm: handleTrain.bind(null, record),
         },
       },
     ];
