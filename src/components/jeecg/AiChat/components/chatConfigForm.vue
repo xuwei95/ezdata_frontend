@@ -23,6 +23,14 @@
         <a-input-number v-model:value="formState.rag.rerank_score_threshold" :min="0" :precision="2" :step="0.1" />
       </a-form-item>
     </template>
+    <a-form-item label="工具调用">
+      <a-switch v-model:checked="formState.agent.enable" />
+    </a-form-item>
+    <template v-if="formState.agent.enable">
+      <a-form-item label="使用工具">
+        <ApiSelect v-model:value="formState.agent.tools" :api="toolList" mode="multiple" :params="{}" labelField="name" valueField="value" />
+      </a-form-item>
+    </template>
   </a-form>
 </template>
 
@@ -32,6 +40,7 @@
   import JSelectInput from '@/components/Form/src/jeecg/components/JSelectInput.vue';
   import JSwitch from '@/components/Form/src/jeecg/components/JSwitch.vue';
   import { allList as allDataSetList } from '@/views/rag/dataset/dataset.api';
+  import { toolList } from '@/components/jeecg/AiChat/llm.api';
   import { defaultChatConfig } from '@/components/jeecg/AiChat/data';
 
   const props = defineProps<{
@@ -45,6 +54,10 @@
         rerank: string;
         rerank_score_threshold: number;
       };
+      agent: {
+        enable: boolean;
+        tools: string[];
+      };
     };
   }>();
 
@@ -54,6 +67,10 @@
     rag: {
       ...defaultChatConfig.rag,
       ...props.modelValue.rag,
+    },
+    agent: {
+      ...defaultChatConfig.agent,
+      ...props.modelValue.agent,
     },
   });
 
