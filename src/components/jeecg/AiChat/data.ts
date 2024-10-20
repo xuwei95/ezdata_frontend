@@ -12,4 +12,8 @@ export const defaultChatConfig = {
     enable: false,
     tools: [],
   },
+  data_chat: {
+    enable: false,
+    datamodel_id: [],
+  },
 };

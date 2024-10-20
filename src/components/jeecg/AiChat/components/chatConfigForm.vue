@@ -31,6 +31,14 @@
         <ApiSelect v-model:value="formState.agent.tools" :api="toolList" mode="multiple" :params="{}" labelField="name" valueField="value" />
       </a-form-item>
     </template>
+    <a-form-item label="数据分析">
+      <a-switch v-model:checked="formState.data_chat.enable" />
+    </a-form-item>
+    <template v-if="formState.data_chat.enable">
+      <a-form-item label="数据模型列表">
+        <ApiSelect v-model:value="formState.data_chat.datamodel_id" :api="allDataModelList" mode="multiple" :params="{}" labelField="name" valueField="id" />
+      </a-form-item>
+    </template>
   </a-form>
 </template>
 
@@ -41,6 +49,7 @@
   import JSwitch from '@/components/Form/src/jeecg/components/JSwitch.vue';
   import { allList as allDataSetList } from '@/views/rag/dataset/dataset.api';
   import { toolList } from '@/components/jeecg/AiChat/llm.api';
+  import { allList as allDataModelList } from '@/views/dataManage/dataModel/datamodel.api';
   import { defaultChatConfig } from '@/components/jeecg/AiChat/data';
 
   const props = defineProps<{
@@ -58,6 +67,10 @@
         enable: boolean;
         tools: string[];
       };
+      data_chat: {
+        enable: boolean;
+        datamodel_id: string[];
+      };
     };
   }>();
 
@@ -71,6 +84,10 @@
     agent: {
       ...defaultChatConfig.agent,
       ...props.modelValue.agent,
+    },
+    data_chat: {
+      ...defaultChatConfig.data_chat,
+      ...props.modelValue.data_chat,
     },
   });
 
