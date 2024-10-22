@@ -31,6 +31,7 @@
     </BasicTable>
     <!-- 表单区域 -->
     <ChatAppModal @register="registerModal" @success="handleSuccess" />
+    <ApiTokenDrawer @register="registerApiDrawer" @success="handleSuccess" />
   </div>
 </template>
 
@@ -42,9 +43,12 @@
   import ChatAppModal from './components/ChatAppModal.vue';
   import { columns, searchFormSchema } from './chat_app.data';
   import { list, deleteOne, batchDelete } from './chat_app.api';
+  import { useDrawer } from '@/components/Drawer';
+  import ApiTokenDrawer from './components/ApiTokenDrawer/index.vue';
   const checkedKeys = ref<Array<string | number>>([]);
   //注册Modal
   const [registerModal, { openModal }] = useModal();
+  const [registerApiDrawer, { openDrawer: openApiDrawer }] = useDrawer();
   //注册table数据
   const { prefixCls, tableContext } = useListPage({
     tableProps: {
@@ -111,6 +115,16 @@
     await batchDelete({ ids: selectedRowKeys.value }, handleSuccess);
   }
   /**
+   * api列表
+   */
+  function handleApi(record: Recordable) {
+    openApiDrawer(true, {
+      record,
+      isUpdate: true,
+      showFooter: false,
+    });
+  }
+  /**
    * 成功回调
    */
   function handleSuccess() {
@@ -125,10 +139,10 @@
         label: '编辑',
         onClick: handleEdit.bind(null, record),
       },
-      // {
-      //   label: 'api',
-      //   onClick: handleEdit.bind(null, record),
-      // },
+      {
+        label: 'api列表',
+        onClick: handleApi.bind(null, record),
+      },
     ];
   }
   /**
