@@ -5,6 +5,7 @@ enum Api {
   getInfoById = '/llm/chat_app/token/queryById',
   apply = '/llm/chat_app/token/apply',
   statusUpdate = '/llm/chat_app/token/status',
+  deleteKey = '/llm/chat_app/token/delete',
 }
 /**
  * 列表接口
@@ -22,6 +23,15 @@ export const getInfoById = (params) => defHttp.get({ url: Api.getInfoById, param
  */
 export const UpdateStatus = (params, handleSuccess) => {
   return defHttp.post({ url: Api.statusUpdate, params }).then(() => {
+    handleSuccess();
+  });
+};
+/**
+ * 删除
+ * @param params
+ */
+export const deleteKey = (params, handleSuccess) => {
+  return defHttp.post({ url: Api.deleteKey, params }).then(() => {
     handleSuccess();
   });
 };

@@ -45,6 +45,7 @@
   import { list, deleteOne, batchDelete } from './chat_app.api';
   import { useDrawer } from '@/components/Drawer';
   import ApiTokenDrawer from './components/ApiTokenDrawer/index.vue';
+  import { router } from '/@/router';
   const checkedKeys = ref<Array<string | number>>([]);
   //注册Modal
   const [registerModal, { openModal }] = useModal();
@@ -118,11 +119,7 @@
    * api列表
    */
   function handleApi(record: Recordable) {
-    openApiDrawer(true, {
-      record,
-      isUpdate: true,
-      showFooter: false,
-    });
+    router.push({ path: '/ai/app/chat', query: { app_id: record.id } });
   }
   /**
    * 成功回调
@@ -140,7 +137,7 @@
         onClick: handleEdit.bind(null, record),
       },
       {
-        label: 'api列表',
+        label: '对话',
         onClick: handleApi.bind(null, record),
       },
     ];
@@ -150,6 +147,10 @@
    */
   function getDropDownAction(record) {
     return [
+      {
+        label: 'api列表',
+        onClick: handleApi.bind(null, record),
+      },
       {
         label: '详情',
         onClick: handleDetail.bind(null, record),

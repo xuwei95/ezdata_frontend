@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
   import { columns } from './api_token.data';
-  import { list, UpdateStatus } from './api_token.api';
+  import { list, UpdateStatus, deleteKey } from './api_token.api';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { onMounted, watch } from 'vue';
   import { useModal } from '/@/components/Modal';
@@ -60,6 +60,12 @@
     await UpdateStatus({ id: record.id }, reload);
   }
   /**
+   * 删除事件
+   */
+  async function handleDelete(record: Recordable) {
+    await deleteKey({ id: record.id }, reload);
+  }
+  /**
    * 操作栏
    */
   function getTableAction(record) {
@@ -69,6 +75,13 @@
         popConfirm: {
           title: '确定' + (record.status == 1 ? '禁用' : '启用') + '吗?',
           confirm: handleStatus.bind(null, record),
+        },
+      },
+      {
+        label: '删除',
+        popConfirm: {
+          title: '确定删除?',
+          confirm: handleDelete.bind(null, record),
         },
       },
     ];

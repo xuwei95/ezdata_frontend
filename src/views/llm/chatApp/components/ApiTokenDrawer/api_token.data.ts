@@ -19,6 +19,7 @@ export const columns: BasicColumn[] = [
     title: '失效时间',
     align: 'center',
     dataIndex: 'valid_time',
+    width: 200,
   },
   {
     title: '申请人',
@@ -29,6 +30,7 @@ export const columns: BasicColumn[] = [
     title: '申请时间',
     align: 'center',
     dataIndex: 'apply_time',
+    width: 200,
   },
 ];
 
