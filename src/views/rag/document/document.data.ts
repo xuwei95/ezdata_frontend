@@ -50,6 +50,19 @@ const websiteCrawlFormSchema: FormSchema[] = [
       ],
     },
   },
+  {
+    label: '抓取策略',
+    field: 'mode',
+    required: true,
+    component: 'JSelectInput',
+    defaultValue: 'scrape',
+    componentProps: {
+      options: [
+        { label: '抓取当页', value: 'scrape' },
+        { label: '递归抓取', value: 'crawl' },
+      ],
+    },
+  },
 ];
 const notionImportFormSchema: FormSchema[] = [
   {
