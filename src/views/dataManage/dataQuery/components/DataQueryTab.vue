@@ -18,7 +18,7 @@
     :loading="loading"
     :columns="columns"
     :dataSource="dataSource"
-    :pagination="pagination"
+    :pagination="pagination && !hidePagination"
     @pageChange="handlePageChange"
   >
     <template #toolbarSuffix>
@@ -68,6 +68,7 @@
     pageSizeOptions: ['100', '500', '1000', '2000', '5000', '10000'],
     total: 0,
   });
+  const hidePagination = ref(false);
   // 初始化查询配置
   function initData() {
     columns.value = [];
@@ -126,6 +127,7 @@
     try {
       const res_data = await queryData(extract_info);
       if (res_data) {
+        hidePagination.value = res_data.hasOwnProperty('pagination') && res_data.pagination === false;
         pagination.total = res_data.total;
         dataSource.value = parseTableRecords(res_data.records);
         // 重置字段列表
